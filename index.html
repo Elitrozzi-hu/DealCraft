@@ -243,6 +243,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .fb-btn:hover,.fb-btn.on{border-color:var(--p);background:var(--px);color:var(--p)}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--t1);color:#fff;padding:10px 18px;border-radius:var(--r1);font-size:12px;font-weight:600;z-index:999;transform:translateY(60px);opacity:0;transition:all .28s;box-shadow:var(--s3)}
 .toast.on{transform:translateY(0);opacity:1}
+/* Version footer */
+.ver-footer{position:fixed;bottom:10px;left:14px;z-index:90;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.9);border:1px solid var(--br);border-radius:20px;padding:4px 12px;backdrop-filter:blur(6px);box-shadow:var(--s1);cursor:default;transition:opacity .2s}
+.ver-footer:hover{opacity:1}
+.ver-badge{font-size:10px;font-weight:800;color:var(--p);letter-spacing:.2px}
+.ver-sep{color:var(--br);font-size:10px}
+.ver-date{font-size:10px;color:var(--t3);font-weight:600}
+.ver-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0}
 
 /* ════════════════════════════════
    RECURSOS TAB
@@ -534,6 +541,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 </div>
 
 <div class="toast" id="toast-el"><span id="tmsg"></span></div>
+
+<div class="ver-footer">
+  <span class="ver-dot"></span>
+  <span class="ver-badge">v1.0.0</span>
+  <span class="ver-sep">·</span>
+  <span class="ver-date">17 Mar 2026</span>
+</div>
 
 <!-- SLIDE MODAL -->
 <div class="slide-modal" id="slide-modal" onclick="if(event.target===this)closeSlide()">
