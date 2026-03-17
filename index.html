@@ -182,19 +182,46 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .ov-mod-sec-why{font-size:11px;color:var(--t2);line-height:1.35}
 .ov-opener{font-size:13px;color:var(--t1);line-height:1.7;font-style:italic;background:var(--okl);border-left:3px solid var(--ok);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;margin-bottom:10px}
 
-/* Tech Stack */
-.tech-section{margin-bottom:20px}
-.tech-sec-t{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px}
-.tech-grid{display:flex;flex-wrap:wrap;gap:8px}
-.tech-item{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--r1);border:1.5px solid var(--br);background:#fff;cursor:pointer;transition:all .2s}
-.tech-item:hover{border-color:var(--p);background:var(--px)}
-.tech-item.gap-item{border-color:var(--red);background:var(--redl)}
-.tech-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.tech-name{font-size:12px;font-weight:700}
-.tech-cat{font-size:10px;color:var(--t3);margin-left:2px}
-.tech-tooltip{display:none;position:absolute;background:var(--t1);color:#fff;font-size:11px;padding:8px 12px;border-radius:var(--r1);width:220px;line-height:1.5;z-index:99;box-shadow:var(--s3)}
-.tech-item{position:relative}
-.tech-item:hover .tech-tooltip{display:block;top:calc(100% + 6px);left:0}
+/* Tech Stack — card layout */
+.ts-section-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--t2);margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:2px solid var(--br)}
+.ts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:28px}
+.ts-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);padding:16px;display:flex;flex-direction:column;gap:10px;transition:all .2s;position:relative;overflow:hidden}
+.ts-card:hover{box-shadow:var(--s2);transform:translateY(-2px)}
+.ts-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ok)}
+.ts-card.ts-gap::before{background:var(--red)}
+.ts-card.ts-gap{border-color:rgba(239,68,68,.25);background:#fffbfb}
+.ts-top{display:flex;align-items:center;gap:10px}
+.ts-logo{width:36px;height:36px;border-radius:8px;object-fit:contain;padding:3px;border:1px solid var(--br);background:#fff;flex-shrink:0}
+.ts-logo-fb{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.ts-info{flex:1;min-width:0}
+.ts-name{font-size:13px;font-weight:800;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ts-cat{font-size:10px;color:var(--t3);font-weight:600;margin-top:2px}
+.ts-badges{display:flex;gap:5px;flex-wrap:wrap}
+.ts-conf{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--okl);color:var(--ok)}
+.ts-conf-med{background:var(--wal);color:var(--wa)}
+.ts-gap-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;background:var(--redl);color:var(--red);text-transform:uppercase;letter-spacing:.4px}
+.ts-divider{height:1px;background:var(--br)}
+.ts-angle{display:flex;align-items:flex-start;gap:8px;font-size:11px;line-height:1.5}
+.ts-angle-ico{font-size:14px;flex-shrink:0;margin-top:1px}
+.ts-angle-body{flex:1;color:var(--t2)}
+.ts-module{font-weight:700;color:var(--p);display:inline}
+.ts-insight-box{background:var(--px);border-radius:var(--r2);padding:13px 16px;font-size:13px;color:var(--p);font-weight:600;line-height:1.55;margin-bottom:8px;display:flex;gap:9px}
+
+/* Notas */
+.notes-wrap{display:flex;flex-direction:column;gap:16px}
+.notes-header{display:flex;align-items:center;justify-content:space-between}
+.notes-title{font-size:13px;font-weight:800;color:var(--t1)}
+.notes-saved{font-size:11px;color:var(--ok);font-weight:700;opacity:0;transition:opacity .4s}
+.notes-saved.on{opacity:1}
+.notes-textarea{width:100%;min-height:200px;padding:16px;border:1.5px solid var(--br);border-radius:var(--r2);font-size:13px;color:var(--t1);line-height:1.7;font-family:inherit;background:#fff;resize:vertical;outline:none;transition:border-color .2s}
+.notes-textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(73,107,227,.08)}
+.notes-textarea::placeholder{color:var(--t3)}
+.notes-meta{font-size:11px;color:var(--t3)}
+.notes-tips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.notes-tip{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:12px 14px;cursor:pointer;transition:all .18s}
+.notes-tip:hover{border-color:var(--p);background:var(--px)}
+.notes-tip-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:4px}
+.notes-tip-text{font-size:12px;color:var(--t2);line-height:1.45}
 
 /* Cómo vender */
 .pitch-hero{background:linear-gradient(135deg,var(--p),var(--pl));border-radius:var(--r3);padding:20px 22px;color:#fff;margin-bottom:16px}
@@ -519,6 +546,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
         <div class="tab"     onclick="swTab('dealstrat',this)">⚡ Deal Strategy</div>
         <div class="tab"     onclick="swTab('meeting',this)">📋 Plan de reunión</div>
         <div class="tab"     onclick="swTab('recursos',this)">📁 Recursos</div>
+        <div class="tab"     onclick="swTab('notes',this)">📝 Notas</div>
       </div>
       <div class="panel on" id="panel-overview"></div>
       <div class="panel"    id="panel-tech"></div>
@@ -528,6 +556,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
       <div class="panel"    id="panel-dealstrat"></div>
       <div class="panel"    id="panel-meeting"></div>
       <div class="panel"    id="panel-recursos"></div>
+      <div class="panel"    id="panel-notes"></div>
     </div>
   </div>
   <div class="fb-bar">
@@ -544,7 +573,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.0</span>
+  <span class="ver-badge">v1.0.1</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">17 Mar 2026</span>
 </div>
@@ -786,6 +815,136 @@ const DB = {
   },
 };
 
+// ═══════════════════════════════════════════
+// APOLLO INTEGRATION
+// ═══════════════════════════════════════════
+const APOLLO_KEY = 'YlSoia8CR6OpXrDFU_crZg';
+
+async function fetchApollo(name) {
+  const res = await fetch('https://api.apollo.io/v1/mixed_companies/search', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
+      'x-api-key': APOLLO_KEY
+    },
+    body: JSON.stringify({ q_organization_name: name, page: 1, per_page: 1 })
+  });
+  if (!res.ok) throw new Error('Apollo ' + res.status);
+  const data = await res.json();
+  return data.organizations?.[0] || null;
+}
+
+function fmtEmployees(n) {
+  if (!n) return '—';
+  if (n < 50) return '<50';
+  if (n < 200) return '50–200';
+  if (n < 500) return '200–500';
+  if (n < 1000) return '500–1k';
+  if (n < 5000) return '1k–5k';
+  if (n < 10000) return '5k–10k';
+  return '10k+';
+}
+
+function computeScore(org) {
+  let score = 60;
+  const emp = org.estimated_num_employees || 0;
+  if (emp >= 200) score += 8;
+  if (emp >= 500) score += 5;
+  if (emp >= 1000) score += 5;
+  const frontline = ['retail','logistics','manufacturing','food','hospitality','healthcare','construction','transport','delivery'];
+  if (frontline.some(f => (org.industry || '').toLowerCase().includes(f))) score += 10;
+  const techs = (org.technologies || []).map(t => t.name.toLowerCase());
+  if (!techs.some(t => ['slack','microsoft teams','workplace from meta','google chat'].includes(t))) score += 5;
+  return Math.min(score, 96);
+}
+
+function buildSignalsFromApollo(org) {
+  const signals = [];
+  const techs = (org.technologies || []).map(t => t.name.toLowerCase());
+  if (!techs.some(t => ['slack','microsoft teams','workplace from meta','google chat'].includes(t))) {
+    signals.push({ico:'🟡', text:'Sin herramienta de comunicación interna estructurada detectada', badge:'Gap detectado', cls:'sig-wa'});
+  } else {
+    signals.push({ico:'🟢', text:'Tiene herramienta de comunicación — Humand complementa como app móvil para frontline', badge:'Oportunidad', cls:'sig-ok'});
+  }
+  if ((org.estimated_num_employees || 0) >= 500) {
+    signals.push({ico:'🟢', text:`+${org.estimated_num_employees} empleados — alta complejidad de comunicación interna`, badge:'Oportunidad', cls:'sig-ok'});
+  }
+  const frontline = ['retail','logistics','manufacturing','food','hospitality','healthcare','construction','transport','delivery'];
+  if (frontline.some(f => (org.industry || '').toLowerCase().includes(f))) {
+    signals.push({ico:'🔥', text:`Industria ${org.industry} — alto porcentaje de empleados frontline o campo`, badge:'Hot', cls:'sig-hot'});
+  }
+  if (!techs.some(t => ['workday','bamboohr','successfactors','gusto','rippling','adp'].includes(t))) {
+    signals.push({ico:'🟡', text:'Sin HRIS robusto detectado — posible gestión de HR manual o en planillas', badge:'Oportunidad', cls:'sig-wa'});
+  }
+  if (signals.length === 0) {
+    signals.push({ico:'🟡', text:'Señales a validar en reunión — datos obtenidos de fuentes públicas', badge:'Pendiente', cls:'sig-wa'});
+  }
+  return signals;
+}
+
+function buildTechFromApollo(org) {
+  const tech = (org.technologies || []).slice(0, 10).map(t => ({
+    name: t.name,
+    cat: t.category || 'Tech',
+    color: '#496BE3',
+    conf: 90,
+    status: 'usa',
+    tooltip: `Detectado en fuentes públicas. Categoría: ${t.category || 'herramienta'}.`
+  }));
+  const techs = (org.technologies || []).map(t => t.name.toLowerCase());
+  if (!techs.some(t => ['slack','microsoft teams','workplace from meta','google chat'].includes(t))) {
+    tech.push({name:'Comunicación interna unificada',cat:'Internal Comms',color:'#EF4444',conf:85,status:'gap',tooltip:'No se detectó herramienta de comunicación interna. Gap principal para Humand Communications.'});
+  }
+  if (!techs.some(t => ['workday','bamboohr','successfactors','gusto','rippling','adp'].includes(t))) {
+    tech.push({name:'HR Digital / Employee Experience',cat:'HRIS',color:'#F59E0B',conf:70,status:'gap',tooltip:'Sin HRIS moderno detectado. Oportunidad para digitalización de procesos de HR con Humand.'});
+  }
+  return tech;
+}
+
+function mapApolloToCompany(org, searchName, base) {
+  const n = org.name || searchName;
+  const empCount = org.estimated_num_employees;
+  const empLabel = fmtEmployees(empCount);
+  const country = org.country || '—';
+  const industry = org.industry || 'B2B';
+  const website = org.primary_domain || (org.website_url || '').replace(/https?:\/\//,'') || '';
+  const desc = org.short_description || org.seo_description || base.desc;
+  const keywords = (org.keywords || []).slice(0, 3);
+  const tags = [industry, country, ...keywords].filter((v,i,a) => v && a.indexOf(v)===i).slice(0, 4);
+  const score = computeScore(org);
+  const scoreLabel = score >= 85 ? 'Fit muy alto · Acción urgente' : score >= 75 ? 'Fit alto · Trabajarlo' : 'Fit medio · Calificar bien';
+  const init = n.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const colors = ['linear-gradient(135deg,#496BE3,#6B8AEC)','linear-gradient(135deg,#0891b2,#06b6d4)','linear-gradient(135deg,#7c3aed,#8b5cf6)','linear-gradient(135deg,#059669,#10b981)'];
+
+  return {
+    ...base,
+    name: n,
+    initials: init,
+    color: colors[n.length % colors.length],
+    industry,
+    country: country,
+    website,
+    employees: empLabel,
+    founded: org.founded_year ? String(org.founded_year) : '—',
+    stage: org.annual_revenue_printed ? `Revenue: ${org.annual_revenue_printed}` : 'Empresa privada',
+    score,
+    scoreLabel,
+    desc,
+    tags,
+    mets: [
+      {v: empLabel, l: 'Empleados'},
+      {v: country, l: 'País'},
+      {v: org.founded_year || '—', l: 'Fundada'},
+      {v: org.annual_revenue_printed || '—', l: 'Revenue'}
+    ],
+    tech: buildTechFromApollo(org),
+    signals: buildSignalsFromApollo(org),
+    primaryWhy: `${n} tiene ${empLabel} empleados en el sector ${industry}. La comunicación interna y la digitalización de HR son los puntos de entrada con mayor probabilidad de fit para Humand.`,
+    opener: `Vi que ${n} opera en ${industry} con un equipo de ${empLabel} personas${org.country ? ' en ' + org.country : ''}. Muchas empresas de este perfil tienen gaps en comunicación con empleados fuera de oficina. ¿Cómo lo están resolviendo hoy?`,
+  };
+}
+
 // Perfil genérico para empresas no en DB
 function buildGeneric(name) {
   const n = name.trim();
@@ -891,6 +1050,63 @@ function buildGeneric(name) {
 }
 
 // ═══════════════════════════════════════════
+// TOOL METADATA — logos + módulos Humand
+// ═══════════════════════════════════════════
+const TOOL_DOMAINS = {
+  'slack':'slack.com','google workspace':'workspace.google.com','google analytics':'analytics.google.com',
+  'gmail':'gmail.com','google drive':'drive.google.com','google ads':'ads.google.com',
+  'microsoft 365':'microsoft.com','microsoft teams':'microsoft.com','outlook':'microsoft.com',
+  'sharepoint':'microsoft.com','onedrive':'microsoft.com','office 365':'microsoft.com',
+  'workday':'workday.com','bamboohr':'bamboohr.com','successfactors':'sap.com','sap':'sap.com',
+  'oracle':'oracle.com','adp':'adp.com','rippling':'rippling.com','gusto':'gusto.com',
+  'salesforce':'salesforce.com','hubspot':'hubspot.com','zendesk':'zendesk.com',
+  'servicenow':'servicenow.com','intercom':'intercom.com',
+  'zoom':'zoom.us','notion':'notion.so','confluence':'atlassian.com','jira':'atlassian.com',
+  'asana':'asana.com','monday.com':'monday.com','trello':'trello.com','clickup':'clickup.com',
+  'linkedin':'linkedin.com','youtube':'youtube.com','whatsapp':'whatsapp.com','workplace from meta':'workplace.com',
+  'greenhouse':'greenhouse.io','lever':'lever.co','workable':'workable.com',
+  'docusign':'docusign.com','box':'box.com','dropbox':'dropbox.com',
+  'shopify':'shopify.com','stripe':'stripe.com','wordpress':'wordpress.com',
+  'aws':'aws.amazon.com','google cloud':'cloud.google.com','azure':'azure.microsoft.com',
+  'cloudflare':'cloudflare.com','twilio':'twilio.com','segment':'segment.com',
+  'mixpanel':'mixpanel.com','amplitude':'amplitude.com','tableau':'tableau.com',
+  'power bi':'powerbi.microsoft.com','figma':'figma.com','github':'github.com','gitlab':'gitlab.com',
+};
+
+const HUMAND_MODULES = {
+  'Comunicación interna':{module:'📣 Communications',why:'Humand lleva las comunicaciones a todos los empleados, incluso frontline sin email corporativo.'},
+  'Communication':{module:'📣 Communications',why:'Humand centraliza la comunicación interna con alcance a 100% de la plantilla.'},
+  'HR':{module:'📋 Forms & Workflows',why:'Humand digitaliza procesos de HR que hoy son manuales o por email.'},
+  'HRIS':{module:'📣 Communications + Forms',why:'Humand agrega la capa de comunicación y experience que los HRIS tradicionales no tienen.'},
+  'Productivity':{module:'📋 Forms & Workflows',why:'Humand complementa con procesos de HR móviles, accesibles desde cualquier dispositivo.'},
+  'Video Hosting':{module:'📣 Communications',why:'Humand permite distribuir video comunicados a todos los empleados.'},
+  'Email Marketing':{module:'📣 Communications',why:'Humand reemplaza el email masivo interno con push notifications y feed móvil.'},
+  'Analytics':{module:'📊 Analytics & Insights',why:'Humand provee analytics de engagement, adopción y sentimiento de empleados.'},
+  'CRM':{module:'📋 Forms & Workflows',why:'Humand gestiona workflows internos de HR con la misma agilidad que un CRM de ventas.'},
+  'Project Management':{module:'📋 Forms & Workflows',why:'Humand agiliza los procesos de HR con workflows digitales sin fricción.'},
+  'Applicant Tracking':{module:'📋 Onboarding',why:'Humand acelera el onboarding de nuevos ingresos con flujos digitales.'},
+};
+
+function getHumandAngle(category) {
+  if (!category) return {module:'📣 Communications',why:'Humand puede complementar esta herramienta para llegar a toda la plantilla.'};
+  const key = Object.keys(HUMAND_MODULES).find(k => category.toLowerCase().includes(k.toLowerCase()));
+  return HUMAND_MODULES[key] || {module:'📣 Communications',why:'Humand puede complementar esta herramienta mejorando el alcance a empleados frontline.'};
+}
+
+function toolLogoUrl(name) {
+  if (!name) return null;
+  const key = name.toLowerCase();
+  const domain = Object.keys(TOOL_DOMAINS).find(k => key.includes(k) || k.includes(key));
+  return domain ? `https://logo.clearbit.com/${TOOL_DOMAINS[domain]}` : null;
+}
+
+function toolColor(name) {
+  const colors = ['#496BE3','#0891b2','#7c3aed','#059669','#d97706','#dc2626','#0284c7','#7c3aed'];
+  let h = 0; for (let i=0; i<(name||'').length; i++) h = (h*31 + name.charCodeAt(i)) & 0xfffff;
+  return colors[h % colors.length];
+}
+
+// ═══════════════════════════════════════════
 // PROCESS STEPS
 // ═══════════════════════════════════════════
 const PROC = [
@@ -921,14 +1137,22 @@ function swTab(id,el){
 // ═══════════════════════════════════════════
 // ANALYZE
 // ═══════════════════════════════════════════
-function analyze(){
+async function analyze(){
   const val = document.getElementById('main-input').value.trim();
   if(!val){document.getElementById('main-input').focus();return}
   document.getElementById('proc-target').textContent = val;
   show('s2');
-  // reset proc
+
   const key = val.toLowerCase().replace(/[^a-záéíóúüñ\s]/gi,'').trim();
-  current = DB[key] || buildGeneric(val);
+  const base = DB[key] || buildGeneric(val);
+  current = base;
+
+  // Fetch Apollo en paralelo con la animación
+  const apolloPromise = (DB[key] ? Promise.resolve(null) : fetchApollo(val))
+    .then(org => { if(org) current = mapApolloToCompany(org, val, base); })
+    .catch(err => { console.warn('Apollo fetch failed:', err); });
+
+  // Animación de pasos
   let si=0;
   document.getElementById('proc-steps').innerHTML = PROC.map((_,i)=>`
     <div class="pstep" id="ps${i}">
@@ -937,20 +1161,27 @@ function analyze(){
       <div class="ps-st" id="pst${i}">—</div>
     </div>`).join('');
   document.getElementById('prog-fill').style.width='0%';
-  function next(){
-    if(si>=PROC.length){setTimeout(()=>{render();show('s3')},400);return}
-    document.getElementById('ps'+si).classList.add('act');
-    document.getElementById('pst'+si).textContent='Procesando...';
-    document.getElementById('prog-fill').style.width=Math.round((si+1)/PROC.length*100)+'%';
-    setTimeout(()=>{
-      document.getElementById('ps'+si).classList.remove('act');
-      document.getElementById('ps'+si).classList.add('done');
-      document.getElementById('ps'+si).querySelector('.ps-ico').textContent='✅';
-      document.getElementById('pst'+si).textContent='✓ Listo';
-      si++;setTimeout(next,300);
-    },1400);
-  }
-  next();
+
+  const animPromise = new Promise(resolve => {
+    function next(){
+      if(si>=PROC.length){resolve();return}
+      document.getElementById('ps'+si).classList.add('act');
+      document.getElementById('pst'+si).textContent='Procesando...';
+      document.getElementById('prog-fill').style.width=Math.round((si+1)/PROC.length*100)+'%';
+      setTimeout(()=>{
+        document.getElementById('ps'+si).classList.remove('act');
+        document.getElementById('ps'+si).classList.add('done');
+        document.getElementById('ps'+si).querySelector('.ps-ico').textContent='✅';
+        document.getElementById('pst'+si).textContent='✓ Listo';
+        si++;setTimeout(next,300);
+      },1400);
+    }
+    next();
+  });
+
+  await Promise.all([animPromise, apolloPromise]);
+  render();
+  show('s3');
 }
 
 // ═══════════════════════════════════════════
@@ -1032,32 +1263,65 @@ function render(){
       </div>
     </div>`;
 
-  // TECH STACK
+  // TECH STACK — card layout visual
   const usaTools = c.tech.filter(t=>t.status==='usa');
   const gapTools = c.tech.filter(t=>t.status==='gap');
-  document.getElementById('panel-tech').innerHTML=`
-    <div class="tech-section">
-      <div class="tech-sec-t">✅ Herramientas que ya usan</div>
-      <div class="tech-grid">${usaTools.map(t=>`
-        <div class="tech-item">
-          <span class="tech-dot" style="background:${t.color}"></span>
-          <span class="tech-name">${t.name}</span><span class="tech-cat">${t.cat}</span>
-          <span style="font-size:10px;font-weight:700;color:var(--ok);margin-left:4px">${t.conf}%</span>
-          <div class="tech-tooltip">${t.tooltip}</div>
-        </div>`).join('')}</div>
-    </div>
-    <div class="tech-section">
-      <div class="tech-sec-t">🔴 Gaps detectados → donde entra Humand</div>
-      <div class="tech-grid">${gapTools.map(t=>`
-        <div class="tech-item gap-item">
-          <span class="tech-dot" style="background:${t.color}"></span>
-          <span class="tech-name">${t.name}</span><span class="tech-cat">${t.cat}</span>
-          <div class="tech-tooltip">${t.tooltip}</div>
-        </div>`).join('')}</div>
-    </div>
-    <div style="background:var(--px);border-radius:var(--r2);padding:14px 16px;font-size:13px;color:var(--p);font-weight:600;line-height:1.5">
-      💡 <strong>Cómo usar esto:</strong> No vendas Humand como un reemplazo de lo que ya tienen. Posicionalo como la capa que completa lo que les falta — especialmente para los empleados que quedan fuera de las herramientas de oficina.
+
+  function techCard(t, isGap) {
+    const logoUrl = toolLogoUrl(t.name);
+    const color = toolColor(t.name);
+    const init = (t.name||'?')[0].toUpperCase();
+    const logo = logoUrl
+      ? `<img class="ts-logo" src="${logoUrl}" alt="${t.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        + `<div class="ts-logo-fb" style="background:${color};display:none">${init}</div>`
+      : `<div class="ts-logo-fb" style="background:${color}">${init}</div>`;
+    const angle = getHumandAngle(t.cat);
+    const confClass = t.conf >= 80 ? '' : 'ts-conf-med';
+    if (isGap) {
+      return `<div class="ts-card ts-gap">
+        <div class="ts-top">
+          <div class="ts-logo-fb" style="background:var(--red);font-size:16px">⚠️</div>
+          <div class="ts-info">
+            <div class="ts-name">${t.name}</div>
+            <div class="ts-cat">${t.cat}</div>
+          </div>
+          <span class="ts-gap-badge">Gap</span>
+        </div>
+        <div class="ts-divider"></div>
+        <div class="ts-angle">
+          <span class="ts-angle-ico">🎯</span>
+          <div class="ts-angle-body">${t.tooltip}<br><span class="ts-module">→ ${angle.module}</span></div>
+        </div>
+      </div>`;
+    }
+    return `<div class="ts-card">
+      <div class="ts-top">
+        ${logo}
+        <div class="ts-info">
+          <div class="ts-name">${t.name}</div>
+          <div class="ts-cat">${t.cat}</div>
+        </div>
+      </div>
+      <div class="ts-badges">
+        <span class="ts-conf ${confClass}">✓ ${t.conf}% confianza</span>
+      </div>
+      <div class="ts-divider"></div>
+      <div class="ts-angle">
+        <span class="ts-angle-ico">💡</span>
+        <div class="ts-angle-body"><span class="ts-module">${angle.module}:</span> ${angle.why}</div>
+      </div>
     </div>`;
+  }
+
+  document.getElementById('panel-tech').innerHTML=`
+    <div class="ts-insight-box">
+      <span style="font-size:18px;flex-shrink:0">💡</span>
+      <div><strong>Cómo usar esto en la reunión:</strong> No hables de reemplazar lo que ya tienen. Posicioná Humand como la capa que llega a los empleados que quedan fuera de las herramientas de oficina — especialmente frontline y campo.</div>
+    </div>
+    <div class="ts-section-label"><span>✅</span> Stack actual — herramientas detectadas</div>
+    <div class="ts-grid">${usaTools.map(t => techCard(t, false)).join('')}</div>
+    <div class="ts-section-label"><span>🔴</span> Gaps detectados — donde entra Humand</div>
+    <div class="ts-grid">${gapTools.map(t => techCard(t, true)).join('')}</div>`;
 
   // PITCH
   document.getElementById('panel-pitch').innerHTML=`
@@ -1116,11 +1380,61 @@ function render(){
   // RECURSOS
   renderRecursos(c);
 
+  // NOTAS
+  renderNotes(c.name);
+
   // Hide sidebar cards that are now embedded in the overview panel
   ['co-card','score-card','signals-card'].forEach(cid=>{
     const card=document.getElementById(cid);
     if(card) card.style.display='none';
   });
+}
+
+// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+// NOTAS
+// ═══════════════════════════════════════════
+function notesKey(name){ return 'dc_notes_' + (name||'').toLowerCase().replace(/\s+/g,'_'); }
+
+function renderNotes(companyName) {
+  const saved = localStorage.getItem(notesKey(companyName)) || '';
+  const tips = [
+    {label:'Pain principal', text:'"El mayor dolor que mencionaron fue..."'},
+    {label:'Próximo paso', text:'"Acordamos reunirnos el..."'},
+    {label:'Stakeholders', text:'"El DM real es... El champion es..."'},
+    {label:'Objeciones', text:'"La objeción principal fue..."'},
+  ];
+  document.getElementById('panel-notes').innerHTML = `
+    <div class="notes-wrap">
+      <div class="notes-header">
+        <div class="notes-title">📝 Notas de la reunión — ${companyName}</div>
+        <div class="notes-saved" id="notes-saved-ind">✓ Guardado</div>
+      </div>
+      <textarea class="notes-textarea" id="notes-area" placeholder="Escribí acá tus notas de la reunión: pain points, objeciones, próximos pasos, compromisos..." oninput="saveNotes('${companyName.replace(/'/g,"\\'")}', this.value)">${saved}</textarea>
+      <div class="notes-meta">Auto-guardado en este browser · ${saved.length > 0 ? saved.length + ' caracteres guardados' : 'Sin notas aún'}</div>
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:8px;margin-bottom:8px">Prompts rápidos — clic para insertar</div>
+      <div class="notes-tips">
+        ${tips.map(t=>`<div class="notes-tip" onclick="insertNotePrompt('${t.label}: ')">
+          <div class="notes-tip-label">${t.label}</div>
+          <div class="notes-tip-text">${t.text}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function saveNotes(companyName, text) {
+  localStorage.setItem(notesKey(companyName), text);
+  const ind = document.getElementById('notes-saved-ind');
+  if (ind) { ind.classList.add('on'); clearTimeout(ind._t); ind._t = setTimeout(()=>ind.classList.remove('on'), 2000); }
+}
+
+function insertNotePrompt(prefix) {
+  const ta = document.getElementById('notes-area');
+  if (!ta) return;
+  const sep = ta.value.length > 0 && !ta.value.endsWith('\n') ? '\n' : '';
+  ta.value += sep + prefix;
+  ta.focus();
+  ta.dispatchEvent(new Event('input'));
 }
 
 // ═══════════════════════════════════════════

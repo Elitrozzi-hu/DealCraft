@@ -1,7 +1,12 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "date": "2026-03-17",
   "history": [
+    {
+      "version": "1.0.1",
+      "date": "2026-03-17",
+      "note": "Add Apollo API integration, visual tech stack cards with logos and Humand module mapping, and editable notes tab with localStorage persistence"
+    },
     {
       "version": "1.0.0",
       "date": "2026-03-17",
