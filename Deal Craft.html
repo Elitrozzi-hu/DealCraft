@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Humand · B2B Intelligence</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --p:#496BE3;--pd:#3558C8;--pl:#6B8AEC;--px:#EEF2FF;--px2:#dde6fc;
+  --bg:#F5F7FF;--t1:#1A1D2E;--t2:#5A6376;--t3:#9CA3AF;
+  --br:#E4E9F6;--ok:#10B981;--okl:#ECFDF5;--wa:#F59E0B;--wal:#FEF9ED;
+  --red:#EF4444;--redl:#FFF1F1;--pu:#8B5CF6;--pul:#F5F3FF;
+  --s1:0 1px 4px rgba(73,107,227,.07);--s2:0 4px 20px rgba(73,107,227,.13);--s3:0 12px 40px rgba(73,107,227,.18);
+  --r1:8px;--r2:12px;--r3:16px;--r4:24px
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden}
+.scr{display:none;min-height:100vh;flex-direction:column}.scr.on{display:flex}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:#fff;border-bottom:1px solid var(--br);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px;letter-spacing:-.3px}
+.logo-i{width:30px;height:30px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:900}
+.npill{background:var(--px);color:var(--p);font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px}
+.nav-r{display:flex;align-items:center;gap:10px}
+.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pl));display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:var(--r1);border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
+.b-p{background:var(--p);color:#fff}.b-p:hover{background:var(--pd);box-shadow:var(--s2);transform:translateY(-1px)}
+.b-s{background:var(--px);color:var(--p)}.b-s:hover{background:var(--px2)}
+.b-g{background:#fff;color:var(--t2);border:1.5px solid var(--br)}.b-g:hover{background:var(--bg)}
+.btn-lg{padding:13px 28px;font-size:14px;border-radius:var(--r2)}
+
+/* ════════════════════════════════
+   SCREEN 1 — SEARCH
+════════════════════════════════ */
+#s1 .body{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.search-wrap{width:100%;max-width:640px}
+.search-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--px);color:var(--p);padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:24px}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.search-title{font-size:40px;font-weight:900;line-height:1.12;letter-spacing:-1px;margin-bottom:14px}
+.search-title span{color:var(--p)}
+.search-sub{font-size:15px;color:var(--t2);line-height:1.65;margin-bottom:36px}
+.search-box{background:#fff;border:2px solid var(--br);border-radius:var(--r3);padding:20px;box-shadow:var(--s2);transition:border-color .2s}
+.search-box:focus-within{border-color:var(--p);box-shadow:0 0 0 4px rgba(73,107,227,.1),var(--s2)}
+.search-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;display:block}
+.search-row{display:flex;gap:10px}
+.search-input{flex:1;padding:13px 16px;border:1.5px solid var(--br);border-radius:var(--r1);font-size:14px;color:var(--t1);background:var(--bg);outline:none;transition:all .2s}
+.search-input:focus{border-color:var(--p);background:#fff;box-shadow:0 0 0 3px rgba(73,107,227,.08)}
+.search-input::placeholder{color:var(--t3)}
+.search-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--t3);font-size:11px}
+.search-divider::before,.search-divider::after{content:'';flex:1;height:1px;background:var(--br)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{background:var(--bg);border:1px solid var(--br);color:var(--t2);font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:5px}
+.chip:hover{border-color:var(--p);color:var(--p);background:var(--px)}
+.recent-block{margin-top:28px}
+.recent-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:12px}
+.recent-list{display:flex;flex-direction:column;gap:8px}
+.recent-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);cursor:pointer;transition:all .18s}
+.recent-item:hover{border-color:var(--p);background:var(--px);transform:translateX(3px)}
+.ri-logo{width:36px;height:36px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;flex-shrink:0}
+.ri-name{font-size:13px;font-weight:700}
+.ri-meta{font-size:11px;color:var(--t2);margin-top:1px}
+.ri-score{margin-left:auto;font-size:13px;font-weight:800;color:var(--p)}
+
+/* ════════════════════════════════
+   SCREEN 2 — PROCESSING
+════════════════════════════════ */
+#s2{background:#fff}
+#s2 .body{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.proc-wrap{max-width:500px;width:100%;text-align:center}
+.orbit{width:180px;height:180px;position:relative;margin:0 auto 36px}
+.or{position:absolute;top:50%;left:50%;border:1.5px solid rgba(73,107,227,.2);border-radius:50%}
+.or1{width:100px;height:100px;margin:-50px 0 0 -50px;animation:cw 4s linear infinite}
+.or2{width:154px;height:154px;margin:-77px 0 0 -77px;animation:ccw 7s linear infinite}
+@keyframes cw{to{transform:rotate(360deg)}}@keyframes ccw{to{transform:rotate(-360deg)}}
+.od{position:absolute;top:-5px;left:50%;width:10px;height:10px;margin-left:-5px;background:var(--p);border-radius:50%}
+.od2{width:8px;height:8px;top:-4px;margin-left:-4px;background:var(--pl)}
+.oc{width:56px;height:56px;background:var(--p);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;animation:breathe 2s ease-in-out infinite;box-shadow:0 0 0 12px rgba(73,107,227,.12),0 0 0 24px rgba(73,107,227,.06)}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 12px rgba(73,107,227,.12),0 0 0 24px rgba(73,107,227,.06)}50%{box-shadow:0 0 0 18px rgba(73,107,227,.09),0 0 0 36px rgba(73,107,227,.04)}}
+.proc-title{font-size:22px;font-weight:900;letter-spacing:-.4px;margin-bottom:6px}
+.proc-url{font-size:13px;color:var(--t2);margin-bottom:32px}
+.proc-steps{display:flex;flex-direction:column;gap:8px;text-align:left;max-width:400px;margin:0 auto 22px}
+.pstep{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--r2);background:var(--bg);border:1.5px solid var(--br);transition:all .35s}
+.pstep.act{background:var(--px);border-color:var(--p)}
+.pstep.done{background:var(--okl);border-color:var(--ok)}
+.ps-ico{font-size:17px;flex-shrink:0;width:28px;text-align:center}
+.ps-body{flex:1}.ps-name{font-size:12px;font-weight:700;transition:color .3s}
+.pstep.act .ps-name{color:var(--p)}.pstep.done .ps-name{color:var(--ok)}
+.ps-sub{font-size:10px;color:var(--t3);margin-top:1px}
+.ps-st{font-size:11px;font-weight:700}.pstep.act .ps-st{color:var(--p)}.pstep.done .ps-st{color:var(--ok)}
+.prog-bar{height:4px;background:var(--br);border-radius:2px;overflow:hidden;max-width:400px;margin:0 auto}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--p),var(--pl));border-radius:2px;transition:width .9s cubic-bezier(.4,0,.2,1)}
+
+/* ════════════════════════════════
+   SCREEN 3 — RESULTS
+════════════════════════════════ */
+#s3 .body{flex:1;display:flex;max-width:1280px;margin:0 auto;width:100%;padding:28px;gap:22px}
+.side{width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+.res-main{flex:1;min-width:0}
+
+/* Company card */
+.co-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);padding:18px;box-shadow:var(--s1)}
+.co-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.co-logo{width:48px;height:48px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:900;flex-shrink:0}
+.co-name{font-size:15px;font-weight:800}
+.co-meta{font-size:12px;color:var(--t2);margin-top:2px}
+.co-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.ctag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--bg);color:var(--t2);border:1px solid var(--br)}
+.ctag-p{background:var(--px);color:var(--p);border-color:transparent}
+.co-mets{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.met{text-align:center;padding:9px 6px;background:var(--bg);border-radius:var(--r1)}
+.mv{font-size:14px;font-weight:900}.ml{font-size:10px;color:var(--t2);margin-top:1px;text-transform:uppercase;letter-spacing:.4px}
+
+/* Score */
+.score-card{background:linear-gradient(135deg,var(--p),#6B8AEC);border-radius:var(--r3);padding:16px;color:#fff;position:relative;overflow:hidden}
+.score-card::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,.1);border-radius:50%}
+.sc-l{font-size:10px;font-weight:700;opacity:.75;letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px}
+.sc-v{font-size:40px;font-weight:900;letter-spacing:-2px;line-height:1}
+.sc-v small{font-size:15px;opacity:.6}
+.sc-d{font-size:11px;opacity:.8;margin-top:3px}
+.sc-bar{height:4px;background:rgba(255,255,255,.25);border-radius:2px;margin-top:12px;overflow:hidden}
+.sc-fill{height:100%;background:rgba(255,255,255,.88);border-radius:2px}
+
+/* Signals */
+.sig-list{display:flex;flex-direction:column;gap:7px}
+.sig-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border-radius:var(--r2);border:1px solid var(--br);background:#fff;font-size:12px;transition:all .18s;cursor:default}
+.sig-item:hover{border-color:var(--p);background:var(--px)}
+.sig-ico{font-size:15px;flex-shrink:0;margin-top:1px}
+.sig-text{flex:1;line-height:1.45}
+.sig-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;flex-shrink:0}
+.sig-hot{background:var(--redl);color:var(--red)}
+.sig-ok{background:var(--okl);color:var(--ok)}
+.sig-wa{background:var(--wal);color:var(--wa)}
+
+/* TABS */
+.tab-bar{display:flex;background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:4px;margin-bottom:20px;flex-wrap:wrap;gap:2px}
+.tab{padding:8px 16px;border-radius:var(--r1);font-size:12px;font-weight:700;color:var(--t2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--p)}.tab.on{background:var(--p);color:#fff}
+.panel{display:none}.panel.on{display:block}
+
+/* Company overview */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.ov-block{background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:15px}
+.ov-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px}
+.ov-v{font-size:13px;color:var(--t1);line-height:1.55}
+.desc-block{background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:15px;margin-bottom:12px;grid-column:1/-1}
+
+/* Tech Stack */
+.tech-section{margin-bottom:20px}
+.tech-sec-t{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px}
+.tech-grid{display:flex;flex-wrap:wrap;gap:8px}
+.tech-item{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:var(--r1);border:1.5px solid var(--br);background:#fff;cursor:pointer;transition:all .2s}
+.tech-item:hover{border-color:var(--p);background:var(--px)}
+.tech-item.gap-item{border-color:var(--red);background:var(--redl)}
+.tech-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tech-name{font-size:12px;font-weight:700}
+.tech-cat{font-size:10px;color:var(--t3);margin-left:2px}
+.tech-tooltip{display:none;position:absolute;background:var(--t1);color:#fff;font-size:11px;padding:8px 12px;border-radius:var(--r1);width:220px;line-height:1.5;z-index:99;box-shadow:var(--s3)}
+.tech-item{position:relative}
+.tech-item:hover .tech-tooltip{display:block;top:calc(100% + 6px);left:0}
+
+/* Cómo vender */
+.pitch-hero{background:linear-gradient(135deg,var(--p),var(--pl));border-radius:var(--r3);padding:20px 22px;color:#fff;margin-bottom:16px}
+.ph-l{font-size:10px;font-weight:700;opacity:.75;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.ph-v{font-size:16px;font-weight:800;line-height:1.4}
+.rec-mods{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.rec-mod{display:flex;align-items:center;gap:12px;padding:13px 16px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);transition:all .2s}
+.rec-mod:hover{border-color:var(--p);box-shadow:var(--s1)}
+.rec-mod.pri{border-color:var(--p);background:var(--px)}
+.rm-ico{font-size:22px;flex-shrink:0}
+.rm-body{flex:1}
+.rm-name{font-size:13px;font-weight:800;margin-bottom:2px}
+.rm-why{font-size:12px;color:var(--t2);line-height:1.4}
+.rm-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.rm-pri{background:var(--px);color:var(--p)}
+.rm-sec{background:var(--bg);color:var(--t2);border:1px solid var(--br)}
+.opener-box{background:var(--okl);border-left:3px solid var(--ok);border-radius:0 var(--r2) var(--r2) 0;padding:14px 16px;font-size:13px;color:var(--t1);line-height:1.6;font-style:italic;margin-bottom:12px}
+
+/* Preguntas */
+.q-notice{background:var(--px);border-radius:var(--r2);padding:12px 16px;font-size:13px;color:var(--p);font-weight:600;margin-bottom:16px;line-height:1.5}
+.q-list{display:flex;flex-direction:column;gap:8px}
+.q-item{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px 16px;display:flex;gap:11px;align-items:flex-start;transition:all .2s;cursor:pointer}
+.q-item:hover{border-color:var(--p);box-shadow:var(--s1)}
+.q-num{width:24px;height:24px;border-radius:50%;background:var(--px);color:var(--p);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.q-body{flex:1}
+.q-cat{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:5px}
+.q-text{font-size:13px;color:var(--t1);line-height:1.5}
+.q-copy{opacity:0;font-size:11px;font-weight:700;color:var(--p);cursor:pointer;padding:3px 9px;border-radius:6px;border:1px solid var(--p);flex-shrink:0;transition:opacity .2s}
+.q-item:hover .q-copy{opacity:1}
+
+/* Plan reunión */
+.meeting-plan{display:flex;flex-direction:column;gap:12px}
+.mp-step{background:#fff;border:1px solid var(--br);border-radius:var(--r2);overflow:hidden}
+.mp-head{display:flex;align-items:center;gap:12px;padding:14px 16px}
+.mp-num{width:28px;height:28px;border-radius:50%;background:var(--p);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mp-t{font-size:13px;font-weight:800;flex:1}
+.mp-dur{font-size:11px;color:var(--t2);flex-shrink:0}
+.mp-body{padding:0 16px 14px;font-size:12px;color:var(--t2);line-height:1.6;border-top:1px solid var(--br);padding-top:12px}
+.mp-tip{background:var(--px);border-radius:var(--r1);padding:10px 12px;font-size:12px;color:var(--p);font-weight:600;margin-top:10px;line-height:1.5}
+
+/* Feedback & misc */
+.fb-bar{background:#fff;border-top:1px solid var(--br);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.fb-t{font-size:12px;color:var(--t2)}
+.fb-btns{display:flex;gap:7px}
+.fb-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:var(--r1);border:1.5px solid var(--br);background:#fff;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .2s}
+.fb-btn:hover,.fb-btn.on{border-color:var(--p);background:var(--px);color:var(--p)}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--t1);color:#fff;padding:10px 18px;border-radius:var(--r1);font-size:12px;font-weight:600;z-index:999;transform:translateY(60px);opacity:0;transition:all .28s;box-shadow:var(--s3)}
+.toast.on{transform:translateY(0);opacity:1}
+
+/* ════════════════════════════════
+   RECURSOS TAB
+════════════════════════════════ */
+.res-section{margin-bottom:32px}
+.res-sec-title{font-size:13px;font-weight:800;color:var(--t1);margin-bottom:14px;display:flex;align-items:center;gap:9px;padding-bottom:10px;border-bottom:2px solid var(--br)}
+.res-sec-title .rs-ico{font-size:20px}
+
+/* Slides preview */
+.slides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.slide-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;cursor:default;transition:all .2s}
+.slide-card:hover{border-color:var(--p);box-shadow:var(--s2);transform:translateY(-2px)}
+.slide-thumb{aspect-ratio:16/9;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;position:relative;overflow:hidden}
+.slide-thumb::before{content:'';position:absolute;top:-30px;right:-30px;width:90px;height:90px;background:rgba(255,255,255,.1);border-radius:50%}
+.slide-thumb::after{content:'';position:absolute;bottom:-20px;left:-20px;width:70px;height:70px;background:rgba(255,255,255,.06);border-radius:50%}
+.slide-num{font-size:9px;font-weight:800;color:rgba(255,255,255,.55);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+.slide-title{font-size:12px;font-weight:800;color:#fff;line-height:1.3;position:relative}
+.slide-body{padding:10px 12px}
+.slide-pts{font-size:11px;color:var(--t2);line-height:1.7}
+
+/* Interview script */
+.script-section{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);margin-bottom:8px;overflow:hidden}
+.script-head{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .15s}
+.script-head:hover{background:var(--bg)}
+.sh-ico{font-size:17px;flex-shrink:0}
+.sh-body{flex:1}
+.sh-title{font-size:13px;font-weight:800}
+.sh-dur{font-size:11px;color:var(--t3);margin-top:1px}
+.sh-chev{font-size:10px;color:var(--t3);transition:transform .2s;margin-left:4px}
+.script-section.open .sh-chev{transform:rotate(180deg)}
+.script-content{display:none;padding:14px 16px 16px;border-top:1px solid var(--br)}
+.script-section.open .script-content{display:block}
+.script-line{font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:6px}
+.script-quote{background:var(--px);border-left:3px solid var(--p);border-radius:0 var(--r1) var(--r1) 0;padding:10px 14px;font-size:13px;color:var(--t1);font-style:italic;margin:10px 0;line-height:1.65}
+.script-listen{background:var(--okl);border-radius:var(--r1);padding:9px 13px;font-size:12px;color:#059669;font-weight:600;margin-top:8px;line-height:1.5}
+
+/* ROI Calculator */
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.roi-input-block{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:14px}
+.roi-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--t2);margin-bottom:10px}
+.roi-slider{width:100%;accent-color:var(--p);margin-bottom:6px;cursor:pointer}
+.roi-val{font-size:22px;font-weight:900;color:var(--t1)}
+.roi-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.roi-result{background:linear-gradient(135deg,var(--p),var(--pl));border-radius:var(--r2);padding:16px;color:#fff;text-align:center}
+.roi-rv{font-size:24px;font-weight:900;letter-spacing:-1px}
+.roi-rl{font-size:10px;opacity:.8;margin-top:4px;text-transform:uppercase;letter-spacing:.5px;line-height:1.4}
+.roi-note{background:var(--px);border-radius:var(--r1);padding:10px 14px;font-size:12px;color:var(--p);font-weight:600;line-height:1.55}
+
+/* Battle card table */
+.bc-wrap{overflow-x:auto;border-radius:var(--r2);border:1px solid var(--br)}
+.bc-table{width:100%;border-collapse:collapse;font-size:12px;min-width:560px}
+.bc-table th{background:var(--p);color:#fff;padding:10px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.bc-table th:first-child{background:var(--pd)}
+.bc-table td{padding:10px 14px;border-bottom:1px solid var(--br);background:#fff;vertical-align:middle;line-height:1.4}
+.bc-table tr:last-child td{border-bottom:none}
+.bc-table tr:hover td{background:var(--bg)}
+.bc-win{color:var(--ok);font-weight:700}
+.bc-los{color:var(--red);font-weight:600}
+.bc-neu{color:var(--wa);font-weight:600}
+
+/* Email template */
+.email-box{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden}
+.email-header{background:var(--bg);padding:12px 16px;border-bottom:1px solid var(--br)}
+.email-field{display:flex;gap:8px;font-size:12px;margin-bottom:3px;align-items:flex-start}
+.ef-label{font-weight:700;color:var(--t2);min-width:48px;flex-shrink:0}
+.ef-val{color:var(--t1)}
+.email-body-text{padding:16px;font-size:13px;color:var(--t1);line-height:1.8;white-space:pre-wrap;font-family:inherit}
+
+/* Resource sub-tabs */
+.res-tab-bar{display:flex;background:var(--bg);border:1.5px solid var(--br);border-radius:var(--r2);padding:4px;margin-bottom:20px;gap:3px;flex-wrap:wrap}
+.res-tab{padding:8px 16px;border-radius:var(--r1);font-size:12px;font-weight:700;color:var(--t2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.res-tab:hover{color:var(--p)}.res-tab.on{background:var(--p);color:#fff;box-shadow:0 2px 8px rgba(73,107,227,.25)}
+.res-panel{display:none}.res-panel.on{display:block}
+
+/* Slide modal */
+.slide-modal{display:none;position:fixed;inset:0;background:rgba(8,10,26,.92);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.slide-modal.on{display:flex}
+.slide-modal-wrap{position:relative;width:100%;max-width:880px}
+.slide-close-btn{position:absolute;top:-44px;right:0;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;color:rgba(255,255,255,.85);font-size:12px;font-weight:700;padding:6px 16px;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.slide-close-btn:hover{background:rgba(255,255,255,.22)}
+.slide-counter-label{text-align:center;color:rgba(255,255,255,.4);font-size:11px;font-weight:700;margin-top:11px;letter-spacing:.6px}
+.slide-nav-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px}
+.slide-nav-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);border-radius:8px;color:rgba(255,255,255,.85);font-size:12px;font-weight:700;padding:8px 20px;cursor:pointer;transition:all .2s}
+.slide-nav-btn:hover{background:rgba(255,255,255,.2)}.slide-nav-btn:disabled{opacity:.28;cursor:default;pointer-events:none}
+.slide-preview-box{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 28px 70px rgba(0,0,0,.6);position:relative}
+.sp-inner{width:100%;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif}
+
+/* ══ GAVIN DIRECTIVES ══ */
+/* Stage selector */
+.stage-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);padding:14px;box-shadow:var(--s1)}
+.stage-top{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);margin-bottom:9px;display:flex;align-items:center;justify-content:space-between}
+.stage-pills{display:flex;flex-direction:column;gap:4px}
+.stage-pill{display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:var(--r1);border:1.5px solid var(--br);background:var(--bg);font-size:10px;font-weight:700;color:var(--t2);cursor:pointer;transition:all .18s}
+.stage-pill:hover{border-color:var(--p);color:var(--p)}
+.stage-pill.on{background:var(--p);border-color:var(--p);color:#fff}
+.sp-num{font-size:8px;opacity:.55;margin-left:auto}
+/* Coverage score */
+.cov-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);padding:14px;box-shadow:var(--s1)}
+.cov-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.cov-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t2)}
+.cov-num{font-size:14px;font-weight:900;color:var(--p)}
+.cov-bar{height:5px;background:var(--br);border-radius:3px;overflow:hidden;margin-bottom:9px}
+.cov-fill{height:100%;border-radius:3px}
+.cov-roles{display:flex;flex-direction:column;gap:4px}
+.cov-role{display:flex;align-items:center;gap:7px;font-size:11px}
+.cov-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.cov-rname{flex:1;color:var(--t2)}
+.cov-ok{color:var(--ok);font-size:10px;font-weight:700}
+.cov-miss{color:var(--red);font-size:10px;font-weight:700}
+/* Stakeholder cards */
+.stk-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:18px}
+.stk-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:14px;position:relative;overflow:hidden;transition:box-shadow .2s}
+.stk-card:hover{box-shadow:var(--s2)}
+.stk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stk-champion::before{background:var(--ok)}.stk-dm::before{background:var(--p)}
+.stk-influencer::before{background:var(--wa)}.stk-blocker::before{background:var(--red)}
+.stk-badge{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;display:inline-block}
+.stk-champion .stk-badge{color:var(--ok)}.stk-dm .stk-badge{color:var(--p)}
+.stk-influencer .stk-badge{color:var(--wa)}.stk-blocker .stk-badge{color:var(--red)}
+.stk-role{font-size:13px;font-weight:800;color:var(--t1);margin-bottom:2px}
+.stk-title{font-size:11px;color:var(--t2);margin-bottom:9px}
+.stk-cares{display:flex;flex-direction:column;gap:4px}
+.stk-care{font-size:11px;color:var(--t2);line-height:1.4;display:flex;align-items:flex-start;gap:5px}
+.stk-care::before{content:'→';color:var(--p);font-weight:700;flex-shrink:0}
+.stk-status{position:absolute;top:9px;right:9px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px}
+.stk-present{background:var(--okl);color:var(--ok)}
+.stk-absent{background:var(--wal);color:var(--wa)}
+.stk-alert{background:var(--wal);border:1.5px solid #fcd34d;border-radius:var(--r2);padding:11px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--t1);line-height:1.5}
+/* Role filter */
+.role-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.rpill{padding:5px 13px;border-radius:20px;border:1.5px solid var(--br);background:#fff;font-size:11px;font-weight:700;color:var(--t2);cursor:pointer;transition:all .18s}
+.rpill:hover{border-color:var(--p);color:var(--p)}
+.rpill.on{background:var(--p);border-color:var(--p);color:#fff}
+.q-item.rh{border-left:3px solid #496BE3}.q-item.ro{border-left:3px solid #f59e0b}
+.q-item.ri{border-left:3px solid #8b5cf6}.q-item.re{border-left:3px solid #10b981}
+/* Deal strategy */
+.deal-stage-box{background:linear-gradient(135deg,var(--p),var(--pl));border-radius:var(--r2);padding:15px 18px;color:#fff;margin-bottom:15px}
+.dsb-stage{font-size:9px;font-weight:800;opacity:.6;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.dsb-goal{font-size:15px;font-weight:800;line-height:1.35}
+.dsb-desc{font-size:11px;opacity:.75;margin-top:5px;line-height:1.55}
+.risk-list{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.risk-item{border-radius:var(--r2);padding:10px 13px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t1);line-height:1.5}
+.risk-warn{background:var(--wal);border:1.5px solid #fcd34d}
+.risk-crit{background:var(--redl);border:1.5px solid #fca5a5}
+.ri-ico{font-size:14px;flex-shrink:0;margin-top:1px}
+.next-list{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.next-item{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);cursor:pointer;transition:all .18s}
+.next-item:hover{border-color:var(--ok);background:var(--okl)}
+.next-item.done{opacity:.45}
+.ni-box{width:16px;height:16px;border-radius:4px;border:2px solid var(--br);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .2s}
+.next-item:hover .ni-box{border-color:var(--ok);color:var(--ok)}
+.next-item.done .ni-box{border-color:var(--ok);background:var(--ok);color:#fff}
+.ni-txt{font-size:12px;color:var(--t1);line-height:1.5}
+.uc-list{display:flex;flex-direction:column;gap:9px}
+.uc-item{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:13px 15px;display:flex;gap:11px;align-items:flex-start;transition:all .18s}
+.uc-item:hover{border-color:var(--p);box-shadow:var(--s1)}
+.uc-ico{width:38px;height:38px;border-radius:var(--r1);background:var(--p);color:#fff;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.uc-company{font-size:13px;font-weight:800;margin-bottom:1px}
+.uc-ind{font-size:11px;color:var(--t2);margin-bottom:5px}
+.uc-case{font-size:12px;color:var(--t1);line-height:1.5;margin-bottom:5px}
+.uc-result{font-size:10px;font-weight:700;color:var(--ok);background:var(--okl);padding:2px 8px;border-radius:10px;display:inline-block}
+
+</style>
+</head>
+<body>
+
+<!-- ══ SCREEN 1: SEARCH ══ -->
+<div class="scr on" id="s1">
+  <nav>
+    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="nav-r">
+      <button class="btn b-g" style="font-size:12px" onclick="toast('Mis análisis (próximamente)')">Mis análisis</button>
+      <div class="av">ET</div>
+    </div>
+  </nav>
+  <div class="body">
+    <div class="search-wrap">
+      <div class="search-eyebrow"><span class="dot-live"></span>Inteligencia en tiempo real</div>
+      <h1 class="search-title">¿Con qué empresa<br>tenés reunión? <span>Investigala.</span></h1>
+      <p class="search-sub">Ingresá el nombre o la web de la empresa y te decimos todo lo que necesitás saber antes de entrar a la llamada: qué hacen, qué herramientas usan, cómo posicionar Humand y qué preguntar.</p>
+      <div class="search-box">
+        <label class="search-label">Empresa o URL del sitio web</label>
+        <div class="search-row">
+          <input class="search-input" id="main-input" placeholder="ej. Pedidos Ya · google.com · Andreani · acme-corp.com" onkeydown="if(event.key==='Enter')analyze()" />
+          <button class="btn b-p btn-lg" onclick="analyze()">Investigar →</button>
+        </div>
+        <div class="search-divider">o elegí un ejemplo</div>
+        <div class="chips">
+          <span class="chip" onclick="fillAndGo('Pedidos Ya')">🛵 Pedidos Ya</span>
+          <span class="chip" onclick="fillAndGo('Andreani')">📦 Andreani</span>
+          <span class="chip" onclick="fillAndGo('Farmacity')">💊 Farmacity</span>
+          <span class="chip" onclick="fillAndGo('Cervecería y Maltería Quilmes')">🍺 Quilmes</span>
+          <span class="chip" onclick="fillAndGo('Clínica Suizo Argentina')">🏥 Clínica Suizo</span>
+        </div>
+      </div>
+      <div class="recent-block">
+        <div class="recent-label">Análisis recientes</div>
+        <div class="recent-list">
+          <div class="recent-item" onclick="fillAndGo('Pedidos Ya')">
+            <div class="ri-logo" style="background:linear-gradient(135deg,#e11d48,#f43f5e)">PY</div>
+            <div><div class="ri-name">Pedidos Ya</div><div class="ri-meta">Delivery · 5.000+ empleados · Hace 2h</div></div>
+            <div class="ri-score">91</div>
+          </div>
+          <div class="recent-item" onclick="fillAndGo('Farmacity')">
+            <div class="ri-logo" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">FC</div>
+            <div><div class="ri-name">Farmacity</div><div class="ri-meta">Retail Salud · 3.500 empleados · Ayer</div></div>
+            <div class="ri-score">78</div>
+          </div>
+          <div class="recent-item" onclick="fillAndGo('Andreani')">
+            <div class="ri-logo" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6)">AN</div>
+            <div><div class="ri-name">Andreani</div><div class="ri-meta">Logística · 8.000 empleados · Hace 3 días</div></div>
+            <div class="ri-score">85</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 2: PROCESSING ══ -->
+<div class="scr" id="s2">
+  <nav>
+    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="nav-r"><div class="av">ET</div></div>
+  </nav>
+  <div class="body">
+    <div class="proc-wrap">
+      <div class="orbit">
+        <div class="or or1"><div class="od"></div></div>
+        <div class="or or2"><div class="od od2"></div></div>
+        <div class="oc">🔍</div>
+      </div>
+      <h2 class="proc-title">Investigando empresa</h2>
+      <p class="proc-url" id="proc-target"></p>
+      <div class="proc-steps" id="proc-steps"></div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 3: RESULTS ══ -->
+<div class="scr" id="s3">
+  <nav>
+    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="nav-r">
+      <button class="btn b-g" onclick="goHome()">← Nueva búsqueda</button>
+      <button class="btn b-g" onclick="toast('Copiando brief...');copyBrief()">📋 Copiar brief</button>
+      <button class="btn b-p" onclick="toast('Brief guardado ✓')">💾 Guardar</button>
+      <div class="av">ET</div>
+    </div>
+  </nav>
+  <div class="body">
+    <div class="side">
+      <div class="co-card" id="co-card"></div>
+      <div class="score-card" id="score-card"></div>
+      <div class="co-card" id="signals-card"></div>
+      <div class="stage-card" id="stage-card"></div>
+      <div class="cov-card" id="cov-card"></div>
+    </div>
+    <div class="res-main">
+      <div class="tab-bar">
+        <div class="tab on"  onclick="swTab('overview',this)">🏢 Empresa</div>
+        <div class="tab"     onclick="swTab('tech',this)">🔧 Tech Stack</div>
+        <div class="tab"     onclick="swTab('pitch',this)">🎯 Cómo vender</div>
+        <div class="tab"     onclick="swTab('questions',this)">💬 Preguntas clave</div>
+        <div class="tab"     onclick="swTab('stakeholders',this)">🗺️ Stakeholders</div>
+        <div class="tab"     onclick="swTab('dealstrat',this)">⚡ Deal Strategy</div>
+        <div class="tab"     onclick="swTab('meeting',this)">📋 Plan de reunión</div>
+        <div class="tab"     onclick="swTab('recursos',this)">📁 Recursos</div>
+      </div>
+      <div class="panel on" id="panel-overview"></div>
+      <div class="panel"    id="panel-tech"></div>
+      <div class="panel"    id="panel-pitch"></div>
+      <div class="panel"    id="panel-questions"></div>
+      <div class="panel"    id="panel-stakeholders"></div>
+      <div class="panel"    id="panel-dealstrat"></div>
+      <div class="panel"    id="panel-meeting"></div>
+      <div class="panel"    id="panel-recursos"></div>
+    </div>
+  </div>
+  <div class="fb-bar">
+    <span class="fb-t">¿Qué tan útil fue este análisis para tu reunión?</span>
+    <div class="fb-btns">
+      <button class="fb-btn" onclick="this.classList.toggle('on');toast('¡Gracias por tu feedback! 🙏')">👍 Muy útil</button>
+      <button class="fb-btn" onclick="this.classList.toggle('on');toast('Feedback registrado. Lo mejoramos.')">👎 Mejorable</button>
+      <button class="fb-btn" onclick="toast('Abriendo formulario de feedback...')">💬 Comentar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"><span id="tmsg"></span></div>
+
+<!-- SLIDE MODAL -->
+<div class="slide-modal" id="slide-modal" onclick="if(event.target===this)closeSlide()">
+  <div class="slide-modal-wrap">
+    <button class="slide-close-btn" onclick="closeSlide()">✕ Cerrar</button>
+    <div class="slide-preview-box" id="slide-preview-box"></div>
+    <div class="slide-counter-label" id="slide-counter-label"></div>
+    <div class="slide-nav-row">
+      <button class="slide-nav-btn" id="slide-prev" onclick="navSlide(-1)">← Anterior</button>
+      <button class="slide-nav-btn" id="slide-next" onclick="navSlide(1)">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// COMPANY DATABASE — perfiles pre-cargados
+// ═══════════════════════════════════════════
+const DB = {
+  'pedidos ya': {
+    name:'Pedidos Ya', initials:'PY', color:'linear-gradient(135deg,#e11d48,#f43f5e)',
+    industry:'Delivery & Marketplace', country:'🇦🇷 Argentina / LatAm', website:'pedidosya.com',
+    employees:'5.000+', type:'Frontline / Field', founded:'2010', stage:'Empresa pública (Delivery Hero)',
+    score:91, scoreLabel:'Fit muy alto · Acción urgente',
+    desc:'PedidosYa es la plataforma líder de delivery en América Latina, operando en 15 países. Su fuerza laboral está compuesta mayoritariamente por cadetes/repartidores, personal de soporte y equipos de operaciones en campo. La comunicación interna con equipos distribuidos y móviles es uno de sus mayores desafíos.',
+    tags:['Delivery','LatAm','Mobile-first','Frontline','Escala'],
+    mets:[{v:'15 países',l:'Presencia'},{v:'5.000+',l:'Empleados'},{v:'Frontline',l:'Workforce'},{v:'Alta',l:'Rotación'}],
+    tech:[
+      {name:'Slack',cat:'Comunicación interna',color:'#4A154B',conf:90,status:'usa',tooltip:'Confirmado en ofertas laborales. Lo usa el equipo de oficina, NO llega a repartidores.'},
+      {name:'Google Workspace',cat:'Productividad',color:'#4285F4',conf:95,status:'usa',tooltip:'Suite principal para equipos de HQ. No aplica a empleados de campo.'},
+      {name:'Workday',cat:'HRIS',color:'#F76908',conf:70,status:'usa',tooltip:'Probablemente para nómina y datos centrales. No tiene comunicaciones ni engagement.'},
+      {name:'WhatsApp / grupos',cat:'Comunicación de campo',color:'#25D366',conf:99,status:'gap',tooltip:'Gap crítico: los repartidores se coordinan por WhatsApp. Sin registro, sin seguridad, sin escalabilidad.'},
+      {name:'Excel / Sheets',cat:'HR Ops',color:'#217346',conf:85,status:'gap',tooltip:'Gestión de turnos y ausencias aún manual. Humand Work Shifts lo reemplaza.'},
+    ],
+    signals:[
+      {ico:'🔴',text:'Coordinación de campo por WhatsApp — sin registro oficial ni trazabilidad',badge:'Hot',cls:'sig-hot'},
+      {ico:'🟡',text:'Alta rotación de repartidores → onboarding masivo y continuo',badge:'Urgente',cls:'sig-wa'},
+      {ico:'🟢',text:'Expansión a nuevos mercados → necesitan escalar procesos de HR',badge:'Oportunidad',cls:'sig-ok'},
+      {ico:'🔴',text:'Comunicación de seguridad a campo no estandarizada',badge:'Hot',cls:'sig-hot'},
+    ],
+    primaryModule:'📣 Communications & Social Feed',
+    primaryWhy:'Sus repartidores y personal de campo no reciben comunicaciones oficiales de forma estructurada. Hoy dependen de grupos de WhatsApp sin trazabilidad.',
+    secondaryModules:[
+      {ico:'🔄',name:'Work Shifts',why:'Gestión de turnos de cadetes y personal de operaciones todavía manual'},
+      {ico:'📋',name:'Forms & Workflows',why:'Onboarding y offboarding masivo de repartidores debe digitizarse'},
+      {ico:'🤖',name:'Sammy AI',why:'Alto volumen de consultas repetitivas de empleados a HR (vacaciones, pagos, etc.)'},
+    ],
+    opener:'Sabemos que coordinar miles de repartidores en 15 países con Slack y WhatsApp tiene un límite. ¿Cómo garantizan hoy que un mensaje importante — un cambio de política, una alerta de seguridad — llegue efectivamente a un cadete que está en ruta?',
+    questions:[
+      {cat:'Operativo',catCls:'style="background:var(--redl);color:var(--red)"',text:'"¿Cómo se comunican los cambios operativos a los repartidores hoy? ¿Qué pasa si un cadete no vio el mensaje?"'},
+      {cat:'HR',catCls:'style="background:var(--px);color:var(--p)"',text:'"Con tantos ingresos y egresos de repartidores, ¿cuánto tarda el proceso de onboarding de punta a punta? ¿Es consistente en todos los países?"'},
+      {cat:'Tecnología',catCls:'style="background:var(--pul);color:var(--pu)"',text:'"¿Tienen alguna app o herramienta que usen los repartidores en el día a día para algo más que las entregas?"'},
+      {cat:'Decisión',catCls:'style="background:var(--okl);color:var(--ok)"',text:'"¿Quién más debería estar en esta conversación — el equipo de Operaciones, de IT?"'},
+      {cat:'Urgencia',catCls:'style="background:var(--wal);color:var(--wa)"',text:'"¿Están evaluando otras herramientas para este problema o recién están empezando a explorarlo?"'},
+    ],
+    meeting:[
+      {step:1,title:'Apertura (contexto que ya sabés)',dur:'2 min',body:'Mostrá que hiciste la tarea: "Veo que tienen operaciones en 15 países con miles de repartidores. El mayor desafío que vemos en empresas similares es la comunicación con empleados de campo que no están frente a una computadora." Eso abre la conversación sin pedir info básica.',tip:'No preguntes "¿a qué se dedica su empresa?" — ya sabés. Eso genera confianza inmediatamente.'},
+      {step:2,title:'Validar el dolor específico',dur:'8 min',body:'Pregunta 1 y 2 del banco de preguntas. Buscá que te cuenten el problema con sus propias palabras. Escuchá cada proceso manual que mencionen.',tip:'La clave es cuantificar: "¿Cuántos repartidores ingresan por mes? ¿Cuántas horas le lleva eso al equipo de HR?"'},
+      {step:3,title:'Demo: Communications + Work Shifts',dur:'12 min',body:'Mostrá primero el feed móvil de un repartidor recibiendo un comunicado de seguridad. Luego la gestión de turnos. Terminar con Sammy AI respondiendo una consulta de vacaciones.',tip:'Decí: "Esto es lo que vería un cadete tuyo desde el celular, sin necesidad de instalar nada ni tener mail corporativo."'},
+      {step:4,title:'ROI y caso similar',dur:'5 min',body:'Mencioná que otras plataformas de delivery similares redujeron el tiempo de onboarding un 60% y bajaron las consultas repetitivas a HR en un 40%. Ofrecé pasar el caso de uso.',tip:'Si tienen Workday o algún HRIS, aclará que Humand no lo reemplaza — se integra y agrega la capa de comunicación y engagement que Workday no tiene.'},
+      {step:5,title:'Cierre y próximo paso',dur:'3 min',body:'Proponer un piloto con un equipo / país específico. "¿Qué les parece arrancar con Argentina y los próximos 500 repartidores? En 3 semanas lo tienen live."',tip:'Salir siempre con una fecha de próxima reunión agendada. El "les mandamos info" es la muerte del deal.'},
+    ],
+    stakeholders:[
+      {role:'HR / People Ops',title:'Head of People Operations',type:'champion',cares:['Comunicación con repartidores','Onboarding masivo y continuo','Reducción de rotación'],present:true},
+      {role:'CHRO / VP People',title:'Chief People Officer',type:'dm',cares:['Transformación digital de HR','Costo operativo de rotación','Expansión de People Ops a nuevos países'],present:false},
+      {role:'Head of Operations',title:'VP Operations LatAm',type:'influencer',cares:['Coordinación de campo en tiempo real','Velocidad de respuesta en incidentes','Eficiencia operativa multi-país'],present:true},
+      {role:'IT / Engineering',title:'Head of Engineering / IT',type:'influencer',cares:['Integración con Workday y Google Workspace','Gobernanza de datos de empleados','Seguridad de acceso móvil'],present:false},
+    ],
+    roleQuestions:{
+      hr:['"¿Cuántos repartidores ingresan por mes? ¿Cuántas horas toma el onboarding de punta a punta?"','"¿Qué procesos de HR siguen siendo manuales para los empleados de campo?"','"¿Cómo miden el engagement o la satisfacción de los repartidores?"'],
+      ops:['"¿Cómo comunican un cambio de procedimiento o alerta de seguridad a un repartidor que está en ruta?"','"¿Qué pasa si un repartidor no leyó el mensaje? ¿Cómo lo verifican?"','"¿Tienen visibilidad en tiempo real de la disponibilidad de sus cadetes por país?"'],
+      it:['"¿Qué sistemas tendría que integrarse con la herramienta — Workday, Google Workspace, algún otro?"','"¿Hay requerimientos de seguridad o governance para apps que accedan datos de empleados?"','"¿Los repartidores usan dispositivos corporativos o propios para trabajar?"'],
+      exec:['"¿Están evaluando consolidar la experiencia del empleado en LatAm en una sola plataforma?"','"¿Cuál es el impacto financiero estimado de la rotación actual de repartidores por país?"','"¿Hay algún objetivo de digitalización de People Ops en el roadmap de este año?"'],
+    },
+    dealRisks:[
+      {lvl:'crit',txt:'El DM (CHRO/VP People) no está confirmado en la reunión — el deal puede estancarse si no se involucra antes del cierre'},
+      {lvl:'warn',txt:'IT necesita aprobar la integración con Workday — no incluirlos hoy puede generar una revisión técnica tardía'},
+      {lvl:'warn',txt:'Empresa pública (Delivery Hero) → proceso de procurement puede ser largo — mapear desde el día 1'},
+      {lvl:'warn',txt:'Alta rotación de repartidores puede ser la urgencia real — cuantificá el costo mensual para el caso de negocio'},
+    ],
+    nextActions:[
+      'Conseguir el nombre del CHRO o VP People e invitarlo a la próxima reunión',
+      'Solicitar una sesión técnica con IT para evaluar integración con Workday y Google Workspace',
+      'Proponer piloto acotado: Argentina + 500 repartidores — scope reducido para avanzar rápido',
+      'Pedir un caso de referencia de empresa similar (delivery / field workers) para compartir internamente',
+      'Confirmar si hay proceso de procurement formal con Delivery Hero o si lo maneja el equipo local',
+    ],
+    similarCases:[
+      {ico:'🛵',company:'Empresa de delivery LatAm',industry:'Delivery / Marketplace',useCase:'Reemplazó grupos de WhatsApp por Communications + Work Shifts para 4.200 repartidores',result:'-65% tiempo de comunicación · 82% adopción en 30 días'},
+      {ico:'🚚',company:'Empresa de logística AR',industry:'Logística / Transporte',useCase:'Onboarding digital de 800 operarios/mes con Forms & Workflows + Sammy AI',result:'Onboarding 3× más rápido · -40% consultas repetitivas a HR'},
+    ],
+  },
+  'andreani': {
+    name:'Andreani', initials:'AN', color:'linear-gradient(135deg,#7c3aed,#8b5cf6)',
+    industry:'Logística & Transporte', country:'🇦🇷 Argentina', website:'andreani.com',
+    employees:'8.000+', type:'Frontline / Warehouse', founded:'1945', stage:'Empresa privada (líder del sector)',
+    score:85, scoreLabel:'Fit muy alto · Perfil ideal de Humand',
+    desc:'Andreani es una de las empresas de logística más grandes de Argentina, con miles de operadores de depósito, choferes y personal de campo distribuidos en todo el país. Sus operaciones son 24/7 y dependen críticamente de la comunicación entre turnos y la coordinación entre depósitos.',
+    tags:['Logística','Frontline','Turnos','Depósitos','24/7'],
+    mets:[{v:'8.000+',l:'Empleados'},{v:'Todo AR',l:'Cobertura'},{v:'24/7',l:'Operación'},{v:'Alta',l:'Complejidad'}],
+    tech:[
+      {name:'Microsoft Teams',cat:'Comunicación',color:'#6264A7',conf:80,status:'usa',tooltip:'Usado por equipos de oficina. Los operadores de depósito y choferes no lo usan.'},
+      {name:'SAP HR',cat:'HRIS / Nómina',color:'#0FAAFF',conf:75,status:'usa',tooltip:'Sistema de nómina y datos de empleados. No tiene módulo de comunicación ni engagement.'},
+      {name:'WhatsApp grupos',cat:'Coordinación de campo',color:'#25D366',conf:99,status:'gap',tooltip:'Coordinación entre depósitos y con choferes. Informal, sin trazabilidad, riesgo de compliance.'},
+      {name:'Excel / papel',cat:'Turnos y HR Ops',color:'#217346',conf:90,status:'gap',tooltip:'Gestión de turnos y ausencias todavía en planillas o cuadernos físicos en algunos depósitos.'},
+      {name:'Email',cat:'Comunicación interna',color:'#EA4335',conf:70,status:'gap',tooltip:'Para comunicar a empleados de campo que no tienen email corporativo o no lo revisan.'},
+    ],
+    signals:[
+      {ico:'🔴',text:'Coordinación entre depósitos y choferes por WhatsApp — sin trazabilidad',badge:'Hot',cls:'sig-hot'},
+      {ico:'🟡',text:'Gestión de turnos manual en algunos depósitos',badge:'Urgente',cls:'sig-wa'},
+      {ico:'🟢',text:'Empresa centenaria en proceso de digitalización',badge:'Oportunidad',cls:'sig-ok'},
+      {ico:'🟡',text:'Alta rotación estacional — onboarding masivo en picos',badge:'Urgente',cls:'sig-wa'},
+    ],
+    primaryModule:'📣 Communications & Social Feed',
+    primaryWhy:'Miles de choferes y operadores de depósito no reciben comunicaciones oficiales. Teams llega a los de oficina, pero no al 80% de la fuerza laboral real.',
+    secondaryModules:[
+      {ico:'🔄',name:'Work Shifts',why:'Gestión de turnos 24/7 en múltiples depósitos todavía manual'},
+      {ico:'📋',name:'Forms & Workflows',why:'Solicitudes de HR, reportes de incidentes y procesos operativos sin digitalizar'},
+      {ico:'🤖',name:'Sammy AI',why:'Volumen alto de consultas repetitivas de operadores a HR'},
+    ],
+    opener:'Andreani tiene el desafío clásico de las grandes empresas de logística: Teams llega al equipo de oficina, pero los operadores y choferes — que son el 80% del negocio — quedan fuera de las comunicaciones oficiales. ¿Cómo resuelven eso hoy?',
+    questions:[
+      {cat:'Operativo',catCls:'style="background:var(--redl);color:var(--red)"',text:'"¿Cómo comunican los cambios de procedimiento o alertas de seguridad a los choferes que están en ruta o a los operadores del turno noche?"'},
+      {cat:'HR',catCls:'style="background:var(--px);color:var(--p)"',text:'"¿Cómo es el proceso de gestión de turnos en los depósitos hoy? ¿Digital o todavía hay algo manual?"'},
+      {cat:'Tecnología',catCls:'style="background:var(--pul);color:var(--pu)"',text:'"¿Qué sistemas tienen integrados con SAP? ¿Hay algo para engagement o comunicación con empleados de campo?"'},
+      {cat:'Decisión',catCls:'style="background:var(--okl);color:var(--ok)"',text:'"¿El equipo de Operaciones también participaría en esta evaluación o es principalmente una decisión de HR?"'},
+      {cat:'Urgencia',catCls:'style="background:var(--wal);color:var(--wa)"',text:'"¿Tienen algún proyecto en curso de digitalización de operaciones donde esto podría encajar?"'},
+    ],
+    meeting:[
+      {step:1,title:'Apertura con contexto',dur:'2 min',body:'Mencioná que sabés que operan 24/7 con personal en múltiples depósitos. "El desafío que vemos más seguido en logística es que Teams llega a la gente de oficina, pero los operadores y choferes quedan fuera del loop de comunicación oficial."',tip:'Esto posiciona que entendés su mundo sin que tengan que explicarlo.'},
+      {step:2,title:'Validar el gap de comunicación',dur:'8 min',body:'Preguntas 1 y 2. Buscá que cuenten cómo coordinan hoy entre depósitos y con choferes. Cada "WhatsApp" o "el supervisor avisa" que mencionen es un gap de Humand.',tip:'Preguntá: "¿Qué pasa si un chofer no leyó el mensaje? ¿Cómo lo verifican?"'},
+      {step:3,title:'Demo: Communications + Work Shifts',dur:'12 min',body:'Mostrá el feed de un operador de depósito recibiendo comunicados segmentados por turno. Luego la gestión digital de turnos. SAP puede seguir siendo el sistema de nómina — Humand es la capa de experiencia del empleado.',tip:'Aclará que la integración con SAP es nativa. Eso quita el miedo del equipo de IT.'},
+      {step:4,title:'Caso de referencia',dur:'4 min',body:'Compartí el caso de otra empresa de logística argentina que implementó Humand. Focuseate en reducción de tiempo de comunicación de incidentes y adopción móvil.',tip:'"¿Le gustaría hablar directamente con el responsable de People de esa empresa?"'},
+      {step:5,title:'Propuesta de piloto',dur:'4 min',body:'Proponer arrancar con 1-2 depósitos y un sector de choferes. "En 3 semanas lo tienen andando y a los 60 días tienen los datos para decidir el rollout."',tip:'Antes de terminar: "¿Con quién más debería hablar de IT y Operaciones para que estén todos alineados?"'},
+    ],
+    stakeholders:[
+      {role:'HR / People Ops',title:'Gerente de People / HR Operations',type:'champion',cares:['Comunicación con operadores de depósito','Gestión digital de turnos','Onboarding de personal estacional'],present:true},
+      {role:'Director de RRHH',title:'Director de Recursos Humanos',type:'dm',cares:['Transformación digital de HR','Compliance laboral','Costos de rotación y ausentismo'],present:true},
+      {role:'Director de Operaciones',title:'Director de Operaciones Argentina',type:'influencer',cares:['Coordinación entre depósitos','Comunicación de incidentes en tiempo real','Eficiencia operativa 24/7'],present:false},
+      {role:'IT / SAP Admin',title:'Jefe de IT / SAP Admin',type:'influencer',cares:['Integración con SAP HR','Gobernanza de datos','Seguridad de acceso de empleados'],present:false},
+    ],
+    roleQuestions:{
+      hr:['"¿Cómo gestionan los turnos en los depósitos hoy — hay algo digital o es planilla/papel?"','"¿Qué tan consistente es el proceso de onboarding entre los distintos depósitos del país?"','"¿Cuántas horas semanales destina HR a consultas repetitivas de operadores?"'],
+      ops:['"¿Cómo comunican un cambio de procedimiento o una alerta de seguridad a los operadores del turno noche?"','"¿Tienen visibilidad de quién está disponible en cada depósito en tiempo real?"','"¿Qué proceso demora más la operación cuando algo sale mal?"'],
+      it:['"¿Qué nivel de integración tiene SAP con otras herramientas de gestión de personas?"','"¿Hay políticas de BYOD o los operadores no tienen dispositivos corporativos?"','"¿Qué requerimientos de seguridad tienen para una app que gestione datos de empleados?"'],
+      exec:['"¿Cuál es el impacto del ausentismo o la rotación en la capacidad operativa de los depósitos?"','"¿Tienen algún objetivo de digitalización de operaciones en el plan anual?"','"¿Están evaluando consolidar las herramientas de HR y comunicación interna en una sola plataforma?"'],
+    },
+    dealRisks:[
+      {lvl:'warn',txt:'El Director de Operaciones no está en la reunión — sin su apoyo el deal puede quedarse solo en HR sin impacto en el negocio'},
+      {lvl:'crit',txt:'IT necesita evaluar integración con SAP — si no se los involucra hoy, pueden bloquear el proyecto en fase de procurement'},
+      {lvl:'warn',txt:'Empresa con 80 años de historia — decisiones de tecnología tienden a ser conservadoras. Necesitás un caso de referencia sólido del sector'},
+      {lvl:'warn',txt:'Alta rotación estacional: cuantificar costo de los picos de onboarding para construir urgencia real'},
+    ],
+    nextActions:[
+      'Involucrar al Director de Operaciones en la próxima reunión — el caso de negocio es más fuerte con Ops en la sala',
+      'Agendar sesión técnica con IT para evaluar integración con SAP HR',
+      'Traer caso de referencia de empresa de logística argentina o regional',
+      'Proponer piloto en 2-3 depósitos clave de distintas regiones',
+      'Cuantificar el costo del onboarding estacional con sus datos reales',
+    ],
+    similarCases:[
+      {ico:'📦',company:'Empresa de logística AR',industry:'Logística / Depósitos',useCase:'Communications + Work Shifts para 3.000 operadores en 12 depósitos — reemplazó WhatsApp y planillas',result:'-50% tiempo de comunicación de incidentes · 91% adopción en 45 días'},
+      {ico:'🚛',company:'Distribuidora nacional',industry:'Distribución / Transporte',useCase:'Onboarding digital + Sammy AI para picos de 400 ingresos/mes',result:'Onboarding de 5 días → 1.5 días · -55% consultas a HR'},
+    ],
+  },
+  'farmacity': {
+    name:'Farmacity', initials:'FC', color:'linear-gradient(135deg,#0891b2,#06b6d4)',
+    industry:'Retail de Salud / Farmacias', country:'🇦🇷 Argentina', website:'farmacity.com',
+    employees:'3.500+', type:'Retail / Frontline', founded:'1997', stage:'Empresa privada (Grupo Pegasus)',
+    score:78, scoreLabel:'Fit alto · Sector retail con frontline',
+    desc:'Farmacity es la cadena de farmacias más grande de Argentina con más de 300 puntos de venta. Su fuerza laboral está compuesta principalmente por farmacéuticos, repositores y personal de atención al cliente distribuidos en todas las sucursales. La comunicación con tiendas y el onboarding masivo son sus principales desafíos operativos.',
+    tags:['Retail','Farmacias','Frontline','300+ tiendas','Salud'],
+    mets:[{v:'300+',l:'Sucursales'},{v:'3.500+',l:'Empleados'},{v:'Retail',l:'Sector'},{v:'Alta',l:'Rotación'}],
+    tech:[
+      {name:'Microsoft Teams',cat:'Comunicación',color:'#6264A7',conf:70,status:'usa',tooltip:'Probablemente para HQ y gerencias. No llega a cajeros ni farmacéuticos en tienda.'},
+      {name:'Email',cat:'Comunicación a tiendas',color:'#EA4335',conf:80,status:'gap',tooltip:'Las novedades llegan al gerente de tienda por email. El personal no las ve directamente.'},
+      {name:'WhatsApp grupos',cat:'Coordinación de tienda',color:'#25D366',conf:95,status:'gap',tooltip:'Comunicación interna de tienda por grupos de WhatsApp. Sin registro, sin governance.'},
+      {name:'Sistema de nómina (SAP o similar)',cat:'HRIS',color:'#0FAAFF',conf:65,status:'usa',tooltip:'Probable para nómina. No incluye comunicaciones ni engagement.'},
+      {name:'Papel / planilla',cat:'Gestión de turnos',color:'#217346',conf:80,status:'gap',tooltip:'Turnos de cajeros y farmacéuticos gestionados manualmente en cada sucursal.'},
+    ],
+    signals:[
+      {ico:'🟡',text:'Comunicación a 300+ sucursales depende del gerente de tienda',badge:'Urgente',cls:'sig-wa'},
+      {ico:'🔴',text:'Onboarding masivo — alta rotación estacional y permanente',badge:'Hot',cls:'sig-hot'},
+      {ico:'🟢',text:'Expansión de sucursales en curso',badge:'Oportunidad',cls:'sig-ok'},
+      {ico:'🟡',text:'Farmacéuticos sin herramientas digitales de HR',badge:'Gap',cls:'sig-wa'},
+    ],
+    primaryModule:'📣 Communications & Social Feed',
+    primaryWhy:'Los comunicados de HQ llegan al gerente de tienda y de ahí no hay garantía de que bajen al equipo. Humand da un canal directo a cada empleado de cada sucursal.',
+    secondaryModules:[
+      {ico:'❤️',name:'Recognition & Culture',why:'Alta rotación se combate con engagement. Reconocimiento visible entre pares y gerencia.'},
+      {ico:'📋',name:'Forms & Workflows',why:'Onboarding masivo de personal de tienda todavía manual o inconsistente entre sucursales'},
+      {ico:'🔄',name:'Work Shifts',why:'Turnos en 300+ sucursales gestionados localmente sin sistema centralizado'},
+    ],
+    opener:'En una cadena como Farmacity, el desafío más común es que el comunicado sale de casa central, llega al gerente de tienda por email, y de ahí nadie puede garantizar que el farmacéutico o el cajero lo vio. ¿Cómo resuelven esa última milla de comunicación hoy?',
+    questions:[
+      {cat:'Comunicación',catCls:'style="background:var(--redl);color:var(--red)"',text:'"Cuando hay un cambio de política, una promoción nueva o una alerta sanitaria, ¿cómo se aseguran que llegó a todos los empleados de todas las sucursales?"'},
+      {cat:'HR',catCls:'style="background:var(--px);color:var(--p)"',text:'"¿Cómo es el proceso de incorporación de personal nuevo en una sucursal? ¿Cuánto tarda desde que entra hasta que está operativo?"'},
+      {cat:'Retención',catCls:'style="background:var(--wal);color:var(--wa)"',text:'"La rotación en retail de salud suele ser alta — ¿tienen alguna iniciativa activa de engagement o reconocimiento para retener al equipo?"'},
+      {cat:'Decisión',catCls:'style="background:var(--okl);color:var(--ok)"',text:'"¿Esta decisión pasaría solo por HR o los directores de operaciones de zona también estarían involucrados?"'},
+    ],
+    meeting:[
+      {step:1,title:'Apertura',dur:'2 min',body:'Mencioná que conocen el modelo de 300+ sucursales y el desafío de la última milla de comunicación. Eso genera confianza de que entendés retail.',tip:''},
+      {step:2,title:'Validar el gap',dur:'8 min',body:'Preguntas 1 y 2. Buscá el momento en que admiten que no pueden garantizar que un mensaje llegó a todos.',tip:'Si dicen "el gerente de tienda se encarga" — ahí está el gap. ¿Y si el gerente no lo baja?'},
+      {step:3,title:'Demo: Communications + Recognition',dur:'12 min',body:'Primero el feed de empleado en tienda recibiendo un comunicado segmentado. Luego el módulo de reconocimiento — perfecto para retail con alta rotación.',tip:''},
+      {step:4,title:'Cierre',dur:'5 min',body:'Proponer piloto en 10-15 sucursales de una zona. Resultados medibles en 60 días.',tip:''},
+    ],
+    stakeholders:[
+      {role:'HR / People',title:'Jefa de Gestión de Personas',type:'champion',cares:['Comunicación a 300+ sucursales','Onboarding masivo de personal de tienda','Reducción de rotación en retail'],present:true},
+      {role:'Directora de RRHH',title:'Directora de Recursos Humanos',type:'dm',cares:['Transformación digital de HR','Experiencia del empleado','Compliance laboral en retail'],present:false},
+      {role:'Director de Operaciones Retail',title:'Director de Operaciones',type:'influencer',cares:['Comunicación de novedades a tiendas','Cumplimiento de procesos en sucursales','Cobertura de turnos'],present:false},
+      {role:'IT / Sistemas',title:'Jefe de IT / Sistemas',type:'influencer',cares:['Integración con sistema de nómina','Seguridad y gobernanza de datos','Dispositivos disponibles en tienda'],present:false},
+    ],
+    roleQuestions:{
+      hr:['"¿Cómo garantizan que un comunicado de casa central llegó a cada empleado de cada sucursal?"','"¿Cómo es el proceso de incorporación de personal nuevo en una sucursal — cuánto tarda?"','"¿Tienen alguna iniciativa activa de reconocimiento o engagement para retener al equipo de tienda?"'],
+      ops:['"¿Cómo saben que una novedad operativa fue leída y entendida en todas las sucursales?"','"¿Los gerentes de tienda tienen herramientas para gestionar turnos y coberturas de forma autónoma?"','"¿Cuánto tarda resolver una ausencia inesperada en una sucursal hoy?"'],
+      it:['"¿Qué sistema de nómina o HRIS están usando actualmente?"','"¿Los empleados de tienda tienen acceso a email corporativo o solo a dispositivos personales?"','"¿Qué requerimientos de seguridad tienen para herramientas que gestionen datos de empleados?"'],
+      exec:['"¿Cuál es el costo estimado de la rotación anual en sus sucursales?"','"¿La decisión de este tipo de herramienta pasa solo por HR o involucra también a operaciones y al CFO?"','"¿Tienen un objetivo de digitalización de la experiencia del empleado para este año?"'],
+    },
+    dealRisks:[
+      {lvl:'crit',txt:'La Directora de RRHH (DM) no está en la primera reunión — el deal no puede avanzar sin su aval'},
+      {lvl:'warn',txt:'Director de Operaciones Retail no involucrado — sin su apoyo el roll-out a 300 sucursales puede tener resistencia operativa'},
+      {lvl:'warn',txt:'IT no está en la conversación — necesario para evaluar integración con sistema de nómina y política de BYOD'},
+      {lvl:'warn',txt:'Alta rotación estacional en retail → cuantificar el costo por sucursal para construir urgencia real'},
+    ],
+    nextActions:[
+      'Invitar a la Directora de RRHH (DM) a la próxima reunión — sin ella el deal no avanza',
+      'Incluir al Director de Operaciones Retail para validar el caso de negocio en tiendas',
+      'Traer caso de referencia de cadena retail argentina con alta rotación',
+      'Proponer piloto en 15-20 sucursales de una zona geográfica específica',
+      'Pedir datos de rotación por sucursal para construir el ROI caso a caso',
+    ],
+    similarCases:[
+      {ico:'🛒',company:'Cadena de retail AR',industry:'Retail / Supermercados',useCase:'Communications + Recognition para 280 sucursales — alcance directo sin pasar por el gerente de tienda',result:'100% de empleados alcanzados · NPS interno +34 pts en 3 meses'},
+      {ico:'👗',company:'Retailer de moda LatAm',industry:'Retail / Fashion',useCase:'Onboarding digital + Work Shifts para 2.200 empleados de tienda con alta rotación estacional',result:'Rotación -22% en 6 meses · Onboarding de 5 días → 2 días'},
+    ],
+  },
+};
+
+// Perfil genérico para empresas no en DB
+function buildGeneric(name) {
+  const n = name.trim();
+  const init = n.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const colors = ['linear-gradient(135deg,#496BE3,#6B8AEC)','linear-gradient(135deg,#0891b2,#06b6d4)','linear-gradient(135deg,#7c3aed,#8b5cf6)','linear-gradient(135deg,#059669,#10b981)'];
+  const color = colors[n.length % colors.length];
+  return {
+    name:n, initials:init, color,
+    industry:'B2B / Servicios', country:'🇦🇷 Argentina', website: n.toLowerCase().replace(/\s+/g,'')+'.com',
+    employees:'500-2.000', type:'Mixed workforce', founded:'—', stage:'Empresa en crecimiento',
+    score:72, scoreLabel:'Fit estimado · Requiere validación',
+    desc:`Análisis generado para ${n}. No tenemos datos históricos de esta empresa en nuestra base. La información a continuación está basada en señales públicas y patrones de industria. Verificá los detalles clave al inicio de la reunión.`,
+    tags:['Empresa','LatAm','Growth'],
+    mets:[{v:'500-2k',l:'Empleados est.'},{v:'AR',l:'Base'},{v:'Mixed',l:'Workforce'},{v:'Media',l:'Madurez digital'}],
+    tech:[
+      {name:'Google Workspace o M365',cat:'Productividad',color:'#4285F4',conf:75,status:'usa',tooltip:'La mayoría de las empresas de este tamaño usan una de las dos suites. Confirmalo en la reunión.'},
+      {name:'WhatsApp / grupos informales',cat:'Comunicación informal',color:'#25D366',conf:85,status:'gap',tooltip:'Gap típico: la comunicación interna informal corre por WhatsApp sin trazabilidad ni governance.'},
+      {name:'Excel / Google Sheets',cat:'HR Ops',color:'#217346',conf:80,status:'gap',tooltip:'Gestión de vacaciones, ausencias y procesos de HR probablemente manual o en planillas.'},
+      {name:'Sistema de nómina (SAP/Tango/otro)',cat:'HRIS',color:'#0FAAFF',conf:60,status:'usa',tooltip:'Probable sistema de nómina. No incluye comunicaciones ni employee experience.'},
+    ],
+    signals:[
+      {ico:'🟡',text:'Sin herramienta de comunicación interna estructurada',badge:'Gap probable',cls:'sig-wa'},
+      {ico:'🟡',text:'HR Ops probablemente manual o semi-digital',badge:'Oportunidad',cls:'sig-wa'},
+      {ico:'🟢',text:'Empresa en stage de crecimiento — buenos momentos para vender',badge:'Oportunidad',cls:'sig-ok'},
+    ],
+    primaryModule:'📣 Communications & Social Feed',
+    primaryWhy:'La comunicación interna con todos los empleados es el punto de entrada más común y de menor fricción para Humand en empresas de este perfil.',
+    secondaryModules:[
+      {ico:'📋',name:'Forms & Workflows',why:'Digitalización de procesos de HR — casi siempre hay algo manual'},
+      {ico:'❤️',name:'Recognition & Culture',why:'Engagement y retención — relevante en empresas en crecimiento'},
+    ],
+    stakeholders:[
+      {role:'HR / People',title:'Responsable de RRHH / People',type:'champion',cares:['Comunicación interna con empleados','Digitalización de procesos de HR','Reducción de procesos manuales'],present:true},
+      {role:'CEO / Gerente General',title:'CEO / Director General',type:'dm',cares:['Eficiencia operativa','Retención de talento','ROI de la inversión en tecnología'],present:false},
+      {role:'Operaciones / COO',title:'Director de Operaciones',type:'influencer',cares:['Coordinación de equipos','Comunicación operativa','Productividad'],present:false},
+      {role:'IT / Sistemas',title:'Responsable de IT',type:'influencer',cares:['Integraciones','Seguridad','Governance de datos'],present:false},
+    ],
+    roleQuestions:{
+      hr:['"¿Cómo comunican hoy los cambios importantes — políticas, beneficios, novedades — a todos los empleados?"','"¿Qué procesos de HR siguen siendo manuales o por email? Vacaciones, onboarding, solicitudes..."','"¿Cuántas horas por semana dedica el equipo de HR a consultas repetitivas de empleados?"'],
+      ops:['"¿Cómo garantizan que un mensaje operativo importante llegó a todos — especialmente fuera de la oficina?"','"¿Qué herramientas usan los managers para coordinar sus equipos?"','"¿Dónde está el mayor cuello de botella operativo relacionado con la gestión de personas?"'],
+      it:['"¿Qué sistemas de HR o nómina tienen actualmente?"','"¿Cuáles son los requerimientos de integración y seguridad para herramientas de employee experience?"','"¿Los empleados tienen acceso a email corporativo o usan dispositivos personales?"'],
+      exec:['"¿Cuál es el mayor desafío de personas que quieren resolver este año?"','"Si pudieran resolver un solo problema de HR este año, ¿cuál sería?"','"¿Cuál es el impacto de la rotación actual en el negocio — tienen estimado el costo?"'],
+    },
+    dealRisks:[
+      {lvl:'warn',txt:'Empresa sin perfil previo — validar la información básica al inicio de la reunión'},
+      {lvl:'warn',txt:'DM (CEO/Director) probablemente no está en la primera reunión — identificar y mapear el buying committee'},
+      {lvl:'warn',txt:'IT no está en la conversación — necesario para evaluar integraciones y aprobar la herramienta'},
+    ],
+    nextActions:[
+      'Validar información de la empresa al inicio de la reunión',
+      'Identificar quién es el DM real e invitarlo a la próxima reunión',
+      'Mapear el proceso de decisión: ¿quién más está involucrado en esta evaluación?',
+      'Proponer una demo técnica con IT para evaluar integraciones',
+      'Buscar un caso de referencia del mismo sector o tamaño para compartir',
+    ],
+    similarCases:[
+      {ico:'🏢',company:'Empresa de servicios AR',industry:'Servicios B2B',useCase:'Communications + Forms & Workflows para 800 empleados — digitalizó onboarding y HR Ops',result:'-45% tiempo manual de HR · 88% adopción en 60 días'},
+      {ico:'🏭',company:'Empresa industrial LatAm',industry:'Industrial / Manufactura',useCase:'Work Shifts + Sammy AI para 1.200 empleados con turnos rotativos',result:'Turnos digitalizados en 2 semanas · -60% consultas repetitivas a RRHH'},
+    ],
+    opener:'La razón por la que me acerco a empresas como la tuya es que generalmente hay un gap entre las herramientas que usa el equipo de oficina y lo que llega efectivamente a todos los empleados. ¿Cuál es hoy su mayor dolor en comunicación interna o procesos de HR?',
+    questions:[
+      {cat:'Discovery',catCls:'style="background:var(--px);color:var(--p)"',text:'"¿Cómo comunican hoy los cambios importantes — políticas, beneficios, novedades — a todos los empleados?"'},
+      {cat:'HR',catCls:'style="background:var(--px);color:var(--p)"',text:'"¿Qué procesos de HR siguen siendo manuales o por email? Vacaciones, onboarding, solicitudes..."'},
+      {cat:'Tecnología',catCls:'style="background:var(--pul);color:var(--pu)"',text:'"¿Qué herramientas tienen hoy para la gestión de personas? ¿Solo el sistema de nómina o algo más?"'},
+      {cat:'Dolor',catCls:'style="background:var(--wal);color:var(--wa)"',text:'"Si pudieras resolver un solo problema del equipo de HR este año, ¿cuál elegiría?"'},
+      {cat:'Decisión',catCls:'style="background:var(--okl);color:var(--ok)"',text:'"¿Quién más debería estar en esta conversación? ¿El CEO / COO también participa en este tipo de decisiones?"'},
+    ],
+    meeting:[
+      {step:1,title:'Apertura sin supuestos',dur:'3 min',body:'Presentate y decí que hiciste algo de investigación previa pero que querés validar con ellos. "Antes de mostrar nada, ¿me podés contar brevemente cómo está organizado el equipo y cuáles son los mayores dolores en People hoy?"',tip:'Con empresas no conocidas, lo primero es escuchar. Usá las preguntas del banco para guiar.'},
+      {step:2,title:'Mapear el pain',dur:'10 min',body:'Preguntas 1, 2 y 3. Identificá si el problema es comunicación, HR ops, engagement o todo junto.',tip:'No mostrés el producto hasta no entender el dolor. Ese es el error más común.'},
+      {step:3,title:'Demo personalizada',dur:'12 min',body:'Basate en lo que dijeron. Mostrá el módulo que más resuena con su dolor principal.',tip:'Siempre empezá por el dolor, no por el producto.'},
+      {step:4,title:'Cierre y próximo paso',dur:'5 min',body:'Proponer siguiente paso concreto: demo técnica, caso de referencia, o propuesta de piloto.',tip:'Siempre salir con fecha de próxima acción. El "les mandamos info" mata deals.'},
+    ],
+    stakeholders:[
+      {role:'HR / People',title:'Responsable de RRHH / People',type:'champion',cares:['Comunicación interna con empleados','Digitalización de procesos de HR','Reducción de procesos manuales'],present:true},
+      {role:'CEO / Gerente General',title:'CEO / Director General',type:'dm',cares:['Eficiencia operativa','Retención de talento','ROI de la inversión en tecnología'],present:false},
+      {role:'Operaciones / COO',title:'Director de Operaciones',type:'influencer',cares:['Coordinación de equipos','Comunicación operativa','Productividad'],present:false},
+      {role:'IT / Sistemas',title:'Responsable de IT',type:'influencer',cares:['Integraciones','Seguridad','Governance de datos'],present:false},
+    ],
+    roleQuestions:{
+      hr:['"¿Cómo comunican hoy los cambios importantes — políticas, beneficios, novedades — a todos los empleados?"','"¿Qué procesos de HR siguen siendo manuales o por email? Vacaciones, onboarding, solicitudes..."','"¿Cuántas horas por semana dedica el equipo de HR a consultas repetitivas de empleados?"'],
+      ops:['"¿Cómo garantizan que un mensaje operativo importante llegó a todos — especialmente fuera de la oficina?"','"¿Qué herramientas usan los managers para coordinar sus equipos?"','"¿Dónde está el mayor cuello de botella operativo relacionado con la gestión de personas?"'],
+      it:['"¿Qué sistemas de HR o nómina tienen actualmente?"','"¿Cuáles son los requerimientos de integración y seguridad para herramientas de employee experience?"','"¿Los empleados tienen acceso a email corporativo o usan dispositivos personales?"'],
+      exec:['"¿Cuál es el mayor desafío de personas que quieren resolver este año?"','"Si pudieran resolver un solo problema de HR este año, ¿cuál sería?"','"¿Cuál es el impacto de la rotación actual en el negocio?"'],
+    },
+    dealRisks:[
+      {lvl:'warn',txt:'Empresa sin perfil previo — validar la información básica al inicio de la reunión'},
+      {lvl:'warn',txt:'DM (CEO/Director) probablemente no está en la primera reunión — identificar y mapear el buying committee'},
+      {lvl:'warn',txt:'IT no está en la conversación — necesario para evaluar integraciones y aprobar la herramienta'},
+    ],
+    nextActions:[
+      'Validar información de la empresa al inicio de la reunión',
+      'Identificar quién es el DM real e invitarlo a la próxima reunión',
+      'Mapear el proceso de decisión: ¿quién más está involucrado en esta evaluación?',
+      'Proponer una demo técnica con IT para evaluar integraciones',
+      'Buscar un caso de referencia del mismo sector o tamaño para compartir',
+    ],
+    similarCases:[
+      {ico:'🏢',company:'Empresa de servicios AR',industry:'Servicios B2B',useCase:'Communications + Forms & Workflows para 800 empleados — digitalizó onboarding y HR Ops',result:'-45% tiempo manual de HR · 88% adopción en 60 días'},
+      {ico:'🏭',company:'Empresa industrial LatAm',industry:'Industrial / Manufactura',useCase:'Work Shifts + Sammy AI para 1.200 empleados con turnos rotativos',result:'Turnos digitalizados en 2 semanas · -60% consultas a RRHH'},
+    ],
+    };
+}
+
+// ═══════════════════════════════════════════
+// PROCESS STEPS
+// ═══════════════════════════════════════════
+const PROC = [
+  {ico:'🌐',name:'Analizando sitio web y datos públicos',sub:'Descripción, industria, tamaño, presencia'},
+  {ico:'🔧',name:'Detectando tech stack y herramientas',sub:'LinkedIn, ofertas laborales, menciones públicas'},
+  {ico:'👥',name:'Mapeando estructura y personas clave',sub:'Roles, decisores, tamaño de equipos'},
+  {ico:'🧠',name:'Generando inteligencia de ventas',sub:'Módulos recomendados, opener, preguntas'},
+];
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+let current;
+function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0)}
+function goHome(){show('s1');document.getElementById('main-input').value=''}
+function fillAndGo(v){document.getElementById('main-input').value=v;analyze()}
+function swTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');document.getElementById('panel-'+id).classList.add('on');
+}
+
+// ═══════════════════════════════════════════
+// ANALYZE
+// ═══════════════════════════════════════════
+function analyze(){
+  const val = document.getElementById('main-input').value.trim();
+  if(!val){document.getElementById('main-input').focus();return}
+  document.getElementById('proc-target').textContent = val;
+  show('s2');
+  // reset proc
+  const key = val.toLowerCase().replace(/[^a-záéíóúüñ\s]/gi,'').trim();
+  current = DB[key] || buildGeneric(val);
+  let si=0;
+  document.getElementById('proc-steps').innerHTML = PROC.map((_,i)=>`
+    <div class="pstep" id="ps${i}">
+      <div class="ps-ico">${PROC[i].ico}</div>
+      <div class="ps-body"><div class="ps-name">${PROC[i].name}</div><div class="ps-sub">${PROC[i].sub}</div></div>
+      <div class="ps-st" id="pst${i}">—</div>
+    </div>`).join('');
+  document.getElementById('prog-fill').style.width='0%';
+  function next(){
+    if(si>=PROC.length){setTimeout(()=>{render();show('s3')},400);return}
+    document.getElementById('ps'+si).classList.add('act');
+    document.getElementById('pst'+si).textContent='Procesando...';
+    document.getElementById('prog-fill').style.width=Math.round((si+1)/PROC.length*100)+'%';
+    setTimeout(()=>{
+      document.getElementById('ps'+si).classList.remove('act');
+      document.getElementById('ps'+si).classList.add('done');
+      document.getElementById('ps'+si).querySelector('.ps-ico').textContent='✅';
+      document.getElementById('pst'+si).textContent='✓ Listo';
+      si++;setTimeout(next,300);
+    },1400);
+  }
+  next();
+}
+
+// ═══════════════════════════════════════════
+// RENDER RESULTS
+// ═══════════════════════════════════════════
+function render(){
+  const c = current;
+  // Company card
+  document.getElementById('co-card').innerHTML=`
+    <div class="co-top"><div class="co-logo" style="background:${c.color}">${c.initials}</div>
+    <div><div class="co-name">${c.name}</div><div class="co-meta">${c.industry} · ${c.country}</div></div></div>
+    <div class="co-tags">${c.tags.map(t=>`<span class="ctag${t===c.tags[0]?' ctag-p':''}">${t}</span>`).join('')}</div>
+    <div class="co-mets">${c.mets.map(m=>`<div class="met"><div class="mv">${m.v}</div><div class="ml">${m.l}</div></div>`).join('')}</div>`;
+  // Score
+  document.getElementById('score-card').innerHTML=`
+    <div class="sc-l">Score de fit Humand</div>
+    <div class="sc-v">${c.score}<small>/100</small></div>
+    <div class="sc-d">${c.scoreLabel}</div>
+    <div class="sc-bar"><div class="sc-fill" style="width:${c.score}%"></div></div>`;
+  // Signals
+  document.getElementById('signals-card').innerHTML=`
+    <div class="sig-list">${c.signals.map(s=>`
+      <div class="sig-item"><span class="sig-ico">${s.ico}</span>
+        <span class="sig-text">${s.text}</span>
+        <span class="sig-badge ${s.cls}">${s.badge}</span>
+      </div>`).join('')}</div>`;
+
+  // OVERVIEW
+  document.getElementById('panel-overview').innerHTML=`
+    <div class="overview-grid">
+      <div class="desc-block"><div class="ov-t">¿Qué hace esta empresa?</div><div class="ov-v">${c.desc}</div></div>
+      <div class="ov-block"><div class="ov-t">Industria</div><div class="ov-v">${c.industry}</div></div>
+      <div class="ov-block"><div class="ov-t">Tipo de fuerza laboral</div><div class="ov-v">${c.type}</div></div>
+      <div class="ov-block"><div class="ov-t">Employees</div><div class="ov-v">${c.employees}</div></div>
+      <div class="ov-block"><div class="ov-t">Stage / Tipo</div><div class="ov-v">${c.stage}</div></div>
+    </div>`;
+
+  // TECH STACK
+  const usaTools = c.tech.filter(t=>t.status==='usa');
+  const gapTools = c.tech.filter(t=>t.status==='gap');
+  document.getElementById('panel-tech').innerHTML=`
+    <div class="tech-section">
+      <div class="tech-sec-t">✅ Herramientas que ya usan</div>
+      <div class="tech-grid">${usaTools.map(t=>`
+        <div class="tech-item">
+          <span class="tech-dot" style="background:${t.color}"></span>
+          <span class="tech-name">${t.name}</span><span class="tech-cat">${t.cat}</span>
+          <span style="font-size:10px;font-weight:700;color:var(--ok);margin-left:4px">${t.conf}%</span>
+          <div class="tech-tooltip">${t.tooltip}</div>
+        </div>`).join('')}</div>
+    </div>
+    <div class="tech-section">
+      <div class="tech-sec-t">🔴 Gaps detectados → donde entra Humand</div>
+      <div class="tech-grid">${gapTools.map(t=>`
+        <div class="tech-item gap-item">
+          <span class="tech-dot" style="background:${t.color}"></span>
+          <span class="tech-name">${t.name}</span><span class="tech-cat">${t.cat}</span>
+          <div class="tech-tooltip">${t.tooltip}</div>
+        </div>`).join('')}</div>
+    </div>
+    <div style="background:var(--px);border-radius:var(--r2);padding:14px 16px;font-size:13px;color:var(--p);font-weight:600;line-height:1.5">
+      💡 <strong>Cómo usar esto:</strong> No vendas Humand como un reemplazo de lo que ya tienen. Posicionalo como la capa que completa lo que les falta — especialmente para los empleados que quedan fuera de las herramientas de oficina.
+    </div>`;
+
+  // PITCH
+  document.getElementById('panel-pitch').innerHTML=`
+    <div class="pitch-hero">
+      <div class="ph-l">Posicionamiento recomendado para ${c.name}</div>
+      <div class="ph-v">${c.primaryModule} como punto de entrada</div>
+    </div>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">${c.primaryWhy}</p>
+    <div class="sec-label" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Módulos a recomendar en este deal</div>
+    <div class="rec-mods">
+      <div class="rec-mod pri"><span class="rm-ico">📣</span><div class="rm-body"><div class="rm-name">${c.primaryModule}</div><div class="rm-why">${c.primaryWhy}</div></div><span class="rm-badge rm-pri">Módulo 1</span></div>
+      ${c.secondaryModules.map((m,i)=>`
+      <div class="rec-mod"><span class="rm-ico">${m.ico}</span><div class="rm-body"><div class="rm-name">${m.name}</div><div class="rm-why">${m.why}</div></div><span class="rm-badge rm-sec">Módulo ${i+2}</span></div>`).join('')}
+    </div>
+    <div class="sec-label" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Opener recomendado para abrir la llamada</div>
+    <div class="opener-box">"${c.opener}"</div>
+    <button class="btn b-s" onclick="copyText('${c.opener.replace(/'/g,"\\'")}')">📋 Copiar opener</button>`;
+
+  // QUESTIONS
+  const roleMap={hr:'HR Leader',ops:'Ops Leader',it:'IT Leader',exec:'C-Suite / Exec'};
+  const roleBg={hr:'var(--px)',ops:'var(--wal)',it:'var(--pul)',exec:'var(--okl)'};
+  const roleClr={hr:'var(--p)',ops:'var(--wa)',it:'var(--pu)',exec:'var(--ok)'};
+  document.getElementById('panel-questions').innerHTML=`
+    <div class="q-notice">💡 Estas preguntas están personalizadas para ${c.name}. Ya sabés lo básico de la empresa — enfocate en validar el dolor específico y mapear el proceso de decisión, no en preguntar qué hace la empresa.</div>
+    <div class="role-filter">
+      <div class="rpill on" onclick="filterQ('all',this)">Todas</div>
+      <div class="rpill rh" onclick="filterQ('hr',this)">👩‍💼 HR Leader</div>
+      <div class="rpill ro" onclick="filterQ('ops',this)">⚙️ Ops Leader</div>
+      <div class="rpill ri" onclick="filterQ('it',this)">💻 IT Leader</div>
+      <div class="rpill re" onclick="filterQ('exec',this)">🏆 Exec</div>
+    </div>
+    <div class="q-list" id="q-list-main">${c.questions.map((q,i)=>`
+      <div class="q-item" data-role="${q.role||'all'}">
+        <div class="q-num">${i+1}</div>
+        <div class="q-body">
+          <span class="q-cat" ${q.catCls}>${q.cat}</span>
+          <div class="q-text">${q.text}</div>
+        </div>
+        <div class="q-copy" onclick="copyText(${JSON.stringify(q.text)})">Copiar</div>
+      </div>`).join('')}</div>`;
+
+  // MEETING PLAN
+  document.getElementById('panel-meeting').innerHTML=`
+    <div class="meeting-plan">${c.meeting.map(m=>`
+      <div class="mp-step">
+        <div class="mp-head"><div class="mp-num">${m.step}</div><div class="mp-t">${m.title}</div><div class="mp-dur">${m.dur}</div></div>
+        <div class="mp-body">${m.body}${m.tip?`<div class="mp-tip">💡 ${m.tip}</div>`:''}</div>
+      </div>`).join('')}</div>`;
+
+  // GAVIN DIRECTIVES
+  renderStageSidebar(c);
+  renderCovCard(c);
+  renderStakeholders(c);
+  renderDealStrategy(c);
+
+  // RECURSOS
+  renderRecursos(c);
+}
+
+// ═══════════════════════════════════════════
+// RECURSOS — render & helpers
+// ═══════════════════════════════════════════
+let _slideIdx = 0;
+
+function renderRecursos(c){
+  document.getElementById('panel-recursos').innerHTML =
+    '<div class="res-tab-bar">' +
+      '<div class="res-tab on" onclick="swResTab(\'slides\',this)">📊 Deck</div>' +
+      '<div class="res-tab" onclick="swResTab(\'script\',this)">🎙️ Script</div>' +
+      '<div class="res-tab" onclick="swResTab(\'roi\',this)">💰 ROI</div>' +
+      '<div class="res-tab" onclick="swResTab(\'battle\',this)">⚔️ Battle Card</div>' +
+      '<div class="res-tab" onclick="swResTab(\'email\',this)">📧 Email</div>' +
+    '</div>' +
+    '<div class="res-panel on" id="rp-slides">' + buildSlidesPanel(c) + '</div>' +
+    '<div class="res-panel" id="rp-script">' + buildScriptPanel(c) + '</div>' +
+    '<div class="res-panel" id="rp-roi">'    + buildROIPanel(c)    + '</div>' +
+    '<div class="res-panel" id="rp-battle">' + buildBattlePanel()  + '</div>' +
+    '<div class="res-panel" id="rp-email">'  + buildEmailPanel(c)  + '</div>';
+  calcROI();
+}
+
+function swResTab(id, el){
+  document.querySelectorAll('.res-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.res-panel').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('rp-'+id).classList.add('on');
+}
+
+function buildSlidesPanel(c){
+  const meta = [
+    {n:'01',t:'El contexto de '+c.name,        pts:['Industria: '+c.industry, c.employees+' empleados \xb7 '+c.type, 'Desaf\xedo: comunicaci\xf3n interna y HR'],                                                             bg:'linear-gradient(135deg,#0f1225,#1e2347)'},
+    {n:'02',t:'\xbfC\xf3mo gestionan hoy?',      pts:['Usan: '+c.tech.filter(t=>t.status==='usa').map(t=>t.name).join(', '), 'Gaps: '+c.tech.filter(t=>t.status==='gap').map(t=>t.name).join(', '), 'Procesos manuales o informales'], bg:'linear-gradient(135deg,#1e293b,#334155)'},
+    {n:'03',t:'Humand: la capa que falta',      pts:[c.primaryModule, c.secondaryModules.map(m=>m.name).join(' \xb7 '), 'Sin reemplazar lo que ya usan'],                                                                     bg:'linear-gradient(135deg,#496BE3,#6B8AEC)'},
+    {n:'04',t:'Flujo del empleado',              pts:['App m\xf3vil sin email corporativo', 'Feed \xb7 Turnos \xb7 Solicitudes \xb7 Sammy AI', 'Adopci\xf3n en d\xedas, no meses'],                                           bg:'linear-gradient(135deg,#0891b2,#06b6d4)'},
+    {n:'05',t:'ROI esperado',                    pts:['HR Ops: -40% tiempo manual', 'Onboarding: 3\xd7 m\xe1s r\xe1pido', 'Rotaci\xf3n: -25% en 6 meses'],                                                                   bg:'linear-gradient(135deg,#059669,#10b981)'},
+    {n:'06',t:'Propuesta de piloto',             pts:['Scope: \xe1rea o regi\xf3n espec\xedfica', 'Go-live: 3 semanas desde firma', 'KPIs medibles a los 60 d\xedas'],                                                       bg:'linear-gradient(135deg,#e11d48,#f43f5e)'},
+  ];
+  return '<p style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Hac\xe9 click en cualquier slide para ver el preview completo de la presentaci\xf3n, personalizada para <strong>'+c.name+'</strong>.</p>' +
+    '<div class="slides-grid">' +
+    meta.map((s,i)=>
+      '<div class="slide-card" onclick="openSlide('+i+')" style="cursor:pointer">' +
+        '<div class="slide-thumb" style="background:'+s.bg+'">' +
+          '<div class="slide-num">Slide '+s.n+'</div>' +
+          '<div class="slide-title">'+s.t+'</div>' +
+        '</div>' +
+        '<div class="slide-body">' +
+          '<div class="slide-pts">'+s.pts.map(p=>'&bull; '+p).join('<br>')+'</div>' +
+          '<div style="margin-top:8px"><span style="font-size:10px;font-weight:700;color:var(--p);background:var(--px);padding:2px 8px;border-radius:10px">\ud83d\udc41 Ver preview \u2192</span></div>' +
+        '</div>' +
+      '</div>'
+    ).join('') +
+    '</div>' +
+    '<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">' +
+      '<button class="btn b-s" onclick="copySlideOutline()">\ud83d\udccb Copiar outline del deck</button>' +
+      '<button class="btn b-g" onclick="toast(\'Pr\xf3ximamente: exportar a Google Slides / Canva \ud83c\udfa8\')">\ud83d\ude80 Exportar deck</button>' +
+    '</div>';
+}
+
+function buildScriptPanel(c){
+  const secs = [
+    {ico:'\ud83d\udc4b', t:'Apertura \u2014 mostr\xe1 que hiciste la tarea', dur:'2-3 min', lines:[
+      'Empez\xe1 con contexto, no con preguntas b\xe1sicas. Eso genera confianza inmediata.',
+      'Q:'+c.opener,
+      'L:Escuch\xe1 si asienten o corrigen. Cada detalle que agreguen es contexto que no ten\xedas.',
+    ]},
+    {ico:'\ud83d\udd0d', t:'Discovery \u2014 validar el dolor real', dur:'8-10 min', lines:[
+      'No mostr\xe9s el producto todav\xeda. Esta etapa es 100% escuchar.',
+      ...c.questions.map(q=>'Q:'+q.text),
+      'L:Busc\xe1: Excel, WhatsApp, "el supervisor avisa", procesos manuales. Cada uno es un argumento tuyo.',
+    ]},
+    {ico:'\ud83d\udcbb', t:'Demo \u2014 solo lo relevante', dur:'10-12 min', lines:[
+      'Mostr\xe1 lo que resuelve EL DOLOR que describieron. No hag\xe1s un tour del producto.',
+      'M:M\xf3dulo principal: '+c.primaryModule,
+      'M:Luego mostrar: '+c.secondaryModules.map(m=>m.name).join(', '),
+      'L:Si preguntan "\xbfse integra con [herramienta]?" \u2192 est\xe1n listos para comprar. Pas\xe1 al cierre.',
+    ]},
+    {ico:'\ud83d\udcb0', t:'Valor y ROI \u2014 cerrar antes del precio', dur:'4-5 min', lines:[
+      'Calcul\xe1 el ROI con sus n\xfameros reales. Us\xe1 la tab ROI de esta herramienta.',
+      'Q:Para una empresa como '+c.name+', con '+c.employees+' empleados, nuestros clientes similares redujeron el tiempo de HR Ops un 40% en los primeros 60 d\xedas.',
+      'L:Si preguntan por precio antes de que termines \u2192 se\xf1al de compra. Pregunt\xe1: \xbfTienen un presupuesto estimado para este tipo de soluci\xf3n?',
+    ]},
+    {ico:'\ud83e\udd1d', t:'Cierre \u2014 pr\xf3ximo paso concreto', dur:'3-5 min', lines:[
+      'No termin\xe9s sin un pr\xf3ximo paso con fecha y nombre de responsable del lado de ellos.',
+      'Q:\xbfQu\xe9 les parece si coordinamos una demo t\xe9cnica la semana que viene con IT y definimos el scope del piloto?',
+      'L:El "les mandamos info" es la muerte del deal. Sal\xed siempre con fecha concreta.',
+    ]},
+  ];
+  return '<p style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Gu\xeda de conversaci\xf3n paso a paso, personalizada para <strong>'+c.name+'</strong>. Expand\xed cada secci\xf3n antes de la reuni\xf3n.</p>' +
+    secs.map((s,i)=>
+      '<div class="script-section" id="sc'+i+'">' +
+        '<div class="script-head" onclick="toggleScript('+i+')">' +
+          '<span class="sh-ico">'+s.ico+'</span>' +
+          '<div class="sh-body"><div class="sh-title">'+s.t+'</div><div class="sh-dur">\u23f1 '+s.dur+'</div></div>' +
+          '<span class="sh-chev">\u25bc</span>' +
+        '</div>' +
+        '<div class="script-content">' +
+          s.lines.map(l=>
+            l.startsWith('Q:')? '<div class="script-quote">"'+l.slice(2)+'"</div>' :
+            l.startsWith('L:')? '<div class="script-listen">\ud83d\udc42 '+l.slice(2)+'</div>' :
+            l.startsWith('M:')? '<div style="background:var(--px);border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--p);margin-bottom:5px">\u25b6 '+l.slice(2)+'</div>' :
+            '<div class="script-line">'+l+'</div>'
+          ).join('') +
+        '</div>' +
+      '</div>'
+    ).join('') +
+    '<button class="btn b-s" style="margin-top:10px" onclick="copyScript()">\ud83d\udccb Copiar script completo</button>';
+}
+
+function buildROIPanel(c){
+  const empVal = Math.min(15000, Math.max(100, parseInt(c.employees)||1000));
+  return '<p style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Ajust\xe1 los sliders con los datos reales del cliente para mostrar el impacto econ\xf3mico en tiempo real durante la reuni\xf3n.</p>' +
+    '<div class="roi-grid">' +
+      '<div class="roi-input-block"><div class="roi-label">Empleados en scope</div><input type="range" class="roi-slider" id="roi-emp" min="100" max="15000" step="100" value="'+empVal+'" oninput="calcROI()"><div class="roi-val" id="roi-emp-v">'+empVal.toLocaleString('es-AR')+'</div></div>' +
+      '<div class="roi-input-block"><div class="roi-label">Horas HR ahorradas / semana</div><input type="range" class="roi-slider" id="roi-hrs" min="2" max="60" step="1" value="12" oninput="calcROI()"><div class="roi-val" id="roi-hrs-v">12 hs</div></div>' +
+      '<div class="roi-input-block"><div class="roi-label">% rotaci\xf3n actual estimada</div><input type="range" class="roi-slider" id="roi-rot" min="5" max="60" step="1" value="20" oninput="calcROI()"><div class="roi-val" id="roi-rot-v">20%</div></div>' +
+      '<div class="roi-input-block"><div class="roi-label">Costo de reemplazo / persona (USD)</div><input type="range" class="roi-slider" id="roi-cost" min="200" max="5000" step="100" value="800" oninput="calcROI()"><div class="roi-val" id="roi-cost-v">USD 800</div></div>' +
+    '</div>' +
+    '<div class="roi-result-grid">' +
+      '<div class="roi-result"><div class="roi-rv" id="roi-r1">\u2014</div><div class="roi-rl">Ahorro anual HR Ops</div></div>' +
+      '<div class="roi-result"><div class="roi-rv" id="roi-r2">\u2014</div><div class="roi-rl">Ahorro en rotaci\xf3n</div></div>' +
+      '<div class="roi-result"><div class="roi-rv" id="roi-r3">\u2014</div><div class="roi-rl">ROI estimado a\xf1o 1</div></div>' +
+    '</div>' +
+    '<div class="roi-note">\ud83d\udca1 Basado en benchmarks de implementaciones reales de Humand en LatAm. Personaliz\xe1 con los datos del cliente para cerrar el valor econ\xf3mico antes de hablar de precio.</div>';
+}
+
+function buildBattlePanel(){
+  const rows = [
+    {f:'Comunicaci\xf3n con frontline / campo', h:'\u2713 Nativo \xb7 m\xf3vil \xb7 sin email', c1:'Parcial (solo office)',    c2:'No incluido'},
+    {f:'Work Shifts (gesti\xf3n de turnos)',    h:'\u2713 M\xf3dulo nativo',             c1:'Add-on externo',        c2:'No'},
+    {f:'Asistente IA para empleados',           h:'\u2713 Sammy AI incluido',         c1:'No',                    c2:'Add-on costoso'},
+    {f:'Forms & workflows de HR',               h:'\u2713 Sin c\xf3digo \xb7 drag & drop', c1:'Limitado',           c2:'Implementaci\xf3n larga'},
+    {f:'Tiempo de implementaci\xf3n',           h:'3 semanas',                        c1:'3\u20136 meses',         c2:'6\u201312 meses'},
+    {f:'Foco LatAm / Argentina',                h:'\u2713 Nativo \xb7 soporte local',  c1:'Global \xb7 sin foco',  c2:'Global \xb7 sin foco'},
+    {f:'Integraci\xf3n HRIS (SAP, Workday)',    h:'\u2713 Conectores nativos',         c1:'Limitada o custom',     c2:'Limitada o custom'},
+    {f:'Precio por empleado/mes',               h:'Accesible para LatAm',             c1:'USD \xb7 pricing alto',  c2:'Enterprise \xb7 muy alto'},
+  ];
+  const cls = v => (v==='No'||v.startsWith('No '))?'bc-los':'bc-neu';
+  return '<p style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Us\xe1la si el cliente menciona que est\xe1 evaluando otras herramientas. No atac\xfces a la competencia \u2014 mostr\xe1 por qu\xe9 Humand es la mejor opci\xf3n <em>para este deal</em>.</p>' +
+    '<div class="bc-wrap"><table class="bc-table">' +
+      '<tr><th>Capacidad</th><th>Humand \u2713</th><th>Worky / CharlieHR</th><th>SAP SuccessFactors</th></tr>' +
+      rows.map(r=>'<tr><td><strong>'+r.f+'</strong></td><td class="bc-win">'+r.h+'</td><td class="'+cls(r.c1)+'">'+r.c1+'</td><td class="'+cls(r.c2)+'">'+r.c2+'</td></tr>').join('') +
+    '</table></div>' +
+    '<button class="btn b-s" style="margin-top:12px" onclick="copyBattleCard()">\ud83d\udccb Copiar battle card</button>';
+}
+
+function buildEmailPanel(c){
+  const usa = c.tech.filter(t=>t.status==='usa').map(t=>t.name).join(', ');
+  const mod = c.primaryModule.replace(/^\S+\s/,'');
+  const email = 'Hola [Nombre],\n\nGracias por el tiempo de hoy. Fue muy valioso poder entender mejor el contexto de '+c.name+' \u2014 especialmente lo que comentaron sobre [COMPLETAR con el pain espec\xedfico mencionado en la reuni\xf3n].\n\nComo acordamos, estos son los pr\xf3ximos pasos:\n\n1. Les comparto el caso de uso de una empresa similar que ya trabaja con Humand \u2192 [link]\n2. Coordinar una sesi\xf3n t\xe9cnica de '+mod+' con el equipo de IT para evaluar la integraci\xf3n con '+usa+'.\n3. Para armar la propuesta de piloto, \xbfme pod\xe9s confirmar el scope inicial (equipo / regi\xf3n / cantidad de empleados)?\n\nPropongo que nos juntemos [D\xcdA] a las [HORA] \u2014 \xbfte queda bien?\n\nCualquier duda, escrib\xedme directamente.\n\nSaludos,\n[Tu nombre]\nHumand \u2014 hello@humand.co';
+  return '<p style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Personaliz\xe1 los campos entre [corchetes] con lo que surgi\xf3 en la llamada. Mand\xe1lo dentro de las 2 horas posteriores a la reuni\xf3n.</p>' +
+    '<div class="email-box">' +
+      '<div class="email-header">' +
+        '<div class="email-field"><span class="ef-label">Para:</span><span class="ef-val">[Nombre del contacto] \u2014 '+c.name+'</span></div>' +
+        '<div class="email-field"><span class="ef-label">CC:</span><span class="ef-val">[Otros participantes si los hubo]</span></div>' +
+        '<div class="email-field"><span class="ef-label">Asunto:</span><span class="ef-val">Pr\xf3ximos pasos \u2014 Humand \xd7 '+c.name+'</span></div>' +
+      '</div>' +
+      '<div class="email-body-text" id="email-body-text">'+email+'</div>' +
+    '</div>' +
+    '<button class="btn b-s" style="margin-top:10px" onclick="copyText(document.getElementById(\'email-body-text\').textContent)">\ud83d\udccb Copiar email</button>';
+}
+
+// Slide modal
+function openSlide(i){
+  _slideIdx = i;
+  _renderSlideModal();
+  document.getElementById('slide-modal').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+function closeSlide(){
+  document.getElementById('slide-modal').classList.remove('on');
+  document.body.style.overflow = '';
+}
+function navSlide(dir){
+  _slideIdx = Math.max(0, Math.min(5, _slideIdx+dir));
+  _renderSlideModal();
+}
+function _renderSlideModal(){
+  const c = current;
+  document.getElementById('slide-preview-box').innerHTML = _buildSlideHTML(_slideIdx, c);
+  document.getElementById('slide-counter-label').textContent = 'SLIDE ' + (_slideIdx+1) + ' DE 6';
+  document.getElementById('slide-prev').disabled = _slideIdx === 0;
+  document.getElementById('slide-next').disabled = _slideIdx === 5;
+}
+function _buildSlideHTML(i, c){
+  const usaT = c.tech.filter(t=>t.status==='usa');
+  const gapT = c.tech.filter(t=>t.status==='gap');
+  const fD = n => '<div style="padding:7px 28px;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0"><div style="display:flex;align-items:center;gap:6px"><div style="width:16px;height:16px;background:#496BE3;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:7px;font-weight:900;flex-shrink:0">H</div><span style="color:rgba(255,255,255,.35);font-size:8px;font-weight:700;letter-spacing:.5px">HUMAND \xb7 B2B INTELLIGENCE</span></div><span style="color:rgba(255,255,255,.25);font-size:8px;font-weight:700">0'+n+' / 06</span></div>';
+  const fL = n => '<div style="padding:7px 28px;border-top:1px solid #e4e9f6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0"><div style="display:flex;align-items:center;gap:6px"><div style="width:16px;height:16px;background:#496BE3;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:7px;font-weight:900;flex-shrink:0">H</div><span style="color:#9ca3af;font-size:8px;font-weight:700;letter-spacing:.5px">HUMAND \xb7 B2B INTELLIGENCE</span></div><span style="color:#d1d5db;font-size:8px;font-weight:700">0'+n+' / 06</span></div>';
+  const builders = [
+    ()=> '<div class="sp-inner" style="background:linear-gradient(135deg,#0f1225,#1e2347,#252d5c)">'
+      + '<div style="position:absolute;top:0;right:0;width:44%;height:100%;background:linear-gradient(135deg,rgba(73,107,227,.16),transparent);clip-path:polygon(18% 0,100% 0,100% 100%,0% 100%)"></div>'
+      + '<div style="position:absolute;bottom:-50px;left:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(73,107,227,.1),transparent);border-radius:50%"></div>'
+      + '<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:26px 36px;position:relative;z-index:1">'
+        + '<div style="background:rgba(73,107,227,.22);border:1px solid rgba(73,107,227,.35);color:#a0b4f8;font-size:7px;font-weight:800;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;margin-bottom:14px;width:fit-content;letter-spacing:1px;text-transform:uppercase"><span style="width:4px;height:4px;background:#496BE3;border-radius:50%;display:inline-block;flex-shrink:0"></span>An\xe1lisis de cuenta \xb7 Confidencial</div>'
+        + '<h1 style="font-size:30px;font-weight:900;color:#fff;letter-spacing:-.8px;line-height:1.05;margin-bottom:7px">'+c.name+'</h1>'
+        + '<p style="font-size:11px;color:rgba(255,255,255,.45);margin-bottom:16px">'+c.industry+' \xb7 '+c.employees+' empleados \xb7 '+c.country+'</p>'
+        + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">'+c.tags.slice(0,4).map(t=>'<span style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.55);padding:2px 8px;border-radius:20px;font-size:8px;font-weight:600">'+t+'</span>').join('')+'</div>'
+        + '<div style="background:rgba(73,107,227,.18);border-radius:7px;padding:9px 12px;display:inline-block;max-width:340px">'
+          + '<div style="font-size:7px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">Tipo de workforce</div>'
+          + '<div style="font-size:11px;color:rgba(255,255,255,.8);font-weight:600">'+c.type+'</div>'
+        + '</div>'
+      + '</div>' + fD(1) + '</div>',
+
+    ()=> '<div class="sp-inner" style="background:#f0f4ff">'
+      + '<div style="flex:1;display:flex;flex-direction:column;padding:18px 26px">'
+        + '<div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#496BE3;margin-bottom:3px">El estado actual</div>'
+        + '<h2 style="font-size:16px;font-weight:900;color:#1A1D2E;margin-bottom:12px;letter-spacing:-.3px">\xbfC\xf3mo gestiona personas <span style="color:#496BE3">'+c.name+'</span> hoy?</h2>'
+        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1">'
+          + '<div><div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#059669;margin-bottom:7px">\u2705 Herramientas que ya usan</div>'
+            + usaT.map(t=>'<div style="background:#fff;border:1.5px solid #d1fae5;border-radius:6px;padding:5px 9px;margin-bottom:4px;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:'+t.color+';flex-shrink:0"></span><span style="font-size:9px;font-weight:700;color:#1A1D2E">'+t.name+'</span><span style="font-size:8px;color:#9ca3af;margin-left:2px">'+t.cat+'</span></div>').join('')
+          + '</div>'
+          + '<div><div style="font-size:7px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#ef4444;margin-bottom:7px">\ud83d\udd34 Gaps \u2192 entra Humand</div>'
+            + gapT.map(t=>'<div style="background:#fff;border:1.5px solid #fecaca;border-radius:6px;padding:5px 9px;margin-bottom:4px;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:'+t.color+';flex-shrink:0"></span><span style="font-size:9px;font-weight:700;color:#1A1D2E">'+t.name+'</span><span style="font-size:8px;color:#ef4444;margin-left:auto;font-weight:700">Gap</span></div>').join('')
+          + '</div>'
+        + '</div>'
+      + '</div>' + fL(2) + '</div>',
+
+    ()=> '<div class="sp-inner" style="background:linear-gradient(135deg,#3657d4,#496BE3,#6B8AEC)">'
+      + '<div style="position:absolute;top:-36px;right:-36px;width:160px;height:160px;background:rgba(255,255,255,.06);border-radius:50%"></div>'
+      + '<div style="position:absolute;bottom:-28px;left:42%;width:110px;height:110px;background:rgba(255,255,255,.04);border-radius:50%"></div>'
+      + '<div style="flex:1;display:flex;flex-direction:column;padding:18px 26px;position:relative;z-index:1">'
+        + '<div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.45);margin-bottom:3px">La soluci\xf3n</div>'
+        + '<h2 style="font-size:16px;font-weight:900;color:#fff;margin-bottom:12px;letter-spacing:-.3px">Humand: la capa que le falta a <span style="opacity:.6">'+c.name+'</span></h2>'
+        + '<div style="background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:10px 14px;margin-bottom:10px">'
+          + '<div style="font-size:7px;font-weight:700;opacity:.45;text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">M\xf3dulo principal</div>'
+          + '<div style="font-size:12px;font-weight:800;color:#fff">'+c.primaryModule+'</div>'
+          + '<div style="font-size:9px;color:rgba(255,255,255,.6);margin-top:2px;line-height:1.4">'+c.primaryWhy.slice(0,85)+(c.primaryWhy.length>85?'...':'')+'</div>'
+        + '</div>'
+        + '<div style="display:grid;grid-template-columns:repeat('+Math.min(c.secondaryModules.length,3)+',1fr);gap:7px">'
+          + c.secondaryModules.map(m=>'<div style="background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.13);border-radius:7px;padding:9px"><div style="font-size:14px;margin-bottom:4px">'+m.ico+'</div><div style="font-size:9px;font-weight:800;color:#fff;margin-bottom:2px">'+m.name+'</div><div style="font-size:8px;color:rgba(255,255,255,.5);line-height:1.4">'+m.why.slice(0,48)+'...</div></div>').join('')
+        + '</div>'
+      + '</div>' + fD(3) + '</div>',
+
+    ()=> '<div class="sp-inner" style="background:#ffffff">'
+      + '<div style="flex:1;display:flex;flex-direction:column;padding:18px 26px">'
+        + '<div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#496BE3;margin-bottom:3px">C\xf3mo funciona</div>'
+        + '<h2 style="font-size:16px;font-weight:900;color:#1A1D2E;margin-bottom:14px;letter-spacing:-.3px">Flujo del empleado en Humand</h2>'
+        + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1">'
+          + [{ico:'\ud83d\udcf1',n:'01',t:'Descarga la app',d:'Sin email corporativo. Acceso con DNI o legajo.'},{ico:'\ud83d\udce3',n:'02',t:'Recibe comunicados',d:'Feed segmentado por sector, turno o sucursal.'},{ico:'\ud83d\udd04',n:'03',t:'Gestiona su trabajo',d:'Turnos, ausencias y solicitudes desde el celular.'},{ico:'\ud83e\udd16',n:'04',t:'Consulta a Sammy AI',d:'Respuestas 24/7 sin necesidad de ir a RRHH.'}].map(s=>'<div style="background:#f0f4ff;border:1.5px solid #e4e9f6;border-radius:8px;padding:10px;position:relative"><div style="position:absolute;top:7px;right:7px;font-size:7px;font-weight:800;color:#496BE3;background:#eef2ff;padding:1px 5px;border-radius:6px">'+s.n+'</div><div style="font-size:18px;margin-bottom:7px">'+s.ico+'</div><div style="font-size:9px;font-weight:800;color:#1A1D2E;margin-bottom:3px">'+s.t+'</div><div style="font-size:8px;color:#5a6376;line-height:1.45">'+s.d+'</div></div>').join('')
+        + '</div>'
+        + '<div style="margin-top:8px;background:#eef2ff;border-radius:6px;padding:7px 10px;font-size:9px;color:#496BE3;font-weight:600">\ud83d\udca1 Adopci\xf3n promedio en LatAm: 78% del equipo activo en los primeros 30 d\xedas.</div>'
+      + '</div>' + fL(4) + '</div>',
+
+    ()=> '<div class="sp-inner" style="background:linear-gradient(135deg,#064e3b,#065f46,#047857)">'
+      + '<div style="position:absolute;inset:0;opacity:.04;background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:16px 16px"></div>'
+      + '<div style="flex:1;display:flex;flex-direction:column;padding:18px 26px;position:relative;z-index:1">'
+        + '<div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-bottom:3px">Impacto esperado</div>'
+        + '<h2 style="font-size:16px;font-weight:900;color:#fff;margin-bottom:14px;letter-spacing:-.3px">ROI estimado para '+c.name+'</h2>'
+        + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px">'
+          + [{ico:'\u23f1\ufe0f',v:'-40%',l:'Tiempo HR en tareas manuales',s:'Comunicaciones, onboarding, turnos'},{ico:'\ud83d\ude80',v:'3\xd7',l:'Velocidad de onboarding',s:'De semanas a d\xedas por empleado'},{ico:'\u2764\ufe0f',v:'-25%',l:'Rotaci\xf3n en 6 meses',s:'Mayor engagement y pertenencia'}].map(m=>'<div style="background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:12px"><div style="font-size:16px;margin-bottom:6px">'+m.ico+'</div><div style="font-size:22px;font-weight:900;letter-spacing:-.8px;color:#fff;margin-bottom:2px">'+m.v+'</div><div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.82);margin-bottom:2px">'+m.l+'</div><div style="font-size:8px;color:rgba(255,255,255,.45)">'+m.s+'</div></div>').join('')
+        + '</div>'
+        + '<div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:7px 10px;font-size:9px;color:rgba(255,255,255,.55)">\ud83d\udcca Basado en implementaciones en empresas de LatAm con perfil similar a '+c.name+'. Datos reales disponibles bajo NDA.</div>'
+      + '</div>' + fD(5) + '</div>',
+
+    ()=> '<div class="sp-inner" style="background:linear-gradient(135deg,#1A1D2E,#2d2250,#3d1a6e)">'
+      + '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(139,92,246,.11),transparent);border-radius:50%"></div>'
+      + '<div style="flex:1;display:flex;flex-direction:column;padding:18px 26px;position:relative;z-index:1">'
+        + '<div style="font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:3px">El siguiente paso</div>'
+        + '<h2 style="font-size:16px;font-weight:900;color:#fff;margin-bottom:14px;letter-spacing:-.3px">Propuesta de piloto para '+c.name+'</h2>'
+        + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">'
+          + [{n:'01',t:'Kick-off',time:'Semana 1',d:'Scope, accesos e integraci\xf3n con '+c.tech.filter(t=>t.status==='usa').map(t=>t.name).slice(0,2).join(' / ')},{n:'02',t:'Go-live',time:'Semana 3',d:'Primeros empleados en la plataforma. Comunicaciones y Sammy AI activos.'},{n:'03',t:'Resultados',time:'D\xeda 60',d:'Reporte de adopci\xf3n, engagement y ahorro en HR Ops. Decisi\xf3n de rollout.'}].map(s=>'<div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:10px"><div style="font-size:7px;font-weight:800;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px">Paso '+s.n+'</div><div style="font-size:11px;font-weight:800;color:#fff;margin-bottom:2px">'+s.t+'</div><div style="font-size:8px;color:#a78bfa;font-weight:700;margin-bottom:4px">'+s.time+'</div><div style="font-size:8px;color:rgba(255,255,255,.45);line-height:1.4">'+s.d+'</div></div>').join('')
+        + '</div>'
+        + '<div style="display:flex;gap:7px;flex-wrap:wrap">'
+          + '<div style="background:linear-gradient(135deg,#496BE3,#6B8AEC);border-radius:6px;padding:7px 14px;font-size:10px;font-weight:800;color:#fff">\ud83d\ude80 Empecemos</div>'
+          + '<div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:6px;padding:7px 12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.6)">Ver caso de referencia \u2192</div>'
+        + '</div>'
+      + '</div>' + fD(6) + '</div>',
+  ];
+  return (builders[i]||builders[0])();
+}
+
+function toggleScript(i){ document.getElementById('sc'+i).classList.toggle('open'); }
+
+function calcROI(){
+  const emp  = parseInt(document.getElementById('roi-emp')?.value)  || 1000;
+  const hrs  = parseInt(document.getElementById('roi-hrs')?.value)  || 12;
+  const rot  = parseInt(document.getElementById('roi-rot')?.value)  || 20;
+  const cost = parseInt(document.getElementById('roi-cost')?.value) || 800;
+  if(!document.getElementById('roi-emp-v')) return;
+  document.getElementById('roi-emp-v').textContent  = emp.toLocaleString('es-AR');
+  document.getElementById('roi-hrs-v').textContent  = hrs+' hs';
+  document.getElementById('roi-rot-v').textContent  = rot+'%';
+  document.getElementById('roi-cost-v').textContent = 'USD '+cost.toLocaleString('es-AR');
+  const aHR  = Math.round(hrs*52*45/1000)*1000;
+  const aRot = Math.round(emp*(rot/100)*0.25*cost);
+  const cH   = emp*8*12;
+  const roi  = cH>0 ? Math.round((aHR+aRot-cH)/cH*100) : 0;
+  document.getElementById('roi-r1').textContent = 'USD '+Math.round(aHR/1000)+'K';
+  document.getElementById('roi-r2').textContent = 'USD '+Math.round(aRot/1000)+'K';
+  document.getElementById('roi-r3').textContent = (roi>0?'+':'')+roi+'%';
+}
+
+function copySlideOutline(){
+  if(!current) return; const c=current;
+  const t='OUTLINE DEL DECK \u2014 '+c.name+'\n'+'='.repeat(44)+'\n\nSLIDE 01 \xb7 El contexto de '+c.name+'\n\u2022 Industria: '+c.industry+'  |  '+c.employees+' empleados  |  '+c.type+'\n\nSLIDE 02 \xb7 \xbfC\xf3mo gestionan hoy?\n\u2022 Usan: '+c.tech.filter(t=>t.status==='usa').map(t=>t.name).join(', ')+'\n\u2022 Gaps: '+c.tech.filter(t=>t.status==='gap').map(t=>t.name).join(', ')+'\n\nSLIDE 03 \xb7 Humand \u2014 la capa que falta\n\u2022 '+c.primaryModule+'\n\u2022 '+c.secondaryModules.map(m=>m.name).join(' \xb7 ')+'\n\nSLIDE 04 \xb7 Flujo del empleado\n\u2022 App m\xf3vil sin email corporativo\n\u2022 Feed \xb7 Turnos \xb7 Solicitudes \xb7 Sammy AI\n\nSLIDE 05 \xb7 ROI esperado para '+c.name+'\n\u2022 HR Ops: -40% tiempo manual\n\u2022 Onboarding: 3\xd7 m\xe1s r\xe1pido \xb7 Rotaci\xf3n: -25% en 6 meses\n\nSLIDE 06 \xb7 Propuesta de piloto\n\u2022 Go-live: 3 semanas \xb7 Resultados a los 60 d\xedas';
+  navigator.clipboard?.writeText(t).catch(()=>{}); toast('\ud83d\udcca Outline del deck copiado');
+}
+function copyScript(){
+  if(!current) return; const c=current;
+  const t='SCRIPT DE ENTREVISTA \u2014 '+c.name+'\n'+'='.repeat(44)+'\n\n1. APERTURA (2-3 min)\n"'+c.opener+'"\n\n2. DISCOVERY (8-10 min)\n'+c.questions.map((q,i)=>(i+1)+'. '+q.text).join('\n')+'\n\n3. DEMO\nMostrar: '+c.primaryModule+'\nLuego: '+c.secondaryModules.map(m=>m.name).join(', ')+'\n\n4. CIERRE\nSalir con: fecha + nombre del responsable del lado del cliente.';
+  navigator.clipboard?.writeText(t).catch(()=>{}); toast('\ud83c\udfa4 Script completo copiado');
+}
+function copyBattleCard(){
+  const t='BATTLE CARD \u2014 Humand vs. Competidores\n'+'='.repeat(44)+'\n\nHumand GANA en:\n\u2713 Comunicaci\xf3n con frontline (nativo, m\xf3vil, sin email)\n\u2713 Work Shifts nativo\n\u2713 Sammy AI incluido\n\u2713 Implementaci\xf3n: 3 semanas\n\u2713 Soporte local LatAm\n\u2713 Integraci\xf3n con SAP/Workday\n\nvs. Worky/CharlieHR \u2192 M\xf3dulos de frontline que ellos no tienen\nvs. SAP SuccessFactors \u2192 10x m\xe1s r\xe1pido \xb7 precio accesible para LatAm';
+  navigator.clipboard?.writeText(t).catch(()=>{}); toast('\u2694\ufe0f Battle card copiada');
+}
+
+
+// ═══════════════════════════════════════════
+// GAVIN DIRECTIVES — Stakeholders + Deal Strategy
+// ═══════════════════════════════════════════
+let currentStage = 'discovery';
+const STAGES = [
+  {id:'lead',     label:'Lead / Early Intro',   num:'01', goal:'Establecer credibilidad y evaluar fit',      desc:'Mostrá que hiciste la tarea. Presentá el contexto de la empresa e identificá si hay dolor real.'},
+  {id:'discovery',label:'Discovery',            num:'02', goal:'Validar el dolor, la urgencia y el fit',     desc:'Profundizá en los problemas reales. Mapeá stakeholders y entendé el proceso de decisión.'},
+  {id:'champion', label:'Champion Identificado',num:'03', goal:'Fortalecer el apoyo interno',               desc:'Equipá al champion con argumentos para vender internamente. Identificá quién falta sumar.'},
+  {id:'dm',       label:'DM Involucrado',        num:'04', goal:'Alinear Humand a las prioridades ejecutivas',desc:'Llevar la conversación al nivel estratégico. Framing de ROI, visión y impacto en el negocio.'},
+  {id:'procure',  label:'Procurement / Cierre', num:'05', goal:'Reducir riesgo y mantener el momentum',    desc:'Mapear bloqueadores. Acelerar la aprobación técnica, legal y financiera.'},
+];
+const STAGE_GUIDANCE = {
+  lead:     {provide:['Resumen de la empresa y contexto de industria','Desafíos probables basados en tipo de workforce','Preguntas iniciales de discovery','Stakeholders clave a identificar']},
+  discovery:{provide:['Preguntas de discovery por rol (HR / Ops / IT / Exec)','Casos de uso de Humand relevantes','Gaps de stakeholders detectados','Mapping inicial de módulos a recomendar']},
+  champion: {provide:['Mensajes para que el champion venda internamente','Framing del caso de uso para su empresa','Proof points de clientes similares','Próximos stakeholders a involucrar']},
+  dm:       {provide:['Mensajes ejecutivos y ROI-oriented','Resumen de valor para el C-suite','Objecciones probables y cómo manejarlas','Propuesta de piloto con quick wins']},
+  procure:  {provide:['Mapa de bloqueadores (IT, Legal, Finance)','Alertas de stakeholders faltantes','Contexto para negociación','Próximas acciones concretas para cerrar']},
+};
+
+function setStage(id){
+  currentStage = id;
+  document.querySelectorAll('.stage-pill').forEach(p=>p.classList.toggle('on', p.dataset.stage===id));
+  if(document.getElementById('panel-dealstrat').classList.contains('on')){
+    renderDealStrategy(current);
+  }
+  // update coverage card stage hint
+  renderCovCard(current);
+}
+
+
+// Safety defaults for companies missing Gavin data
+function _safe(c){
+  if(!c.stakeholders)   c.stakeholders   = [{role:'HR / People',title:'Responsable de RRHH',type:'champion',cares:['Comunicación interna','Digitalización de HR','Onboarding'],present:true},{role:'CEO / Director',title:'CEO / Gerente General',type:'dm',cares:['Eficiencia operativa','ROI','Retención'],present:false}];
+  if(!c.roleQuestions)  c.roleQuestions  = {hr:['"¿Cómo comunican cambios a todos los empleados hoy?"','"¿Qué procesos de HR son todavía manuales?"'],ops:['"¿Cómo coordinan equipos fuera de la oficina?"'],it:['"¿Qué sistemas de HR tienen actualmente?"'],exec:['"¿Cuál es el mayor desafío de personas de este año?"']};
+  if(!c.dealRisks)      c.dealRisks      = [{lvl:'warn',txt:'Validar información básica de la empresa al inicio de la reunión'},{lvl:'warn',txt:'Identificar y mapear el buying committee completo'}];
+  if(!c.nextActions)    c.nextActions    = ['Validar información de la empresa al inicio de la reunión','Identificar quién es el DM e invitarlo a la próxima reunión','Proponer una demo técnica con el equipo de IT'];
+  if(!c.similarCases)   c.similarCases   = [{ico:'🏢',company:'Empresa de servicios AR',industry:'Servicios',useCase:'Communications + Forms & Workflows para digitalizar HR Ops',result:'-45% tiempo manual de HR · 88% adopción en 60 días'}];
+  return c;
+}
+function renderStageSidebar(c){ c=_safe(c);
+  document.getElementById('stage-card').innerHTML =
+    '<div class="stage-top"><span>Etapa del deal</span></div>' +
+    '<div class="stage-pills">' +
+    STAGES.map(s=>'<div class="stage-pill'+(s.id===currentStage?' on':'')+'" data-stage="'+s.id+'" onclick="setStage(\''+s.id+'\')">' +
+      '<span class="sp-num">'+s.num+'</span><span style="flex:1">'+s.label+'</span>' +
+    '</div>').join('') +
+    '</div>';
+}
+
+function renderCovCard(c){  c=_safe(c);
+  const present = c.stakeholders.filter(s=>s.present).length;
+  const total   = c.stakeholders.length;
+  const pct     = Math.round(present/total*100);
+  const barColor = pct>=75?'var(--ok)':pct>=50?'var(--wa)':'var(--red)';
+  document.getElementById('cov-card').innerHTML =
+    '<div class="cov-head"><span class="cov-lbl">Cobertura de stakeholders</span><span class="cov-num">'+present+'/'+total+'</span></div>' +
+    '<div class="cov-bar"><div class="cov-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div>' +
+    '<div class="cov-roles">' +
+    c.stakeholders.map(s=>'<div class="cov-role">' +
+      '<span class="cov-dot" style="background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>' +
+      '<span class="cov-rname">'+s.role+'</span>' +
+      (s.present?'<span class="cov-ok">✓ En reunión</span>':'<span class="cov-miss">✗ Faltante</span>') +
+    '</div>').join('') +
+    '</div>';
+}
+
+function renderStakeholders(c){ c=_safe(c);
+  const typeLabel={champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Bloqueador'};
+  const missing = c.stakeholders.filter(s=>!s.present);
+  const alerts = missing.length ? missing.map(s=>'<div class="stk-alert"><span>⚠️</span><span><strong>'+s.role+'</strong> no está en esta reunión — ' + (s.type==='dm'?'es el aprobador final del deal.':s.type==='influencer'?'su apoyo puede acelerar o frenar el proceso.':'puede bloquear el avance.') + ' Buscá cómo involucrarlo en la próxima llamada.</span></div>').join('') : '<div style="background:var(--okl);border-radius:var(--r2);padding:11px 14px;font-size:13px;color:var(--ok);font-weight:600;margin-bottom:14px">✅ Todos los stakeholders clave están en la reunión. Buen coverage.</div>';
+  
+  document.getElementById('panel-stakeholders').innerHTML =
+    '<div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Basado en el perfil de <strong>'+c.name+'</strong>. Las personas marcadas como "Faltante" no están confirmadas en la reunión — son críticas para avanzar el deal.</div>' +
+    '<div class="stk-grid">' +
+    c.stakeholders.map(s=>'<div class="stk-card stk-'+s.type+'">' +
+      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?'✓ En reunión':'✗ Faltante')+'</span>' +
+      '<div class="stk-badge">'+typeLabel[s.type]+'</div>' +
+      '<div class="stk-role">'+s.role+'</div>' +
+      '<div class="stk-title">'+s.title+'</div>' +
+      '<div class="stk-cares">'+s.cares.map(c=>'<div class="stk-care">'+c+'</div>').join('')+'</div>' +
+    '</div>').join('') +
+    '</div>' +
+    (missing.length?'<div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:10px">⚠️ Stakeholders faltantes</div>'+alerts:'') +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol — elegí el perfil de quien tenés en la llamada</div>' +
+    '<div class="role-filter" id="stk-role-filter">' +
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>' +
+      '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
+      '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>' +
+      '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>' +
+      '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite / Exec</div>' +
+    '</div>' +
+    '<div id="stk-qlist">' + renderStkQuestions(c, 'all') + '</div>';
+}
+
+function renderStkQuestions(c, role){
+  const allQ = [
+    ...c.roleQuestions.hr.map(q=>({q,r:'hr'})),
+    ...c.roleQuestions.ops.map(q=>({q,r:'ops'})),
+    ...c.roleQuestions.it.map(q=>({q,r:'it'})),
+    ...c.roleQuestions.exec.map(q=>({q,r:'exec'})),
+  ];
+  const filtered = role==='all'?allQ:allQ.filter(x=>x.r===role);
+  const rLabel={hr:'HR Leader',ops:'Ops Leader',it:'IT Leader',exec:'C-Suite / Exec'};
+  const rColor={hr:'var(--p)',ops:'var(--wa)',it:'var(--pu)',exec:'var(--ok)'};
+  const rBg={hr:'var(--px)',ops:'var(--wal)',it:'var(--pul)',exec:'var(--okl)'};
+  return '<div class="q-list">'+filtered.map((x,i)=>
+    '<div class="q-item">' +
+      '<div class="q-num">'+(i+1)+'</div>' +
+      '<div class="q-body">' +
+        '<span class="q-cat" style="background:'+rBg[x.r]+';color:'+rColor[x.r]+'">'+rLabel[x.r]+'</span>' +
+        '<div class="q-text">'+x.q+'</div>' +
+      '</div>' +
+      '<div class="q-copy" onclick="copyText('+JSON.stringify(x.q)+')">Copiar</div>' +
+    '</div>'
+  ).join('')+'</div>';
+}
+
+function filterStkQ(role, el){
+  document.querySelectorAll('#stk-role-filter .rpill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('stk-qlist').innerHTML = renderStkQuestions(current, role);
+}
+
+function renderDealStrategy(c){ c=_safe(c);
+  const st = STAGES.find(s=>s.id===currentStage)||STAGES[1];
+  const guide = STAGE_GUIDANCE[currentStage];
+  const nextItems = c.nextActions.map((a,i)=>
+    '<div class="next-item" id="na'+i+'" onclick="toggleAction('+i+')">' +
+      '<div class="ni-box" id="nab'+i+'"></div>' +
+      '<div class="ni-txt">'+a+'</div>' +
+    '</div>'
+  ).join('');
+  const ucHtml = c.similarCases.map(uc=>
+    '<div class="uc-item">' +
+      '<div class="uc-ico">'+uc.ico+'</div>' +
+      '<div>' +
+        '<div class="uc-company">'+uc.company+'</div>' +
+        '<div class="uc-ind">'+uc.industry+'</div>' +
+        '<div class="uc-case">'+uc.useCase+'</div>' +
+        '<span class="uc-result">'+uc.result+'</span>' +
+      '</div>' +
+    '</div>'
+  ).join('');
+  document.getElementById('panel-dealstrat').innerHTML =
+    '<div class="deal-stage-box">' +
+      '<div class="dsb-stage">Etapa actual: '+st.label+'</div>' +
+      '<div class="dsb-goal">Objetivo: '+st.goal+'</div>' +
+      '<div class="dsb-desc">'+st.desc+'</div>' +
+    '</div>' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:9px">Qué debe proveer el AI en esta etapa</div>' +
+    '<div style="background:var(--bg);border-radius:var(--r2);padding:13px 15px;margin-bottom:18px">' +
+      guide.provide.map(p=>'<div style="font-size:12px;color:var(--t1);display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;line-height:1.5"><span style="color:var(--p);font-weight:700;flex-shrink:0">✓</span>'+p+'</div>').join('') +
+    '</div>' +
+    '<div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:9px">⚠️ Riesgos del deal — '+c.name+'</div>' +
+    '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
+    '<div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:9px">✅ Próximas acciones para avanzar el deal</div>' +
+    '<div class="next-list">'+nextItems+'</div>' +
+    '<div style="font-size:12px;font-weight:700;color:var(--t1);margin-bottom:9px">🏆 Casos similares de Humand que podés usar</div>' +
+    '<div class="uc-list">'+ucHtml+'</div>';
+}
+
+function toggleAction(i){
+  const el = document.getElementById('na'+i);
+  const box = document.getElementById('nab'+i);
+  const done = el.classList.toggle('done');
+  box.textContent = done ? '✓' : '';
+}
+
+
+function filterQ(role, el){
+  document.querySelectorAll('.role-filter .rpill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  document.querySelectorAll('#q-list-main .q-item').forEach(item=>{
+    const r = item.dataset.role||'all';
+    item.style.display = (role==='all'||r===role||r==='all') ? 'flex' : 'none';
+  });
+}
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function copyText(txt){
+  navigator.clipboard?.writeText(txt.replace(/\\'/g,"'")).catch(()=>{});
+  toast('📋 Copiado al portapapeles');
+}
+function copyBrief(){
+  if(!current) return;
+  const c = current;
+  const brief = `BRIEF: ${c.name}\n${'='.repeat(40)}\nIndustria: ${c.industry} | Empleados: ${c.employees} | País: ${c.country}\n\nDESCRIPCIÓN:\n${c.desc}\n\nTECH STACK:\nUsan: ${c.tech.filter(t=>t.status==='usa').map(t=>t.name).join(', ')}\nGaps: ${c.tech.filter(t=>t.status==='gap').map(t=>t.name).join(', ')}\n\nMÓDULO A VENDER: ${c.primaryModule}\n${c.primaryWhy}\n\nOPENER:\n"${c.opener}"\n\nPREGUNTAS CLAVE:\n${c.questions.map((q,i)=>`${i+1}. ${q.text}`).join('\n')}`;
+  navigator.clipboard?.writeText(brief).catch(()=>{});
+  toast('📋 Brief completo copiado');
+}
+let toastT;
+function toast(m){
+  const el=document.getElementById('toast-el');
+  document.getElementById('tmsg').textContent=m;
+  el.classList.add('on');clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('on'),2500);
+}
+</script>
+</body>
+</html>
