@@ -407,6 +407,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 /* Drawer content sections */
 .drw-section{margin-bottom:20px}
 .drw-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--br)}
+.anl-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:14px;box-shadow:var(--s1)}
+.anl-card-title{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg)}
+.sig-plain{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bg)}
+.sig-plain:last-child{border-bottom:none}
+.sig-plain-ico{font-size:15px;flex-shrink:0}
+.sig-plain-text{flex:1;font-size:12px;color:var(--t1);line-height:1.5}
 .drw-metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .drw-metric{background:var(--bg);border-radius:var(--r1);padding:10px 12px}
 .drw-metric-val{font-size:16px;font-weight:600;color:var(--t1)}
@@ -921,7 +927,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.10</span>
+  <span class="ver-badge">v1.2.11</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -2040,8 +2046,8 @@ function openCtxDrawer(type){
         '<div class="drw-section-title">Contexto</div>'+
         c.keyInsights.map(i=>'<div class="drw-bullet">'+i+'</div>').join('')+
       '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Módulos de interés</div>'+
+      '<div class="anl-card">'+
+        '<div class="anl-card-title">📦 Módulos de interés</div>'+
         (function(){
           function mc(name,why,badge,isPri){
             const d=getModuleDetail(name);
@@ -2066,13 +2072,19 @@ function openCtxDrawer(type){
             c.secondaryModules.map((m,i)=>mc(m.name,m.why,'Módulo '+(i+2),false)).join('');
         })()+
       '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Riesgos del deal</div>'+
+      '<div class="anl-card">'+
+        '<div class="anl-card-title">⚠️ Riesgos del deal</div>'+
         c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+
       '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Señales de compra</div>'+
-        c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1;font-size:12px">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')+
+      '<div class="anl-card">'+
+        '<div class="anl-card-title">✅ Señales de compra</div>'+
+        c.signals.map(s=>
+          '<div class="sig-plain">'+
+            '<span class="sig-plain-ico">'+s.ico+'</span>'+
+            '<span class="sig-plain-text">'+s.text+'</span>'+
+            '<span class="sig-row-badge '+s.cls+'">'+s.badge+'</span>'+
+          '</div>'
+        ).join('')+
       '</div>';
   }
 
@@ -3225,16 +3237,18 @@ function renderStkQuestions(c, role){
 }
 
 function filterStkQ(role, el){
-  document.querySelectorAll('#stk-role-filter .rpill').forEach(p=>p.classList.remove('on'));
+  const filterEl = el.closest('.role-filter');
+  filterEl.querySelectorAll('.rpill').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
-  document.getElementById('stk-qlist').innerHTML = renderStkQuestions(current, role);
+  const qlist = filterEl.nextElementSibling;
+  if(qlist) qlist.innerHTML = renderStkQuestions(current, role);
 }
 
 function renderDealStrategy(c){ c=_safe(c);
   const st = STAGES.find(s=>s.id===currentStage)||STAGES[1];
   const guide = STAGE_GUIDANCE[currentStage];
   const nextItems = c.nextActions.map((a,i)=>
-    '<div class="next-item" id="na'+i+'" onclick="toggleAction('+i+')">' +
+    '<div class="next-item" id="na'+i+'" onclick="toggleNextAction('+i+')">' +
       '<div class="ni-box" id="nab'+i+'"></div>' +
       '<div class="ni-txt">'+a+'</div>' +
     '</div>'
@@ -3268,7 +3282,7 @@ function renderDealStrategy(c){ c=_safe(c);
     '<div class="uc-list">'+ucHtml+'</div>';
 }
 
-function toggleAction(i){
+function toggleNextAction(i){
   const el = document.getElementById('na'+i);
   const box = document.getElementById('nab'+i);
   const done = el.classList.toggle('done');
