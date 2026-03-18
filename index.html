@@ -276,7 +276,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .toast{position:fixed;bottom:22px;right:22px;background:var(--t1);color:#fff;padding:10px 18px;border-radius:var(--r1);font-size:12px;font-weight:600;z-index:999;transform:translateY(60px);opacity:0;transition:all .28s;box-shadow:var(--s3)}
 .toast.on{transform:translateY(0);opacity:1}
 /* ════ WIZARD LAYOUT ════ */
-.co-strip{background:#fff;border-bottom:1px solid var(--br);padding:12px 28px;display:flex;align-items:center;gap:14px;position:sticky;top:60px;z-index:90;flex-shrink:0}
+.co-strip{background:#fff;border-bottom:1px solid var(--br);padding:14px 40px;display:flex;align-items:center;gap:14px;position:sticky;top:60px;z-index:90;flex-shrink:0}
 .cos-logo{width:40px;height:40px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600;flex-shrink:0}
 .cos-info{flex:1;min-width:0}
 .cos-name{font-size:15px;font-weight:600;color:var(--t1)}
@@ -284,7 +284,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .cos-score{display:flex;align-items:center;gap:8px;background:var(--px);border-radius:var(--r2);padding:8px 14px;flex-shrink:0}
 .cos-score-num{font-size:22px;font-weight:600;color:var(--p);line-height:1}
 .cos-score-label{font-size:11px;color:var(--p);font-weight:600;line-height:1.3;max-width:90px}
-.stepper-wrap{background:#fff;border-bottom:1px solid var(--br);display:flex;position:sticky;top:112px;z-index:89;overflow-x:auto;flex-shrink:0}
+.stepper-wrap{background:#fff;border-bottom:1px solid var(--br);display:flex;position:sticky;top:128px;z-index:89;overflow-x:auto;flex-shrink:0}
 .stepper{display:flex;align-items:stretch;width:100%}
 .step-item{flex:1;display:flex;align-items:center;gap:9px;padding:12px 16px;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;min-width:140px}
 .step-item:hover{background:var(--bg)}
@@ -294,19 +294,28 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .step-label{font-size:11px;font-weight:600;color:var(--t2);line-height:1.3;flex:1;min-width:0}
 .step-item.on .step-label{color:var(--p)}
 .s3-scroll{flex:1;overflow-y:auto}
-.stage-body{display:flex;width:100%;padding:24px 40px;gap:20px;align-items:flex-start;min-height:calc(100vh - 60px - 48px)}
-.stage-main{flex:1;min-width:0;display:flex;flex-direction:row;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;align-self:stretch}
-.stage-side{width:272px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
-/* Stage section nav (left wizard) */
-.snav{width:196px;flex-shrink:0;padding:12px 8px;background:#fff;display:flex;flex-direction:column;gap:2px}
+.stage-body{display:flex;width:100%;padding:24px 40px;gap:16px;align-items:flex-start}
+/* stage-main is now transparent — nav and panels float as individual white cards */
+.stage-main{flex:1;min-width:0;display:flex;flex-direction:row;background:transparent;border:none;box-shadow:none;overflow:visible;gap:14px}
+/* Side panel is now a single white card with tabs */
+.stage-side{width:300px;flex-shrink:0;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;position:sticky;top:196px;align-self:flex-start}
+/* Stage section nav (left wizard) — floats as its own white card */
+.snav{width:204px;flex-shrink:0;padding:10px 8px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);display:flex;flex-direction:column;gap:2px;align-self:flex-start;position:sticky;top:196px}
 .snav-item{display:flex;align-items:center;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:400;color:var(--t2);transition:all .14s;border-radius:var(--r2);user-select:none}
 .snav-item:hover{background:var(--bg);color:var(--t1)}
 .snav-item.on{background:var(--bg);color:var(--t1);font-weight:600}
-/* Stage section content */
-.stage-content{flex:1;overflow-y:auto;padding:22px 24px;min-width:0;border-left:1px solid var(--br)}
+/* Stage content — panels stack as individual white cards */
+.stage-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
 .stage-panel{display:none}
-.stage-panel.on{display:block}
+.stage-panel.on{display:block;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);padding:20px 24px}
 .sp-title{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:8px}
+/* Side panel tabs */
+.sside-tabs{display:flex;border-bottom:1px solid var(--br);padding:0 8px}
+.sside-tab{padding:12px 10px;font-size:13px;font-weight:400;color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;transition:all .14s;user-select:none;white-space:nowrap}
+.sside-tab:hover{color:var(--t1)}
+.sside-tab.on{color:var(--p);font-weight:600;border-bottom-color:var(--p)}
+.sside-panel{display:none;padding:16px 16px}
+.sside-panel.on{display:block}
 /* Content cards */
 .sc-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);overflow:hidden;box-shadow:var(--s1)}
 .sc-card-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;transition:background .12s;user-select:none}
@@ -792,7 +801,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.1.3</span>
+  <span class="ver-badge">v1.1.4</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1824,54 +1833,57 @@ function renderStageSide(c){ c=_safe(c);
   const barColor = pct>=75?'var(--ok)':pct>=50?'var(--wa)':'var(--red)';
   const saved = localStorage.getItem(notesKey(c.name))||'';
   const isDisc = currentStage==='discovery';
-
-  // Stakeholder coverage card
-  const covHtml =
-    '<div class="cov-card2">'+
-      '<div class="cov-head"><span class="cov-lbl">'+t('covLabel')+'</span>'+
-      '<div style="display:flex;align-items:center;gap:6px">'+
-        '<span class="cov-num">'+present+'/'+total+'</span>'+
-        '<span class="cov-edit-btn" onclick="openDrawer(\'stakeholders\')">Ver todos →</span>'+
-      '</div></div>'+
-      '<div class="cov-bar"><div class="cov-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div>'+
-      '<div class="stk-mini">'+
-        stks.map(s=>'<div class="stk-mini-row">'+
-          '<span class="stk-mini-dot" style="background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>'+
-          '<span class="stk-mini-name">'+s.role+'</span>'+
-          (s.present?'<span class="stk-mini-status" style="color:var(--ok)">✓</span>':'<span class="stk-mini-status" style="color:var(--red)">✗</span>')+
-        '</div>').join('')+
-      '</div>'+
-      '<div style="margin-top:10px">'+
-        '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'stakeholders\')">👥 Ver stakeholders + editar</button>'+
-      '</div>'+
-    '</div>';
-
-  // Notes card
-  const notesHtml =
-    '<div class="notes-sc'+(isDisc?' disc-active':'')+'" id="notes-sc-card">'+
-      '<div class="notes-sc-tip">💡 Estás en Discovery — anotá lo que dice el cliente en tiempo real.</div>'+
-      '<div class="notes-sc-lbl">'+
-        '<span>📝 Notas</span>'+
-        '<span style="font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px;background:'+(isDisc?'var(--p)':'var(--px)')+';color:'+(isDisc?'#fff':'var(--p)')+'">Todas las etapas</span>'+
-      '</div>'+
-      '<textarea class="nsc-ta" id="nsc-ta" placeholder="Anotá lo que escuchás en la llamada..." oninput="saveSideNotes(\''+c.name.replace(/'/g,"\\'")+'\',this.value)">'+saved+'</textarea>'+
-      '<div class="nsc-footer">'+
-        '<span class="nsc-meta">'+(saved.length>0?saved.length+' chars':'')+'</span>'+
-        '<span class="nsc-saved" id="nsc-saved-ind">✓ Guardado</span>'+
-      '</div>'+
-    '</div>';
-
-  // Deal strategy quick card
   const st = STAGES.find(s=>s.id===currentStage)||STAGES[1];
-  const dealQuickHtml =
-    '<div class="cov-card2">'+
-      '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);margin-bottom:5px">Objetivo de esta etapa</div>'+
-      '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px">'+st.goal+'</div>'+
-      '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:10px">'+st.desc+'</div>'+
-      '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'dealstrat\')">⚡ Deal Strategy completa →</button>'+
+
+  // Tab 1: Objetivo
+  const tabObjetivo =
+    '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);margin-bottom:6px">Etapa actual</div>'+
+    '<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:6px">'+st.goal+'</div>'+
+    '<div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px">'+st.desc+'</div>'+
+    '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'dealstrat\')">⚡ Deal Strategy completa →</button>';
+
+  // Tab 2: Stakeholders
+  const tabStk =
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'+
+      '<span style="font-size:13px;font-weight:600;color:var(--t1)">'+t('covLabel')+'</span>'+
+      '<span style="font-size:11px;color:var(--p);cursor:pointer;font-weight:600" onclick="openDrawer(\'stakeholders\')">Ver todos →</span>'+
+    '</div>'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">'+
+      '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+barColor+';border-radius:3px;transition:width .4s"></div></div>'+
+      '<span style="font-size:11px;font-weight:600;color:'+barColor+'">'+present+'/'+total+'</span>'+
+    '</div>'+
+    stks.map(s=>'<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg)">'+
+      '<span style="width:8px;height:8px;border-radius:50%;background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+';flex-shrink:0;display:inline-block"></span>'+
+      '<span style="flex:1;font-size:12px;color:var(--t1)">'+s.role+'</span>'+
+      (s.present?'<span style="font-size:11px;color:var(--ok);font-weight:600">✓</span>':'<span style="font-size:11px;color:var(--red);font-weight:600">✗</span>')+
+    '</div>').join('')+
+    '<div style="margin-top:12px">'+
+      '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'stakeholders\')">👥 Gestionar stakeholders</button>'+
     '</div>';
 
-  document.getElementById('stage-side').innerHTML = dealQuickHtml + covHtml + notesHtml;
+  // Tab 3: Notas
+  const tabNotas =
+    (isDisc?'<div style="font-size:11px;color:var(--p);background:var(--px);border-radius:var(--r1);padding:8px 10px;margin-bottom:10px;font-weight:600;line-height:1.4">💡 Discovery — anotá lo que dice el cliente en tiempo real.</div>':'')+
+    '<textarea class="nsc-ta" id="nsc-ta" placeholder="Anotá lo que escuchás en la llamada..." oninput="saveSideNotes(\''+c.name.replace(/'/g,"\\'")+'\',this.value)">'+saved+'</textarea>'+
+    '<div class="nsc-footer">'+
+      '<span class="nsc-meta">'+(saved.length>0?saved.length+' chars':'')+'</span>'+
+      '<span class="nsc-saved" id="nsc-saved-ind">✓ Guardado</span>'+
+    '</div>';
+
+  document.getElementById('stage-side').innerHTML =
+    '<div class="sside-tabs">'+
+      '<div class="sside-tab on" data-tab="objetivo" onclick="sideTab(\'objetivo\')">Objetivo</div>'+
+      '<div class="sside-tab" data-tab="stk" onclick="sideTab(\'stk\')">Stakeholders</div>'+
+      '<div class="sside-tab" data-tab="notas" onclick="sideTab(\'notas\')">Notas</div>'+
+    '</div>'+
+    '<div class="sside-panel on" id="stp-objetivo">'+tabObjetivo+'</div>'+
+    '<div class="sside-panel" id="stp-stk">'+tabStk+'</div>'+
+    '<div class="sside-panel" id="stp-notas">'+tabNotas+'</div>';
+}
+
+function sideTab(id){
+  document.querySelectorAll('.sside-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));
+  document.querySelectorAll('.sside-panel').forEach(p=>p.classList.toggle('on',p.id==='stp-'+id));
 }
 
 // ═══════════════════════════════════════════
