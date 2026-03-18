@@ -66,15 +66,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .chips{display:flex;gap:7px;flex-wrap:wrap}
 .chip{background:var(--bg);border:1px solid var(--br);color:var(--t2);font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:5px}
 .chip:hover{border-color:var(--p);color:var(--p);background:var(--px)}
-.recent-block{margin-top:28px}
-.recent-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t3);margin-bottom:12px}
-.recent-list{display:flex;flex-direction:column;gap:8px}
-.recent-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);cursor:pointer;transition:all .18s}
-.recent-item:hover{border-color:var(--p);background:var(--px);transform:translateX(3px)}
-.ri-logo{width:36px;height:36px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;flex-shrink:0}
-.ri-name{font-size:13px;font-weight:600}
-.ri-meta{font-size:11px;color:var(--t2);margin-top:1px}
-.ri-score{margin-left:auto;font-size:13px;font-weight:600;color:var(--p)}
 
 /* ════════════════════════════════
    SCREEN 2 — PROCESSING
@@ -282,6 +273,145 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .fb-btn:hover,.fb-btn.on{border-color:var(--p);background:var(--px);color:var(--p)}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--t1);color:#fff;padding:10px 18px;border-radius:var(--r1);font-size:12px;font-weight:600;z-index:999;transform:translateY(60px);opacity:0;transition:all .28s;box-shadow:var(--s3)}
 .toast.on{transform:translateY(0);opacity:1}
+/* ════ WIZARD LAYOUT ════ */
+.co-strip{background:#fff;border-bottom:1px solid var(--br);padding:12px 28px;display:flex;align-items:center;gap:14px;position:sticky;top:60px;z-index:90;flex-shrink:0}
+.cos-logo{width:40px;height:40px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600;flex-shrink:0}
+.cos-info{flex:1;min-width:0}
+.cos-name{font-size:15px;font-weight:600;color:var(--t1)}
+.cos-meta{font-size:12px;color:var(--t2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cos-score{display:flex;align-items:center;gap:8px;background:var(--px);border-radius:var(--r2);padding:8px 14px;flex-shrink:0}
+.cos-score-num{font-size:22px;font-weight:600;color:var(--p);line-height:1}
+.cos-score-label{font-size:11px;color:var(--p);font-weight:600;line-height:1.3;max-width:90px}
+.stepper-wrap{background:#fff;border-bottom:1px solid var(--br);display:flex;position:sticky;top:112px;z-index:89;overflow-x:auto;flex-shrink:0}
+.stepper{display:flex;align-items:stretch;width:100%}
+.step-item{flex:1;display:flex;align-items:center;gap:9px;padding:12px 16px;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;min-width:140px}
+.step-item:hover{background:var(--bg)}
+.step-item.on{border-bottom-color:var(--p);background:var(--px)}
+.step-dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--br);background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--t3);flex-shrink:0;transition:all .18s}
+.step-item.on .step-dot{background:var(--p);border-color:var(--p);color:#fff}
+.step-label{font-size:11px;font-weight:600;color:var(--t2);line-height:1.3;flex:1;min-width:0}
+.step-item.on .step-label{color:var(--p)}
+.s3-scroll{flex:1;overflow-y:auto}
+.stage-body{display:flex;max-width:1280px;margin:0 auto;width:100%;padding:24px 28px;gap:20px;align-items:flex-start}
+.stage-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+.stage-side{width:272px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+/* Content cards */
+.sc-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);overflow:hidden;box-shadow:var(--s1)}
+.sc-card-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;transition:background .12s;user-select:none}
+.sc-card-head:hover{background:var(--bg)}
+.sc-card-hl{display:flex;align-items:center;gap:10px}
+.sc-card-ico{font-size:17px;flex-shrink:0}
+.sc-card-title{font-size:13px;font-weight:600;color:var(--t1)}
+.sc-card-sub{font-size:11px;color:var(--t2);margin-top:1px}
+.sc-card-badge{font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--px);color:var(--p);flex-shrink:0}
+.sc-card-body{padding:14px 16px;border-top:1px solid var(--br)}
+.sc-card-body.hide{display:none}
+/* Question rows */
+.q-row{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--bg)}
+.q-row:last-child{border-bottom:none;padding-bottom:0}
+.q-row-num{width:21px;height:21px;border-radius:50%;background:var(--px);color:var(--p);font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.q-row-body{flex:1;min-width:0}
+.q-row-cat{font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;display:inline-block;margin-bottom:3px}
+.q-row-text{font-size:13px;color:var(--t1);line-height:1.5}
+.q-row-actions{display:flex;gap:5px;margin-top:5px}
+.q-row-btn{font-size:10px;font-weight:600;color:var(--t3);cursor:pointer;padding:2px 8px;border-radius:var(--r1);border:1px solid var(--br);transition:all .14s;background:#fff}
+.q-row-btn:hover{border-color:var(--p);color:var(--p)}
+.q-row-btn.filled{border-color:var(--ok);color:var(--ok);background:var(--okl)}
+.q-resp-row{display:none;margin-top:6px;padding-top:6px;border-top:1px solid var(--br)}
+.q-resp-row.open{display:block}
+.q-resp-row-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ok);margin-bottom:4px}
+.q-resp-row-ta{width:100%;min-height:48px;border:1.5px solid #d1fae5;border-radius:var(--r1);padding:7px 9px;font-size:12px;color:var(--t1);line-height:1.5;font-family:inherit;resize:vertical;outline:none;transition:border-color .2s}
+.q-resp-row-ta:focus{border-color:var(--ok)}
+/* Meeting rows */
+.mp-rows{display:flex;flex-direction:column}
+.mp-row{display:flex;gap:11px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bg)}
+.mp-row:last-child{border-bottom:none;padding-bottom:0}
+.mp-row-num{width:26px;height:26px;border-radius:50%;background:var(--p);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.mp-row-body{flex:1}
+.mp-row-head{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.mp-row-title{font-size:13px;font-weight:600;color:var(--t1)}
+.mp-row-dur{font-size:10px;color:var(--t3);margin-left:auto;flex-shrink:0}
+.mp-row-text{font-size:12px;color:var(--t2);line-height:1.6}
+.mp-row-tip{margin-top:5px;background:var(--px);border-radius:var(--r1);padding:6px 9px;font-size:11px;color:var(--p);font-weight:600;line-height:1.4}
+/* Module rows */
+.mod-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--br);border-radius:var(--r2);margin-bottom:7px;background:#fff;transition:all .15s}
+.mod-row:last-child{margin-bottom:0}
+.mod-row.pri{border-color:var(--p);background:var(--px)}
+.mod-row-ico{font-size:18px;flex-shrink:0}
+.mod-row-body{flex:1;min-width:0}
+.mod-row-name{font-size:12px;font-weight:600;color:var(--t1)}
+.mod-row.pri .mod-row-name{color:var(--p)}
+.mod-row-why{font-size:11px;color:var(--t2);line-height:1.3;margin-top:1px}
+.mod-row-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;flex-shrink:0;background:var(--px);color:var(--p)}
+.mod-row.pri .mod-row-badge{background:var(--p);color:#fff}
+/* Risk rows */
+.risk-row2{display:flex;align-items:flex-start;gap:7px;padding:8px 10px;border-radius:var(--r2);font-size:12px;color:var(--t1);line-height:1.5;margin-bottom:6px}
+.risk-row2:last-child{margin-bottom:0}
+.risk-row2.crit{background:var(--redl);border:1px solid #fca5a5}
+.risk-row2.warn{background:var(--wal);border:1px solid #fcd34d}
+/* Signals compact */
+.sig-row{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:var(--r1);background:var(--bg);border:1px solid var(--br);margin-bottom:5px;font-size:11px;color:var(--t2);line-height:1.4}
+.sig-row:last-child{margin-bottom:0}
+.sig-row-ico{font-size:13px;flex-shrink:0}
+.sig-row-badge{font-size:9px;font-weight:600;padding:1px 6px;border-radius:20px;margin-left:auto;flex-shrink:0}
+/* Tech stack compact */
+.ts-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.ts-pill2{display:flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--br);border-radius:20px;padding:4px 10px 4px 5px;font-size:11px;font-weight:600;color:var(--t1);transition:all .14s}
+.ts-pill2:hover{border-color:var(--p);box-shadow:var(--s1)}
+.ts-pill2.gap{border-color:rgba(231,68,68,.4);background:var(--redl);color:var(--red)}
+.ts-pill-img{width:18px;height:18px;border-radius:3px;object-fit:contain;flex-shrink:0;background:#fff}
+.ts-pill-fb{width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:600;color:#fff;flex-shrink:0}
+/* Tech search */
+.ts-search-box{position:relative;margin-bottom:14px}
+.ts-search-inp{width:100%;padding:9px 13px;border:1.5px solid var(--br);border-radius:var(--r2);font-size:13px;color:var(--t1);outline:none;font-family:inherit;transition:border-color .2s}
+.ts-search-inp:focus{border-color:var(--p)}
+.ts-search-inp::placeholder{color:var(--t3)}
+.ts-drop{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);box-shadow:var(--s2);z-index:50;max-height:220px;overflow-y:auto;display:none}
+.ts-drop.on{display:block}
+.ts-drop-row{display:flex;align-items:center;gap:9px;padding:8px 12px;cursor:pointer;transition:background .1s}
+.ts-drop-row:hover{background:var(--bg)}
+.ts-drop-logo{width:22px;height:22px;border-radius:4px;object-fit:contain;flex-shrink:0;background:#fff;border:1px solid var(--br)}
+.ts-drop-fb{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:#fff;flex-shrink:0}
+.ts-drop-name{font-size:13px;font-weight:600;color:var(--t1);flex:1}
+.ts-drop-cat{font-size:10px;color:var(--t3)}
+.ts-drop-mod{font-size:10px;color:var(--p);font-weight:600;flex-shrink:0;max-width:120px;text-align:right}
+.ts-added-card{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);margin-bottom:8px;transition:box-shadow .14s}
+.ts-added-card:hover{box-shadow:var(--s1)}
+.ts-added-logo{width:32px;height:32px;border-radius:6px;object-fit:contain;padding:2px;border:1px solid var(--br);flex-shrink:0;background:#fff}
+.ts-added-fb{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+.ts-added-body{flex:1;min-width:0}
+.ts-added-name{font-size:13px;font-weight:600;color:var(--t1)}
+.ts-added-mod{font-size:11px;color:var(--p);font-weight:600;margin-top:2px}
+.ts-added-why{font-size:11px;color:var(--t2);line-height:1.35;margin-top:1px}
+.ts-added-del{font-size:11px;color:var(--t3);cursor:pointer;padding:3px 7px;border-radius:6px;border:1px solid var(--br);transition:all .14s;flex-shrink:0;background:#fff;align-self:flex-start}
+.ts-added-del:hover{border-color:var(--red);color:var(--red)}
+/* Drawer */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;backdrop-filter:blur(2px)}
+.drawer-overlay.on{display:block}
+.drawer{position:fixed;top:0;right:-560px;width:560px;height:100vh;background:#fff;z-index:201;display:flex;flex-direction:column;box-shadow:var(--s3);transition:right .28s cubic-bezier(.4,0,.2,1)}
+.drawer.on{right:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--br);flex-shrink:0}
+.drawer-title{font-size:15px;font-weight:600;color:var(--t1)}
+.drawer-close{width:32px;height:32px;border-radius:var(--r1);border:1.5px solid var(--br);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--t2);transition:all .14s}
+.drawer-close:hover{border-color:var(--p);color:var(--p)}
+.drawer-body{flex:1;overflow-y:auto;padding:20px 22px}
+/* Opener box */
+.stage-opener-box{font-size:14px;line-height:1.7;color:var(--t1);font-style:italic;background:var(--okl);border-left:3px solid var(--ok);border-radius:0 var(--r2) var(--r2) 0;padding:13px 15px;margin-bottom:10px}
+/* Cov card (side) */
+.cov-card2{background:#fff;border:1px solid var(--br);border-radius:var(--r3);padding:14px;box-shadow:var(--s1)}
+/* Notes side (side) */
+.notes-sc{background:#fff;border:1px solid var(--br);border-radius:var(--r3);padding:14px;box-shadow:var(--s1);transition:border-color .3s}
+.notes-sc.disc-active{border-color:var(--p)}
+.notes-sc-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);margin-bottom:7px;display:flex;align-items:center;justify-content:space-between}
+.notes-sc-tip{background:var(--px);border-left:3px solid var(--p);border-radius:0 var(--r1) var(--r1) 0;padding:7px 10px;font-size:11px;color:var(--p);font-weight:600;margin-bottom:7px;line-height:1.4;display:none}
+.notes-sc.disc-active .notes-sc-tip{display:block}
+/* Stk mini */
+.stk-mini{display:flex;flex-direction:column;gap:5px}
+.stk-mini-row{display:flex;align-items:center;gap:7px;font-size:11px;padding:5px 7px;border-radius:var(--r1);background:var(--bg);border:1px solid var(--br)}
+.stk-mini-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.stk-mini-name{flex:1;color:var(--t2)}
+.stk-mini-status{font-size:9px;font-weight:600}
+
 /* Version footer */
 .ver-footer{position:fixed;bottom:10px;left:14px;z-index:90;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.9);border:1px solid var(--br);border-radius:20px;padding:4px 12px;backdrop-filter:blur(6px);box-shadow:var(--s1);cursor:default;transition:opacity .2s}
 .ver-footer:hover{opacity:1}
@@ -506,11 +636,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
     <div class="search-wrap">
       <div class="search-eyebrow"><span class="dot-live"></span>Inteligencia en tiempo real</div>
       <h1 class="search-title">¿Con qué empresa<br>tenés reunión? <span>Investigala.</span></h1>
-      <p class="search-sub">Ingresá el nombre o la web de la empresa y te decimos todo lo que necesitás saber antes de entrar a la llamada: qué hacen, qué herramientas usan, cómo posicionar Humand y qué preguntar.</p>
+      <p class="search-sub">Ingresá el nombre o la web de la empresa y preparate para la llamada en segundos.</p>
       <div class="search-box">
         <label class="search-label">Empresa o URL del sitio web</label>
         <div class="search-row">
-          <input class="search-input" id="main-input" placeholder="ej. Pedidos Ya · google.com · Andreani · acme-corp.com" onkeydown="if(event.key==='Enter')analyze()" />
+          <input class="search-input" id="main-input" placeholder="ej. Pedidos Ya · google.com · Andreani" onkeydown="if(event.key==='Enter')analyze()" />
           <button class="btn b-p btn-lg" onclick="analyze()">Investigar →</button>
         </div>
         <div class="search-divider">o elegí un ejemplo</div>
@@ -518,28 +648,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
           <span class="chip" onclick="fillAndGo('Pedidos Ya')">🛵 Pedidos Ya</span>
           <span class="chip" onclick="fillAndGo('Andreani')">📦 Andreani</span>
           <span class="chip" onclick="fillAndGo('Farmacity')">💊 Farmacity</span>
-          <span class="chip" onclick="fillAndGo('Cervecería y Maltería Quilmes')">🍺 Quilmes</span>
-          <span class="chip" onclick="fillAndGo('Clínica Suizo Argentina')">🏥 Clínica Suizo</span>
-        </div>
-      </div>
-      <div class="recent-block">
-        <div class="recent-label">Análisis recientes</div>
-        <div class="recent-list">
-          <div class="recent-item" onclick="fillAndGo('Pedidos Ya')">
-            <div class="ri-logo" style="background:linear-gradient(135deg,#e11d48,#f43f5e)">PY</div>
-            <div><div class="ri-name">Pedidos Ya</div><div class="ri-meta">Delivery · 5.000+ empleados · Hace 2h</div></div>
-            <div class="ri-score">91</div>
-          </div>
-          <div class="recent-item" onclick="fillAndGo('Farmacity')">
-            <div class="ri-logo" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">FC</div>
-            <div><div class="ri-name">Farmacity</div><div class="ri-meta">Retail Salud · 3.500 empleados · Ayer</div></div>
-            <div class="ri-score">78</div>
-          </div>
-          <div class="recent-item" onclick="fillAndGo('Andreani')">
-            <div class="ri-logo" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6)">AN</div>
-            <div><div class="ri-name">Andreani</div><div class="ri-meta">Logística · 8.000 empleados · Hace 3 días</div></div>
-            <div class="ri-score">85</div>
-          </div>
         </div>
       </div>
     </div>
@@ -571,64 +679,70 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 </div>
 
 <!-- ══ SCREEN 3: RESULTS ══ -->
-<div class="scr" id="s3">
+<div class="scr" id="s3" style="flex-direction:column">
   <nav>
     <div class="logo" style="cursor:pointer" onclick="goHome()"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
       <button class="btn b-g" onclick="goHome()"><span data-i18n="newSearch">← Nueva búsqueda</span></button>
-      <button class="btn b-g" onclick="toast('Copiando brief...');copyBrief()">📋 <span data-i18n="copyBrief">Copiar brief</span></button>
-      <button class="btn b-p" onclick="toast('Brief guardado ✓')">💾 <span data-i18n="save">Guardar</span></button>
+      <button class="btn b-g" onclick="copyBrief()">📋 <span data-i18n="copyBrief">Brief</span></button>
+      <button class="btn b-g" onclick="openDrawer('tech')">🔧 Tech Stack</button>
+      <button class="btn b-g" onclick="openDrawer('recursos')">📁 Recursos</button>
       <button class="lang-btn" id="lang-btn-s3" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
     </div>
   </nav>
-  <div class="body">
-    <div class="side">
-      <div class="co-card" id="co-card"></div>
-      <div class="score-card" id="score-card"></div>
-      <div class="co-card" id="signals-card"></div>
-      <div class="stage-card" id="stage-card"></div>
-      <div class="cov-card" id="cov-card"></div>
-      <div id="notes-side-card"></div>
-    </div>
-    <div class="res-main">
-      <div class="tab-bar">
-        <div class="tab on"  onclick="swTab('overview',this)"    data-i18n-tab="tabCompany">🏢 <span>Empresa</span></div>
-        <div class="tab"     onclick="swTab('tech',this)"         data-i18n-tab="tabTech">🔧 <span>Tech Stack</span></div>
-        <div class="tab"     onclick="swTab('pitch',this)"        data-i18n-tab="tabPitch">🎯 <span>Cómo vender</span></div>
-        <div class="tab"     onclick="swTab('questions',this)"    data-i18n-tab="tabQuestions">💬 <span>Preguntas clave</span></div>
-        <div class="tab"     onclick="swTab('stakeholders',this)" data-i18n-tab="tabStakeholders">🗺️ <span>Stakeholders</span></div>
-        <div class="tab"     onclick="swTab('dealstrat',this)"    data-i18n-tab="tabDeal">⚡ <span>Deal Strategy</span></div>
-        <div class="tab"     onclick="swTab('meeting',this)"      data-i18n-tab="tabMeeting">📋 <span>Plan de reunión</span></div>
-        <div class="tab"     onclick="swTab('recursos',this)"     data-i18n-tab="tabResources">📁 <span>Recursos</span></div>
-        <div class="tab"     onclick="swTab('notes',this)"        data-i18n-tab="tabNotes">📝 <span>Notas</span></div>
-      </div>
-      <div class="panel on" id="panel-overview"></div>
-      <div class="panel"    id="panel-tech"></div>
-      <div class="panel"    id="panel-pitch"></div>
-      <div class="panel"    id="panel-questions"></div>
-      <div class="panel"    id="panel-stakeholders"></div>
-      <div class="panel"    id="panel-dealstrat"></div>
-      <div class="panel"    id="panel-meeting"></div>
-      <div class="panel"    id="panel-recursos"></div>
-      <div class="panel"    id="panel-notes"></div>
+  <!-- Company strip -->
+  <div class="co-strip" id="co-strip"></div>
+  <!-- Stage stepper -->
+  <div class="stepper-wrap"><div class="stepper" id="stepper"></div></div>
+  <!-- Stage body -->
+  <div class="s3-scroll">
+    <div class="stage-body">
+      <div class="stage-main" id="stage-main"></div>
+      <div class="stage-side" id="stage-side"></div>
     </div>
   </div>
   <div class="fb-bar">
-    <span class="fb-t">¿Qué tan útil fue este análisis para tu reunión?</span>
+    <span class="fb-t">¿Qué tan útil fue este análisis?</span>
     <div class="fb-btns">
-      <button class="fb-btn" onclick="this.classList.toggle('on');toast('¡Gracias por tu feedback! 🙏')">👍 Muy útil</button>
-      <button class="fb-btn" onclick="this.classList.toggle('on');toast('Feedback registrado. Lo mejoramos.')">👎 Mejorable</button>
-      <button class="fb-btn" onclick="toast('Abriendo formulario de feedback...')">💬 Comentar</button>
+      <button class="fb-btn" onclick="this.classList.toggle('on');toast('¡Gracias! 🙏')">👍 Útil</button>
+      <button class="fb-btn" onclick="this.classList.toggle('on');toast('Feedback registrado.')">👎 Mejorable</button>
     </div>
   </div>
+  <!-- Hidden panels for drawer content (kept for compat) -->
+  <div style="display:none" id="panel-overview"></div>
+  <div style="display:none" id="panel-tech"></div>
+  <div style="display:none" id="panel-pitch"></div>
+  <div style="display:none" id="panel-questions"></div>
+  <div style="display:none" id="panel-stakeholders"></div>
+  <div style="display:none" id="panel-dealstrat"></div>
+  <div style="display:none" id="panel-meeting"></div>
+  <div style="display:none" id="panel-recursos"></div>
+  <div style="display:none" id="panel-notes"></div>
+  <!-- Legacy sidebar ids kept for compat -->
+  <div style="display:none" id="co-card"></div>
+  <div style="display:none" id="score-card"></div>
+  <div style="display:none" id="signals-card"></div>
+  <div style="display:none" id="stage-card"></div>
+  <div style="display:none" id="cov-card"></div>
+  <div style="display:none" id="notes-side-card"></div>
+</div>
+
+<!-- Drawer overlay + drawer -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="detail-drawer">
+  <div class="drawer-head">
+    <div class="drawer-title" id="drawer-title">Detalle</div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
 </div>
 
 <div class="toast" id="toast-el"><span id="tmsg"></span></div>
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.3</span>
+  <span class="ver-badge">v1.0.4</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1240,29 +1354,348 @@ async function analyze(){
 }
 
 // ═══════════════════════════════════════════
-// RENDER RESULTS
+// TOOL CATALOG for tech stack search
+// ═══════════════════════════════════════════
+const TOOL_CATALOG = [
+  {name:'Slack',cat:'Comunicación',domain:'slack.com'},
+  {name:'Microsoft Teams',cat:'Comunicación',domain:'microsoft.com'},
+  {name:'WhatsApp',cat:'Comunicación informal',domain:'whatsapp.com'},
+  {name:'Google Workspace',cat:'Productividad',domain:'workspace.google.com'},
+  {name:'Gmail',cat:'Email',domain:'gmail.com'},
+  {name:'Outlook / M365',cat:'Email / Productividad',domain:'microsoft.com'},
+  {name:'Zoom',cat:'Videoconferencia',domain:'zoom.us'},
+  {name:'Workday',cat:'HRIS',domain:'workday.com'},
+  {name:'SAP HR / SuccessFactors',cat:'HRIS',domain:'sap.com'},
+  {name:'BambooHR',cat:'HRIS',domain:'bamboohr.com'},
+  {name:'Rippling',cat:'HRIS',domain:'rippling.com'},
+  {name:'ADP',cat:'Nómina / HRIS',domain:'adp.com'},
+  {name:'Zendesk',cat:'Service Management',domain:'zendesk.com'},
+  {name:'ServiceNow',cat:'Service Management',domain:'servicenow.com'},
+  {name:'Salesforce',cat:'CRM',domain:'salesforce.com'},
+  {name:'HubSpot',cat:'CRM',domain:'hubspot.com'},
+  {name:'Notion',cat:'Documentación',domain:'notion.so'},
+  {name:'Confluence',cat:'Documentación',domain:'atlassian.com'},
+  {name:'Jira',cat:'Project Management',domain:'atlassian.com'},
+  {name:'Asana',cat:'Project Management',domain:'asana.com'},
+  {name:'Monday.com',cat:'Project Management',domain:'monday.com'},
+  {name:'Trello',cat:'Project Management',domain:'trello.com'},
+  {name:'ClickUp',cat:'Project Management',domain:'clickup.com'},
+  {name:'Greenhouse',cat:'ATS / Recruiting',domain:'greenhouse.io'},
+  {name:'Lever',cat:'ATS / Recruiting',domain:'lever.co'},
+  {name:'DocuSign',cat:'Firma digital',domain:'docusign.com'},
+  {name:'Coursera',cat:'Learning',domain:'coursera.org'},
+  {name:'LinkedIn Learning',cat:'Learning',domain:'linkedin.com'},
+  {name:'Excel / Google Sheets',cat:'HR Ops manual',domain:'microsoft.com'},
+  {name:'Tableau',cat:'Analytics / BI',domain:'tableau.com'},
+  {name:'Power BI',cat:'Analytics / BI',domain:'powerbi.microsoft.com'},
+  {name:'Figma',cat:'Diseño',domain:'figma.com'},
+  {name:'GitHub',cat:'Desarrollo',domain:'github.com'},
+  {name:'AWS',cat:'Infraestructura',domain:'aws.amazon.com'},
+  {name:'Shopify',cat:'eCommerce',domain:'shopify.com'},
+  {name:'Tango',cat:'Sistema de nómina',domain:'tangosoftware.com.ar'},
+  {name:'Wolters Kluwer',cat:'Nómina',domain:'wolterskluwer.com'},
+];
+
+const TOOL_MODULE_MAP = {
+  'slack':             {module:'📣 Communications',why:'Humand lleva las comunicaciones a empleados frontline que Slack no alcanza.'},
+  'microsoft teams':   {module:'📣 Communications',why:'Teams llega al equipo de oficina. Humand cubre al 80% frontline que queda fuera.'},
+  'whatsapp':          {module:'📣 Communications',why:'Gap crítico: Humand reemplaza los grupos de WhatsApp con comunicaciones oficiales y trazables.'},
+  'google workspace':  {module:'📋 Forms & Workflows',why:'Humand digitaliza los procesos de HR que hoy corren por Google Forms o Sheets.'},
+  'gmail':             {module:'📣 Communications',why:'Humand reemplaza el email masivo interno con push notifications y feed móvil.'},
+  'outlook':           {module:'📣 Communications',why:'Humand complementa el email con comunicaciones móviles para empleados sin casilla corporativa.'},
+  'workday':           {module:'📣 Communications + Forms',why:'Workday maneja nómina y datos. Humand agrega la capa de comunicación y employee experience.'},
+  'sap':               {module:'📣 Communications + Forms',why:'SAP gestiona datos centrales. Humand es la capa de experiencia del empleado con integración nativa.'},
+  'bamboohr':          {module:'📋 Forms & Workflows',why:'Humand complementa BambooHR con comunicaciones y workflows accesibles desde el celular.'},
+  'rippling':          {module:'📋 Forms & Workflows',why:'Humand agrega la capa de comunicación y engagement que Rippling no cubre.'},
+  'adp':               {module:'📋 Forms & Workflows',why:'ADP para nómina. Humand para la experiencia del empleado — se integran nativamente.'},
+  'zendesk':           {module:'🛠️ Service Management',why:'Humand lleva la misma lógica de ticketing de Zendesk a los servicios internos de RRHH.'},
+  'servicenow':        {module:'🛠️ Service Management',why:'ServiceNow para IT ops. Humand trae ese nivel de self-service a RRHH y gestión de personas.'},
+  'salesforce':        {module:'📋 Forms & Workflows',why:'Humand gestiona los workflows internos de HR con la misma agilidad que Salesforce para ventas.'},
+  'greenhouse':        {module:'📋 Onboarding',why:'Greenhouse captura al candidato. Humand lo acompaña desde el día 1 con onboarding digital.'},
+  'lever':             {module:'📋 Onboarding',why:'Lever gestiona el recruiting. Humand digitaliza el onboarding y primeros días del empleado.'},
+  'coursera':          {module:'📣 Communications',why:'El contenido de capacitación se puede distribuir y trackear a través de Humand.'},
+  'linkedin learning': {module:'📣 Communications',why:'Humand centraliza la comunicación de programas de L&D a toda la plantilla.'},
+  'excel':             {module:'🔄 Work Shifts',why:'Gap directo: Humand Work Shifts reemplaza las planillas de turno con gestión digital centralizada.'},
+  'sheets':            {module:'🔄 Work Shifts',why:'Humand Work Shifts y Forms reemplazan los Sheets de HR con flujos digitales sin fricción.'},
+  'default':           {module:'📣 Communications',why:'Humand puede complementar esta herramienta llegando a empleados que hoy no están cubiertos.'},
+};
+
+function getModuleForTool(name){
+  const key = (name||'').toLowerCase();
+  const match = Object.keys(TOOL_MODULE_MAP).find(k => k !== 'default' && (key.includes(k) || k.includes(key.split(/\s+/)[0])));
+  return TOOL_MODULE_MAP[match] || TOOL_MODULE_MAP['default'];
+}
+
+// Per-company custom tech stack (editable)
+let customTechKey = '';
+function getCustomTech(){ try{ return JSON.parse(localStorage.getItem('dc_tech_'+customTechKey)||'null'); }catch(e){ return null; } }
+function saveCustomTech(arr){ localStorage.setItem('dc_tech_'+customTechKey, JSON.stringify(arr)); }
+function getActiveTech(c){ return getCustomTech() || c.tech; }
+
+// ═══════════════════════════════════════════
+// RENDER RESULTS — new wizard layout
 // ═══════════════════════════════════════════
 function render(){
   const c = current;
-  // Company card
-  document.getElementById('co-card').innerHTML=`
-    <div class="co-top"><div class="co-logo" style="background:${c.color}">${c.initials}</div>
-    <div><div class="co-name">${c.name}</div><div class="co-meta">${c.industry} · ${c.country}</div></div></div>
-    <div class="co-tags">${c.tags.map(t=>`<span class="ctag${t===c.tags[0]?' ctag-p':''}">${t}</span>`).join('')}</div>
-    <div class="co-mets">${c.mets.map(m=>`<div class="met"><div class="mv">${m.v}</div><div class="ml">${m.l}</div></div>`).join('')}</div>`;
-  // Score
-  document.getElementById('score-card').innerHTML=`
-    <div class="sc-l">Score de fit Humand</div>
-    <div class="sc-v">${c.score}<small>/100</small></div>
-    <div class="sc-d">${c.scoreLabel}</div>
-    <div class="sc-bar"><div class="sc-fill" style="width:${c.score}%"></div></div>`;
-  // Signals
-  document.getElementById('signals-card').innerHTML=`
-    <div class="sig-list">${c.signals.map(s=>`
-      <div class="sig-item"><span class="sig-ico">${s.ico}</span>
-        <span class="sig-text">${s.text}</span>
-        <span class="sig-badge ${s.cls}">${s.badge}</span>
-      </div>`).join('')}</div>`;
+  customTechKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
+  renderCoStrip(c);
+  renderStepper();
+  renderStageMain(c);
+  renderStageSide(c);
+  // Legacy: keep old render calls for drawer content
+  renderDealStrategy(c);
+  renderStakeholders(c);
+  renderRecursos(c);
+  renderNotes(c.name);
+}
+
+function renderCoStrip(c){
+  document.getElementById('co-strip').innerHTML =
+    '<div class="cos-logo" style="background:'+c.color+'">'+c.initials+'</div>'+
+    '<div class="cos-info">'+
+      '<div class="cos-name">'+c.name+'</div>'+
+      '<div class="cos-meta">'+c.industry+' · '+c.country+' · '+c.employees+' empleados · 🌐 '+c.website+'</div>'+
+    '</div>'+
+    '<div class="cos-score">'+
+      '<div class="cos-score-num">'+c.score+'</div>'+
+      '<div class="cos-score-label">Fit Score<br>'+c.scoreLabel+'</div>'+
+    '</div>';
+}
+
+function renderStepper(){
+  document.getElementById('stepper').innerHTML = STAGES.map(s=>
+    '<div class="step-item'+(s.id===currentStage?' on':'')+'" data-stage="'+s.id+'" onclick="setStage(\''+s.id+'\')">'+
+      '<div class="step-dot">'+s.num+'</div>'+
+      '<div class="step-label">'+s.label+'</div>'+
+    '</div>'
+  ).join('<div style="width:1px;background:var(--br);flex-shrink:0;align-self:stretch"></div>');
+}
+
+function renderStageMain(c){ c=_safe(c);
+  const stageId = currentStage;
+  const stageInfo = STAGES.find(s=>s.id===stageId)||STAGES[1];
+  const opener = (STAGE_OPENERS[stageId]||STAGE_OPENERS.discovery)(c);
+  const questions = getStageQuestions(c);
+  const meetingSteps = getStageMeeting(c);
+  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
+
+  // Opener card
+  const openerCard = `<div class="sc-card">
+    <div class="sc-card-head" onclick="toggleCard('c-opener')">
+      <div class="sc-card-hl"><span class="sc-card-ico">💬</span>
+        <div><div class="sc-card-title">Opener — ${stageInfo.label}</div>
+          <div class="sc-card-sub">Cómo arrancar la conversación</div></div></div>
+      <span class="sc-card-badge" id="c-opener-chev">▾</span>
+    </div>
+    <div class="sc-card-body" id="c-opener">
+      <div class="stage-opener-box">"${opener}"</div>
+      <button class="btn b-s" style="font-size:12px" onclick="copyText(${JSON.stringify(opener)})">📋 Copiar opener</button>
+    </div>
+  </div>`;
+
+  // Questions card
+  const qCard = `<div class="sc-card">
+    <div class="sc-card-head" onclick="toggleCard('c-questions')">
+      <div class="sc-card-hl"><span class="sc-card-ico">❓</span>
+        <div><div class="sc-card-title">Preguntas clave</div>
+          <div class="sc-card-sub">${questions.length} preguntas para ${stageInfo.label}</div></div></div>
+      <span class="sc-card-badge">${questions.length}</span>
+    </div>
+    <div class="sc-card-body" id="c-questions">
+      ${questions.map((q,i)=>{
+        const respKey='dc_qa_'+compKey+'_'+stageId+'_'+i;
+        const saved=localStorage.getItem(respKey)||'';
+        return '<div class="q-row">'+
+          '<div class="q-row-num">'+(i+1)+'</div>'+
+          '<div class="q-row-body">'+
+            '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
+            '<div class="q-row-text">'+q.text+'</div>'+
+            '<div class="q-row-actions">'+
+              '<button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</button>'+
+              '<button class="q-row-btn'+(saved?' filled':'')+'" id="qwrb'+i+'" onclick="toggleQRow('+i+',\''+respKey.replace(/'/g,"\\'")+'\')">Anotar resp.</button>'+
+            '</div>'+
+            '<div class="q-resp-row'+(saved?' open':'')+'" id="qwra'+i+'">'+
+              '<div class="q-resp-row-label">Respuesta del cliente</div>'+
+              '<textarea class="q-resp-row-ta" placeholder="Lo que dijo el cliente..." oninput="saveQResp(\''+respKey.replace(/'/g,"\\'")+'\','+i+',this.value)">'+saved+'</textarea>'+
+            '</div>'+
+          '</div>'+
+        '</div>';
+      }).join('')}
+      ${stageId==='discovery'?'<button class="btn b-s" style="font-size:12px;margin-top:10px" onclick="openDrawer(\'stakeholders\')">Ver preguntas por rol →</button>':''}
+    </div>
+  </div>`;
+
+  // Meeting plan card
+  const meetCard = `<div class="sc-card">
+    <div class="sc-card-head" onclick="toggleCard('c-meeting')">
+      <div class="sc-card-hl"><span class="sc-card-ico">📋</span>
+        <div><div class="sc-card-title">Plan de reunión</div>
+          <div class="sc-card-sub">${meetingSteps.length} pasos</div></div></div>
+      <span class="sc-card-badge">${meetingSteps.length} pasos</span>
+    </div>
+    <div class="sc-card-body" id="c-meeting">
+      <div class="mp-rows">${meetingSteps.map(m=>
+        '<div class="mp-row">'+
+          '<div class="mp-row-num">'+m.step+'</div>'+
+          '<div class="mp-row-body">'+
+            '<div class="mp-row-head">'+
+              '<div class="mp-row-title">'+m.title+'</div>'+
+              '<div class="mp-row-dur">'+m.dur+'</div>'+
+            '</div>'+
+            '<div class="mp-row-text">'+m.body+'</div>'+
+            (m.tip?'<div class="mp-row-tip">💡 '+m.tip+'</div>':'')+
+          '</div>'+
+        '</div>'
+      ).join('')}</div>
+    </div>
+  </div>`;
+
+  // Pitch/modules card — shown for champion + dm
+  const pitchCard = (stageId==='champion'||stageId==='dm'||stageId==='procure') ? `<div class="sc-card">
+    <div class="sc-card-head" onclick="toggleCard('c-pitch')">
+      <div class="sc-card-hl"><span class="sc-card-ico">🎯</span>
+        <div><div class="sc-card-title">Qué vender — Módulos Humand</div>
+          <div class="sc-card-sub">Propuesta de valor para ${c.name}</div></div></div>
+      <span class="sc-card-badge">▾</span>
+    </div>
+    <div class="sc-card-body" id="c-pitch">
+      <div class="mod-row pri"><span class="mod-row-ico">📣</span>
+        <div class="mod-row-body"><div class="mod-row-name">${c.primaryModule}</div>
+          <div class="mod-row-why">${c.primaryWhy}</div></div>
+        <span class="mod-row-badge mod-row.pri">Módulo 1</span>
+      </div>
+      ${c.secondaryModules.map((m,i)=>
+        '<div class="mod-row"><span class="mod-row-ico">'+m.ico+'</span>'+
+        '<div class="mod-row-body"><div class="mod-row-name">'+m.name+'</div>'+
+        '<div class="mod-row-why">'+m.why+'</div></div>'+
+        '<span class="mod-row-badge">Módulo '+(i+2)+'</span></div>'
+      ).join('')}
+    </div>
+  </div>` : '';
+
+  // Risks card — shown for procure and lead
+  const risksCard = (stageId==='procure') ? `<div class="sc-card">
+    <div class="sc-card-head" onclick="toggleCard('c-risks')">
+      <div class="sc-card-hl"><span class="sc-card-ico">⚠️</span>
+        <div><div class="sc-card-title">Riesgos del deal</div>
+          <div class="sc-card-sub">${c.dealRisks.length} riesgos detectados</div></div></div>
+      <span class="sc-card-badge">${c.dealRisks.length}</span>
+    </div>
+    <div class="sc-card-body" id="c-risks">
+      ${c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span>'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')}
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn b-s" style="font-size:12px" onclick="openDrawer('dealstrat')">Ver próximas acciones →</button>
+        <button class="btn b-g" style="font-size:12px" onclick="openDrawer('overview')">Ver empresa completa →</button>
+      </div>
+    </div>
+  </div>` : '';
+
+  // Company overview card — shown for lead
+  const overviewCard = (stageId==='lead') ? `<div class="sc-card">
+    <div class="sc-card-head" onclick="toggleCard('c-overview')">
+      <div class="sc-card-hl"><span class="sc-card-ico">🏢</span>
+        <div><div class="sc-card-title">Contexto de ${c.name}</div>
+          <div class="sc-card-sub">Datos clave de la empresa</div></div></div>
+      <span class="sc-card-badge">▾</span>
+    </div>
+    <div class="sc-card-body" id="c-overview">
+      <div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px">${c.desc}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+        ${c.mets.map(m=>'<div style="background:var(--bg);border-radius:var(--r1);padding:10px;text-align:center"><div style="font-size:15px;font-weight:600">'+(m.v||'—')+'</div><div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">'+m.l+'</div></div>').join('')}
+      </div>
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Señales de compra</div>
+      ${c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')}
+    </div>
+  </div>` : '';
+
+  // Tech stack compact card
+  const activeTech = getActiveTech(c);
+  const techCard = `<div class="sc-card">
+    <div class="sc-card-head" onclick="toggleCard('c-tech')">
+      <div class="sc-card-hl"><span class="sc-card-ico">🔧</span>
+        <div><div class="sc-card-title">Tech Stack</div>
+          <div class="sc-card-sub">${activeTech.filter(t=>t.status==='usa').length} herramientas · ${activeTech.filter(t=>t.status==='gap').length} gaps detectados</div></div></div>
+      <button class="btn b-s" style="font-size:11px;padding:4px 10px" onclick="event.stopPropagation();openDrawer('tech')">Editar →</button>
+    </div>
+    <div class="sc-card-body" id="c-tech">
+      <div class="ts-pills">
+        ${activeTech.map(t=>{
+          const logoUrl=toolLogoUrl(t.name);
+          const color=toolColor(t.name);
+          const init=(t.name||'?')[0].toUpperCase();
+          const logo=logoUrl
+            ?'<img class="ts-pill-img" src="'+logoUrl+'" alt="'+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+              +'<div class="ts-pill-fb" style="background:'+color+';display:none">'+init+'</div>'
+            :'<div class="ts-pill-fb" style="background:'+color+'">'+init+'</div>';
+          return '<span class="ts-pill2'+(t.status==='gap'?' gap':'')+'">'+logo+t.name+'</span>';
+        }).join('')}
+      </div>
+      <button class="btn b-s" style="font-size:12px" onclick="openDrawer('tech')">🔧 Ver análisis completo y editar →</button>
+    </div>
+  </div>`;
+
+  document.getElementById('stage-main').innerHTML =
+    (stageId==='lead' ? overviewCard : '') +
+    openerCard + qCard + meetCard + pitchCard + risksCard + techCard;
+}
+
+function renderStageSide(c){ c=_safe(c);
+  const stks = getStakeholders(c);
+  const present = stks.filter(s=>s.present).length;
+  const total = stks.length;
+  const pct = Math.round(present/total*100);
+  const barColor = pct>=75?'var(--ok)':pct>=50?'var(--wa)':'var(--red)';
+  const saved = localStorage.getItem(notesKey(c.name))||'';
+  const isDisc = currentStage==='discovery';
+
+  // Stakeholder coverage card
+  const covHtml =
+    '<div class="cov-card2">'+
+      '<div class="cov-head"><span class="cov-lbl">'+t('covLabel')+'</span>'+
+      '<div style="display:flex;align-items:center;gap:6px">'+
+        '<span class="cov-num">'+present+'/'+total+'</span>'+
+        '<span class="cov-edit-btn" onclick="openDrawer(\'stakeholders\')">Ver todos →</span>'+
+      '</div></div>'+
+      '<div class="cov-bar"><div class="cov-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div>'+
+      '<div class="stk-mini">'+
+        stks.map(s=>'<div class="stk-mini-row">'+
+          '<span class="stk-mini-dot" style="background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>'+
+          '<span class="stk-mini-name">'+s.role+'</span>'+
+          (s.present?'<span class="stk-mini-status" style="color:var(--ok)">✓</span>':'<span class="stk-mini-status" style="color:var(--red)">✗</span>')+
+        '</div>').join('')+
+      '</div>'+
+      '<div style="margin-top:10px">'+
+        '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'stakeholders\')">👥 Ver stakeholders + editar</button>'+
+      '</div>'+
+    '</div>';
+
+  // Notes card
+  const notesHtml =
+    '<div class="notes-sc'+(isDisc?' disc-active':'')+'" id="notes-sc-card">'+
+      '<div class="notes-sc-tip">💡 Estás en Discovery — anotá lo que dice el cliente en tiempo real.</div>'+
+      '<div class="notes-sc-lbl">'+
+        '<span>📝 Notas</span>'+
+        '<span style="font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px;background:'+(isDisc?'var(--p)':'var(--px)')+';color:'+(isDisc?'#fff':'var(--p)')+'">Todas las etapas</span>'+
+      '</div>'+
+      '<textarea class="nsc-ta" id="nsc-ta" placeholder="Anotá lo que escuchás en la llamada..." oninput="saveSideNotes(\''+c.name.replace(/'/g,"\\'")+'\',this.value)">'+saved+'</textarea>'+
+      '<div class="nsc-footer">'+
+        '<span class="nsc-meta">'+(saved.length>0?saved.length+' chars':'')+'</span>'+
+        '<span class="nsc-saved" id="nsc-saved-ind">✓ Guardado</span>'+
+      '</div>'+
+    '</div>';
+
+  // Deal strategy quick card
+  const st = STAGES.find(s=>s.id===currentStage)||STAGES[1];
+  const dealQuickHtml =
+    '<div class="cov-card2">'+
+      '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);margin-bottom:5px">Objetivo de esta etapa</div>'+
+      '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px">'+st.goal+'</div>'+
+      '<div style="font-size:11px;color:var(--t2);line-height:1.5;margin-bottom:10px">'+st.desc+'</div>'+
+      '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'dealstrat\')">⚡ Deal Strategy completa →</button>'+
+    '</div>';
+
+  document.getElementById('stage-side').innerHTML = dealQuickHtml + covHtml + notesHtml;
+}
 
   // OVERVIEW — rich dashboard
   document.getElementById('panel-overview').innerHTML=`
@@ -1786,15 +2219,215 @@ const STAGE_GUIDANCE = {
 
 function setStage(id){
   currentStage = id;
-  document.querySelectorAll('.stage-pill').forEach(p=>p.classList.toggle('on', p.dataset.stage===id));
+  document.querySelectorAll('.step-item').forEach(p=>p.classList.toggle('on', p.dataset.stage===id));
   if(current){
+    renderStageMain(current);
+    renderStageSide(current);
     renderDealStrategy(current);
-    renderCovCard(current);
-    renderQuestions(current);
-    renderMeeting(current);
-    renderPitchForStage(current);
-    renderSidebarNotes(current);
   }
+}
+
+function toggleCard(id){
+  const body = document.getElementById(id);
+  if(body) body.classList.toggle('hide');
+}
+
+// ═══════════════════════════════════════════
+// DRAWER
+// ═══════════════════════════════════════════
+function openDrawer(type){
+  const c = current; if(!c) return;
+  const overlay = document.getElementById('drawer-overlay');
+  const drawer  = document.getElementById('detail-drawer');
+  const title   = document.getElementById('drawer-title');
+  const body    = document.getElementById('drawer-body');
+  overlay.classList.add('on');
+  drawer.classList.add('on');
+  document.body.style.overflow='hidden';
+
+  if(type==='tech'){
+    title.textContent='🔧 Tech Stack — '+c.name;
+    body.innerHTML = buildTechDrawer(c);
+    initTechSearch(c);
+  } else if(type==='stakeholders'){
+    title.textContent='👥 Stakeholders — '+c.name;
+    body.innerHTML = buildStakeholdersDrawer(c);
+  } else if(type==='dealstrat'){
+    title.textContent='⚡ Deal Strategy — '+c.name;
+    body.innerHTML = document.getElementById('panel-dealstrat').innerHTML;
+  } else if(type==='recursos'){
+    title.textContent='📁 Recursos — '+c.name;
+    body.innerHTML = document.getElementById('panel-recursos').innerHTML;
+    calcROI();
+  } else if(type==='overview'){
+    title.textContent='🏢 '+c.name+' — Perfil completo';
+    body.innerHTML = document.getElementById('panel-overview').innerHTML;
+  } else if(type==='questions'){
+    title.textContent='❓ Preguntas por rol — '+c.name;
+    body.innerHTML = document.getElementById('panel-stakeholders').innerHTML;
+  }
+}
+
+function closeDrawer(){
+  document.getElementById('drawer-overlay').classList.remove('on');
+  document.getElementById('detail-drawer').classList.remove('on');
+  document.body.style.overflow='';
+}
+
+// ═══════════════════════════════════════════
+// TECH DRAWER — editable + search
+// ═══════════════════════════════════════════
+function buildTechDrawer(c){
+  const activeTech = getActiveTech(c);
+  const usaTools = activeTech.filter(t=>t.status==='usa');
+  const gapTools = activeTech.filter(t=>t.status==='gap');
+
+  function tsAddedCard(t, idx){
+    const logoUrl = toolLogoUrl(t.name);
+    const color   = toolColor(t.name);
+    const init    = (t.name||'?')[0].toUpperCase();
+    const logo = logoUrl
+      ? '<img class="ts-added-logo" src="'+logoUrl+'" alt="'+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+        +'<div class="ts-added-fb" style="background:'+color+';display:none">'+init+'</div>'
+      : '<div class="ts-added-fb" style="background:'+color+'">'+init+'</div>';
+    const angle = getHumandAngle(t.cat);
+    return '<div class="ts-added-card" id="tsa'+idx+'">'+
+      logo+
+      '<div class="ts-added-body">'+
+        '<div class="ts-added-name">'+t.name+'</div>'+
+        (t.status==='gap'
+          ? '<div class="ts-added-mod">→ '+angle.module+'</div><div class="ts-added-why">'+angle.why+'</div>'
+          : '<div class="ts-added-mod" style="color:var(--ok)">✓ En uso · '+t.cat+'</div>'+
+            '<div class="ts-added-why">'+angle.module+' — '+angle.why+'</div>')+
+      '</div>'+
+      '<button class="ts-added-del" onclick="removeTechItem('+idx+')">✕</button>'+
+    '</div>';
+  }
+
+  return '<div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:16px">'+
+    'Editá el stack de <strong>'+c.name+'</strong>. Al agregar una herramienta verás con qué módulo de Humand compite o se complementa.</div>'+
+    '<div class="ts-search-box">'+
+      '<input class="ts-search-inp" id="ts-search-inp" placeholder="Buscar herramienta — ej. Slack, SAP, WhatsApp..." oninput="filterTsSearch(this.value)" onfocus="filterTsSearch(this.value)" onblur="setTimeout(()=>document.getElementById(\'ts-drop\').classList.remove(\'on\'),200)">'+
+      '<div class="ts-drop" id="ts-drop"></div>'+
+    '</div>'+
+    '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">✅ Herramientas en uso</div>'+
+    '<div id="ts-usa-list">'+usaTools.map((t,i)=>tsAddedCard(t,i)).join('')+'</div>'+
+    '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--red);margin:14px 0 8px">🔴 Gaps — donde entra Humand</div>'+
+    '<div id="ts-gap-list">'+gapTools.map((t,i)=>tsAddedCard(t,usaTools.length+i)).join('')+'</div>'+
+    '<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--br)">'+
+      '<div style="font-size:11px;color:var(--t2);line-height:1.6;font-weight:600;background:var(--px);border-radius:var(--r2);padding:10px 13px">'+
+        '💡 <strong>Cómo usar esto en la reunión:</strong> No hablés de reemplazar lo que ya tienen. Posicioná Humand como la capa que llega a los empleados que quedan fuera — especialmente frontline y campo.'+
+      '</div>'+
+    '</div>';
+}
+
+function initTechSearch(c){
+  // Build search index from catalog
+  const inp = document.getElementById('ts-search-inp');
+  if(!inp) return;
+}
+
+function filterTsSearch(val){
+  const drop = document.getElementById('ts-drop');
+  if(!drop) return;
+  const q = (val||'').toLowerCase().trim();
+  const matches = q.length<1
+    ? TOOL_CATALOG.slice(0,12)
+    : TOOL_CATALOG.filter(t=>t.name.toLowerCase().includes(q)||t.cat.toLowerCase().includes(q)).slice(0,10);
+  if(!matches.length){ drop.classList.remove('on'); return; }
+  const c = current; if(!c) return;
+  drop.innerHTML = matches.map(t=>{
+    const logoUrl='https://logo.clearbit.com/'+t.domain;
+    const color=toolColor(t.name);
+    const init=(t.name||'?')[0].toUpperCase();
+    const mod=getModuleForTool(t.name);
+    return '<div class="ts-drop-row" onmousedown="addTechItem(\''+t.name.replace(/'/g,"\\'")+'\',\''+t.cat+'\',\'usa\')">'+
+      '<img class="ts-drop-logo" src="'+logoUrl+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+'<div class="ts-drop-fb" style="background:'+color+';display:none">'+init+'</div>'+
+      '<div class="ts-drop-name">'+t.name+'</div>'+
+      '<div class="ts-drop-cat">'+t.cat+'</div>'+
+      '<div class="ts-drop-mod">→ '+mod.module+'</div>'+
+    '</div>';
+  }).join('');
+  drop.classList.add('on');
+}
+
+function addTechItem(name, cat, status){
+  const c = current; if(!c) return;
+  const arr = getActiveTech(c).slice();
+  if(arr.find(t=>t.name.toLowerCase()===name.toLowerCase())) return toast('Ya está en el stack ✓');
+  arr.push({name,cat,color:'#496BE3',conf:80,status,tooltip:'Agregado manualmente.'});
+  saveCustomTech(arr);
+  // Re-render the drawer body
+  const body = document.getElementById('drawer-body');
+  if(body) body.innerHTML = buildTechDrawer(c);
+  // Re-render main card
+  renderStageMain(c);
+  toast('✅ '+name+' agregado al stack');
+  const inp = document.getElementById('ts-search-inp');
+  if(inp){ inp.value=''; }
+  const drop = document.getElementById('ts-drop');
+  if(drop) drop.classList.remove('on');
+}
+
+function removeTechItem(idx){
+  const c = current; if(!c) return;
+  const arr = getActiveTech(c).slice();
+  arr.splice(idx,1);
+  saveCustomTech(arr);
+  const body = document.getElementById('drawer-body');
+  if(body) body.innerHTML = buildTechDrawer(c);
+  renderStageMain(c);
+  toast('Herramienta removida');
+}
+
+// ═══════════════════════════════════════════
+// STAKEHOLDERS DRAWER
+// ═══════════════════════════════════════════
+function buildStakeholdersDrawer(c){ c=_safe(c);
+  const stks = getStakeholders(c);
+  const typeLabel={champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Bloqueador'};
+  const missing = stks.filter(s=>!s.present);
+
+  const editRows = stks.map((s,i)=>
+    '<div class="stk-edit-row">'+
+      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+')" title="'+(s.present?'En reunión':'Faltante')+'">'+(s.present?'✓':'—')+'</button>'+
+      '<input class="stk-edit-inp" value="'+s.role.replace(/"/g,'&quot;')+'" onchange="updateStkRole(\''+c.name.replace(/'/g,"\\'")+'\','+i+',this.value)" placeholder="Rol / nombre">'+
+    '</div>'
+  ).join('');
+
+  const grid = '<div class="stk-grid">'+
+    stks.map(s=>'<div class="stk-card stk-'+s.type+'">'+
+      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?'✓ En reunión':'✗ Faltante')+'</span>'+
+      '<div class="stk-badge">'+typeLabel[s.type]+'</div>'+
+      '<div class="stk-role">'+s.role+'</div>'+
+      '<div class="stk-title">'+s.title+'</div>'+
+      '<div class="stk-cares">'+s.cares.map(care=>'<div class="stk-care">'+care+'</div>').join('')+'</div>'+
+    '</div>').join('')+
+  '</div>';
+
+  const alerts = missing.length
+    ? missing.map(s=>'<div class="stk-alert"><span>⚠️</span><span><strong>'+s.role+'</strong> no está en la reunión.</span></div>').join('')
+    : '<div style="background:var(--okl);border-radius:var(--r2);padding:10px 13px;font-size:13px;color:var(--ok);font-weight:600;margin-bottom:12px">✅ Todos los stakeholders están en la reunión.</div>';
+
+  return '<div style="margin-bottom:14px">'+
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Editar participantes</div>'+
+    '<div class="stk-edit-rows open" style="margin-bottom:10px">'+editRows+
+    '<div class="stk-edit-add">'+
+      '<input class="stk-edit-add-inp" id="stk-add-inp" placeholder="Agregar participante...">'+
+      '<button class="btn b-s" style="font-size:11px;padding:4px 10px" onclick="addStkParticipant(\''+c.name.replace(/'/g,"\\'")+'\')">+</button>'+
+    '</div></div>'+
+    '</div>'+
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Mapa de stakeholders</div>'+
+    alerts + grid +
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol</div>'+
+    '<div class="role-filter" id="stk-role-filter">'+
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
+    '</div>'+
+    '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>';
 }
 
 
@@ -1873,10 +2506,13 @@ function toggleStkPresent(companyName, idx){
   const stks = getStakeholders(current);
   if(stks[idx]) stks[idx].present = !stks[idx].present;
   saveStakeholders(current, stks);
-  renderCovCard(current);
+  renderStageSide(current);
   renderStakeholders(current);
-  // re-open edit mode
-  setTimeout(()=>{ toggleCovEdit(); },10);
+  // re-open drawer if open
+  const drawer = document.getElementById('detail-drawer');
+  if(drawer && drawer.classList.contains('on')){
+    document.getElementById('drawer-body').innerHTML = buildStakeholdersDrawer(current);
+  }
 }
 
 function updateStkRole(companyName, idx, val){
@@ -1893,9 +2529,12 @@ function addStkParticipant(companyName){
   const stks = getStakeholders(current);
   stks.push({role: inp.value.trim(), title: inp.value.trim(), type:'influencer', cares:[], present:true});
   saveStakeholders(current, stks);
-  renderCovCard(current);
+  renderStageSide(current);
   renderStakeholders(current);
-  setTimeout(()=>{ toggleCovEdit(); },10);
+  const drawer = document.getElementById('detail-drawer');
+  if(drawer && drawer.classList.contains('on')){
+    document.getElementById('drawer-body').innerHTML = buildStakeholdersDrawer(current);
+  }
   toast('Participante agregado ✓');
 }
 
@@ -2089,11 +2728,8 @@ function applyLang(){
   });
   // Re-render dynamic panels if results are showing
   if(current && document.getElementById('s3').classList.contains('on')){
-    renderQuestions(current);
-    renderMeeting(current);
-    renderStageSidebar(current);
-    renderCovCard(current);
-    renderSidebarNotes(current);
+    renderStageMain(current);
+    renderStageSide(current);
   }
 }
 
@@ -2121,11 +2757,11 @@ function renderSidebarNotes(c){
 
 function saveSideNotes(companyName, text){
   localStorage.setItem(notesKey(companyName), text);
-  // sync full notes tab too
-  const fullTA = document.getElementById('notes-area');
-  if(fullTA) fullTA.value = text;
   const ind = document.getElementById('nsc-saved-ind');
   if(ind){ ind.classList.add('on'); clearTimeout(ind._t); ind._t=setTimeout(()=>ind.classList.remove('on'),2000); }
+  // sync char count
+  const meta = document.querySelector('.nsc-footer .nsc-meta');
+  if(meta) meta.textContent = text.length > 0 ? text.length+' chars' : '';
 }
 
 // ═══════════════════════════════════════════
@@ -2273,6 +2909,15 @@ function renderQuestions(c){ c=_safe(c);
 function toggleQResp(idx, key){
   const area = document.getElementById('qra'+idx);
   const btn  = document.getElementById('qrb'+idx);
+  if(!area) return;
+  area.classList.toggle('open');
+  if(area.classList.contains('open')) area.querySelector('textarea')?.focus();
+  btn.classList.toggle('filled', area.classList.contains('open') || !!localStorage.getItem(key));
+}
+
+function toggleQRow(idx, key){
+  const area = document.getElementById('qwra'+idx);
+  const btn  = document.getElementById('qwrb'+idx);
   if(!area) return;
   area.classList.toggle('open');
   if(area.classList.contains('open')) area.querySelector('textarea')?.focus();

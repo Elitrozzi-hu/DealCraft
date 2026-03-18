@@ -1,7 +1,12 @@
 {
-  "version": "1.0.3",
+  "version": "1.0.4",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.0.4",
+      "date": "2026-03-18",
+      "note": "Rediseño completo de pantalla de resultados: wizard por etapa de pipeline, company strip, stepper horizontal, cards por etapa, drawer para tech stack editable con buscador y módulos Humand, drawer para stakeholders, recursos y deal strategy"
+    },
     {
       "version": "1.0.3",
       "date": "2026-03-18",
