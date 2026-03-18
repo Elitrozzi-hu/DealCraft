@@ -1,7 +1,12 @@
 {
-  "version": "1.0.5",
+  "version": "1.0.6",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.0.6",
+      "date": "2026-03-18",
+      "note": "Replace Clearbit with Simple Icons CDN for reliable tool logos across tech stack cards and search dropdown"
+    },
     {
       "version": "1.0.5",
       "date": "2026-03-18",

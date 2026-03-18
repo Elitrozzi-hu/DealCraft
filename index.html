@@ -742,7 +742,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.5</span>
+  <span class="ver-badge">v1.0.6</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1262,11 +1262,34 @@ function getHumandAngle(category) {
   return HUMAND_MODULES[key] || {module:'📣 Communications',why:'Humand puede complementar esta herramienta mejorando el alcance a empleados frontline.'};
 }
 
+const TOOL_SIMPLEICONS = {
+  'slack':'slack','microsoft teams':'microsoftteams','whatsapp':'whatsapp',
+  'google workspace':'googleworkspace','gmail':'gmail','outlook':'microsoftoutlook',
+  'microsoft 365':'microsoft365','office 365':'microsoft365','m365':'microsoft365',
+  'zoom':'zoom','workday':'workday','sap':'sap','successfactors':'sap',
+  'bamboohr':'bamboohr','rippling':'rippling','adp':'adp','gusto':'gusto',
+  'zendesk':'zendesk','servicenow':'servicenow','salesforce':'salesforce',
+  'hubspot':'hubspot','notion':'notion','confluence':'confluence','jira':'jira',
+  'asana':'asana','monday.com':'mondaydotcom','monday':'mondaydotcom',
+  'trello':'trello','clickup':'clickup','greenhouse':'greenhouse','lever':'lever',
+  'docusign':'docusign','coursera':'coursera','linkedin':'linkedin',
+  'tableau':'tableau','figma':'figma','github':'github','gitlab':'gitlab',
+  'aws':'amazonwebservices','amazon':'amazonwebservices','shopify':'shopify',
+  'stripe':'stripe','wordpress':'wordpress','dropbox':'dropbox','box':'box',
+  'google cloud':'googlecloud','azure':'microsoftazure','cloudflare':'cloudflare',
+  'twilio':'twilio','mixpanel':'mixpanel','amplitude':'amplitude','intercom':'intercom',
+  'youtube':'youtube','google analytics':'googleanalytics','google drive':'googledrive',
+  'google ads':'googleads','power bi':'powerbi','sharepoint':'microsoftsharepoint',
+  'onedrive':'microsoftonedrive','excel':'microsoftexcel','google sheets':'googlesheets',
+  'teams':'microsoftteams','workable':'workable',
+};
+
 function toolLogoUrl(name) {
   if (!name) return null;
   const key = name.toLowerCase();
-  const domain = Object.keys(TOOL_DOMAINS).find(k => key.includes(k) || k.includes(key));
-  return domain ? `https://logo.clearbit.com/${TOOL_DOMAINS[domain]}` : null;
+  const slug = TOOL_SIMPLEICONS[key]
+    || Object.keys(TOOL_SIMPLEICONS).find(k => key.includes(k) || k.includes(key.split(/[\s/]/)[0]));
+  return slug ? `https://cdn.simpleicons.org/${typeof slug === 'string' ? slug : TOOL_SIMPLEICONS[slug]}` : null;
 }
 
 function toolColor(name) {
@@ -2342,7 +2365,7 @@ function filterTsSearch(val){
   if(!matches.length){ drop.classList.remove('on'); return; }
   const c = current; if(!c) return;
   drop.innerHTML = matches.map(t=>{
-    const logoUrl='https://logo.clearbit.com/'+t.domain;
+    const logoUrl=toolLogoUrl(t.name)||('https://cdn.simpleicons.org/'+t.name.toLowerCase().replace(/[^a-z0-9]/g,''));
     const color=toolColor(t.name);
     const init=(t.name||'?')[0].toUpperCase();
     const mod=getModuleForTool(t.name);
