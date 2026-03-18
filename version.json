@@ -1,7 +1,12 @@
 {
-  "version": "1.0.8",
+  "version": "1.0.9",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.0.9",
+      "date": "2026-03-18",
+      "note": "Align UI to Hugo design system: updated primary blue, rounded buttons and inputs, left-accent info banners, outlined chips, cleaner focus states"
+    },
     {
       "version": "1.0.8",
       "date": "2026-03-18",
