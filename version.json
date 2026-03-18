@@ -1,7 +1,12 @@
 {
-  "version": "1.2.7",
+  "version": "1.2.8",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.8",
+      "date": "2026-03-18",
+      "note": "Add back arrow to Tech Stack drawer to return to company detail drawer"
+    },
     {
       "version": "1.2.7",
       "date": "2026-03-18",

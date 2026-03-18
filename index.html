@@ -544,6 +544,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .drawer-title{font-size:15px;font-weight:600;color:var(--t1)}
 .drawer-close{width:32px;height:32px;border-radius:var(--r1);border:1.5px solid var(--br);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--t2);transition:all .14s}
 .drawer-close:hover{border-color:var(--p);color:var(--p)}
+.drawer-back{background:none;border:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--p);padding:0 4px 0 0;display:none;align-items:center;gap:5px;line-height:1;flex-shrink:0}
+.drawer-back:hover{opacity:.7}
 .drawer-body{flex:1;overflow-y:auto;padding:20px 22px}
 /* Opener box */
 .stage-opener-box{font-size:14px;line-height:1.7;color:var(--t1);font-style:italic;background:var(--okl);border-left:3px solid var(--ok);border-radius:0 var(--r2) var(--r2) 0;padding:13px 15px;margin-bottom:10px}
@@ -908,6 +910,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="detail-drawer">
   <div class="drawer-head">
+    <button class="drawer-back" id="drawer-back" onclick="drawerGoBack()">← Volver</button>
     <div class="drawer-title" id="drawer-title">Detalle</div>
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
@@ -918,7 +921,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.7</span>
+  <span class="ver-badge">v1.2.8</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1963,6 +1966,7 @@ function openCtxDrawer(type){
   const stks = getStakeholders(c);
   const activeTech = getActiveTech(c);
   let title = '', html = '';
+  _setDrawerBack(null);
 
   if(type==='company'){
     title = '🏢 ' + c.name;
@@ -2869,6 +2873,7 @@ function openDrawer(type){
     title.textContent='🔧 Tech Stack — '+c.name;
     body.innerHTML = buildTechDrawer(c);
     initTechSearch(c);
+    _setDrawerBack(()=>openCtxDrawer('company'));
   } else if(type==='stakeholders'){
     title.textContent='👥 Stakeholders — '+c.name;
     body.innerHTML = buildStakeholdersDrawer(c);
@@ -2888,10 +2893,18 @@ function openDrawer(type){
   }
 }
 
+let _drawerBackFn = null;
+function drawerGoBack(){ if(_drawerBackFn) _drawerBackFn(); }
+function _setDrawerBack(fn){
+  _drawerBackFn = fn || null;
+  const btn = document.getElementById('drawer-back');
+  if(btn) btn.style.display = fn ? 'flex' : 'none';
+}
 function closeDrawer(){
   document.getElementById('drawer-overlay').classList.remove('on');
   document.getElementById('detail-drawer').classList.remove('on');
   document.body.style.overflow='';
+  _setDrawerBack(null);
 }
 
 // ═══════════════════════════════════════════
