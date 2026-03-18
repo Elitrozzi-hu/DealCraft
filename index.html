@@ -769,7 +769,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.7</span>
+  <span class="ver-badge">v1.0.8</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1637,7 +1637,6 @@ function render(){
   renderLegacyPanels(c);
   renderDealStrategy(c);
   renderStakeholders(c);
-  renderRecursos(c);
   renderNotes(c.name);
 }
 
@@ -2041,9 +2040,6 @@ function renderLegacyPanels(c){ c=_safe(c);
   // SIDEBAR NOTES
   renderSidebarNotes(c);
 
-  // RECURSOS
-  renderRecursos(c);
-
   // NOTAS (full tab)
   renderNotes(c.name);
 
@@ -2106,8 +2102,9 @@ function insertNotePrompt(prefix) {
 // ═══════════════════════════════════════════
 let _slideIdx = 0;
 
-function renderRecursos(c){
-  document.getElementById('panel-recursos').innerHTML =
+function renderRecursos(c, targetEl){
+  const target = targetEl || document.getElementById('panel-recursos');
+  target.innerHTML =
     '<div class="res-tab-bar">' +
       '<div class="res-tab on" onclick="swResTab(\'slides\',this)">📊 Deck</div>' +
       '<div class="res-tab" onclick="swResTab(\'script\',this)">🎙️ Script</div>' +
@@ -2124,10 +2121,11 @@ function renderRecursos(c){
 }
 
 function swResTab(id, el){
-  document.querySelectorAll('.res-tab').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.res-panel').forEach(p=>p.classList.remove('on'));
+  const container = el.closest('.res-wrap') || el.closest('#drawer-body') || document;
+  container.querySelectorAll('.res-tab').forEach(t=>t.classList.remove('on'));
+  container.querySelectorAll('.res-panel').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
-  document.getElementById('rp-'+id).classList.add('on');
+  container.querySelector('#rp-'+id).classList.add('on');
 }
 
 function buildSlidesPanel(c){
@@ -2469,7 +2467,7 @@ function openDrawer(type){
     body.innerHTML = document.getElementById('panel-dealstrat').innerHTML;
   } else if(type==='recursos'){
     title.textContent='📁 Recursos — '+c.name;
-    body.innerHTML = document.getElementById('panel-recursos').innerHTML;
+    renderRecursos(c, body);
     calcROI();
   } else if(type==='overview'){
     title.textContent='🏢 '+c.name+' — Perfil completo';
