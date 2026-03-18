@@ -1,7 +1,12 @@
 {
-  "version": "1.0.7",
+  "version": "1.0.8",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.0.8",
+      "date": "2026-03-18",
+      "note": "Fix recursos drawer: render directly into drawer body to avoid duplicate IDs with hidden panel, fix swResTab to scope queries to container"
+    },
     {
       "version": "1.0.7",
       "date": "2026-03-18",
