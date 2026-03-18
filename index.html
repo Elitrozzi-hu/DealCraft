@@ -617,6 +617,33 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .uc-ind{font-size:11px;color:var(--t2);margin-bottom:5px}
 .uc-case{font-size:12px;color:var(--t1);line-height:1.5;margin-bottom:5px}
 .uc-result{font-size:10px;font-weight:600;color:var(--ok);background:var(--okl);padding:2px 8px;border-radius:10px;display:inline-block}
+/* Objections */
+.obj-search-inp{width:100%;padding:8px 12px;border:1.5px solid var(--br);border-radius:var(--r2);font-family:inherit;font-size:13px;color:var(--t1);outline:none;transition:border .15s;box-sizing:border-box;margin-bottom:14px}
+.obj-search-inp:focus{border-color:var(--p)}
+.obj-commons-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px}
+.obj-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.obj-chip{padding:5px 12px;border-radius:999px;background:var(--px);color:var(--p);font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .14s;user-select:none}
+.obj-chip:hover{background:var(--p);color:#fff}
+.obj-item{border:1.5px solid var(--br);border-radius:var(--r2);margin-bottom:7px;overflow:hidden;transition:border-color .14s;cursor:pointer}
+.obj-item:hover{border-color:var(--p)}
+.obj-item.on{border-color:var(--p)}
+.obj-item-head{display:flex;align-items:center;gap:10px;padding:10px 13px;background:#fff}
+.obj-item-ico{font-size:16px;flex-shrink:0}
+.obj-item-q{flex:1;font-size:13px;font-weight:600;color:var(--t1);line-height:1.4}
+.obj-item-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--px);color:var(--p);flex-shrink:0}
+.obj-item-chev{font-size:11px;color:var(--t2);transition:transform .14s;flex-shrink:0}
+.obj-item.on .obj-item-chev{transform:rotate(180deg)}
+.obj-item-body{display:none;padding:12px 13px;background:var(--bg);border-top:1px solid var(--br)}
+.obj-item.on .obj-item-body{display:block}
+.obj-meaning{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:10px;padding:8px 10px;background:#fff;border-radius:var(--r1);border-left:3px solid var(--wa)}
+.obj-resp-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:6px}
+.obj-resp-item{font-size:12px;color:var(--t1);padding:7px 10px;background:#fff;border-radius:var(--r1);border-left:3px solid var(--p);margin-bottom:5px;line-height:1.5;transition:background .14s}
+.obj-resp-item:hover{background:var(--px)}
+.obj-next{font-size:12px;color:var(--ok);font-weight:600;margin-top:8px;padding:7px 10px;background:#fff;border-radius:var(--r1);border-left:3px solid var(--ok);line-height:1.5}
+.obj-nofit{margin-top:14px;padding:12px 13px;background:#fff8f8;border:1.5px solid rgba(239,68,68,.2);border-radius:var(--r2)}
+.obj-nofit-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--red);margin-bottom:8px}
+.obj-nofit-item{font-size:12px;color:var(--t1);padding:5px 0;border-bottom:1px solid var(--br);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.obj-nofit-item:last-child{border-bottom:none}
 
 </style>
 </head>
@@ -742,7 +769,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.6</span>
+  <span class="ver-badge">v1.0.7</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1449,6 +1476,147 @@ function getModuleForTool(name){
   return TOOL_MODULE_MAP[match] || TOOL_MODULE_MAP['default'];
 }
 
+// ═══════════════════════════════════════════
+// OBJECTIONS PLAYBOOK — from BDR playbook PDF
+// ═══════════════════════════════════════════
+const OBJECTIONS = [
+  {id:'budget',  ico:'💰', common:true,  label:'Sin presupuesto',
+   q:'No tenemos presupuesto este año',
+   tags:['presupuesto','costo','precio','dinero','roi','inversión'],
+   meaning:'No ven ROI inmediato. Prioridades internas compitiendo. Falta de urgencia percibida.',
+   response:['"¿Hoy cuánto tiempo o dinero se les va en procesos manuales?"','"¿Esto es falta de presupuesto o falta de prioridad?"'],
+   next:'Cuantifica el dolor actual con números concretos. Pasa el lead a un AE para profundizar en el análisis de ROI.'},
+  {id:'corporativo', ico:'🏢', common:true, label:'Lo decide el corporativo',
+   q:'Eso lo decide el corporativo',
+   tags:['corporativo','aprobación','estructura','decisión','regional','global','matriz'],
+   meaning:'Centralización regional o global. Falta de champion local.',
+   response:['"¿Qué criterios suele pedir corporativo para aprobar herramientas?"'],
+   next:'Si hay champion interno → seguir. Si nunca escalan nada → riesgo alto de no-fit.'},
+  {id:'herramienta', ico:'🔧', common:true, label:'Ya tienen una herramienta de RRHH',
+   q:'Ya tenemos una herramienta de RRHH',
+   tags:['herramienta','ya tenemos','sistema','rrhh','hr','hris','solapamiento','reemplazar'],
+   meaning:'Solapamiento parcial percibido. Resistencia al cambio.',
+   response:['"¿Qué siguen resolviendo con Excel o WhatsApp?"'],
+   next:'Humand integra o reemplaza por etapas, sin migración forzada.'},
+  {id:'celular', ico:'📵', common:true, label:'No pueden usar el celular',
+   q:'Nuestros colaboradores no pueden usar el celular',
+   tags:['celular','móvil','dispositivo','planta','operativo','campo','kiosco','tablet','restricción'],
+   meaning:'Personal operativo en planta, tienda o campo con restricciones de dispositivos móviles.',
+   response:['"¿Hoy cómo comunican avisos o políticas a este personal?"','"¿Qué pasa cuando alguien dice que no se enteró de un cambio importante?"'],
+   next:'Humand: acceso multiplataforma — web, kioscos, tablets, pantallas digitales. Comunicación trazable sin depender del celular personal.'},
+  {id:'whatsapp', ico:'💬', common:true, label:'Con WhatsApp alcanza',
+   q:'Con WhatsApp nos funciona',
+   tags:['whatsapp','funciona','informal','gratis','grupos','mensajes'],
+   meaning:'Informalidad, falta de visibilidad y trazabilidad interna.',
+   response:['"¿Qué pasa cuando alguien dice que no vio el mensaje?"','"¿Cómo auditan comunicación interna hoy?"'],
+   next:'Entrada modular y escalable. Riesgo controlado con trazabilidad completa.'},
+  {id:'complejo', ico:'😰', common:false, label:'Cambiar sistemas es complejo',
+   q:'Cambiar sistemas es muy complejo',
+   tags:['complejo','cambio','implementación','difícil','proceso','migración','riesgo'],
+   meaning:'RRHH saturado. Miedo a implementación fallida.',
+   response:['"¿Qué proceso les quita más tiempo hoy?"','"¿Qué pasaría si solo automatizan uno?"'],
+   next:'Implementación guiada con quick wins desde el primer mes.'},
+  {id:'tiempo', ico:'⏰', common:false, label:'Sin tiempo para implementar',
+   q:'No tenemos tiempo para implementar',
+   tags:['tiempo','implementar','implementación','equipo','carga','operativo','recursos'],
+   meaning:'Equipo pequeño, operación reactiva constante.',
+   response:['"¿Qué tarea repetitiva harían desaparecer mañana?"'],
+   next:'Humand ahorra tiempo, no lo consume en implementación.'},
+  {id:'nomina', ico:'💼', common:false, label:'No podemos mover la nómina',
+   q:'La nómina no la podemos mover',
+   tags:['nómina','nomina','payroll','legal','proveedor','cfdi','timbrado'],
+   meaning:'Riesgo legal percibido. Dependencia de proveedor local.',
+   response:['"Perfecto, Humand no reemplaza nómina — se integra con tu sistema actual."'],
+   next:'Compatible con sistemas de nómina existentes.'},
+  {id:'grande', ico:'🏗️', common:false, label:'Se ve muy grande para nosotros',
+   q:'Humand se ve muy grande para nosotros',
+   tags:['grande','tamaño','pequeño','maduro','empresa','caro','escala'],
+   meaning:'Miedo a pagar de más. Baja madurez digital interna.',
+   response:['"¿Qué proceso les duele más hoy?"','"¿Y si empiezan solo con ese?"'],
+   next:'Entrada modular y escalable. Empezás por un módulo y expandís a tu ritmo.'},
+  {id:'sap', ico:'🏭', common:false, label:'Ya tienen SAP',
+   q:'Tenemos SAP implementado',
+   tags:['sap','erp','manufacturing','planta','corporativo','sistema','oracle'],
+   meaning:'SAP cubre corporativo. Planta y frontline quedan sin cobertura real.',
+   response:['"SAP gestiona datos. ¿Cómo le comunicás cambios a los operarios de planta?"'],
+   next:'Humand llena el gap operativo entre el sistema de gestión y los colaboradores en campo.'},
+];
+
+const NOFIT_SIGNALS = [
+  {ico:'🚫', txt:'Sin budget ni sponsor — ningún stakeholder dispuesto a impulsar el proyecto'},
+  {ico:'🚫', txt:'Corporativo bloqueado — nunca evalúan herramientas nuevas o tienen procesos imposibles'},
+  {ico:'🚫', txt:'Solo buscan nómina y timbrado CFDI, sin interés en employee experience'},
+  {ico:'🚫', txt:'Procesos inamovibles — no pueden cambiar absolutamente nada'},
+];
+
+function objItemHTML(o){
+  return '<div class="obj-item" id="obj-item-'+o.id+'" onclick="this.classList.toggle(\'on\')">'+
+    '<div class="obj-item-head">'+
+      '<span class="obj-item-ico">'+o.ico+'</span>'+
+      '<div class="obj-item-q">"'+o.q+'"</div>'+
+      (o.common?'<span class="obj-item-badge">⭐ Frecuente</span>':'')+
+      '<span class="obj-item-chev">▾</span>'+
+    '</div>'+
+    '<div class="obj-item-body">'+
+      '<div class="obj-meaning">🔍 <strong>Qué significa:</strong> '+o.meaning+'</div>'+
+      '<div class="obj-resp-label">💬 Respondé con</div>'+
+      o.response.map(r=>'<div class="obj-resp-item" onclick="event.stopPropagation();copyText('+JSON.stringify(r)+')">📋 '+r+'</div>').join('')+
+      '<div class="obj-next">→ '+o.next+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function filterObjSearch(val){
+  const q=(val||'').toLowerCase().trim();
+  const chips=document.getElementById('obj-chips');
+  const list=document.getElementById('obj-list');
+  if(chips) chips.style.display=q.length?'none':'';
+  const filtered=q.length<1?OBJECTIONS:OBJECTIONS.filter(o=>
+    o.q.toLowerCase().includes(q)||
+    o.label.toLowerCase().includes(q)||
+    (o.tags||[]).some(t=>t.includes(q))||
+    o.meaning.toLowerCase().includes(q)
+  );
+  if(!list) return;
+  list.innerHTML=filtered.length
+    ?filtered.map(o=>objItemHTML(o)).join('')
+    :'<div style="text-align:center;padding:20px;color:var(--t2);font-size:13px">Sin resultados — intentá con otra palabra</div>';
+}
+
+function quickFilterObj(id){
+  const inp=document.getElementById('obj-search');
+  if(!inp) return;
+  const obj=OBJECTIONS.find(o=>o.id===id);
+  if(!obj) return;
+  inp.value=obj.label;
+  filterObjSearch(obj.label);
+  setTimeout(()=>{const el=document.getElementById('obj-item-'+id);if(el) el.classList.add('on');},30);
+}
+
+function buildObjCard(){
+  const commonObjs=OBJECTIONS.filter(o=>o.common);
+  return '<div class="sc-card">'+
+    '<div class="sc-card-head" onclick="toggleCard(\'c-obj\')">'+
+      '<div class="sc-card-hl"><span class="sc-card-ico">🛡️</span>'+
+        '<div><div class="sc-card-title">Cómo manejar objeciones</div>'+
+          '<div class="sc-card-sub">Playbook · '+commonObjs.length+' frecuentes · '+OBJECTIONS.length+' en total</div></div></div>'+
+      '<span class="sc-card-badge">'+OBJECTIONS.length+'</span>'+
+    '</div>'+
+    '<div class="sc-card-body" id="c-obj">'+
+      '<input class="obj-search-inp" id="obj-search" placeholder="Buscar objeción — ej. presupuesto, celular, SAP, tiempo..." oninput="filterObjSearch(this.value)" />'+
+      '<div class="obj-commons-label">⭐ Más frecuentes en prospección</div>'+
+      '<div class="obj-chips" id="obj-chips">'+
+        commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
+      '</div>'+
+      '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
+      '<div class="obj-nofit">'+
+        '<div class="obj-nofit-title">🚨 Señales de no-fit real — calificá out</div>'+
+        NOFIT_SIGNALS.map(s=>'<div class="obj-nofit-item"><span>'+s.ico+'</span><span>'+s.txt+'</span></div>').join('')+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
 // Per-company custom tech stack (editable)
 let customTechKey = '';
 function getCustomTech(){ try{ return JSON.parse(localStorage.getItem('dc_tech_'+customTechKey)||'null'); }catch(e){ return null; } }
@@ -1658,9 +1826,25 @@ function renderStageMain(c){ c=_safe(c);
     </div>
   </div>`;
 
-  document.getElementById('stage-main').innerHTML =
-    (stageId==='lead' ? overviewCard : '') +
-    openerCard + qCard + meetCard + pitchCard + risksCard + techCard;
+  // Stage-specific layout — only show what matters per GAVIN's priorities
+  let stageContent = '';
+  if(stageId==='lead'){
+    // Lead: contexto empresa, opener, objeciones (nuevo), preguntas iniciales, tech
+    stageContent = overviewCard + openerCard + buildObjCard() + qCard + techCard;
+  } else if(stageId==='discovery'){
+    // Discovery: opener, preguntas en profundidad, plan de reunión, tech
+    stageContent = openerCard + qCard + meetCard + techCard;
+  } else if(stageId==='champion'){
+    // Champion: opener, pitch/módulos, preguntas de champion, tech
+    stageContent = openerCard + pitchCard + qCard + techCard;
+  } else if(stageId==='dm'){
+    // DM: opener, pitch, tech — el DM necesita el pitch claro
+    stageContent = openerCard + pitchCard + techCard;
+  } else if(stageId==='procure'){
+    // Procurement: pitch, riesgos, tech — foco en cierre
+    stageContent = pitchCard + risksCard + techCard;
+  }
+  document.getElementById('stage-main').innerHTML = stageContent;
 }
 
 function renderStageSide(c){ c=_safe(c);
