@@ -1,7 +1,12 @@
 {
-  "version": "1.2.5",
+  "version": "1.2.6",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.6",
+      "date": "2026-03-18",
+      "note": "Stage-specific action checklists per pipeline step and role-based question filter chips for all stages"
+    },
     {
       "version": "1.2.5",
       "date": "2026-03-18",

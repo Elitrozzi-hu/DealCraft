@@ -918,7 +918,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.5</span>
+  <span class="ver-badge">v1.2.6</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -2106,12 +2106,7 @@ function renderActionPlan(c){ c=_safe(c);
   const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
 
   // TAB 1: Actions checklist
-  const ACTION_ITEMS = [
-    {id:'sched',  label:'Reunión agendada',    desc:'Confirmar fecha, hora y participantes'},
-    {id:'done',   label:'Reunión realizada',   desc:'Meeting completado con el equipo'},
-    {id:'followup',label:'Follow-up enviado',  desc:'Email de seguimiento post-reunión'},
-    {id:'mats',   label:'Materiales enviados', desc:'Deck, propuesta o recursos compartidos'},
-  ];
+  const ACTION_ITEMS = STAGE_ACTIONS[stageId] || STAGE_ACTIONS.discovery;
   const actionsHtml =
     '<div style="margin-bottom:16px">'+
       ACTION_ITEMS.map(a=>{
@@ -3400,23 +3395,39 @@ const STAGE_QUESTIONS = {
      text:'"¿Cuántas personas tiene el equipo de HR y cuántos empleados en total gestionan?"'},
     {cat:'Dolor', catCls:'style="background:var(--wal);color:var(--wa)"', role:'all',
      text:'"¿Cuál diría que es el mayor dolor que tiene HR con las herramientas que están usando hoy?"'},
-    {cat:'Proceso', catCls:'style="background:var(--okl);color:var(--ok)"', role:'all',
-     text:'"¿Tienen un proceso formal para evaluar nuevas herramientas de HR o es algo más informal?"'},
     {cat:'Timing', catCls:'style="background:var(--pul);color:var(--pu)"', role:'all',
      text:'"¿Hay algún deadline o evento que haga urgente resolver esto — o están explorando sin apuro?"'},
+    {cat:'HR', catCls:'style="background:var(--px);color:var(--p)"', role:'hr',
+     text:'"¿Cómo acceden los empleados a la información de HR hoy — tienen autoservicio o todo pasa por ustedes?"'},
+    {cat:'HR', catCls:'style="background:var(--px);color:var(--p)"', role:'hr',
+     text:'"¿Qué procesos de HR siguen siendo manuales o por email que les gustaría digitalizar?"'},
+    {cat:'Operaciones', catCls:'style="background:var(--wal);color:var(--wa)"', role:'ops',
+     text:'"¿Cómo comunican actualizaciones o cambios a los equipos de campo o fuera de la oficina?"'},
+    {cat:'Operaciones', catCls:'style="background:var(--wal);color:var(--wa)"', role:'ops',
+     text:'"¿Tienen empleados por turnos o distribuidos en múltiples locaciones? ¿Cómo los coordinan?"'},
+    {cat:'IT', catCls:'style="background:var(--pul);color:var(--pu)"', role:'it',
+     text:'"¿Qué sistemas de HR o comunicación interna tienen actualmente — y cuáles son los que más fricción generan?"'},
+    {cat:'IT', catCls:'style="background:var(--pul);color:var(--pu)"', role:'it',
+     text:'"¿Tienen requerimientos específicos de seguridad o integración para herramientas nuevas — SSO, integraciones con el HRIS?"'},
+    {cat:'Estrategia', catCls:'style="background:var(--okl);color:var(--ok)"', role:'exec',
+     text:'"¿Cuál es el mayor desafío de personas que tiene en el radar para este año a nivel estratégico?"'},
+    {cat:'Estrategia', catCls:'style="background:var(--okl);color:var(--ok)"', role:'exec',
+     text:'"¿Están considerando consolidar herramientas de employee experience en una sola plataforma?"'},
   ],
   discovery: (c) => c.questions,
   champion: (c) => [
-    {cat:'Apoyo interno', catCls:'style="background:var(--okl);color:var(--ok)"', role:'all',
+    {cat:'Apoyo interno', catCls:'style="background:var(--okl);color:var(--ok)"', role:'hr',
      text:'"¿Quién más dentro de la empresa creés que estaría abierto a esta solución? ¿Y quién podría resistirla?"'},
-    {cat:'DM', catCls:'style="background:var(--px);color:var(--p)"', role:'all',
+    {cat:'DM', catCls:'style="background:var(--px);color:var(--p)"', role:'hr',
      text:'"Para avanzar — ¿necesitamos presentarle esto al CHRO/VP People o puede aprobarse a nivel de tu área?"'},
     {cat:'Caso interno', catCls:'style="background:var(--wal);color:var(--wa)"', role:'all',
      text:'"Si tuvieras que justificar esta inversión internamente, ¿cuál sería el argumento más fuerte que usarías?"'},
     {cat:'Bloqueadores', catCls:'style="background:var(--redl);color:var(--red)"', role:'all',
      text:'"¿Ves algún obstáculo interno — presupuesto, IT, otros proyectos — que podría frenar esto?"'},
-    {cat:'Timeline', catCls:'style="background:var(--pul);color:var(--pu)"', role:'all',
+    {cat:'Timeline', catCls:'style="background:var(--pul);color:var(--pu)"', role:'exec',
      text:'"¿Cuál sería el proceso de aprobación una vez que estemos alineados en el valor?"'},
+    {cat:'IT', catCls:'style="background:var(--pul);color:var(--pu)"', role:'it',
+     text:'"¿Qué necesitaría IT para dar el OK técnico — certificaciones, revisión de seguridad, prueba de integración?"'},
   ],
   dm: (c) => [
     {cat:'Estrategia', catCls:'style="background:var(--px);color:var(--p)"', role:'exec',
@@ -3433,13 +3444,15 @@ const STAGE_QUESTIONS = {
   procure: (c) => [
     {cat:'Proceso', catCls:'style="background:var(--wal);color:var(--wa)"', role:'all',
      text:'"¿Cuál es el proceso formal de aprobación de un nuevo proveedor de tecnología? ¿Hay un área de compras?"'},
-    {cat:'Legal / IT', catCls:'style="background:var(--pul);color:var(--pu)"', role:'all',
+    {cat:'Legal / IT', catCls:'style="background:var(--pul);color:var(--pu)"', role:'it',
      text:'"¿Hay requerimientos legales o de seguridad de IT que necesitemos cumplir antes de firmar — DPA, certificaciones?"'},
-    {cat:'Presupuesto', catCls:'style="background:var(--okl);color:var(--ok)"', role:'all',
+    {cat:'Presupuesto', catCls:'style="background:var(--okl);color:var(--ok)"', role:'exec',
      text:'"¿El presupuesto para esto ya está aprobado o todavía hay que conseguir el OK de finanzas?"'},
     {cat:'Contrato', catCls:'style="background:var(--px);color:var(--p)"', role:'all',
      text:'"¿Prefieren un contrato anual o mensual para el piloto? ¿Tienen templates de contrato que usen?"'},
-    {cat:'Cierre', catCls:'style="background:var(--redl);color:var(--red)"', role:'all',
+    {cat:'Integración', catCls:'style="background:var(--pul);color:var(--pu)"', role:'it',
+     text:'"¿Tienen ya definido qué sistemas necesitan integrarse en la primera fase — HRIS, Active Directory, SSO?"'},
+    {cat:'Cierre', catCls:'style="background:var(--redl);color:var(--red)"', role:'exec',
      text:'"¿Qué falta para poder firmar esta semana? ¿Hay algo del lado de ustedes que todavía no esté resuelto?"'},
   ],
 };
@@ -3480,6 +3493,44 @@ const STAGE_OPENERS = {
   procure:   (c) => 'Estamos en la recta final. El equipo de HR ya validó el fit, el DM dio el OK. Quiero asegurarme de que el proceso de aprobación sea lo más smooth posible y que podamos tener el kickoff definido.',
 };
 
+const STAGE_ACTIONS = {
+  lead: [
+    {id:'research',  label:'Investigar la empresa',         desc:'Revisar web, LinkedIn, industria y señales públicas antes de la reunión'},
+    {id:'techstack', label:'Revisar tech stack detectado',  desc:'Identificar gaps y herramientas que usa hoy para preparar el ángulo de entrada'},
+    {id:'opener',    label:'Preparar opener personalizado', desc:'Adaptar el mensaje de apertura al contexto específico de la empresa'},
+    {id:'stk',       label:'Mapear posibles stakeholders',  desc:'Identificar quién puede ser champion y quién es el decision maker'},
+    {id:'premeet',   label:'Enviar pre-meeting email',      desc:'Email de introducción personalizado antes de la primera reunión'},
+  ],
+  discovery: [
+    {id:'confirm',   label:'Confirmar reunión y asistentes',desc:'Verificar participantes y entender el rol de cada uno'},
+    {id:'roleqs',    label:'Preparar preguntas por rol',    desc:'Revisar las preguntas por rol según quiénes vienen a la reunión'},
+    {id:'done',      label:'Reunión realizada',             desc:'Discovery call completada con el equipo del prospecto'},
+    {id:'buycomm',   label:'Mapear buying committee',       desc:'Identificar champion, DM, influencers y posibles bloqueadores'},
+    {id:'followup',  label:'Enviar follow-up',              desc:'Email post-reunión con recap de pain points y próximos pasos'},
+  ],
+  champion: [
+    {id:'bizcase',   label:'Construir business case',       desc:'Armar caso de negocio con datos reales de la empresa para justificar la inversión'},
+    {id:'cases',     label:'Compartir casos de uso similares',desc:'Enviar use cases de clientes con perfil similar por industria'},
+    {id:'onepager',  label:'Preparar one-pager ejecutivo',  desc:'Material que el champion pueda usar para vender internamente'},
+    {id:'dm',        label:'Conseguir acceso al DM',        desc:'Coordinar reunión con CHRO, VP People u otro decision maker relevante'},
+    {id:'nextmeet',  label:'Agendar reunión con DM',        desc:'Confirmar fecha y participantes para la reunión ejecutiva'},
+  ],
+  dm: [
+    {id:'exec',      label:'Reunión con DM realizada',      desc:'Meeting con el decision maker completado'},
+    {id:'roi',       label:'Presentar ROI y propuesta',     desc:'Mostrar impacto financiero calculado con los datos reales de la empresa'},
+    {id:'obj',       label:'Manejar objeciones clave',      desc:'Preparar respuestas a objeciones de precio, implementación y seguridad'},
+    {id:'it',        label:'Alinear con IT/Security',       desc:'Incluir al equipo técnico para revisar integraciones, compliance y governance'},
+    {id:'prop',      label:'Enviar propuesta formal',       desc:'Propuesta comercial con scope, precio, condiciones y timeline de piloto'},
+  ],
+  procure: [
+    {id:'legal',     label:'Enviar documentación legal',    desc:'DPA, SOC2, ficha técnica y certificaciones de seguridad'},
+    {id:'itreview',  label:'Completar revisión técnica con IT', desc:'Sesión técnica para revisar integraciones, seguridad y governance'},
+    {id:'neg',       label:'Negociación completada',        desc:'Scope, precio y condiciones acordadas con el equipo de procurement'},
+    {id:'sign',      label:'Contrato firmado',              desc:'Acuerdo commercial cerrado y documentación completa'},
+    {id:'kickoff',   label:'Confirmar fecha de kickoff',    desc:'Definir fecha de inicio de implementación y asignar el equipo de onboarding'},
+  ],
+};
+
 const STAGE_PITCH_TITLE = {
   lead:      'Primer contacto — calificar el fit',
   discovery: 'Discovery — validar el dolor',
@@ -3500,14 +3551,13 @@ function renderQuestions(c){ c=_safe(c);
       stageInfo.num+' '+stageInfo.label+
     '</div>' +
     '<div class="q-notice">'+t('qNotice')+' <strong>'+c.name+'</strong> — etapa <em>'+stageInfo.label+'</em>. '+stageInfo.desc+'</div>' +
-    (currentStage==='discovery'?
-      '<div class="role-filter">' +
-        '<div class="rpill on" onclick="filterQ(\'all\',this)">Todas</div>' +
-        '<div class="rpill rh" onclick="filterQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
-        '<div class="rpill ro" onclick="filterQ(\'ops\',this)">⚙️ Ops Leader</div>' +
-        '<div class="rpill ri" onclick="filterQ(\'it\',this)">💻 IT Leader</div>' +
-        '<div class="rpill re" onclick="filterQ(\'exec\',this)">🏆 Exec</div>' +
-      '</div>':'') +
+    '<div class="role-filter">' +
+      '<div class="rpill on" onclick="filterQ(\'all\',this)">Todas</div>' +
+      '<div class="rpill rh" onclick="filterQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
+      '<div class="rpill ro" onclick="filterQ(\'ops\',this)">⚙️ Ops Leader</div>' +
+      '<div class="rpill ri" onclick="filterQ(\'it\',this)">💻 IT Leader</div>' +
+      '<div class="rpill re" onclick="filterQ(\'exec\',this)">🏆 Exec</div>' +
+    '</div>' +
     '<div class="q-list" id="q-list-main">' +
     qs.map((q,i)=>{
       const respKey = 'dc_qa_'+compKey+'_'+currentStage+'_'+i;
