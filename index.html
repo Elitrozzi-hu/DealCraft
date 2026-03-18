@@ -377,16 +377,17 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .ts-drop-name{font-size:13px;font-weight:600;color:var(--t1);flex:1}
 .ts-drop-cat{font-size:10px;color:var(--t3)}
 .ts-drop-mod{font-size:10px;color:var(--p);font-weight:600;flex-shrink:0;max-width:120px;text-align:right}
-.ts-added-card{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);margin-bottom:8px;transition:box-shadow .14s}
+.ts-added-card{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);margin-bottom:8px;transition:box-shadow .14s}
 .ts-added-card:hover{box-shadow:var(--s1)}
-.ts-added-logo{width:32px;height:32px;border-radius:6px;object-fit:contain;padding:2px;border:1px solid var(--br);flex-shrink:0;background:#fff}
-.ts-added-fb{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+.ts-added-av{width:42px;height:42px;border-radius:50%;background:#eeeef3;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:var(--t2);flex-shrink:0}
 .ts-added-body{flex:1;min-width:0}
-.ts-added-name{font-size:13px;font-weight:600;color:var(--t1)}
-.ts-added-mod{font-size:11px;color:var(--p);font-weight:600;margin-top:2px}
-.ts-added-why{font-size:11px;color:var(--t2);line-height:1.35;margin-top:1px}
-.ts-added-del{font-size:11px;color:var(--t3);cursor:pointer;padding:3px 7px;border-radius:6px;border:1px solid var(--br);transition:all .14s;flex-shrink:0;background:#fff;align-self:flex-start}
-.ts-added-del:hover{border-color:var(--red);color:var(--red)}
+.ts-added-status{font-size:11px;color:var(--t2);margin-bottom:2px}
+.ts-added-name{font-size:14px;font-weight:600;color:var(--t1);line-height:1.3}
+.ts-added-why{font-size:12px;color:var(--t2);line-height:1.45;margin-top:3px}
+.ts-added-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ts-added-chip{font-size:11px;font-weight:600;color:var(--p);border:1.5px solid var(--px2);border-radius:999px;padding:4px 11px;background:#fff;white-space:nowrap}
+.ts-added-del{font-size:18px;color:var(--t3);cursor:pointer;background:none;border:none;padding:4px;transition:color .14s;line-height:1;display:flex;align-items:center}
+.ts-added-del:hover{color:var(--red)}
 /* Drawer */
 .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;backdrop-filter:blur(2px)}
 .drawer-overlay.on{display:block}
@@ -771,7 +772,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.9</span>
+  <span class="ver-badge">v1.1.0</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -2495,24 +2496,22 @@ function buildTechDrawer(c){
   const gapTools = activeTech.filter(t=>t.status==='gap');
 
   function tsAddedCard(t, idx){
-    const logoUrl = toolLogoUrl(t.name);
-    const color   = toolColor(t.name);
-    const init    = (t.name||'?')[0].toUpperCase();
-    const logo = logoUrl
-      ? '<img class="ts-added-logo" src="'+logoUrl+'" alt="'+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
-        +'<div class="ts-added-fb" style="background:'+color+';display:none">'+init+'</div>'
-      : '<div class="ts-added-fb" style="background:'+color+'">'+init+'</div>';
+    const init  = (t.name||'?')[0].toUpperCase();
     const angle = getHumandAngle(t.cat);
+    const isGap = t.status === 'gap';
+    const statusLabel = isGap ? '🔴 Gap detectado' : 'En uso';
+    const trashSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>';
     return '<div class="ts-added-card" id="tsa'+idx+'">'+
-      logo+
+      '<div class="ts-added-av">'+init+'</div>'+
       '<div class="ts-added-body">'+
+        '<div class="ts-added-status">'+statusLabel+'</div>'+
         '<div class="ts-added-name">'+t.name+'</div>'+
-        (t.status==='gap'
-          ? '<div class="ts-added-mod">→ '+angle.module+'</div><div class="ts-added-why">'+angle.why+'</div>'
-          : '<div class="ts-added-mod" style="color:var(--ok)">✓ En uso · '+t.cat+'</div>'+
-            '<div class="ts-added-why">'+angle.module+' — '+angle.why+'</div>')+
+        '<div class="ts-added-why">'+angle.why+'</div>'+
       '</div>'+
-      '<button class="ts-added-del" onclick="removeTechItem('+idx+')">✕</button>'+
+      '<div class="ts-added-right">'+
+        '<span class="ts-added-chip">'+t.cat+'</span>'+
+        '<button class="ts-added-del" onclick="removeTechItem('+idx+')" title="Eliminar">'+trashSvg+'</button>'+
+      '</div>'+
     '</div>';
   }
 

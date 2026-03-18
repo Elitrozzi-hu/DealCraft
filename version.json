@@ -1,7 +1,12 @@
 {
-  "version": "1.0.9",
+  "version": "1.1.0",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.1.0",
+      "date": "2026-03-18",
+      "note": "Redesign tech stack cards to Hugo horizontal style: grey circular avatar with initial, status label, tool name + description, category chip and trash icon on right"
+    },
     {
       "version": "1.0.9",
       "date": "2026-03-18",
