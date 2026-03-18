@@ -1,7 +1,12 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.1",
+      "date": "2026-03-18",
+      "note": "Add company name to URL param; default stage to Lead; add section titles with descriptions to Context and Action Plan columns; fix 40/60 column split"
+    },
     {
       "version": "1.2.0",
       "date": "2026-03-18",
