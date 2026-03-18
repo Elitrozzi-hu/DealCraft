@@ -1,7 +1,12 @@
 {
-  "version": "1.2.1",
+  "version": "1.2.2",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.2",
+      "date": "2026-03-18",
+      "note": "Swap columns: Action Plan left (grey background) and Context right (white sidebar with left border); remove outer stage-body padding so backgrounds fill edge to edge"
+    },
     {
       "version": "1.2.1",
       "date": "2026-03-18",

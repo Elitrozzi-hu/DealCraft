@@ -307,7 +307,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sp-item-num{font-size:10px;font-weight:600;color:var(--t3);width:22px;flex-shrink:0}
 .sp-item.cur .sp-item-num{color:var(--p)}
 .s3-scroll{flex:1;overflow-y:auto}
-.stage-body{display:flex;width:100%;padding:24px 40px;gap:16px;align-items:flex-start}
+.stage-body{display:flex;width:100%;gap:0;align-items:flex-start}
 /* stage-main is now transparent — nav and panels float as individual white cards */
 .stage-main{flex:1;min-width:0;display:flex;flex-direction:row;background:transparent;border:none;box-shadow:none;overflow:visible;gap:14px}
 /* Side panel is now a single white card with tabs */
@@ -330,8 +330,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sside-panel{display:none;padding:20px 20px}
 .sside-panel.on{display:block}
 /* ════ CONTEXT + ACTION PLAN LAYOUT ════ */
-.ctx-col{flex:2;min-width:0;display:flex;flex-direction:column;gap:0}
-.ap-col{flex:3;min-width:0}
+/* AP: left 60%, grey background with internal padding */
+.ap-col{flex:3;min-width:0;background:var(--bg);padding:24px 32px 40px 40px}
+/* Context: right 40%, white sidebar with left border */
+.ctx-col{flex:2;min-width:0;display:flex;flex-direction:column;gap:0;background:#fff;border-left:1.5px solid var(--br);padding:24px 28px 40px;align-self:stretch}
 .col-header{margin-bottom:16px}
 .col-header-title{font-size:16px;font-weight:600;color:var(--t1);margin-bottom:4px}
 .col-header-desc{font-size:12px;color:var(--t2);line-height:1.5}
@@ -843,8 +845,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <!-- Stage body -->
   <div class="s3-scroll">
     <div class="stage-body">
-      <div class="ctx-col" id="ctx-col"></div>
       <div class="ap-col" id="ap-col"></div>
+      <div class="ctx-col" id="ctx-col"></div>
     </div>
   </div>
   <div class="fb-bar">
@@ -887,7 +889,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.1</span>
+  <span class="ver-badge">v1.2.2</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
