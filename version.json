@@ -1,7 +1,12 @@
 {
-  "version": "1.1.4",
+  "version": "1.1.5",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.1.5",
+      "date": "2026-03-18",
+      "note": "Make right side panel 25% of screen width with more internal padding"
+    },
     {
       "version": "1.1.4",
       "date": "2026-03-18",
