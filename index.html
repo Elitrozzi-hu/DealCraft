@@ -386,6 +386,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .mat-link-row:last-child{border-bottom:none}
 .mat-link-name{font-size:13px;font-weight:600;color:var(--t1)}
 .mat-link-desc{font-size:11px;color:var(--t2);margin-top:1px}
+.mat-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+.mat-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:18px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:6px}
+.mat-card:hover{border-color:var(--p);box-shadow:var(--s1)}
+.mat-card-icon{font-size:22px}
+.mat-card-title{font-size:13px;font-weight:600;color:var(--t1)}
+.mat-card-desc{font-size:11px;color:var(--t2);line-height:1.45;flex:1}
+.mat-card-cta{font-size:11px;font-weight:600;color:var(--p);margin-top:4px}
 /* Meeting Toolkit */
 .tk-step{margin-bottom:0}
 .tk-step-head{display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--bg);cursor:pointer;user-select:none}
@@ -462,11 +469,24 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .mod-row-why{font-size:11px;color:var(--t2);line-height:1.3;margin-top:1px}
 .mod-row-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;flex-shrink:0;background:var(--px);color:var(--p)}
 .mod-row.pri .mod-row-badge{background:var(--p);color:#fff}
+.mod-card{border:1.5px solid var(--br);border-radius:var(--r2);margin-bottom:8px;background:#fff;overflow:hidden;transition:all .15s}
+.mod-card:last-child{margin-bottom:0}
+.mod-card.pri{border-color:var(--p)}
+.mod-card-head{display:flex;align-items:center;gap:8px;padding:10px 14px 6px;border-bottom:1px solid var(--bg)}
+.mod-card.pri .mod-card-head{background:var(--px)}
+.mod-card-title{flex:1;font-size:13px;font-weight:600;color:var(--t1)}
+.mod-card.pri .mod-card-title{color:var(--p)}
+.mod-card-cat{font-size:10px;color:var(--t2);background:var(--bg);padding:2px 7px;border-radius:20px;flex-shrink:0}
+.mod-card-body{padding:8px 14px 11px}
+.mod-card-vp{font-size:12px;color:var(--t1);line-height:1.55;margin-bottom:6px}
+.mod-card-km{font-size:11px;color:var(--t2);line-height:1.45;padding-left:12px;position:relative;margin-bottom:3px}
+.mod-card-km::before{content:'→';position:absolute;left:0;color:var(--p);font-size:10px}
+.mod-card-pp{font-size:10px;color:var(--ok);font-weight:600;margin-top:5px;background:var(--okl);padding:3px 8px;border-radius:20px;display:inline-block}
 /* Risk rows */
-.risk-row2{display:flex;align-items:flex-start;gap:7px;padding:8px 10px;border-radius:var(--r2);font-size:12px;color:var(--t1);line-height:1.5;margin-bottom:6px}
+.risk-row2{display:flex;align-items:flex-start;gap:7px;padding:8px 12px;border-radius:var(--r2);font-size:12px;color:var(--t1);line-height:1.5;margin-bottom:6px;background:#fff;border:1.5px solid var(--br)}
 .risk-row2:last-child{margin-bottom:0}
-.risk-row2.crit{background:var(--redl);border:1px solid #fca5a5}
-.risk-row2.warn{background:var(--wal);border:1px solid #fcd34d}
+.risk-row2.crit{border-left:3px solid var(--red)}
+.risk-row2.warn{border-left:3px solid #f59e0b}
 /* Signals compact */
 .sig-row{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:var(--r1);background:var(--bg);border:1px solid var(--br);margin-bottom:5px;font-size:11px;color:var(--t2);line-height:1.4}
 .sig-row:last-child{margin-bottom:0}
@@ -727,9 +747,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .dsb-goal{font-size:15px;font-weight:600;line-height:1.35}
 .dsb-desc{font-size:11px;opacity:.75;margin-top:5px;line-height:1.55}
 .risk-list{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
-.risk-item{border-radius:var(--r2);padding:10px 13px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t1);line-height:1.5}
-.risk-warn{background:var(--wal);border:1.5px solid #fcd34d}
-.risk-crit{background:var(--redl);border:1.5px solid #fca5a5}
+.risk-item{border-radius:var(--r2);padding:10px 13px;display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--t1);line-height:1.5;background:#fff;border:1.5px solid var(--br)}
+.risk-warn{border-left:3px solid #f59e0b}
+.risk-crit{border-left:3px solid var(--red)}
 .ri-ico{font-size:14px;flex-shrink:0;margin-top:1px}
 .next-list{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
 .next-item{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);cursor:pointer;transition:all .18s}
@@ -898,7 +918,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.4</span>
+  <span class="ver-badge">v1.2.5</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -2009,19 +2029,33 @@ function openCtxDrawer(type){
       '</div>'+
       '<div class="drw-section">'+
         '<div class="drw-section-title">Módulos de interés</div>'+
-        '<div class="mod-row pri"><span class="mod-row-ico">📣</span>'+
-          '<div class="mod-row-body"><div class="mod-row-name">'+c.primaryModule+'</div><div class="mod-row-why">'+c.primaryWhy+'</div></div>'+
-          '<span class="mod-row-badge">Módulo 1</span>'+
-        '</div>'+
-        c.secondaryModules.map((m,i)=>
-          '<div class="mod-row"><span class="mod-row-ico">'+m.ico+'</span>'+
-          '<div class="mod-row-body"><div class="mod-row-name">'+m.name+'</div><div class="mod-row-why">'+m.why+'</div></div>'+
-          '<span class="mod-row-badge">Módulo '+(i+2)+'</span></div>'
-        ).join('')+
+        (function(){
+          function mc(name,why,badge,isPri){
+            const d=getModuleDetail(name);
+            const cleanName=name.replace(/^[\W_]+/,'').trim();
+            const vp=d?d.value_proposition:why;
+            const kms=d?d.key_messages.slice(0,2):[];
+            const pp=d?d.proof_points[0]:'';
+            return '<div class="mod-card'+(isPri?' pri':'')+'">'+
+              '<div class="mod-card-head">'+
+                '<div class="mod-card-title">'+cleanName+'</div>'+
+                (d?'<span class="mod-card-cat">'+d.category+'</span>':'')+
+                '<span class="mod-row-badge" style="margin-left:4px">'+badge+'</span>'+
+              '</div>'+
+              '<div class="mod-card-body">'+
+                '<div class="mod-card-vp">'+vp+'</div>'+
+                kms.map(k=>'<div class="mod-card-km">'+k+'</div>').join('')+
+                (pp?'<div class="mod-card-pp">📊 '+pp+'</div>':'')+
+              '</div>'+
+            '</div>';
+          }
+          return mc(c.primaryModule,c.primaryWhy,'Módulo 1',true)+
+            c.secondaryModules.map((m,i)=>mc(m.name,m.why,'Módulo '+(i+2),false)).join('');
+        })()+
       '</div>'+
       '<div class="drw-section">'+
         '<div class="drw-section-title">Riesgos del deal</div>'+
-        c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span>'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')+
+        c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+
       '</div>'+
       '<div class="drw-section">'+
         '<div class="drw-section-title">Señales de compra</div>'+
@@ -2033,6 +2067,30 @@ function openCtxDrawer(type){
   document.getElementById('drawer-body').innerHTML = html;
   document.getElementById('detail-drawer').classList.add('on');
   document.getElementById('drawer-overlay').classList.add('on');
+}
+
+function openEmailDrawer(type){
+  const c = _safe(current);
+  const isPost = type==='post';
+  const title = isPost ? '📨 Post-meeting Email' : '✉️ Pre-meeting Email';
+  const generated = isPost ? genPostMeetingEmail(c) : genPreMeetingEmail(c);
+  const key = 'email_edit_'+(c.name||'').toLowerCase().replace(/\s+/g,'_')+'_'+type;
+  const saved = localStorage.getItem(key) || generated;
+  const drw = document.getElementById('detail-drawer');
+  const drwTitle = document.getElementById('drawer-title');
+  const drwBody = document.getElementById('drawer-body');
+  if(!drw||!drwTitle||!drwBody) return;
+  drwTitle.textContent = title;
+  drwBody.innerHTML =
+    '<div style="display:flex;gap:8px;margin-bottom:12px">'+
+      '<button class="btn b-p" style="font-size:12px" onclick="(function(){const ta=document.getElementById(\'email-ta\');navigator.clipboard&&navigator.clipboard.writeText(ta.value);toast(\'📋 Copiado al portapapeles\')})()">📋 Copiar</button>'+
+      '<button class="btn b-g" style="font-size:12px" onclick="(function(){const ta=document.getElementById(\'email-ta\');localStorage.setItem('+JSON.stringify(key)+',ta.value);toast(\'✓ Guardado\')})()">Guardar</button>'+
+      '<button class="btn b-g" style="font-size:12px" onclick="(function(){document.getElementById(\'email-ta\').value='+JSON.stringify(generated)+';localStorage.removeItem('+JSON.stringify(key)+');toast(\'Restaurado\')})()">↺ Restaurar</button>'+
+    '</div>'+
+    '<textarea id="email-ta" style="width:100%;height:420px;border:1.5px solid var(--br);border-radius:var(--r2);padding:14px;font-size:13px;font-family:inherit;color:var(--t1);line-height:1.7;resize:vertical;outline:none;box-sizing:border-box">'+escHtml(saved)+'</textarea>';
+  drw.classList.add('on');
+  document.getElementById('drawer-overlay').classList.add('on');
+  document.body.style.overflow='hidden';
 }
 
 // ═══════════════════════════════════════════
@@ -2067,25 +2125,31 @@ function renderActionPlan(c){ c=_safe(c);
     '<div style="font-size:11px;color:var(--t3)">'+Object.values(savedActions).filter(Boolean).length+' de '+ACTION_ITEMS.length+' completados</div>';
 
   // TAB 2: Sales Materials
-  const preMail = genPreMeetingEmail(c);
-  const postMail = genPostMeetingEmail(c);
   const materialsHtml =
-    '<div class="email-section">'+
-      '<div class="email-section-title">Pre-meeting Email <button class="email-copy-btn" onclick="copyText('+JSON.stringify(preMail)+');event.stopPropagation()">Copiar</button></div>'+
-      '<div class="email-body">'+escHtml(preMail)+'</div>'+
-    '</div>'+
-    '<div class="email-section">'+
-      '<div class="email-section-title">Post-meeting Email <button class="email-copy-btn" onclick="copyText('+JSON.stringify(postMail)+');event.stopPropagation()">Copiar</button></div>'+
-      '<div class="email-body">'+escHtml(postMail)+'</div>'+
-    '</div>'+
-    '<div style="border-top:1px solid var(--br);margin-top:4px;padding-top:16px">'+
-      '<div class="mat-link-row">'+
-        '<div><div class="mat-link-name">Presentación</div><div class="mat-link-desc">Deck corporativo Humand</div></div>'+
-        '<button class="btn b-g" style="font-size:11px" onclick="toast(\'Próximamente: link a presentación\')">↗ Abrir</button>'+
+    '<div class="mat-cards">'+
+      '<div class="mat-card" onclick="openEmailDrawer(\'pre\')">'+
+        '<div class="mat-card-icon">✉️</div>'+
+        '<div class="mat-card-title">Pre-meeting Email</div>'+
+        '<div class="mat-card-desc">Email de introducción antes de la primera reunión</div>'+
+        '<div class="mat-card-cta">Ver y editar →</div>'+
       '</div>'+
-      '<div class="mat-link-row">'+
-        '<div><div class="mat-link-name">Propuesta</div><div class="mat-link-desc">Documento de propuesta comercial</div></div>'+
-        '<button class="btn b-g" style="font-size:11px" onclick="toast(\'Próximamente: link a propuesta\')">↗ Abrir</button>'+
+      '<div class="mat-card" onclick="openEmailDrawer(\'post\')">'+
+        '<div class="mat-card-icon">📨</div>'+
+        '<div class="mat-card-title">Post-meeting Email</div>'+
+        '<div class="mat-card-desc">Follow-up y recap para después de la reunión</div>'+
+        '<div class="mat-card-cta">Ver y editar →</div>'+
+      '</div>'+
+      '<div class="mat-card" onclick="toast(\'Próximamente: link a presentación\')">'+
+        '<div class="mat-card-icon">📊</div>'+
+        '<div class="mat-card-title">Presentación</div>'+
+        '<div class="mat-card-desc">Deck corporativo Humand</div>'+
+        '<div class="mat-card-cta">Abrir ↗</div>'+
+      '</div>'+
+      '<div class="mat-card" onclick="toast(\'Próximamente: link a propuesta\')">'+
+        '<div class="mat-card-icon">📄</div>'+
+        '<div class="mat-card-title">Propuesta</div>'+
+        '<div class="mat-card-desc">Documento de propuesta comercial</div>'+
+        '<div class="mat-card-cta">Abrir ↗</div>'+
       '</div>'+
     '</div>';
 
@@ -3187,7 +3251,7 @@ function renderDealStrategy(c){ c=_safe(c);
       guide.provide.map(p=>'<div style="font-size:12px;color:var(--t1);display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;line-height:1.5"><span style="color:var(--p);font-weight:600;flex-shrink:0">✓</span>'+p+'</div>').join('') +
     '</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">⚠️ Riesgos del deal — '+c.name+'</div>' +
-    '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
+    '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">✅ Próximas acciones para avanzar el deal</div>' +
     '<div class="next-list">'+nextItems+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">🏆 Casos similares de Humand que podés usar</div>' +
@@ -3532,6 +3596,18 @@ function toast(m){
   document.getElementById('tmsg').textContent=m;
   el.classList.add('on');clearTimeout(toastT);
   toastT=setTimeout(()=>el.classList.remove('on'),2500);
+}
+
+let SOLUTIONS_DATA = null;
+fetch('humand_solutions_map.json').then(r=>r.json()).then(d=>{SOLUTIONS_DATA=d;}).catch(()=>{});
+function getModuleDetail(name){
+  if(!SOLUTIONS_DATA) return null;
+  const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();
+  const needle=norm(name.replace(/^[^\w]+/,''));
+  return SOLUTIONS_DATA.modules.find(m=>{
+    const mn=norm(m.module_name);
+    return needle===mn||needle.includes(mn)||mn.includes(needle)||needle.split(' ').some(w=>w.length>3&&mn.includes(w));
+  })||null;
 }
 </script>
 </body>

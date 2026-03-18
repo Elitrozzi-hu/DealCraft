@@ -1,7 +1,12 @@
 {
-  "version": "1.2.4",
+  "version": "1.2.5",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.5",
+      "date": "2026-03-18",
+      "note": "Enrich módulos with solutions JSON, redesign sales materials as 4 cards with editable email drawer, clean risk/signals style"
+    },
     {
       "version": "1.2.4",
       "date": "2026-03-18",
