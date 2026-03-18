@@ -330,8 +330,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sside-panel{display:none;padding:20px 20px}
 .sside-panel.on{display:block}
 /* ════ CONTEXT + ACTION PLAN LAYOUT ════ */
-.ctx-col{flex:0 0 38%;min-width:0;display:flex;flex-direction:column;gap:12px}
-.ap-col{flex:1;min-width:0}
+.ctx-col{flex:2;min-width:0;display:flex;flex-direction:column;gap:0}
+.ap-col{flex:3;min-width:0}
+.col-header{margin-bottom:16px}
+.col-header-title{font-size:16px;font-weight:600;color:var(--t1);margin-bottom:4px}
+.col-header-desc{font-size:12px;color:var(--t2);line-height:1.5}
 /* Context cards — clickable, expand in drawer */
 .ctx-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;cursor:pointer;transition:box-shadow .14s,border-color .14s}
 .ctx-card:hover{box-shadow:var(--s2);border-color:var(--p)}
@@ -884,7 +887,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.0</span>
+  <span class="ver-badge">v1.2.1</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1455,7 +1458,7 @@ const PROC = [
 // ═══════════════════════════════════════════
 let current;
 function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0)}
-function goHome(){show('s1');document.getElementById('main-input').value=''}
+function goHome(){show('s1');document.getElementById('main-input').value='';history.pushState(null,'',location.pathname)}
 function fillAndGo(v){document.getElementById('main-input').value=v;analyze()}
 function swTab(id,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
@@ -1515,6 +1518,7 @@ async function analyze(){
 
   await Promise.all([animPromise, apolloPromise]);
   render();
+  history.pushState(null, '', '?company=' + encodeURIComponent(val));
   show('s3');
 }
 
@@ -1743,6 +1747,7 @@ function getActiveTech(c){ return getCustomTech() || c.tech; }
 // RENDER RESULTS — new wizard layout
 // ═══════════════════════════════════════════
 function render(){
+  currentStage = 'lead';
   const c = current;
   customTechKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
   renderCoStrip(c);
@@ -1874,7 +1879,16 @@ function renderContext(c){ c=_safe(c);
       '</div>'+
     '</div>';
 
-  document.getElementById('ctx-col').innerHTML = companyCard + stakeholdersCard + analysisCard;
+  const ctxHeader =
+    '<div class="col-header">'+
+      '<div class="col-header-title">Context</div>'+
+      '<div class="col-header-desc">Información clave de la empresa, stakeholders y análisis del deal. Hacé click en cada card para ver el detalle completo.</div>'+
+    '</div>';
+  const ctxCards =
+    '<div style="display:flex;flex-direction:column;gap:12px">'+
+      companyCard + stakeholdersCard + analysisCard +
+    '</div>';
+  document.getElementById('ctx-col').innerHTML = ctxHeader + ctxCards;
 }
 
 function openCtxDrawer(type){
@@ -2044,7 +2058,12 @@ function renderActionPlan(c){ c=_safe(c);
     '</div>'
   ).join('');
 
-  document.getElementById('ap-col').innerHTML =
+  const apHeader =
+    '<div class="col-header">'+
+      '<div class="col-header-title">Action Plan</div>'+
+      '<div class="col-header-desc">Acciones concretas, materiales de venta y toolkit para preparar y ejecutar la reunión con esta etapa del deal.</div>'+
+    '</div>';
+  document.getElementById('ap-col').innerHTML = apHeader +
     '<div class="ap-card">'+
       '<div class="ap-tabs">'+
         '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">Acciones</div>'+
@@ -2691,7 +2710,7 @@ function copyBattleCard(){
 // ═══════════════════════════════════════════
 // GAVIN DIRECTIVES — Stakeholders + Deal Strategy
 // ═══════════════════════════════════════════
-let currentStage = 'discovery';
+let currentStage = 'lead';
 const STAGES = [
   {id:'lead',     label:'Lead / Early Intro',   num:'01', goal:'Establecer credibilidad y evaluar fit',      desc:'Mostrá que hiciste la tarea. Presentá el contexto de la empresa e identificá si hay dolor real.'},
   {id:'discovery',label:'Discovery',            num:'02', goal:'Validar el dolor, la urgencia y el fit',     desc:'Profundizá en los problemas reales. Mapeá stakeholders y entendé el proceso de decisión.'},
