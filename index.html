@@ -329,6 +329,76 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sside-tab.on{color:var(--p);font-weight:600;border-bottom-color:var(--p)}
 .sside-panel{display:none;padding:20px 20px}
 .sside-panel.on{display:block}
+/* ════ CONTEXT + ACTION PLAN LAYOUT ════ */
+.ctx-col{flex:0 0 38%;min-width:0;display:flex;flex-direction:column;gap:12px}
+.ap-col{flex:1;min-width:0}
+/* Context cards — clickable, expand in drawer */
+.ctx-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;cursor:pointer;transition:box-shadow .14s,border-color .14s}
+.ctx-card:hover{box-shadow:var(--s2);border-color:var(--p)}
+.ctx-card-head{display:flex;align-items:center;gap:12px;padding:16px 18px}
+.ctx-card-ico{font-size:18px;flex-shrink:0}
+.ctx-card-title{flex:1;font-size:14px;font-weight:600;color:var(--t1)}
+.ctx-card-badge{font-size:10px;font-weight:600;color:var(--t2);background:var(--bg);border-radius:20px;padding:2px 9px;flex-shrink:0}
+.ctx-card-arrow{font-size:12px;color:var(--t3);flex-shrink:0;transition:transform .14s,color .14s}
+.ctx-card:hover .ctx-card-arrow{transform:translateX(3px);color:var(--p)}
+.ctx-card-preview{padding:0 18px 14px}
+.ctx-prev-item{display:flex;gap:8px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--bg);font-size:12px}
+.ctx-prev-item:last-child{border-bottom:none}
+.ctx-prev-lbl{color:var(--t2);flex-shrink:0;min-width:72px}
+.ctx-prev-val{color:var(--t1);font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Action Plan card */
+.ap-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden}
+.ap-tabs{display:flex;border-bottom:1px solid var(--br);padding:0 8px}
+.ap-tab{padding:13px 14px;font-size:13px;font-weight:400;color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;transition:all .14s;user-select:none;white-space:nowrap}
+.ap-tab:hover{color:var(--t1)}
+.ap-tab.on{color:var(--p);font-weight:600;border-bottom-color:var(--p)}
+.ap-panel{display:none;padding:22px 24px}
+.ap-panel.on{display:block}
+/* Actions checklist */
+.action-item{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--bg);cursor:pointer;user-select:none;transition:opacity .14s}
+.action-item:last-child{border-bottom:none}
+.action-cb{width:20px;height:20px;border-radius:5px;border:2px solid var(--br);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;font-size:11px;font-weight:700;color:transparent}
+.action-item.done .action-cb{background:var(--ok);border-color:var(--ok);color:#fff}
+.action-label{font-size:13px;color:var(--t1);line-height:1.4;flex:1}
+.action-item.done .action-label{color:var(--t2);text-decoration:line-through}
+.action-desc{font-size:11px;color:var(--t3);margin-top:2px}
+/* Email blocks */
+.email-section{margin-bottom:20px}
+.email-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.email-body{background:var(--bg);border:1px solid var(--br);border-radius:var(--r2);padding:14px 16px;font-size:12px;color:var(--t1);line-height:1.75;white-space:pre-wrap;font-family:inherit;max-height:180px;overflow-y:auto}
+.email-copy-btn{font-size:10px;font-weight:600;color:var(--p);cursor:pointer;padding:2px 8px;border-radius:6px;border:1px solid var(--px2);background:var(--px);transition:all .14s}
+.email-copy-btn:hover{background:var(--px2)}
+.mat-link-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bg)}
+.mat-link-row:last-child{border-bottom:none}
+.mat-link-name{font-size:13px;font-weight:600;color:var(--t1)}
+.mat-link-desc{font-size:11px;color:var(--t2);margin-top:1px}
+/* Meeting Toolkit */
+.tk-step{margin-bottom:0}
+.tk-step-head{display:flex;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--bg);cursor:pointer;user-select:none}
+.tk-step-head:last-child{border-bottom:none}
+.tk-step-num{width:26px;height:26px;border-radius:50%;background:var(--p);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tk-step-info{flex:1}
+.tk-step-title{font-size:13px;font-weight:600;color:var(--t1)}
+.tk-step-sub{font-size:11px;color:var(--t2);margin-top:2px}
+.tk-step-dur{font-size:11px;color:var(--t3);flex-shrink:0}
+.tk-step-body{padding:0 0 16px 36px;display:none}
+.tk-step-body.on{display:block}
+/* Drawer content sections */
+.drw-section{margin-bottom:20px}
+.drw-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--br)}
+.drw-metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.drw-metric{background:var(--bg);border-radius:var(--r1);padding:10px 12px}
+.drw-metric-val{font-size:16px;font-weight:600;color:var(--t1)}
+.drw-metric-lbl{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.drw-bullet{display:flex;gap:8px;align-items:flex-start;padding:6px 0;font-size:13px;color:var(--t1);line-height:1.5}
+.drw-bullet::before{content:'·';color:var(--p);font-weight:700;flex-shrink:0;margin-top:1px}
+.stk-drw-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg)}
+.stk-drw-row:last-child{border-bottom:none}
+.stk-drw-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.stk-drw-body{flex:1;min-width:0}
+.stk-drw-role{font-size:13px;font-weight:600;color:var(--t1)}
+.stk-drw-meta{font-size:11px;color:var(--t2);margin-top:1px}
+.stk-drw-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;flex-shrink:0}
 /* Content cards */
 .sc-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);overflow:hidden;box-shadow:var(--s1)}
 .sc-card-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;transition:background .12s;user-select:none}
@@ -770,8 +840,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <!-- Stage body -->
   <div class="s3-scroll">
     <div class="stage-body">
-      <div class="stage-main" id="stage-main"></div>
-      <div class="stage-side" id="stage-side"></div>
+      <div class="ctx-col" id="ctx-col"></div>
+      <div class="ap-col" id="ap-col"></div>
     </div>
   </div>
   <div class="fb-bar">
@@ -814,7 +884,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.1.6</span>
+  <span class="ver-badge">v1.2.0</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1677,8 +1747,8 @@ function render(){
   customTechKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
   renderCoStrip(c);
   renderStepper();
-  renderStageMain(c);
-  renderStageSide(c);
+  renderContext(c);
+  renderActionPlan(c);
   // Legacy: keep old render calls for drawer content
   renderLegacyPanels(c);
   renderDealStrategy(c);
@@ -1742,190 +1812,371 @@ document.addEventListener('click', function(){
   if(p) p.classList.remove('on');
 });
 
-function renderStageMain(c){ c=_safe(c);
+// ═══════════════════════════════════════════
+// CONTEXT COLUMN (left 40%)
+// ═══════════════════════════════════════════
+function renderContext(c){ c=_safe(c);
+  const stks = getStakeholders(c);
+  const present = stks.filter(s=>s.present).length;
+  const activeTech = getActiveTech(c);
+
+  // Company card preview
+  const companyCard =
+    '<div class="ctx-card" onclick="openCtxDrawer(\'company\')">'+
+      '<div class="ctx-card-head">'+
+        '<span class="ctx-card-ico">🏢</span>'+
+        '<span class="ctx-card-title">Empresa</span>'+
+        '<span class="ctx-card-badge">'+activeTech.length+' tools</span>'+
+        '<span class="ctx-card-arrow">→</span>'+
+      '</div>'+
+      '<div class="ctx-card-preview">'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Industria</span><span class="ctx-prev-val">'+c.industry+'</span></div>'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Empleados</span><span class="ctx-prev-val">'+c.employees+'</span></div>'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">País</span><span class="ctx-prev-val">'+c.country+'</span></div>'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Score</span><span class="ctx-prev-val" style="color:var(--p);font-weight:600">'+c.score+' — '+c.scoreLabel+'</span></div>'+
+      '</div>'+
+    '</div>';
+
+  // Stakeholders card preview
+  const stkColor = present/stks.length>=0.75?'var(--ok)':present/stks.length>=0.5?'var(--wa)':'var(--red)';
+  const stakeholdersCard =
+    '<div class="ctx-card" onclick="openCtxDrawer(\'stakeholders\')">'+
+      '<div class="ctx-card-head">'+
+        '<span class="ctx-card-ico">👥</span>'+
+        '<span class="ctx-card-title">Stakeholders</span>'+
+        '<span class="ctx-card-badge" style="color:'+stkColor+'">'+present+'/'+stks.length+'</span>'+
+        '<span class="ctx-card-arrow">→</span>'+
+      '</div>'+
+      '<div class="ctx-card-preview">'+
+        stks.slice(0,3).map(s=>
+          '<div class="ctx-prev-item">'+
+            '<span class="ctx-prev-lbl" style="color:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--t3)')+'">'+s.type+'</span>'+
+            '<span class="ctx-prev-val">'+s.role+'</span>'+
+            (s.present?'<span style="color:var(--ok);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✓</span>':'<span style="color:var(--red);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✗</span>')+
+          '</div>'
+        ).join('')+
+        (stks.length>3?'<div style="font-size:11px;color:var(--t3);padding-top:6px">+'+(stks.length-3)+' más</div>':'')+
+      '</div>'+
+    '</div>';
+
+  // Analysis card preview
+  const analysisCard =
+    '<div class="ctx-card" onclick="openCtxDrawer(\'analysis\')">'+
+      '<div class="ctx-card-head">'+
+        '<span class="ctx-card-ico">🔍</span>'+
+        '<span class="ctx-card-title">Análisis</span>'+
+        '<span class="ctx-card-badge">'+c.signals.length+' señales</span>'+
+        '<span class="ctx-card-arrow">→</span>'+
+      '</div>'+
+      '<div class="ctx-card-preview">'+
+        c.keyInsights.slice(0,2).map(i=>'<div class="ctx-prev-item"><span class="ctx-prev-val" style="min-width:0;white-space:normal;line-height:1.4">'+i+'</span></div>').join('')+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Módulo 1</span><span class="ctx-prev-val">'+c.primaryModule+'</span></div>'+
+      '</div>'+
+    '</div>';
+
+  document.getElementById('ctx-col').innerHTML = companyCard + stakeholdersCard + analysisCard;
+}
+
+function openCtxDrawer(type){
+  const c = _safe(current);
+  const stks = getStakeholders(c);
+  const activeTech = getActiveTech(c);
+  let title = '', html = '';
+
+  if(type==='company'){
+    title = '🏢 ' + c.name;
+    html =
+      '<div class="drw-section">'+
+        '<div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px">'+c.desc+'</div>'+
+        '<div class="drw-section-title">Key Metrics</div>'+
+        '<div class="drw-metric-grid">'+
+          c.mets.map(m=>'<div class="drw-metric"><div class="drw-metric-val">'+(m.v||'—')+'</div><div class="drw-metric-lbl">'+m.l+'</div></div>').join('')+
+        '</div>'+
+      '</div>'+
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">Tech Stack ('+activeTech.length+' herramientas)</div>'+
+        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+
+          activeTech.map(t=>'<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t1)'+(t.status==='gap'?';color:var(--red);border-color:rgba(231,68,68,.4);background:var(--redl)':'')+'">'+t.name+'</span>').join('')+
+        '</div>'+
+        '<button class="btn b-s" style="font-size:12px" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'+
+      '</div>'+
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">Deal</div>'+
+        c.mets.slice(0,2).map(m=>'<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+m.l+'</span><span style="font-size:13px;font-weight:600;color:var(--t1)">'+m.v+'</span></div>').join('')+
+      '</div>'+
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">Señales de compra</div>'+
+        c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1;font-size:12px">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')+
+      '</div>';
+  }
+
+  if(type==='stakeholders'){
+    title = '👥 Stakeholders';
+    const typeColor = t=>t==='champion'?'var(--ok)':t==='dm'?'var(--p)':t==='influencer'?'var(--wa)':'var(--t3)';
+    const statusLabel = s=>s.present?'<span class="stk-drw-status" style="background:var(--okl);color:var(--ok)">Confirmado</span>':'<span class="stk-drw-status" style="background:var(--bg);color:var(--t3)">Pendiente</span>';
+    html =
+      '<div style="margin-bottom:16px">'+
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'+
+          '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden">'+
+            '<div style="height:100%;width:'+Math.round(stks.filter(s=>s.present).length/stks.length*100)+'%;background:var(--ok);border-radius:3px"></div>'+
+          '</div>'+
+          '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+stks.filter(s=>s.present).length+'/'+stks.length+' confirmados</span>'+
+        '</div>'+
+        stks.map((s,i)=>
+          '<div class="stk-drw-row">'+
+            '<div class="stk-drw-dot" style="background:'+typeColor(s.type)+'"></div>'+
+            '<div class="stk-drw-body">'+
+              '<div class="stk-drw-role">'+s.role+'</div>'+
+              '<div class="stk-drw-meta">'+s.type.charAt(0).toUpperCase()+s.type.slice(1)+(s.title?' · '+s.title:'')+'</div>'+
+            '</div>'+
+            statusLabel(s)+
+            '<button class="q-row-btn" style="margin-left:6px" onclick="toggleStkPresent('+JSON.stringify(c.name)+','+i+');openCtxDrawer(\'stakeholders\')">'+( s.present?'Quitar':'Confirmar')+'</button>'+
+          '</div>'
+        ).join('')+
+      '</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+        '<button class="btn b-s" onclick="openDrawer(\'stakeholders\')">✏️ Editar stakeholders</button>'+
+      '</div>';
+  }
+
+  if(type==='analysis'){
+    title = '🔍 Análisis';
+    html =
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">Contexto</div>'+
+        c.keyInsights.map(i=>'<div class="drw-bullet">'+i+'</div>').join('')+
+      '</div>'+
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">Módulos de interés</div>'+
+        '<div class="mod-row pri"><span class="mod-row-ico">📣</span>'+
+          '<div class="mod-row-body"><div class="mod-row-name">'+c.primaryModule+'</div><div class="mod-row-why">'+c.primaryWhy+'</div></div>'+
+          '<span class="mod-row-badge">Módulo 1</span>'+
+        '</div>'+
+        c.secondaryModules.map((m,i)=>
+          '<div class="mod-row"><span class="mod-row-ico">'+m.ico+'</span>'+
+          '<div class="mod-row-body"><div class="mod-row-name">'+m.name+'</div><div class="mod-row-why">'+m.why+'</div></div>'+
+          '<span class="mod-row-badge">Módulo '+(i+2)+'</span></div>'
+        ).join('')+
+      '</div>'+
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">Riesgos del deal</div>'+
+        c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span>'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')+
+      '</div>'+
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">Señales de compra</div>'+
+        c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1;font-size:12px">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')+
+      '</div>';
+  }
+
+  document.getElementById('drawer-title').textContent = title;
+  document.getElementById('drawer-body').innerHTML = html;
+  document.getElementById('detail-drawer').classList.add('on');
+  document.getElementById('drawer-overlay').classList.add('on');
+}
+
+// ═══════════════════════════════════════════
+// ACTION PLAN COLUMN (right 60%)
+// ═══════════════════════════════════════════
+function renderActionPlan(c){ c=_safe(c);
   const stageId = currentStage;
-  const stageInfo = STAGES.find(s=>s.id===stageId)||STAGES[1];
+  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
   const opener = (STAGE_OPENERS[stageId]||STAGE_OPENERS.discovery)(c);
   const questions = getStageQuestions(c);
   const meetingSteps = getStageMeeting(c);
-  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
-  const activeTech = getActiveTech(c);
+  const actionsKey = 'dc_actions_'+compKey+'_'+stageId;
+  const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
 
-  // Define sections per stage
-  const SECTION_DEFS = {
-    lead:    [{id:'overview',ico:'🏢',label:'Empresa'},{id:'opener',ico:'💬',label:'Opener'},{id:'objections',ico:'🛡️',label:'Objeciones'},{id:'questions',ico:'❓',label:'Preguntas'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
-    discovery:[{id:'opener',ico:'💬',label:'Opener'},{id:'questions',ico:'❓',label:'Preguntas'},{id:'meeting',ico:'📋',label:'Plan de reunión'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
-    champion:[{id:'opener',ico:'💬',label:'Opener'},{id:'pitch',ico:'🎯',label:'Módulos Humand'},{id:'questions',ico:'❓',label:'Preguntas'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
-    dm:      [{id:'opener',ico:'💬',label:'Opener'},{id:'pitch',ico:'🎯',label:'Módulos Humand'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
-    procure: [{id:'pitch',ico:'🎯',label:'Módulos Humand'},{id:'risks',ico:'⚠️',label:'Riesgos del deal'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
-  };
-  const sections = SECTION_DEFS[stageId] || SECTION_DEFS.discovery;
-  const firstId = sections[0].id;
-
-  // Build nav
-  const navHTML = '<div class="snav" id="snav">'+
-    sections.map(s=>'<div class="snav-item'+(s.id===firstId?' on':'')+'" data-sec="'+s.id+'" onclick="setSection(\''+s.id+'\')">'+s.label+'</div>').join('')+
-  '</div>';
-
-  // Build content panels
-  function panel(id, html){ return '<div class="stage-panel'+(id===firstId?' on':'')+'" id="sp-'+id+'">'+html+'</div>'; }
-
-  const panelOverview = panel('overview',
-    '<div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px">'+c.desc+'</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">'+
-      c.mets.map(m=>'<div style="background:var(--bg);border-radius:var(--r1);padding:10px;text-align:center"><div style="font-size:15px;font-weight:600">'+(m.v||'—')+'</div><div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">'+m.l+'</div></div>').join('')+
+  // TAB 1: Actions checklist
+  const ACTION_ITEMS = [
+    {id:'sched',  label:'Reunión agendada',    desc:'Confirmar fecha, hora y participantes'},
+    {id:'done',   label:'Reunión realizada',   desc:'Meeting completado con el equipo'},
+    {id:'followup',label:'Follow-up enviado',  desc:'Email de seguimiento post-reunión'},
+    {id:'mats',   label:'Materiales enviados', desc:'Deck, propuesta o recursos compartidos'},
+  ];
+  const actionsHtml =
+    '<div style="margin-bottom:16px">'+
+      ACTION_ITEMS.map(a=>{
+        const checked = !!savedActions[a.id];
+        return '<div class="action-item'+(checked?' done':'')+'" onclick="toggleAction(\''+actionsKey+'\',\''+a.id+'\')">'+
+          '<div class="action-cb">'+(checked?'✓':'')+'</div>'+
+          '<div><div class="action-label">'+a.label+'</div><div class="action-desc">'+a.desc+'</div></div>'+
+        '</div>';
+      }).join('')+
     '</div>'+
-    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Señales de compra</div>'+
-    c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')
-  );
+    '<div style="font-size:11px;color:var(--t3)">'+Object.values(savedActions).filter(Boolean).length+' de '+ACTION_ITEMS.length+' completados</div>';
 
-  const panelOpener = panel('opener',
+  // TAB 2: Sales Materials
+  const preMail = genPreMeetingEmail(c);
+  const postMail = genPostMeetingEmail(c);
+  const materialsHtml =
+    '<div class="email-section">'+
+      '<div class="email-section-title">Pre-meeting Email <button class="email-copy-btn" onclick="copyText('+JSON.stringify(preMail)+');event.stopPropagation()">Copiar</button></div>'+
+      '<div class="email-body">'+escHtml(preMail)+'</div>'+
+    '</div>'+
+    '<div class="email-section">'+
+      '<div class="email-section-title">Post-meeting Email <button class="email-copy-btn" onclick="copyText('+JSON.stringify(postMail)+');event.stopPropagation()">Copiar</button></div>'+
+      '<div class="email-body">'+escHtml(postMail)+'</div>'+
+    '</div>'+
+    '<div style="border-top:1px solid var(--br);margin-top:4px;padding-top:16px">'+
+      '<div class="mat-link-row">'+
+        '<div><div class="mat-link-name">Presentación</div><div class="mat-link-desc">Deck corporativo Humand</div></div>'+
+        '<button class="btn b-g" style="font-size:11px" onclick="toast(\'Próximamente: link a presentación\')">↗ Abrir</button>'+
+      '</div>'+
+      '<div class="mat-link-row">'+
+        '<div><div class="mat-link-name">Propuesta</div><div class="mat-link-desc">Documento de propuesta comercial</div></div>'+
+        '<button class="btn b-g" style="font-size:11px" onclick="toast(\'Próximamente: link a propuesta\')">↗ Abrir</button>'+
+      '</div>'+
+    '</div>';
+
+  // TAB 3: Meeting Toolkit — stage-aware agenda steps
+  const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
+  const toolkitHtml = toolkitSteps.map((s,i)=>
+    '<div class="tk-step">'+
+      '<div class="tk-step-head" onclick="toggleTkStep(\'tks'+i+'\')">'+
+        '<div class="tk-step-num">'+s.num+'</div>'+
+        '<div class="tk-step-info">'+
+          '<div class="tk-step-title">'+s.title+'</div>'+
+          '<div class="tk-step-sub">'+s.sub+'</div>'+
+        '</div>'+
+        '<div class="tk-step-dur">'+s.dur+'</div>'+
+      '</div>'+
+      '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
+    '</div>'
+  ).join('');
+
+  document.getElementById('ap-col').innerHTML =
+    '<div class="ap-card">'+
+      '<div class="ap-tabs">'+
+        '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">Acciones</div>'+
+        '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">Sales Materials</div>'+
+        '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">Meeting Toolkit</div>'+
+      '</div>'+
+      '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
+      '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
+      '<div class="ap-panel" id="ap-toolkit">'+toolkitHtml+'</div>'+
+    '</div>';
+}
+
+function apTab(id){
+  document.querySelectorAll('.ap-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));
+  document.querySelectorAll('.ap-panel').forEach(p=>p.classList.toggle('on',p.id==='ap-'+id));
+}
+
+function toggleTkStep(id){
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('on');
+}
+
+function toggleAction(key, actionId){
+  const saved = JSON.parse(localStorage.getItem(key)||'{}');
+  saved[actionId] = !saved[actionId];
+  localStorage.setItem(key, JSON.stringify(saved));
+  renderActionPlan(_safe(current));
+  // restore tab
+  apTab('actions');
+}
+
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function genPreMeetingEmail(c){
+  const mod = c.primaryModule || 'Humand';
+  return `Asunto: ${c.name} + Humand — Antes de nuestra reunión
+
+Hola [nombre],
+
+Antes de que nos juntemos, quería compartirte un poco de contexto de por qué creo que esta conversación puede ser muy relevante para ${c.name}.
+
+Investigando un poco la empresa, vi que:
+${(c.keyInsights||[]).slice(0,2).map(i=>'• '+i).join('\n')}
+
+En la reunión voy a presentar cómo ${mod} puede ayudar a resolver esto de forma concreta y medible.
+
+¡Nos vemos pronto!
+[Tu nombre] — Humand`;
+}
+
+function genPostMeetingEmail(c){
+  const steps = c.nextSteps||['Agendar siguiente reunión'];
+  return `Asunto: ${c.name} + Humand — Próximos pasos
+
+Hola [nombre],
+
+Gracias por el tiempo de hoy. Fue muy valioso entender mejor el contexto de ${c.name}.
+
+Resumen de lo que conversamos:
+• Desafío principal: ${(c.keyInsights||[''])[0]}
+• Módulo propuesto: ${c.primaryModule||'Humand'}
+• ${c.primaryWhy||''}
+
+Próximos pasos acordados:
+${steps.slice(0,2).map(s=>'• '+s).join('\n')}
+
+Quedo disponible para cualquier consulta. ¡Mucho éxito!
+[Tu nombre] — Humand`;
+}
+
+function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
+  const hasDisc = ['lead','discovery','champion'].includes(stageId);
+  const hasDemo = ['champion','dm','procure'].includes(stageId);
+  const hasMeeting = stageId==='discovery';
+
+  const openerBody =
     '<div class="stage-opener-box">"'+opener+'"</div>'+
-    '<button class="btn b-s" style="font-size:12px" onclick="copyText('+JSON.stringify(opener)+')">📋 Copiar opener</button>'
-  );
+    '<button class="btn b-s" style="font-size:12px;margin-top:8px" onclick="copyText('+JSON.stringify(opener)+')">📋 Copiar opener</button>';
 
-  const panelQuestions = panel('questions',
-    questions.map((q,i)=>{
-      const respKey='dc_qa_'+compKey+'_'+stageId+'_'+i;
-      const saved=localStorage.getItem(respKey)||'';
-      return '<div class="q-row">'+
+  const questionsBody =
+    questions.slice(0,5).map((q,i)=>
+      '<div class="q-row">'+
         '<div class="q-row-num">'+(i+1)+'</div>'+
         '<div class="q-row-body">'+
           '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
           '<div class="q-row-text">'+q.text+'</div>'+
-          '<div class="q-row-actions">'+
-            '<button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</button>'+
-            '<button class="q-row-btn'+(saved?' filled':'')+'" id="qwrb'+i+'" onclick="toggleQRow('+i+',\''+respKey.replace(/'/g,"\\'")+'\')">Anotar resp.</button>'+
-          '</div>'+
-          '<div class="q-resp-row'+(saved?' open':'')+'" id="qwra'+i+'">'+
-            '<div class="q-resp-row-label">Respuesta del cliente</div>'+
-            '<textarea class="q-resp-row-ta" placeholder="Lo que dijo el cliente..." oninput="saveQResp(\''+respKey.replace(/'/g,"\\'")+'\','+i+',this.value)">'+saved+'</textarea>'+
-          '</div>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
-    (stageId==='discovery'?'<button class="btn b-s" style="font-size:12px;margin-top:10px" onclick="openDrawer(\'stakeholders\')">Ver preguntas por rol →</button>':'')
-  );
-
-  const panelMeeting = panel('meeting',
-    '<div class="mp-rows">'+meetingSteps.map(m=>
-      '<div class="mp-row">'+
-        '<div class="mp-row-num">'+m.step+'</div>'+
-        '<div class="mp-row-body">'+
-          '<div class="mp-row-head"><div class="mp-row-title">'+m.title+'</div><div class="mp-row-dur">'+m.dur+'</div></div>'+
-          '<div class="mp-row-text">'+m.body+'</div>'+
-          (m.tip?'<div class="mp-row-tip">💡 '+m.tip+'</div>':'')+
+          '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</button></div>'+
         '</div>'+
       '</div>'
-    ).join('')+'</div>'
-  );
+    ).join('')+
+    (stageId==='lead'?'<div style="margin-top:10px">'+buildObjCard(true)+'</div>':'');
 
-  const panelPitch = panel('pitch',
+  const demoBody =
     '<div class="mod-row pri"><span class="mod-row-ico">📣</span>'+
       '<div class="mod-row-body"><div class="mod-row-name">'+c.primaryModule+'</div><div class="mod-row-why">'+c.primaryWhy+'</div></div>'+
-      '<span class="mod-row-badge">Módulo 1</span>'+
-    '</div>'+
-    c.secondaryModules.map((m,i)=>
+      '<span class="mod-row-badge">Módulo 1</span></div>'+
+    c.secondaryModules.slice(0,2).map((m,i)=>
       '<div class="mod-row"><span class="mod-row-ico">'+m.ico+'</span>'+
       '<div class="mod-row-body"><div class="mod-row-name">'+m.name+'</div><div class="mod-row-why">'+m.why+'</div></div>'+
       '<span class="mod-row-badge">Módulo '+(i+2)+'</span></div>'
-    ).join('')
-  );
+    ).join('');
 
-  const panelRisks = panel('risks',
-    c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span>'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')+
-    '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">'+
-      '<button class="btn b-s" style="font-size:12px" onclick="openDrawer(\'dealstrat\')">Ver próximas acciones →</button>'+
-      '<button class="btn b-g" style="font-size:12px" onclick="openDrawer(\'overview\')">Ver empresa completa →</button>'+
-    '</div>'
-  );
-
-  const panelTech = panel('tech',
-    '<div class="ts-card-grid">'+
-      activeTech.map(t=>{
-        const logoUrl=toolLogoUrl(t.name);
-        const color=toolColor(t.name);
-        const init=(t.name||'?')[0].toUpperCase();
-        const catalog=TOOL_CATALOG.find(x=>x.name.toLowerCase()===t.name.toLowerCase());
-        const cat=catalog?catalog.cat:'Herramienta';
-        const logoHtml=logoUrl
-          ?'<div class="ts-card-logo"><img src="'+logoUrl+'" alt="'+t.name+'" onerror="this.parentNode.outerHTML=\'<div class=ts-card-logo-fb style=background:'+color+'>'+init+'</div>\'"></div>'
-          :'<div class="ts-card-logo-fb" style="background:'+color+'">'+init+'</div>';
-        return '<div class="ts-card'+(t.status==='gap'?' gap':'')+'">'+logoHtml+'<div class="ts-card-name">'+t.name+'</div><div class="ts-card-cat">'+cat+'</div></div>';
-      }).join('')+
+  const closureBody =
+    '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px">Posicionamiento</div>'+
+    '<div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px">'+
+      (STAGES.find(s=>s.id===stageId)||{}).desc+
     '</div>'+
-    '<button class="btn b-s" style="font-size:12px" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'
-  );
+    '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px">Próximos pasos</div>'+
+    (c.nextSteps||[]).map(s=>'<div class="drw-bullet">'+s+'</div>').join('');
 
-  const panelObj = panel('objections', buildObjCard(true));
+  const steps = [
+    {num:'1', title:'Opening', sub:'Opener personalizado', dur:'5 min', body: openerBody},
+    {num:'2', title:'Discovery', sub: hasDisc?'Preguntas + objeciones':'Validación de necesidades', dur:'15 min', body: questionsBody},
+    {num:'3', title:'Demo / Presentación', sub:'Módulos Humand relevantes', dur:'20 min', body: demoBody},
+    {num:'4', title:'Cierre', sub:'Posicionamiento + próximos pasos', dur:'10 min', body: closureBody},
+  ];
 
-  // Assemble panels per stage
-  const STAGE_PANELS = {
-    lead:     panelOverview + panelOpener + panelObj     + panelQuestions + panelTech,
-    discovery:panelOpener  + panelQuestions + panelMeeting + panelTech,
-    champion: panelOpener  + panelPitch   + panelQuestions + panelTech,
-    dm:       panelOpener  + panelPitch   + panelTech,
-    procure:  panelPitch   + panelRisks   + panelTech,
-  };
-
-  const contentHTML = '<div class="stage-content" id="stage-content">'+(STAGE_PANELS[stageId]||'')+'</div>';
-  document.getElementById('stage-main').innerHTML = navHTML + contentHTML;
-}
-
-function renderStageSide(c){ c=_safe(c);
-  const stks = getStakeholders(c);
-  const present = stks.filter(s=>s.present).length;
-  const total = stks.length;
-  const pct = Math.round(present/total*100);
-  const barColor = pct>=75?'var(--ok)':pct>=50?'var(--wa)':'var(--red)';
-  const saved = localStorage.getItem(notesKey(c.name))||'';
-  const isDisc = currentStage==='discovery';
-  const st = STAGES.find(s=>s.id===currentStage)||STAGES[1];
-
-  // Tab 1: Objetivo
-  const tabObjetivo =
-    '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t2);margin-bottom:6px">Etapa actual</div>'+
-    '<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:6px">'+st.goal+'</div>'+
-    '<div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px">'+st.desc+'</div>'+
-    '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'dealstrat\')">⚡ Deal Strategy completa →</button>';
-
-  // Tab 2: Stakeholders
-  const tabStk =
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'+
-      '<span style="font-size:13px;font-weight:600;color:var(--t1)">'+t('covLabel')+'</span>'+
-      '<span style="font-size:11px;color:var(--p);cursor:pointer;font-weight:600" onclick="openDrawer(\'stakeholders\')">Ver todos →</span>'+
-    '</div>'+
-    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">'+
-      '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+barColor+';border-radius:3px;transition:width .4s"></div></div>'+
-      '<span style="font-size:11px;font-weight:600;color:'+barColor+'">'+present+'/'+total+'</span>'+
-    '</div>'+
-    stks.map(s=>'<div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg)">'+
-      '<span style="width:8px;height:8px;border-radius:50%;background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+';flex-shrink:0;display:inline-block"></span>'+
-      '<span style="flex:1;font-size:12px;color:var(--t1)">'+s.role+'</span>'+
-      (s.present?'<span style="font-size:11px;color:var(--ok);font-weight:600">✓</span>':'<span style="font-size:11px;color:var(--red);font-weight:600">✗</span>')+
-    '</div>').join('')+
-    '<div style="margin-top:12px">'+
-      '<button class="btn b-s" style="font-size:11px;width:100%" onclick="openDrawer(\'stakeholders\')">👥 Gestionar stakeholders</button>'+
-    '</div>';
-
-  // Tab 3: Notas
-  const tabNotas =
-    (isDisc?'<div style="font-size:11px;color:var(--p);background:var(--px);border-radius:var(--r1);padding:8px 10px;margin-bottom:10px;font-weight:600;line-height:1.4">💡 Discovery — anotá lo que dice el cliente en tiempo real.</div>':'')+
-    '<textarea class="nsc-ta" id="nsc-ta" placeholder="Anotá lo que escuchás en la llamada..." oninput="saveSideNotes(\''+c.name.replace(/'/g,"\\'")+'\',this.value)">'+saved+'</textarea>'+
-    '<div class="nsc-footer">'+
-      '<span class="nsc-meta">'+(saved.length>0?saved.length+' chars':'')+'</span>'+
-      '<span class="nsc-saved" id="nsc-saved-ind">✓ Guardado</span>'+
-    '</div>';
-
-  document.getElementById('stage-side').innerHTML =
-    '<div class="sside-tabs">'+
-      '<div class="sside-tab on" data-tab="objetivo" onclick="sideTab(\'objetivo\')">Objetivo</div>'+
-      '<div class="sside-tab" data-tab="stk" onclick="sideTab(\'stk\')">Stakeholders</div>'+
-      '<div class="sside-tab" data-tab="notas" onclick="sideTab(\'notas\')">Notas</div>'+
-    '</div>'+
-    '<div class="sside-panel on" id="stp-objetivo">'+tabObjetivo+'</div>'+
-    '<div class="sside-panel" id="stp-stk">'+tabStk+'</div>'+
-    '<div class="sside-panel" id="stp-notas">'+tabNotas+'</div>';
+  if(hasMeeting && meetingSteps.length){
+    steps.splice(2,0,{num:'2b', title:'Plan de reunión', sub:'Agenda detallada', dur:'',
+      body:'<div class="mp-rows">'+meetingSteps.map(m=>
+        '<div class="mp-row">'+
+          '<div class="mp-row-num">'+m.step+'</div>'+
+          '<div class="mp-row-body">'+
+            '<div class="mp-row-head"><div class="mp-row-title">'+m.title+'</div><div class="mp-row-dur">'+m.dur+'</div></div>'+
+            '<div class="mp-row-text">'+m.body+'</div>'+
+            (m.tip?'<div class="mp-row-tip">💡 '+m.tip+'</div>':'')+
+          '</div>'+
+        '</div>'
+      ).join('')+'</div>'
+    });
+  }
+  return steps;
 }
 
 function sideTab(id){
@@ -2460,8 +2711,8 @@ function setStage(id){
   currentStage = id;
   renderStepper();
   if(current){
-    renderStageMain(current);
-    renderStageSide(current);
+    renderContext(current);
+    renderActionPlan(current);
     renderDealStrategy(current);
   }
 }
@@ -2603,7 +2854,7 @@ function addTechItem(name, cat, status){
   const body = document.getElementById('drawer-body');
   if(body) body.innerHTML = buildTechDrawer(c);
   // Re-render main card
-  renderStageMain(c);
+  renderContext(c);
   toast('✅ '+name+' agregado al stack');
   const inp = document.getElementById('ts-search-inp');
   if(inp){ inp.value=''; }
@@ -2618,7 +2869,7 @@ function removeTechItem(idx){
   saveCustomTech(arr);
   const body = document.getElementById('drawer-body');
   if(body) body.innerHTML = buildTechDrawer(c);
-  renderStageMain(c);
+  renderContext(c);
   toast('Herramienta removida');
 }
 
@@ -2680,6 +2931,8 @@ function _safe(c){
   if(!c.dealRisks)      c.dealRisks      = [{lvl:'warn',txt:'Validar información básica de la empresa al inicio de la reunión'},{lvl:'warn',txt:'Identificar y mapear el buying committee completo'}];
   if(!c.nextActions)    c.nextActions    = ['Validar información de la empresa al inicio de la reunión','Identificar quién es el DM e invitarlo a la próxima reunión','Proponer una demo técnica con el equipo de IT'];
   if(!c.similarCases)   c.similarCases   = [{ico:'🏢',company:'Empresa de servicios AR',industry:'Servicios',useCase:'Communications + Forms & Workflows para digitalizar HR Ops',result:'-45% tiempo manual de HR · 88% adopción en 60 días'}];
+  if(!c.keyInsights)    c.keyInsights    = [c.desc ? c.desc.substring(0,120)+'...' : 'Empresa con potencial para Humand.', 'Identificar procesos manuales de HR que se puedan digitalizar.'];
+  if(!c.nextSteps)      c.nextSteps      = c.nextActions || ['Agendar siguiente reunión'];
   return c;
 }
 function renderStageSidebar(c){ c=_safe(c);
@@ -2748,7 +3001,7 @@ function toggleStkPresent(companyName, idx){
   const stks = getStakeholders(current);
   if(stks[idx]) stks[idx].present = !stks[idx].present;
   saveStakeholders(current, stks);
-  renderStageSide(current);
+  renderContext(current);
   renderStakeholders(current);
   // re-open drawer if open
   const drawer = document.getElementById('detail-drawer');
@@ -2771,7 +3024,7 @@ function addStkParticipant(companyName){
   const stks = getStakeholders(current);
   stks.push({role: inp.value.trim(), title: inp.value.trim(), type:'influencer', cares:[], present:true});
   saveStakeholders(current, stks);
-  renderStageSide(current);
+  renderContext(current);
   renderStakeholders(current);
   const drawer = document.getElementById('detail-drawer');
   if(drawer && drawer.classList.contains('on')){
@@ -2970,8 +3223,8 @@ function applyLang(){
   });
   // Re-render dynamic panels if results are showing
   if(current && document.getElementById('s3').classList.contains('on')){
-    renderStageMain(current);
-    renderStageSide(current);
+    renderContext(current);
+    renderActionPlan(current);
   }
 }
 
