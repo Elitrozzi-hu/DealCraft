@@ -1,7 +1,12 @@
 {
-  "version": "1.0.1",
-  "date": "2026-03-17",
+  "version": "1.0.2",
+  "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.0.2",
+      "date": "2026-03-18",
+      "note": "Apply Hugo design system tokens: Roboto font, updated color palette, DS shadows and border radius"
+    },
     {
       "version": "1.0.1",
       "date": "2026-03-17",
