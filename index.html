@@ -921,7 +921,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.8</span>
+  <span class="ver-badge">v1.2.9</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -2019,7 +2019,16 @@ function openCtxDrawer(type){
           '</div>'
         ).join('')+
       '</div>'+
-      '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+      '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol</div>'+
+      '<div class="role-filter" id="stk-role-filter">'+
+        '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
+        '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
+        '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
+        '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
+        '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
+      '</div>'+
+      '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">'+
         '<button class="btn b-s" onclick="openDrawer(\'stakeholders\')">✏️ Editar stakeholders</button>'+
       '</div>';
   }
@@ -2875,8 +2884,9 @@ function openDrawer(type){
     initTechSearch(c);
     _setDrawerBack(()=>openCtxDrawer('company'));
   } else if(type==='stakeholders'){
-    title.textContent='👥 Stakeholders — '+c.name;
+    title.textContent='✏️ Editar stakeholders — '+c.name;
     body.innerHTML = buildStakeholdersDrawer(c);
+    _setDrawerBack(()=>openCtxDrawer('stakeholders'));
   } else if(type==='dealstrat'){
     title.textContent='⚡ Deal Strategy — '+c.name;
     body.innerHTML = document.getElementById('panel-dealstrat').innerHTML;
@@ -3050,15 +3060,7 @@ function buildStakeholdersDrawer(c){ c=_safe(c);
     '</div>'+
     '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Mapa de stakeholders</div>'+
     alerts + grid +
-    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol</div>'+
-    '<div class="role-filter" id="stk-role-filter">'+
-      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
-    '</div>'+
-    '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>';
+    alerts + grid;
 }
 
 
