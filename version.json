@@ -1,7 +1,12 @@
 {
-  "version": "1.0.6",
+  "version": "1.0.7",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.0.7",
+      "date": "2026-03-18",
+      "note": "Add objection handling playbook to Lead stage with keyword search, common objections chips, and no-fit signals; slim down stage content per GAVIN priorities"
+    },
     {
       "version": "1.0.6",
       "date": "2026-03-18",
