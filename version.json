@@ -1,7 +1,12 @@
 {
-  "version": "1.1.1",
+  "version": "1.1.2",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.1.2",
+      "date": "2026-03-18",
+      "note": "Update wizard nav to Hugo style: plain text items, rounded grey pill on selected, no left-border, border-left on content instead; stage-main fills available height"
+    },
     {
       "version": "1.1.1",
       "date": "2026-03-18",
