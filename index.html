@@ -814,15 +814,15 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <div class="body">
     <div class="search-wrap">
       <div class="search-eyebrow"><span class="dot-live"></span>Inteligencia en tiempo real</div>
-      <h1 class="search-title">¿Con qué empresa<br>tenés reunión? <span>Investigala.</span></h1>
-      <p class="search-sub">Ingresá el nombre o la web de la empresa y preparate para la llamada en segundos.</p>
+      <h1 class="search-title">¿Con qué empresa<br>tienes reunión? <span>Investígala.</span></h1>
+      <p class="search-sub">Ingresa el nombre o la web de la empresa y prepárate para la llamada en segundos.</p>
       <div class="search-box">
         <label class="search-label">Empresa o URL del sitio web</label>
         <div class="search-row">
           <input class="search-input" id="main-input" placeholder="ej. Pedidos Ya · google.com · Andreani" onkeydown="if(event.key==='Enter')analyze()" />
           <button class="btn b-p btn-lg" onclick="analyze()">Investigar →</button>
         </div>
-        <div class="search-divider">o elegí un ejemplo</div>
+        <div class="search-divider">o elige un ejemplo</div>
         <div class="chips">
           <span class="chip" onclick="fillAndGo('Pedidos Ya')">🛵 Pedidos Ya</span>
           <span class="chip" onclick="fillAndGo('Andreani')">📦 Andreani</span>
@@ -921,7 +921,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.9</span>
+  <span class="ver-badge">v1.2.10</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -981,10 +981,10 @@ const DB = {
       {cat:'Urgencia',catCls:'style="background:var(--wal);color:var(--wa)"',text:'"¿Están evaluando otras herramientas para este problema o recién están empezando a explorarlo?"'},
     ],
     meeting:[
-      {step:1,title:'Apertura (contexto que ya sabés)',dur:'2 min',body:'Mostrá que hiciste la tarea: "Veo que tienen operaciones en 15 países con miles de repartidores. El mayor desafío que vemos en empresas similares es la comunicación con empleados de campo que no están frente a una computadora." Eso abre la conversación sin pedir info básica.',tip:'No preguntes "¿a qué se dedica su empresa?" — ya sabés. Eso genera confianza inmediatamente.'},
-      {step:2,title:'Validar el dolor específico',dur:'8 min',body:'Pregunta 1 y 2 del banco de preguntas. Buscá que te cuenten el problema con sus propias palabras. Escuchá cada proceso manual que mencionen.',tip:'La clave es cuantificar: "¿Cuántos repartidores ingresan por mes? ¿Cuántas horas le lleva eso al equipo de HR?"'},
-      {step:3,title:'Demo: Communications + Work Shifts',dur:'12 min',body:'Mostrá primero el feed móvil de un repartidor recibiendo un comunicado de seguridad. Luego la gestión de turnos. Terminar con Sammy AI respondiendo una consulta de vacaciones.',tip:'Decí: "Esto es lo que vería un cadete tuyo desde el celular, sin necesidad de instalar nada ni tener mail corporativo."'},
-      {step:4,title:'ROI y caso similar',dur:'5 min',body:'Mencioná que otras plataformas de delivery similares redujeron el tiempo de onboarding un 60% y bajaron las consultas repetitivas a HR en un 40%. Ofrecé pasar el caso de uso.',tip:'Si tienen Workday o algún HRIS, aclará que Humand no lo reemplaza — se integra y agrega la capa de comunicación y engagement que Workday no tiene.'},
+      {step:1,title:'Apertura (contexto que ya tienes)',dur:'2 min',body:'Muestra que hiciste la tarea: "Veo que tienen operaciones en 15 países con miles de repartidores. El mayor desafío que vemos en empresas similares es la comunicación con empleados de campo que no están frente a una computadora." Eso abre la conversación sin pedir info básica.',tip:'No preguntes "¿a qué se dedica su empresa?" — ya sabes. Eso genera confianza inmediatamente.'},
+      {step:2,title:'Validar el dolor específico',dur:'8 min',body:'Pregunta 1 y 2 del banco de preguntas. Busca que te cuenten el problema con sus propias palabras. Escucha cada proceso manual que mencionen.',tip:'La clave es cuantificar: "¿Cuántos repartidores ingresan por mes? ¿Cuántas horas le lleva eso al equipo de HR?"'},
+      {step:3,title:'Demo: Communications + Work Shifts',dur:'12 min',body:'Muestra primero el feed móvil de un repartidor recibiendo un comunicado de seguridad. Luego la gestión de turnos. Terminar con Sammy AI respondiendo una consulta de vacaciones.',tip:'Di: "Esto es lo que vería un cadete tuyo desde el celular, sin necesidad de instalar nada ni tener mail corporativo."'},
+      {step:4,title:'ROI y caso similar',dur:'5 min',body:'Menciona que otras plataformas de delivery similares redujeron el tiempo de onboarding un 60% y bajaron las consultas repetitivas a HR en un 40%. Ofrece pasar el caso de uso.',tip:'Si tienen Workday o algún HRIS, aclara que Humand no lo reemplaza — se integra y agrega la capa de comunicación y engagement que Workday no tiene.'},
       {step:5,title:'Cierre y próximo paso',dur:'3 min',body:'Proponer un piloto con un equipo / país específico. "¿Qué les parece arrancar con Argentina y los próximos 500 repartidores? En 3 semanas lo tienen live."',tip:'Salir siempre con una fecha de próxima reunión agendada. El "les mandamos info" es la muerte del deal.'},
     ],
     stakeholders:[
@@ -1055,8 +1055,8 @@ const DB = {
     ],
     meeting:[
       {step:1,title:'Apertura con contexto',dur:'2 min',body:'Mencioná que sabés que operan 24/7 con personal en múltiples depósitos. "El desafío que vemos más seguido en logística es que Teams llega a la gente de oficina, pero los operadores y choferes quedan fuera del loop de comunicación oficial."',tip:'Esto posiciona que entendés su mundo sin que tengan que explicarlo.'},
-      {step:2,title:'Validar el gap de comunicación',dur:'8 min',body:'Preguntas 1 y 2. Buscá que cuenten cómo coordinan hoy entre depósitos y con choferes. Cada "WhatsApp" o "el supervisor avisa" que mencionen es un gap de Humand.',tip:'Preguntá: "¿Qué pasa si un chofer no leyó el mensaje? ¿Cómo lo verifican?"'},
-      {step:3,title:'Demo: Communications + Work Shifts',dur:'12 min',body:'Mostrá el feed de un operador de depósito recibiendo comunicados segmentados por turno. Luego la gestión digital de turnos. SAP puede seguir siendo el sistema de nómina — Humand es la capa de experiencia del empleado.',tip:'Aclará que la integración con SAP es nativa. Eso quita el miedo del equipo de IT.'},
+      {step:2,title:'Validar el gap de comunicación',dur:'8 min',body:'Preguntas 1 y 2. Busca que cuenten cómo coordinan hoy entre depósitos y con choferes. Cada "WhatsApp" o "el supervisor avisa" que mencionen es un gap de Humand.',tip:'Pregunta: "¿Qué pasa si un chofer no leyó el mensaje? ¿Cómo lo verifican?"'},
+      {step:3,title:'Demo: Communications + Work Shifts',dur:'12 min',body:'Muestra el feed de un operador de depósito recibiendo comunicados segmentados por turno. Luego la gestión digital de turnos. SAP puede seguir siendo el sistema de nómina — Humand es la capa de experiencia del empleado.',tip:'Aclara que la integración con SAP es nativa. Eso quita el miedo del equipo de IT.'},
       {step:4,title:'Caso de referencia',dur:'4 min',body:'Compartí el caso de otra empresa de logística argentina que implementó Humand. Focuseate en reducción de tiempo de comunicación de incidentes y adopción móvil.',tip:'"¿Le gustaría hablar directamente con el responsable de People de esa empresa?"'},
       {step:5,title:'Propuesta de piloto',dur:'4 min',body:'Proponer arrancar con 1-2 depósitos y un sector de choferes. "En 3 semanas lo tienen andando y a los 60 días tienen los datos para decidir el rollout."',tip:'Antes de terminar: "¿Con quién más debería hablar de IT y Operaciones para que estén todos alineados?"'},
     ],
@@ -1126,8 +1126,8 @@ const DB = {
       {cat:'Decisión',catCls:'style="background:var(--okl);color:var(--ok)"',text:'"¿Esta decisión pasaría solo por HR o los directores de operaciones de zona también estarían involucrados?"'},
     ],
     meeting:[
-      {step:1,title:'Apertura',dur:'2 min',body:'Mencioná que conocen el modelo de 300+ sucursales y el desafío de la última milla de comunicación. Eso genera confianza de que entendés retail.',tip:''},
-      {step:2,title:'Validar el gap',dur:'8 min',body:'Preguntas 1 y 2. Buscá el momento en que admiten que no pueden garantizar que un mensaje llegó a todos.',tip:'Si dicen "el gerente de tienda se encarga" — ahí está el gap. ¿Y si el gerente no lo baja?'},
+      {step:1,title:'Apertura',dur:'2 min',body:'Menciona que conocen el modelo de 300+ sucursales y el desafío de la última milla de comunicación. Eso genera confianza de que entiendes retail.',tip:''},
+      {step:2,title:'Validar el gap',dur:'8 min',body:'Preguntas 1 y 2. Busca el momento en que admiten que no pueden garantizar que un mensaje llegó a todos.',tip:'Si dicen "el gerente de tienda se encarga" — ahí está el gap. ¿Y si el gerente no lo baja?'},
       {step:3,title:'Demo: Communications + Recognition',dur:'12 min',body:'Primero el feed de empleado en tienda recibiendo un comunicado segmentado. Luego el módulo de reconocimiento — perfecto para retail con alta rotación.',tip:''},
       {step:4,title:'Cierre',dur:'5 min',body:'Proponer piloto en 10-15 sucursales de una zona. Resultados medibles en 60 días.',tip:''},
     ],
@@ -1361,9 +1361,9 @@ function buildGeneric(name) {
       {cat:'Decisión',catCls:'style="background:var(--okl);color:var(--ok)"',text:'"¿Quién más debería estar en esta conversación? ¿El CEO / COO también participa en este tipo de decisiones?"'},
     ],
     meeting:[
-      {step:1,title:'Apertura sin supuestos',dur:'3 min',body:'Presentate y decí que hiciste algo de investigación previa pero que querés validar con ellos. "Antes de mostrar nada, ¿me podés contar brevemente cómo está organizado el equipo y cuáles son los mayores dolores en People hoy?"',tip:'Con empresas no conocidas, lo primero es escuchar. Usá las preguntas del banco para guiar.'},
-      {step:2,title:'Mapear el pain',dur:'10 min',body:'Preguntas 1, 2 y 3. Identificá si el problema es comunicación, HR ops, engagement o todo junto.',tip:'No mostrés el producto hasta no entender el dolor. Ese es el error más común.'},
-      {step:3,title:'Demo personalizada',dur:'12 min',body:'Basate en lo que dijeron. Mostrá el módulo que más resuena con su dolor principal.',tip:'Siempre empezá por el dolor, no por el producto.'},
+      {step:1,title:'Apertura sin supuestos',dur:'3 min',body:'Preséntate y di que hiciste algo de investigación previa pero que quieres validar con ellos. "Antes de mostrar nada, ¿me puedes contar brevemente cómo está organizado el equipo y cuáles son los mayores dolores en People hoy?"',tip:'Con empresas no conocidas, lo primero es escuchar. Usa las preguntas del banco para guiar.'},
+      {step:2,title:'Mapear el pain',dur:'10 min',body:'Preguntas 1, 2 y 3. Identifica si el problema es comunicación, HR ops, engagement o todo junto.',tip:'No muestres el producto hasta no entender el dolor. Ese es el error más común.'},
+      {step:3,title:'Demo personalizada',dur:'12 min',body:'Basa en lo que dijeron. Muestra el módulo que más resuena con su dolor principal.',tip:'Siempre empieza por el dolor, no por el producto.'},
       {step:4,title:'Cierre y próximo paso',dur:'5 min',body:'Proponer siguiente paso concreto: demo técnica, caso de referencia, o propuesta de piloto.',tip:'Siempre salir con fecha de próxima acción. El "les mandamos info" mata deals.'},
     ],
     stakeholders:[
@@ -1952,7 +1952,7 @@ function renderContext(c){ c=_safe(c);
   const ctxHeader =
     '<div class="col-header">'+
       '<div class="col-header-title">Context</div>'+
-      '<div class="col-header-desc">Información clave de la empresa, stakeholders y análisis del deal. Hacé click en cada card para ver el detalle completo.</div>'+
+      '<div class="col-header-desc">Información clave de la empresa, stakeholders y análisis del deal. Haz clic en cada card para ver el detalle completo.</div>'+
     '</div>';
   const ctxCards =
     '<div style="display:flex;flex-direction:column;gap:12px">'+
@@ -2831,9 +2831,9 @@ function copyBattleCard(){
 // ═══════════════════════════════════════════
 let currentStage = 'lead';
 const STAGES = [
-  {id:'lead',     label:'Lead / Early Intro',   num:'01', goal:'Establecer credibilidad y evaluar fit',      desc:'Mostrá que hiciste la tarea. Presentá el contexto de la empresa e identificá si hay dolor real.'},
-  {id:'discovery',label:'Discovery',            num:'02', goal:'Validar el dolor, la urgencia y el fit',     desc:'Profundizá en los problemas reales. Mapeá stakeholders y entendé el proceso de decisión.'},
-  {id:'champion', label:'Champion Identificado',num:'03', goal:'Fortalecer el apoyo interno',               desc:'Equipá al champion con argumentos para vender internamente. Identificá quién falta sumar.'},
+  {id:'lead',     label:'Lead / Early Intro',   num:'01', goal:'Establecer credibilidad y evaluar fit',      desc:'Muestra que hiciste la tarea. Presenta el contexto de la empresa e identifica si hay dolor real.'},
+  {id:'discovery',label:'Discovery',            num:'02', goal:'Validar el dolor, la urgencia y el fit',     desc:'Profundiza en los problemas reales. Mapea stakeholders y entiende el proceso de decisión.'},
+  {id:'champion', label:'Champion Identificado',num:'03', goal:'Fortalecer el apoyo interno',               desc:'Equipa al champion con argumentos para vender internamente. Identifica quién falta sumar.'},
   {id:'dm',       label:'DM Involucrado',        num:'04', goal:'Alinear Humand a las prioridades ejecutivas',desc:'Llevar la conversación al nivel estratégico. Framing de ROI, visión y impacto en el negocio.'},
   {id:'procure',  label:'Procurement / Cierre', num:'05', goal:'Reducir riesgo y mantener el momentum',    desc:'Mapear bloqueadores. Acelerar la aprobación técnica, legal y financiera.'},
 ];
@@ -3176,7 +3176,7 @@ function addStkParticipant(companyName){
 function renderStakeholders(c){ c=_safe(c);
   const typeLabel={champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Bloqueador'};
   const missing = c.stakeholders.filter(s=>!s.present);
-  const alerts = missing.length ? missing.map(s=>'<div class="stk-alert"><span>⚠️</span><span><strong>'+s.role+'</strong> no está en esta reunión — ' + (s.type==='dm'?'es el aprobador final del deal.':s.type==='influencer'?'su apoyo puede acelerar o frenar el proceso.':'puede bloquear el avance.') + ' Buscá cómo involucrarlo en la próxima llamada.</span></div>').join('') : '<div style="background:var(--okl);border-radius:var(--r2);padding:11px 14px;font-size:13px;color:var(--ok);font-weight:600;margin-bottom:14px">✅ Todos los stakeholders clave están en la reunión. Buen coverage.</div>';
+  const alerts = missing.length ? missing.map(s=>'<div class="stk-alert"><span>⚠️</span><span><strong>'+s.role+'</strong> no está en esta reunión — ' + (s.type==='dm'?'es el aprobador final del deal.':s.type==='influencer'?'su apoyo puede acelerar o frenar el proceso.':'puede bloquear el avance.') + ' Busca cómo involucrarlo en la próxima llamada.</span></div>').join('') : '<div style="background:var(--okl);border-radius:var(--r2);padding:11px 14px;font-size:13px;color:var(--ok);font-weight:600;margin-bottom:14px">✅ Todos los stakeholders clave están en la reunión. Buen coverage.</div>';
   
   document.getElementById('panel-stakeholders').innerHTML =
     '<div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Basado en el perfil de <strong>'+c.name+'</strong>. Las personas marcadas como "Faltante" no están confirmadas en la reunión — son críticas para avanzar el deal.</div>' +
@@ -3190,7 +3190,7 @@ function renderStakeholders(c){ c=_safe(c);
     '</div>').join('') +
     '</div>' +
     (missing.length?'<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:10px">⚠️ Stakeholders faltantes</div>'+alerts:'') +
-    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol — elegí el perfil de quien tenés en la llamada</div>' +
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol — elige el perfil de quien tienes en la llamada</div>' +
     '<div class="role-filter" id="stk-role-filter">' +
       '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>' +
       '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
@@ -3264,7 +3264,7 @@ function renderDealStrategy(c){ c=_safe(c);
     '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">✅ Próximas acciones para avanzar el deal</div>' +
     '<div class="next-list">'+nextItems+'</div>' +
-    '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">🏆 Casos similares de Humand que podés usar</div>' +
+    '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">🏆 Casos similares de Humand que puedes usar</div>' +
     '<div class="uc-list">'+ucHtml+'</div>';
 }
 
@@ -3311,12 +3311,12 @@ const T = {
     newSearch:'← Nueva búsqueda', copyBrief:'Copiar brief', save:'Guardar',
     myAnalyses:'Mis análisis',
     stageLabel:'Etapa del deal', covLabel:'Cobertura de stakeholders',
-    notesLabel:'Notas', notesSaved:'✓ Guardado', notesPlaceholder:'Anotá lo que escuchás en la llamada...',
-    discTip:'💡 Estás en Discovery — anotá lo que dice el cliente en tiempo real.',
+    notesLabel:'Notas', notesSaved:'✓ Guardado', notesPlaceholder:'Anota lo que escuchas en la llamada...',
+    discTip:'💡 Estás en Discovery — anota lo que dice el cliente en tiempo real.',
     allStages:'Visibles en todas las etapas',
     qNotice:'💡 Preguntas personalizadas para',
     qRespBtn:'Anotar resp.', qRespLabel:'RESPUESTA DEL CLIENTE',
-    qRespPlaceholder:'Anotá lo que respondió el cliente...',
+    qRespPlaceholder:'Anota lo que respondió el cliente...',
     inMeeting:'✓ En reunión', missing:'✗ Faltante',
   },
   en: {
@@ -3361,10 +3361,16 @@ function applyLang(){
     const key = el.getAttribute('data-i18n');
     if(T[lang][key]) el.textContent = T[lang][key];
   });
-  // Re-render dynamic panels if results are showing
+  // Re-render all dynamic panels if results are showing
   if(current && document.getElementById('s3').classList.contains('on')){
+    renderCoStrip(current);
+    renderStepper();
     renderContext(current);
     renderActionPlan(current);
+    renderLegacyPanels(current);
+    renderDealStrategy(current);
+    renderStakeholders(current);
+    renderSidebarNotes(current);
   }
 }
 
@@ -3474,27 +3480,27 @@ const STAGE_QUESTIONS = {
 
 const STAGE_MEETING = {
   lead: (c) => [
-    {step:1, title:'Apertura y contexto', dur:'2 min', body:'Presentate brevemente y mostrá que hiciste tarea: mencioná 1-2 datos de la empresa. El objetivo es generar confianza rápido.', tip:'No más de 30 segundos hablando de Humand. El foco es ellos.'},
-    {step:2, title:'Calificar el pain', dur:'5 min', body:'"¿Cuál es el mayor dolor que tiene HR con las herramientas actuales?" y "¿Están evaluando soluciones activamente?" — Dos preguntas que te dicen todo lo que necesitás saber.', tip:'Si no hay dolor o urgencia real, acordá un follow-up para cuando el timing mejore. No hagas el pitch completo.'},
-    {step:3, title:'Señales de fit', dur:'5 min', body:'Preguntá por el stack actual, el tamaño del equipo de HR y cuántos empleados tienen. Con eso estimás el potential del deal.', tip:'Si usan WhatsApp para comunicaciones internas o Excel para HR Ops → verde. Estás ante el pain correcto.'},
+    {step:1, title:'Apertura y contexto', dur:'2 min', body:'Preséntate brevemente y muestra que hiciste tarea: menciona 1-2 datos de la empresa. El objetivo es generar confianza rápido.', tip:'No más de 30 segundos hablando de Humand. El foco es ellos.'},
+    {step:2, title:'Calificar el pain', dur:'5 min', body:'"¿Cuál es el mayor dolor que tiene HR con las herramientas actuales?" y "¿Están evaluando soluciones activamente?" — Dos preguntas que te dicen todo lo que necesitas saber.', tip:'Si no hay dolor o urgencia real, acuerda un follow-up para cuando el timing mejore. No hagas el pitch completo.'},
+    {step:3, title:'Señales de fit', dur:'5 min', body:'Pregunta por el stack actual, el tamaño del equipo de HR y cuántos empleados tienen. Con eso estimas el potential del deal.', tip:'Si usan WhatsApp para comunicaciones internas o Excel para HR Ops → verde. Estás ante el pain correcto.'},
     {step:4, title:'Próximo paso', dur:'3 min', body:'Si hay fit: proponer una sesión de discovery de 45 minutos con el equipo core. Si no hay urgencia: acordar un follow-up en 30 días.', tip:'"¿Qué les parece si la próxima semana exploramos el pain en más profundidad y les muestro cómo lo resolvemos?" — esa es la pregunta de cierre.'},
   ],
   discovery: (c) => c.meeting,
   champion: (c) => [
-    {step:1, title:'Revisar aprendizajes de la discovery', dur:'3 min', body:'Resumí los puntos clave que surgieron: "Identificamos que el mayor dolor es X, y que Y stakeholder también estaría interesado." Validá que tu lectura es correcta.', tip:'Esto muestra que escuchaste y que estás siguiendo el hilo. Genera confianza.'},
-    {step:2, title:'Equipar al champion para vender internamente', dur:'10 min', body:'"¿Cómo presentarías esto a tu director/CHRO? ¿Qué argumentos te parecen más sólidos?" Ayudalo a construir el caso.', tip:'Tu trabajo acá no es vender — es darle al champion las herramientas para que él venda internamente. Prepará un one-pager personalizado.'},
+    {step:1, title:'Revisar aprendizajes de la discovery', dur:'3 min', body:'Resume los puntos clave que surgieron: "Identificamos que el mayor dolor es X, y que Y stakeholder también estaría interesado." Valida que tu lectura es correcta.', tip:'Esto muestra que escuchaste y que estás siguiendo el hilo. Genera confianza.'},
+    {step:2, title:'Equipar al champion para vender internamente', dur:'10 min', body:'"¿Cómo presentarías esto a tu director/CHRO? ¿Qué argumentos te parecen más sólidos?" Ayúdalo a construir el caso.', tip:'Tu trabajo acá no es vender — es darle al champion las herramientas para que él venda internamente. Prepara un one-pager personalizado.'},
     {step:3, title:'Mapear el buying committee', dur:'8 min', body:'¿Quién aprueba el presupuesto? ¿Quién puede bloquearlo — IT, Legal, Finance? ¿Quién más tiene poder de influencia?', tip:'"¿Quién más debería estar en la siguiente reunión para avanzar más rápido?"'},
     {step:4, title:'Planear el siguiente paso', dur:'4 min', body:'Proponer una reunión con el DM (CHRO, VP People, CEO). El champion debería ser quien la agende o facilite.', tip:'Dale al champion el deck personalizado y el caso de referencia más relevante para su sector.'},
   ],
   dm: (c) => [
-    {step:1, title:'Encuadre ejecutivo', dur:'2 min', body:'"Empresas similares a '+c.name+' están reduciendo el costo de rotación y acelerando el onboarding digitalizando la experiencia del empleado." Empezá con el impacto de negocio, no con features.', tip:'Nunca empecés con "Humand es una plataforma que...". Empezá con el problema de negocio.'},
-    {step:2, title:'Validar prioridades ejecutivas', dur:'8 min', body:'Preguntá sobre los objetivos de People para el año, el impacto de la rotación en el negocio, y cómo evalúan el ROI de inversiones en HR Tech.', tip:'Escuchá cuál es el KPI más importante para este ejecutivo. Todo el pitch posterior tiene que conectar con ese KPI.'},
-    {step:3, title:'Presentar el caso de negocio', dur:'10 min', body:'Mostrá el ROI calculado con sus datos reales. Case de referencia de empresa similar. Timeline: 3 semanas go-live → 60 días de datos.', tip:'Los ejecutivos necesitan justificar la inversión internamente. Dales los números para hacerlo.'},
-    {step:4, title:'Definir el piloto y el acuerdo', dur:'5 min', body:'"¿Qué les parece si arrancamos con [área/región] y en 60 días tenemos los datos para decidir el rollout completo?" Scope acotado con KPIs claros.', tip:'Salí con: fecha de siguiente reunión + nombre del responsable de procurement del lado de ellos.'},
+    {step:1, title:'Encuadre ejecutivo', dur:'2 min', body:'"Empresas similares a '+c.name+' están reduciendo el costo de rotación y acelerando el onboarding digitalizando la experiencia del empleado." Empieza con el impacto de negocio, no con features.', tip:'Nunca empieces con "Humand es una plataforma que...". Empieza con el problema de negocio.'},
+    {step:2, title:'Validar prioridades ejecutivas', dur:'8 min', body:'Pregunta sobre los objetivos de People para el año, el impacto de la rotación en el negocio, y cómo evalúan el ROI de inversiones en HR Tech.', tip:'Escucha cuál es el KPI más importante para este ejecutivo. Todo el pitch posterior tiene que conectar con ese KPI.'},
+    {step:3, title:'Presentar el caso de negocio', dur:'10 min', body:'Muestra el ROI calculado con sus datos reales. Case de referencia de empresa similar. Timeline: 3 semanas go-live → 60 días de datos.', tip:'Los ejecutivos necesitan justificar la inversión internamente. Dales los números para hacerlo.'},
+    {step:4, title:'Definir el piloto y el acuerdo', dur:'5 min', body:'"¿Qué les parece si arrancamos con [área/región] y en 60 días tenemos los datos para decidir el rollout completo?" Scope acotado con KPIs claros.', tip:'Sal con: fecha de siguiente reunión + nombre del responsable de procurement del lado de ellos.'},
   ],
   procure: (c) => [
-    {step:1, title:'Mapear el proceso de aprobación', dur:'5 min', body:'¿Quién aprueba? ¿Qué documentación necesitan — DPA, SOC2, propuesta formal? ¿Cuál es el deadline interno?', tip:'Preguntá: "¿Cuál es el paso que podría demorar más el proceso?" — eso es lo que hay que resolver primero.'},
-    {step:2, title:'Resolver bloqueadores técnicos y legales', dur:'10 min', body:'IT/Legal muchas veces bloquean en el último minuto. Anticipate: ficha técnica, certificaciones de seguridad, modelo de datos. Si necesitan integración con Workday/SAP, mostrá el conector.', tip:'Tené el security one-pager y el DPA listo para mandar en el momento.'},
+    {step:1, title:'Mapear el proceso de aprobación', dur:'5 min', body:'¿Quién aprueba? ¿Qué documentación necesitan — DPA, SOC2, propuesta formal? ¿Cuál es el deadline interno?', tip:'Pregunta: "¿Cuál es el paso que podría demorar más el proceso?" — eso es lo que hay que resolver primero.'},
+    {step:2, title:'Resolver bloqueadores técnicos y legales', dur:'10 min', body:'IT/Legal muchas veces bloquean en el último minuto. Anticipa: ficha técnica, certificaciones de seguridad, modelo de datos. Si necesitan integración con Workday/SAP, muestra el conector.', tip:'Ten el security one-pager y el DPA listo para mandar en el momento.'},
     {step:3, title:'Confirmar scope del piloto', dur:'8 min', body:'Número de empleados en el piloto, área o región, integraciones requeridas, y KPIs que van a medir al día 60.', tip:'Un scope acotado y bien definido acelera la aprobación. "Empezamos con 500 empleados de X área."'},
     {step:4, title:'Próximo paso con fecha concreta', dur:'2 min', body:'"¿Podemos decir que si todo está aprobado el kickoff sería la semana del [fecha]?"', tip:'El "les mandamos la propuesta" sin fecha de respuesta es la muerte del deal en esta etapa.'},
   ],

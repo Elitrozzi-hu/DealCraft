@@ -1,7 +1,12 @@
 {
-  "version": "1.2.9",
+  "version": "1.2.10",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.10",
+      "date": "2026-03-18",
+      "note": "Fix voseo to neutral Spanish throughout and fix language toggle to fully re-render all content"
+    },
     {
       "version": "1.2.9",
       "date": "2026-03-18",
