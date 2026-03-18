@@ -295,8 +295,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .step-item.on .step-label{color:var(--p)}
 .s3-scroll{flex:1;overflow-y:auto}
 .stage-body{display:flex;max-width:1280px;margin:0 auto;width:100%;padding:24px 28px;gap:20px;align-items:flex-start}
-.stage-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+.stage-main{flex:1;min-width:0;display:flex;flex-direction:row;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;min-height:420px}
 .stage-side{width:272px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+/* Stage section nav (left wizard) */
+.snav{width:196px;flex-shrink:0;border-right:1px solid var(--br);padding:8px 0;background:#fff;display:flex;flex-direction:column}
+.snav-item{display:flex;align-items:center;gap:9px;padding:11px 16px;cursor:pointer;font-size:13px;font-weight:600;color:var(--t2);transition:all .14s;border-left:3px solid transparent;user-select:none}
+.snav-item:hover{background:var(--bg);color:var(--t1)}
+.snav-item.on{background:var(--px);color:var(--p);border-left-color:var(--p)}
+.snav-item-ico{font-size:15px;flex-shrink:0;width:20px;text-align:center}
+/* Stage section content */
+.stage-content{flex:1;overflow-y:auto;padding:22px 24px;min-width:0}
+.stage-panel{display:none}
+.stage-panel.on{display:block}
+.sp-title{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:8px}
 /* Content cards */
 .sc-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);overflow:hidden;box-shadow:var(--s1)}
 .sc-card-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;transition:background .12s;user-select:none}
@@ -713,7 +724,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <nav>
     <div class="logo" style="cursor:pointer" onclick="goHome()"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
-      <button class="btn b-g" onclick="goHome()"><span data-i18n="newSearch">← Nueva búsqueda</span></button>
       <button class="btn b-g" onclick="copyBrief()">📋 <span data-i18n="copyBrief">Brief</span></button>
       <button class="btn b-g" onclick="openDrawer('tech')">🔧 Tech Stack</button>
       <button class="btn b-g" onclick="openDrawer('recursos')">📁 Recursos</button>
@@ -772,7 +782,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.1.0</span>
+  <span class="ver-badge">v1.1.1</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1596,8 +1606,20 @@ function quickFilterObj(id){
   setTimeout(()=>{const el=document.getElementById('obj-item-'+id);if(el) el.classList.add('on');},30);
 }
 
-function buildObjCard(){
+function buildObjCard(inline){
   const commonObjs=OBJECTIONS.filter(o=>o.common);
+  const inner=
+    '<input class="obj-search-inp" id="obj-search" placeholder="Buscar objeción — ej. presupuesto, celular, SAP, tiempo..." oninput="filterObjSearch(this.value)" />'+
+    '<div class="obj-commons-label">⭐ Más frecuentes en prospección</div>'+
+    '<div class="obj-chips" id="obj-chips">'+
+      commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
+    '</div>'+
+    '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
+    '<div class="obj-nofit">'+
+      '<div class="obj-nofit-title">🚨 Señales de no-fit real — calificá out</div>'+
+      NOFIT_SIGNALS.map(s=>'<div class="obj-nofit-item"><span>'+s.ico+'</span><span>'+s.txt+'</span></div>').join('')+
+    '</div>';
+  if(inline) return inner;
   return '<div class="sc-card">'+
     '<div class="sc-card-head" onclick="toggleCard(\'c-obj\')">'+
       '<div class="sc-card-hl"><span class="sc-card-ico">🛡️</span>'+
@@ -1605,18 +1627,7 @@ function buildObjCard(){
           '<div class="sc-card-sub">Playbook · '+commonObjs.length+' frecuentes · '+OBJECTIONS.length+' en total</div></div></div>'+
       '<span class="sc-card-badge">'+OBJECTIONS.length+'</span>'+
     '</div>'+
-    '<div class="sc-card-body" id="c-obj">'+
-      '<input class="obj-search-inp" id="obj-search" placeholder="Buscar objeción — ej. presupuesto, celular, SAP, tiempo..." oninput="filterObjSearch(this.value)" />'+
-      '<div class="obj-commons-label">⭐ Más frecuentes en prospección</div>'+
-      '<div class="obj-chips" id="obj-chips">'+
-        commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
-      '</div>'+
-      '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
-      '<div class="obj-nofit">'+
-        '<div class="obj-nofit-title">🚨 Señales de no-fit real — calificá out</div>'+
-        NOFIT_SIGNALS.map(s=>'<div class="obj-nofit-item"><span>'+s.ico+'</span><span>'+s.txt+'</span></div>').join('')+
-      '</div>'+
-    '</div>'+
+    '<div class="sc-card-body" id="c-obj">'+inner+'</div>'+
   '</div>';
 }
 
@@ -1672,181 +1683,126 @@ function renderStageMain(c){ c=_safe(c);
   const questions = getStageQuestions(c);
   const meetingSteps = getStageMeeting(c);
   const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
-
-  // Opener card
-  const openerCard = `<div class="sc-card">
-    <div class="sc-card-head" onclick="toggleCard('c-opener')">
-      <div class="sc-card-hl"><span class="sc-card-ico">💬</span>
-        <div><div class="sc-card-title">Opener — ${stageInfo.label}</div>
-          <div class="sc-card-sub">Cómo arrancar la conversación</div></div></div>
-      <span class="sc-card-badge" id="c-opener-chev">▾</span>
-    </div>
-    <div class="sc-card-body" id="c-opener">
-      <div class="stage-opener-box">"${opener}"</div>
-      <button class="btn b-s" style="font-size:12px" onclick="copyText(${JSON.stringify(opener)})">📋 Copiar opener</button>
-    </div>
-  </div>`;
-
-  // Questions card
-  const qCard = `<div class="sc-card">
-    <div class="sc-card-head" onclick="toggleCard('c-questions')">
-      <div class="sc-card-hl"><span class="sc-card-ico">❓</span>
-        <div><div class="sc-card-title">Preguntas clave</div>
-          <div class="sc-card-sub">${questions.length} preguntas para ${stageInfo.label}</div></div></div>
-      <span class="sc-card-badge">${questions.length}</span>
-    </div>
-    <div class="sc-card-body" id="c-questions">
-      ${questions.map((q,i)=>{
-        const respKey='dc_qa_'+compKey+'_'+stageId+'_'+i;
-        const saved=localStorage.getItem(respKey)||'';
-        return '<div class="q-row">'+
-          '<div class="q-row-num">'+(i+1)+'</div>'+
-          '<div class="q-row-body">'+
-            '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
-            '<div class="q-row-text">'+q.text+'</div>'+
-            '<div class="q-row-actions">'+
-              '<button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</button>'+
-              '<button class="q-row-btn'+(saved?' filled':'')+'" id="qwrb'+i+'" onclick="toggleQRow('+i+',\''+respKey.replace(/'/g,"\\'")+'\')">Anotar resp.</button>'+
-            '</div>'+
-            '<div class="q-resp-row'+(saved?' open':'')+'" id="qwra'+i+'">'+
-              '<div class="q-resp-row-label">Respuesta del cliente</div>'+
-              '<textarea class="q-resp-row-ta" placeholder="Lo que dijo el cliente..." oninput="saveQResp(\''+respKey.replace(/'/g,"\\'")+'\','+i+',this.value)">'+saved+'</textarea>'+
-            '</div>'+
-          '</div>'+
-        '</div>';
-      }).join('')}
-      ${stageId==='discovery'?'<button class="btn b-s" style="font-size:12px;margin-top:10px" onclick="openDrawer(\'stakeholders\')">Ver preguntas por rol →</button>':''}
-    </div>
-  </div>`;
-
-  // Meeting plan card
-  const meetCard = `<div class="sc-card">
-    <div class="sc-card-head" onclick="toggleCard('c-meeting')">
-      <div class="sc-card-hl"><span class="sc-card-ico">📋</span>
-        <div><div class="sc-card-title">Plan de reunión</div>
-          <div class="sc-card-sub">${meetingSteps.length} pasos</div></div></div>
-      <span class="sc-card-badge">${meetingSteps.length} pasos</span>
-    </div>
-    <div class="sc-card-body" id="c-meeting">
-      <div class="mp-rows">${meetingSteps.map(m=>
-        '<div class="mp-row">'+
-          '<div class="mp-row-num">'+m.step+'</div>'+
-          '<div class="mp-row-body">'+
-            '<div class="mp-row-head">'+
-              '<div class="mp-row-title">'+m.title+'</div>'+
-              '<div class="mp-row-dur">'+m.dur+'</div>'+
-            '</div>'+
-            '<div class="mp-row-text">'+m.body+'</div>'+
-            (m.tip?'<div class="mp-row-tip">💡 '+m.tip+'</div>':'')+
-          '</div>'+
-        '</div>'
-      ).join('')}</div>
-    </div>
-  </div>`;
-
-  // Pitch/modules card — shown for champion + dm
-  const pitchCard = (stageId==='champion'||stageId==='dm'||stageId==='procure') ? `<div class="sc-card">
-    <div class="sc-card-head" onclick="toggleCard('c-pitch')">
-      <div class="sc-card-hl"><span class="sc-card-ico">🎯</span>
-        <div><div class="sc-card-title">Qué vender — Módulos Humand</div>
-          <div class="sc-card-sub">Propuesta de valor para ${c.name}</div></div></div>
-      <span class="sc-card-badge">▾</span>
-    </div>
-    <div class="sc-card-body" id="c-pitch">
-      <div class="mod-row pri"><span class="mod-row-ico">📣</span>
-        <div class="mod-row-body"><div class="mod-row-name">${c.primaryModule}</div>
-          <div class="mod-row-why">${c.primaryWhy}</div></div>
-        <span class="mod-row-badge mod-row.pri">Módulo 1</span>
-      </div>
-      ${c.secondaryModules.map((m,i)=>
-        '<div class="mod-row"><span class="mod-row-ico">'+m.ico+'</span>'+
-        '<div class="mod-row-body"><div class="mod-row-name">'+m.name+'</div>'+
-        '<div class="mod-row-why">'+m.why+'</div></div>'+
-        '<span class="mod-row-badge">Módulo '+(i+2)+'</span></div>'
-      ).join('')}
-    </div>
-  </div>` : '';
-
-  // Risks card — shown for procure and lead
-  const risksCard = (stageId==='procure') ? `<div class="sc-card">
-    <div class="sc-card-head" onclick="toggleCard('c-risks')">
-      <div class="sc-card-hl"><span class="sc-card-ico">⚠️</span>
-        <div><div class="sc-card-title">Riesgos del deal</div>
-          <div class="sc-card-sub">${c.dealRisks.length} riesgos detectados</div></div></div>
-      <span class="sc-card-badge">${c.dealRisks.length}</span>
-    </div>
-    <div class="sc-card-body" id="c-risks">
-      ${c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span>'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')}
-      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn b-s" style="font-size:12px" onclick="openDrawer('dealstrat')">Ver próximas acciones →</button>
-        <button class="btn b-g" style="font-size:12px" onclick="openDrawer('overview')">Ver empresa completa →</button>
-      </div>
-    </div>
-  </div>` : '';
-
-  // Company overview card — shown for lead
-  const overviewCard = (stageId==='lead') ? `<div class="sc-card">
-    <div class="sc-card-head" onclick="toggleCard('c-overview')">
-      <div class="sc-card-hl"><span class="sc-card-ico">🏢</span>
-        <div><div class="sc-card-title">Contexto de ${c.name}</div>
-          <div class="sc-card-sub">Datos clave de la empresa</div></div></div>
-      <span class="sc-card-badge">▾</span>
-    </div>
-    <div class="sc-card-body" id="c-overview">
-      <div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px">${c.desc}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
-        ${c.mets.map(m=>'<div style="background:var(--bg);border-radius:var(--r1);padding:10px;text-align:center"><div style="font-size:15px;font-weight:600">'+(m.v||'—')+'</div><div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">'+m.l+'</div></div>').join('')}
-      </div>
-      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Señales de compra</div>
-      ${c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')}
-    </div>
-  </div>` : '';
-
-  // Tech stack compact card
   const activeTech = getActiveTech(c);
-  const techCard = `<div class="sc-card">
-    <div class="sc-card-head" onclick="toggleCard('c-tech')">
-      <div class="sc-card-hl"><span class="sc-card-ico">🔧</span>
-        <div><div class="sc-card-title">Tech Stack</div>
-          <div class="sc-card-sub">${activeTech.filter(t=>t.status==='usa').length} herramientas · ${activeTech.filter(t=>t.status==='gap').length} gaps detectados</div></div></div>
-      <button class="btn b-s" style="font-size:11px;padding:4px 10px" onclick="event.stopPropagation();openDrawer('tech')">Editar →</button>
-    </div>
-    <div class="sc-card-body" id="c-tech">
-      <div class="ts-pills">
-        ${activeTech.map(t=>{
-          const logoUrl=toolLogoUrl(t.name);
-          const color=toolColor(t.name);
-          const init=(t.name||'?')[0].toUpperCase();
-          const logo=logoUrl
-            ?'<img class="ts-pill-img" src="'+logoUrl+'" alt="'+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
-              +'<div class="ts-pill-fb" style="background:'+color+';display:none">'+init+'</div>'
-            :'<div class="ts-pill-fb" style="background:'+color+'">'+init+'</div>';
-          return '<span class="ts-pill2'+(t.status==='gap'?' gap':'')+'">'+logo+t.name+'</span>';
-        }).join('')}
-      </div>
-      <button class="btn b-s" style="font-size:12px" onclick="openDrawer('tech')">🔧 Ver análisis completo y editar →</button>
-    </div>
-  </div>`;
 
-  // Stage-specific layout — only show what matters per GAVIN's priorities
-  let stageContent = '';
-  if(stageId==='lead'){
-    // Lead: contexto empresa, opener, objeciones (nuevo), preguntas iniciales, tech
-    stageContent = overviewCard + openerCard + buildObjCard() + qCard + techCard;
-  } else if(stageId==='discovery'){
-    // Discovery: opener, preguntas en profundidad, plan de reunión, tech
-    stageContent = openerCard + qCard + meetCard + techCard;
-  } else if(stageId==='champion'){
-    // Champion: opener, pitch/módulos, preguntas de champion, tech
-    stageContent = openerCard + pitchCard + qCard + techCard;
-  } else if(stageId==='dm'){
-    // DM: opener, pitch, tech — el DM necesita el pitch claro
-    stageContent = openerCard + pitchCard + techCard;
-  } else if(stageId==='procure'){
-    // Procurement: pitch, riesgos, tech — foco en cierre
-    stageContent = pitchCard + risksCard + techCard;
-  }
-  document.getElementById('stage-main').innerHTML = stageContent;
+  // Define sections per stage
+  const SECTION_DEFS = {
+    lead:    [{id:'overview',ico:'🏢',label:'Empresa'},{id:'opener',ico:'💬',label:'Opener'},{id:'objections',ico:'🛡️',label:'Objeciones'},{id:'questions',ico:'❓',label:'Preguntas'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
+    discovery:[{id:'opener',ico:'💬',label:'Opener'},{id:'questions',ico:'❓',label:'Preguntas'},{id:'meeting',ico:'📋',label:'Plan de reunión'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
+    champion:[{id:'opener',ico:'💬',label:'Opener'},{id:'pitch',ico:'🎯',label:'Módulos Humand'},{id:'questions',ico:'❓',label:'Preguntas'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
+    dm:      [{id:'opener',ico:'💬',label:'Opener'},{id:'pitch',ico:'🎯',label:'Módulos Humand'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
+    procure: [{id:'pitch',ico:'🎯',label:'Módulos Humand'},{id:'risks',ico:'⚠️',label:'Riesgos del deal'},{id:'tech',ico:'🔧',label:'Tech Stack'}],
+  };
+  const sections = SECTION_DEFS[stageId] || SECTION_DEFS.discovery;
+  const firstId = sections[0].id;
+
+  // Build nav
+  const navHTML = '<div class="snav" id="snav">'+
+    sections.map(s=>'<div class="snav-item'+(s.id===firstId?' on':'')+'" data-sec="'+s.id+'" onclick="setSection(\''+s.id+'\')"><span class="snav-item-ico">'+s.ico+'</span>'+s.label+'</div>').join('')+
+  '</div>';
+
+  // Build content panels
+  function panel(id, html){ return '<div class="stage-panel'+(id===firstId?' on':'')+'" id="sp-'+id+'">'+html+'</div>'; }
+
+  const panelOverview = panel('overview',
+    '<div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px">'+c.desc+'</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">'+
+      c.mets.map(m=>'<div style="background:var(--bg);border-radius:var(--r1);padding:10px;text-align:center"><div style="font-size:15px;font-weight:600">'+(m.v||'—')+'</div><div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-top:2px">'+m.l+'</div></div>').join('')+
+    '</div>'+
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Señales de compra</div>'+
+    c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')
+  );
+
+  const panelOpener = panel('opener',
+    '<div class="stage-opener-box">"'+opener+'"</div>'+
+    '<button class="btn b-s" style="font-size:12px" onclick="copyText('+JSON.stringify(opener)+')">📋 Copiar opener</button>'
+  );
+
+  const panelQuestions = panel('questions',
+    questions.map((q,i)=>{
+      const respKey='dc_qa_'+compKey+'_'+stageId+'_'+i;
+      const saved=localStorage.getItem(respKey)||'';
+      return '<div class="q-row">'+
+        '<div class="q-row-num">'+(i+1)+'</div>'+
+        '<div class="q-row-body">'+
+          '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
+          '<div class="q-row-text">'+q.text+'</div>'+
+          '<div class="q-row-actions">'+
+            '<button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</button>'+
+            '<button class="q-row-btn'+(saved?' filled':'')+'" id="qwrb'+i+'" onclick="toggleQRow('+i+',\''+respKey.replace(/'/g,"\\'")+'\')">Anotar resp.</button>'+
+          '</div>'+
+          '<div class="q-resp-row'+(saved?' open':'')+'" id="qwra'+i+'">'+
+            '<div class="q-resp-row-label">Respuesta del cliente</div>'+
+            '<textarea class="q-resp-row-ta" placeholder="Lo que dijo el cliente..." oninput="saveQResp(\''+respKey.replace(/'/g,"\\'")+'\','+i+',this.value)">'+saved+'</textarea>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }).join('')+
+    (stageId==='discovery'?'<button class="btn b-s" style="font-size:12px;margin-top:10px" onclick="openDrawer(\'stakeholders\')">Ver preguntas por rol →</button>':'')
+  );
+
+  const panelMeeting = panel('meeting',
+    '<div class="mp-rows">'+meetingSteps.map(m=>
+      '<div class="mp-row">'+
+        '<div class="mp-row-num">'+m.step+'</div>'+
+        '<div class="mp-row-body">'+
+          '<div class="mp-row-head"><div class="mp-row-title">'+m.title+'</div><div class="mp-row-dur">'+m.dur+'</div></div>'+
+          '<div class="mp-row-text">'+m.body+'</div>'+
+          (m.tip?'<div class="mp-row-tip">💡 '+m.tip+'</div>':'')+
+        '</div>'+
+      '</div>'
+    ).join('')+'</div>'
+  );
+
+  const panelPitch = panel('pitch',
+    '<div class="mod-row pri"><span class="mod-row-ico">📣</span>'+
+      '<div class="mod-row-body"><div class="mod-row-name">'+c.primaryModule+'</div><div class="mod-row-why">'+c.primaryWhy+'</div></div>'+
+      '<span class="mod-row-badge">Módulo 1</span>'+
+    '</div>'+
+    c.secondaryModules.map((m,i)=>
+      '<div class="mod-row"><span class="mod-row-ico">'+m.ico+'</span>'+
+      '<div class="mod-row-body"><div class="mod-row-name">'+m.name+'</div><div class="mod-row-why">'+m.why+'</div></div>'+
+      '<span class="mod-row-badge">Módulo '+(i+2)+'</span></div>'
+    ).join('')
+  );
+
+  const panelRisks = panel('risks',
+    c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span>'+(r.lvl==='crit'?'🔴':'🟡')+'</span><span>'+r.txt+'</span></div>').join('')+
+    '<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">'+
+      '<button class="btn b-s" style="font-size:12px" onclick="openDrawer(\'dealstrat\')">Ver próximas acciones →</button>'+
+      '<button class="btn b-g" style="font-size:12px" onclick="openDrawer(\'overview\')">Ver empresa completa →</button>'+
+    '</div>'
+  );
+
+  const panelTech = panel('tech',
+    '<div class="ts-pills">'+
+      activeTech.map(t=>{
+        const logoUrl=toolLogoUrl(t.name);
+        const color=toolColor(t.name);
+        const init=(t.name||'?')[0].toUpperCase();
+        const logo=logoUrl
+          ?'<img class="ts-pill-img" src="'+logoUrl+'" alt="'+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+            +'<div class="ts-pill-fb" style="background:'+color+';display:none">'+init+'</div>'
+          :'<div class="ts-pill-fb" style="background:'+color+'">'+init+'</div>';
+        return '<span class="ts-pill2'+(t.status==='gap'?' gap':'')+'">'+logo+t.name+'</span>';
+      }).join('')+
+    '</div>'+
+    '<button class="btn b-s" style="font-size:12px;margin-top:12px" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'
+  );
+
+  const panelObj = panel('objections', buildObjCard(true));
+
+  // Assemble panels per stage
+  const STAGE_PANELS = {
+    lead:     panelOverview + panelOpener + panelObj     + panelQuestions + panelTech,
+    discovery:panelOpener  + panelQuestions + panelMeeting + panelTech,
+    champion: panelOpener  + panelPitch   + panelQuestions + panelTech,
+    dm:       panelOpener  + panelPitch   + panelTech,
+    procure:  panelPitch   + panelRisks   + panelTech,
+  };
+
+  const contentHTML = '<div class="stage-content" id="stage-content">'+(STAGE_PANELS[stageId]||'')+'</div>';
+  document.getElementById('stage-main').innerHTML = navHTML + contentHTML;
 }
 
 function renderStageSide(c){ c=_safe(c);
@@ -2438,6 +2394,11 @@ function setStage(id){
     renderStageSide(current);
     renderDealStrategy(current);
   }
+}
+
+function setSection(id){
+  document.querySelectorAll('.snav-item').forEach(i=>i.classList.toggle('on', i.dataset.sec===id));
+  document.querySelectorAll('.stage-panel').forEach(p=>p.classList.toggle('on', p.id==='sp-'+id));
 }
 
 function toggleCard(id){
