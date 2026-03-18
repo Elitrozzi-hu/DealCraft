@@ -294,7 +294,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .step-label{font-size:11px;font-weight:600;color:var(--t2);line-height:1.3;flex:1;min-width:0}
 .step-item.on .step-label{color:var(--p)}
 .s3-scroll{flex:1;overflow-y:auto}
-.stage-body{display:flex;max-width:1280px;margin:0 auto;width:100%;padding:24px 28px;gap:20px;align-items:flex-start;min-height:calc(100vh - 60px - 48px)}
+.stage-body{display:flex;width:100%;padding:24px 40px;gap:20px;align-items:flex-start;min-height:calc(100vh - 60px - 48px)}
 .stage-main{flex:1;min-width:0;display:flex;flex-direction:row;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;align-self:stretch}
 .stage-side{width:272px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
 /* Stage section nav (left wizard) */
@@ -366,13 +366,24 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sig-row:last-child{margin-bottom:0}
 .sig-row-ico{font-size:13px;flex-shrink:0}
 .sig-row-badge{font-size:9px;font-weight:600;padding:1px 6px;border-radius:20px;margin-left:auto;flex-shrink:0}
-/* Tech stack compact */
+/* Tech stack compact pills (kept for compat) */
 .ts-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .ts-pill2{display:flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--br);border-radius:20px;padding:4px 10px 4px 5px;font-size:11px;font-weight:600;color:var(--t1);transition:all .14s}
 .ts-pill2:hover{border-color:var(--p);box-shadow:var(--s1)}
 .ts-pill2.gap{border-color:rgba(231,68,68,.4);background:var(--redl);color:var(--red)}
 .ts-pill-img{width:18px;height:18px;border-radius:3px;object-fit:contain;flex-shrink:0;background:#fff}
 .ts-pill-fb{width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:600;color:#fff;flex-shrink:0}
+/* Tech stack square cards grid */
+.ts-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;margin-bottom:14px}
+.ts-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 10px 12px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);cursor:default;transition:box-shadow .14s;text-align:center}
+.ts-card:hover{box-shadow:var(--s1);border-color:var(--p)}
+.ts-card.gap{border-color:rgba(231,68,68,.4);background:var(--redl)}
+.ts-card-logo{width:40px;height:40px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.ts-card-logo img{width:32px;height:32px;object-fit:contain}
+.ts-card-logo-fb{width:40px;height:40px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;flex-shrink:0}
+.ts-card-name{font-size:11px;font-weight:600;color:var(--t1);line-height:1.3;word-break:break-word}
+.ts-card.gap .ts-card-name{color:var(--red)}
+.ts-card-cat{font-size:10px;color:var(--t2);line-height:1.3}
 /* Tech search */
 .ts-search-box{position:relative;margin-bottom:14px}
 .ts-search-inp{width:100%;padding:9px 13px;border:1.5px solid var(--br);border-radius:var(--ri);font-size:13px;color:var(--t1);outline:none;font-family:inherit;transition:border-color .15s;background:#fff}
@@ -781,7 +792,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.1.2</span>
+  <span class="ver-badge">v1.1.3</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1774,19 +1785,20 @@ function renderStageMain(c){ c=_safe(c);
   );
 
   const panelTech = panel('tech',
-    '<div class="ts-pills">'+
+    '<div class="ts-card-grid">'+
       activeTech.map(t=>{
         const logoUrl=toolLogoUrl(t.name);
         const color=toolColor(t.name);
         const init=(t.name||'?')[0].toUpperCase();
-        const logo=logoUrl
-          ?'<img class="ts-pill-img" src="'+logoUrl+'" alt="'+t.name+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
-            +'<div class="ts-pill-fb" style="background:'+color+';display:none">'+init+'</div>'
-          :'<div class="ts-pill-fb" style="background:'+color+'">'+init+'</div>';
-        return '<span class="ts-pill2'+(t.status==='gap'?' gap':'')+'">'+logo+t.name+'</span>';
+        const catalog=TOOL_CATALOG.find(x=>x.name.toLowerCase()===t.name.toLowerCase());
+        const cat=catalog?catalog.cat:'Herramienta';
+        const logoHtml=logoUrl
+          ?'<div class="ts-card-logo"><img src="'+logoUrl+'" alt="'+t.name+'" onerror="this.parentNode.outerHTML=\'<div class=ts-card-logo-fb style=background:'+color+'>'+init+'</div>\'"></div>'
+          :'<div class="ts-card-logo-fb" style="background:'+color+'">'+init+'</div>';
+        return '<div class="ts-card'+(t.status==='gap'?' gap':'')+'">'+logoHtml+'<div class="ts-card-name">'+t.name+'</div><div class="ts-card-cat">'+cat+'</div></div>';
       }).join('')+
     '</div>'+
-    '<button class="btn b-s" style="font-size:12px;margin-top:12px" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'
+    '<button class="btn b-s" style="font-size:12px" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'
   );
 
   const panelObj = panel('objections', buildObjCard(true));
