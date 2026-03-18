@@ -376,6 +376,43 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .slide-preview-box{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 28px 70px rgba(0,0,0,.6);position:relative}
 .sp-inner{width:100%;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif}
 
+/* ── Notes sidebar card ── */
+.notes-side-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);padding:14px;box-shadow:var(--s1);transition:border-color .3s,background .3s}
+.notes-side-card.disc-active{border-color:var(--p);background:linear-gradient(to bottom,#f5f8ff,#fff)}
+.nsc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.nsc-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t2)}
+.nsc-disc-tip{background:var(--px);border-left:3px solid var(--p);border-radius:0 var(--r1) var(--r1) 0;padding:7px 10px;font-size:11px;color:var(--p);font-weight:600;margin-bottom:8px;line-height:1.4;display:none}
+.notes-side-card.disc-active .nsc-disc-tip{display:block}
+.nsc-ta{width:100%;min-height:72px;border:1.5px solid var(--br);border-radius:var(--r1);padding:9px 11px;font-size:12px;color:var(--t1);line-height:1.6;font-family:inherit;resize:vertical;outline:none;transition:border-color .2s}
+.nsc-ta:focus{border-color:var(--p)}
+.nsc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:5px}
+.nsc-meta{font-size:10px;color:var(--t3)}
+.nsc-saved{font-size:10px;color:var(--ok);font-weight:600;opacity:0;transition:opacity .4s}
+.nsc-saved.on{opacity:1}
+/* ── Language button ── */
+.lang-btn{font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;border:1.5px solid var(--br);background:#fff;color:var(--t2);cursor:pointer;transition:all .18s;white-space:nowrap}
+.lang-btn:hover,.lang-btn.en{border-color:var(--p);color:var(--p);background:var(--px)}
+/* ── Question response ── */
+.q-resp-btn{font-size:10px;font-weight:600;color:var(--t3);cursor:pointer;padding:2px 8px;border-radius:var(--r1);border:1px solid var(--br);transition:all .18s;flex-shrink:0;white-space:nowrap;margin-left:4px}
+.q-resp-btn:hover,.q-resp-btn.filled{border-color:var(--ok);color:var(--ok);background:var(--okl)}
+.q-resp-area{display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--br)}
+.q-resp-area.open{display:block}
+.q-resp-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ok);margin-bottom:5px}
+.q-resp-ta{width:100%;min-height:56px;border:1.5px solid #d1fae5;border-radius:var(--r1);padding:8px 10px;font-size:12px;color:var(--t1);line-height:1.55;font-family:inherit;resize:vertical;outline:none;transition:border-color .2s}
+.q-resp-ta:focus{border-color:var(--ok)}
+/* ── Stakeholder inline edit ── */
+.cov-edit-btn{font-size:10px;font-weight:600;color:var(--t2);cursor:pointer;padding:2px 7px;border:1px solid var(--br);border-radius:10px;transition:all .18s}
+.cov-edit-btn:hover{border-color:var(--p);color:var(--p)}
+.stk-edit-rows{display:none;flex-direction:column;gap:5px;margin-top:6px}
+.stk-edit-rows.open{display:flex}
+.stk-edit-row{display:flex;align-items:center;gap:5px}
+.stk-edit-inp{flex:1;font-size:11px;border:1.5px solid var(--br);border-radius:var(--r1);padding:4px 7px;outline:none;font-family:inherit;color:var(--t1);min-width:0}
+.stk-edit-inp:focus{border-color:var(--p)}
+.stk-pres-btn{width:26px;height:26px;border-radius:var(--r1);border:1.5px solid var(--br);background:#fff;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
+.stk-pres-btn.on{border-color:var(--ok);background:var(--okl);color:var(--ok)}
+.stk-edit-add{display:flex;gap:5px;margin-top:5px}
+.stk-edit-add-inp{flex:1;font-size:11px;border:1.5px solid var(--br);border-radius:var(--r1);padding:4px 7px;outline:none;font-family:inherit;color:var(--t1);background:#fff}
+.stk-edit-add-inp:focus{border-color:var(--p)}
 /* ══ GAVIN DIRECTIVES ══ */
 /* Stage selector */
 .stage-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);padding:14px;box-shadow:var(--s1)}
@@ -460,7 +497,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <nav>
     <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
-      <button class="btn b-g" style="font-size:12px" onclick="toast('Mis análisis (próximamente)')">Mis análisis</button>
+      <button class="btn b-g" style="font-size:12px" onclick="toast('Mis análisis (próximamente)')"><span data-i18n="myAnalyses">Mis análisis</span></button>
+      <button class="lang-btn" id="lang-btn-s1" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
     </div>
   </nav>
@@ -512,7 +550,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <div class="scr" id="s2">
   <nav>
     <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
-    <div class="nav-r"><div class="av">ET</div></div>
+    <div class="nav-r">
+      <button class="lang-btn" id="lang-btn-s2" onclick="toggleLang()">🌐 EN</button>
+      <div class="av">ET</div>
+    </div>
   </nav>
   <div class="body">
     <div class="proc-wrap">
@@ -532,11 +573,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <!-- ══ SCREEN 3: RESULTS ══ -->
 <div class="scr" id="s3">
   <nav>
-    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="logo" style="cursor:pointer" onclick="goHome()"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
-      <button class="btn b-g" onclick="goHome()">← Nueva búsqueda</button>
-      <button class="btn b-g" onclick="toast('Copiando brief...');copyBrief()">📋 Copiar brief</button>
-      <button class="btn b-p" onclick="toast('Brief guardado ✓')">💾 Guardar</button>
+      <button class="btn b-g" onclick="goHome()"><span data-i18n="newSearch">← Nueva búsqueda</span></button>
+      <button class="btn b-g" onclick="toast('Copiando brief...');copyBrief()">📋 <span data-i18n="copyBrief">Copiar brief</span></button>
+      <button class="btn b-p" onclick="toast('Brief guardado ✓')">💾 <span data-i18n="save">Guardar</span></button>
+      <button class="lang-btn" id="lang-btn-s3" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
     </div>
   </nav>
@@ -547,18 +589,19 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
       <div class="co-card" id="signals-card"></div>
       <div class="stage-card" id="stage-card"></div>
       <div class="cov-card" id="cov-card"></div>
+      <div id="notes-side-card"></div>
     </div>
     <div class="res-main">
       <div class="tab-bar">
-        <div class="tab on"  onclick="swTab('overview',this)">🏢 Empresa</div>
-        <div class="tab"     onclick="swTab('tech',this)">🔧 Tech Stack</div>
-        <div class="tab"     onclick="swTab('pitch',this)">🎯 Cómo vender</div>
-        <div class="tab"     onclick="swTab('questions',this)">💬 Preguntas clave</div>
-        <div class="tab"     onclick="swTab('stakeholders',this)">🗺️ Stakeholders</div>
-        <div class="tab"     onclick="swTab('dealstrat',this)">⚡ Deal Strategy</div>
-        <div class="tab"     onclick="swTab('meeting',this)">📋 Plan de reunión</div>
-        <div class="tab"     onclick="swTab('recursos',this)">📁 Recursos</div>
-        <div class="tab"     onclick="swTab('notes',this)">📝 Notas</div>
+        <div class="tab on"  onclick="swTab('overview',this)"    data-i18n-tab="tabCompany">🏢 <span>Empresa</span></div>
+        <div class="tab"     onclick="swTab('tech',this)"         data-i18n-tab="tabTech">🔧 <span>Tech Stack</span></div>
+        <div class="tab"     onclick="swTab('pitch',this)"        data-i18n-tab="tabPitch">🎯 <span>Cómo vender</span></div>
+        <div class="tab"     onclick="swTab('questions',this)"    data-i18n-tab="tabQuestions">💬 <span>Preguntas clave</span></div>
+        <div class="tab"     onclick="swTab('stakeholders',this)" data-i18n-tab="tabStakeholders">🗺️ <span>Stakeholders</span></div>
+        <div class="tab"     onclick="swTab('dealstrat',this)"    data-i18n-tab="tabDeal">⚡ <span>Deal Strategy</span></div>
+        <div class="tab"     onclick="swTab('meeting',this)"      data-i18n-tab="tabMeeting">📋 <span>Plan de reunión</span></div>
+        <div class="tab"     onclick="swTab('recursos',this)"     data-i18n-tab="tabResources">📁 <span>Recursos</span></div>
+        <div class="tab"     onclick="swTab('notes',this)"        data-i18n-tab="tabNotes">📝 <span>Notas</span></div>
       </div>
       <div class="panel on" id="panel-overview"></div>
       <div class="panel"    id="panel-tech"></div>
@@ -585,7 +628,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.2</span>
+  <span class="ver-badge">v1.0.3</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1335,53 +1378,14 @@ function render(){
     <div class="ts-section-label"><span>🔴</span> Gaps detectados — donde entra Humand</div>
     <div class="ts-grid">${gapTools.map(t => techCard(t, true)).join('')}</div>`;
 
-  // PITCH
-  document.getElementById('panel-pitch').innerHTML=`
-    <div class="pitch-hero">
-      <div class="ph-l">Posicionamiento recomendado para ${c.name}</div>
-      <div class="ph-v">${c.primaryModule} como punto de entrada</div>
-    </div>
-    <p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">${c.primaryWhy}</p>
-    <div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Módulos a recomendar en este deal</div>
-    <div class="rec-mods">
-      <div class="rec-mod pri"><span class="rm-ico">📣</span><div class="rm-body"><div class="rm-name">${c.primaryModule}</div><div class="rm-why">${c.primaryWhy}</div></div><span class="rm-badge rm-pri">Módulo 1</span></div>
-      ${c.secondaryModules.map((m,i)=>`
-      <div class="rec-mod"><span class="rm-ico">${m.ico}</span><div class="rm-body"><div class="rm-name">${m.name}</div><div class="rm-why">${m.why}</div></div><span class="rm-badge rm-sec">Módulo ${i+2}</span></div>`).join('')}
-    </div>
-    <div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Opener recomendado para abrir la llamada</div>
-    <div class="opener-box">"${c.opener}"</div>
-    <button class="btn b-s" onclick="copyText('${c.opener.replace(/'/g,"\\'")}')">📋 Copiar opener</button>`;
+  // PITCH (stage-aware)
+  renderPitchForStage(c);
 
-  // QUESTIONS
-  const roleMap={hr:'HR Leader',ops:'Ops Leader',it:'IT Leader',exec:'C-Suite / Exec'};
-  const roleBg={hr:'var(--px)',ops:'var(--wal)',it:'var(--pul)',exec:'var(--okl)'};
-  const roleClr={hr:'var(--p)',ops:'var(--wa)',it:'var(--pu)',exec:'var(--ok)'};
-  document.getElementById('panel-questions').innerHTML=`
-    <div class="q-notice">💡 Estas preguntas están personalizadas para ${c.name}. Ya sabés lo básico de la empresa — enfocate en validar el dolor específico y mapear el proceso de decisión, no en preguntar qué hace la empresa.</div>
-    <div class="role-filter">
-      <div class="rpill on" onclick="filterQ('all',this)">Todas</div>
-      <div class="rpill rh" onclick="filterQ('hr',this)">👩‍💼 HR Leader</div>
-      <div class="rpill ro" onclick="filterQ('ops',this)">⚙️ Ops Leader</div>
-      <div class="rpill ri" onclick="filterQ('it',this)">💻 IT Leader</div>
-      <div class="rpill re" onclick="filterQ('exec',this)">🏆 Exec</div>
-    </div>
-    <div class="q-list" id="q-list-main">${c.questions.map((q,i)=>`
-      <div class="q-item" data-role="${q.role||'all'}">
-        <div class="q-num">${i+1}</div>
-        <div class="q-body">
-          <span class="q-cat" ${q.catCls}>${q.cat}</span>
-          <div class="q-text">${q.text}</div>
-        </div>
-        <div class="q-copy" onclick="copyText(${JSON.stringify(q.text)})">Copiar</div>
-      </div>`).join('')}</div>`;
+  // QUESTIONS (stage-aware)
+  renderQuestions(c);
 
-  // MEETING PLAN
-  document.getElementById('panel-meeting').innerHTML=`
-    <div class="meeting-plan">${c.meeting.map(m=>`
-      <div class="mp-step">
-        <div class="mp-head"><div class="mp-num">${m.step}</div><div class="mp-t">${m.title}</div><div class="mp-dur">${m.dur}</div></div>
-        <div class="mp-body">${m.body}${m.tip?`<div class="mp-tip">💡 ${m.tip}</div>`:''}</div>
-      </div>`).join('')}</div>`;
+  // MEETING PLAN (stage-aware)
+  renderMeeting(c);
 
   // GAVIN DIRECTIVES
   renderStageSidebar(c);
@@ -1389,10 +1393,13 @@ function render(){
   renderStakeholders(c);
   renderDealStrategy(c);
 
+  // SIDEBAR NOTES
+  renderSidebarNotes(c);
+
   // RECURSOS
   renderRecursos(c);
 
-  // NOTAS
+  // NOTAS (full tab)
   renderNotes(c.name);
 
   // Hide sidebar cards that are now embedded in the overview panel
@@ -1780,11 +1787,14 @@ const STAGE_GUIDANCE = {
 function setStage(id){
   currentStage = id;
   document.querySelectorAll('.stage-pill').forEach(p=>p.classList.toggle('on', p.dataset.stage===id));
-  if(document.getElementById('panel-dealstrat').classList.contains('on')){
+  if(current){
     renderDealStrategy(current);
+    renderCovCard(current);
+    renderQuestions(current);
+    renderMeeting(current);
+    renderPitchForStage(current);
+    renderSidebarNotes(current);
   }
-  // update coverage card stage hint
-  renderCovCard(current);
 }
 
 
@@ -1807,21 +1817,86 @@ function renderStageSidebar(c){ c=_safe(c);
     '</div>';
 }
 
-function renderCovCard(c){  c=_safe(c);
-  const present = c.stakeholders.filter(s=>s.present).length;
-  const total   = c.stakeholders.length;
+function stkKey(name){ return 'dc_stk_'+( name||'').toLowerCase().replace(/\s+/g,'_'); }
+
+function getStakeholders(c){
+  const overrides = localStorage.getItem(stkKey(c.name));
+  if(overrides){ try{ return JSON.parse(overrides); }catch(e){} }
+  return c.stakeholders;
+}
+
+function saveStakeholders(c, arr){
+  localStorage.setItem(stkKey(c.name), JSON.stringify(arr));
+}
+
+function renderCovCard(c){ c=_safe(c);
+  const stks = getStakeholders(c);
+  const present = stks.filter(s=>s.present).length;
+  const total   = stks.length;
   const pct     = Math.round(present/total*100);
   const barColor = pct>=75?'var(--ok)':pct>=50?'var(--wa)':'var(--red)';
+  const editRows = stks.map((s,i)=>
+    '<div class="stk-edit-row">' +
+      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\',' +i+')" title="'+(s.present?'En reunión':'Faltante')+'">'+(s.present?'✓':'—')+'</button>' +
+      '<input class="stk-edit-inp" value="'+s.role.replace(/"/g,'&quot;')+'" onchange="updateStkRole(\''+c.name.replace(/'/g,"\\'")+'\','+i+',this.value)" placeholder="Rol / nombre">' +
+    '</div>'
+  ).join('');
   document.getElementById('cov-card').innerHTML =
-    '<div class="cov-head"><span class="cov-lbl">Cobertura de stakeholders</span><span class="cov-num">'+present+'/'+total+'</span></div>' +
+    '<div class="cov-head"><span class="cov-lbl">Cobertura de stakeholders</span>' +
+    '<div style="display:flex;align-items:center;gap:6px"><span class="cov-num">'+present+'/'+total+'</span>' +
+    '<span class="cov-edit-btn" onclick="toggleCovEdit()">✏️ Editar</span></div></div>' +
     '<div class="cov-bar"><div class="cov-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div>' +
-    '<div class="cov-roles">' +
-    c.stakeholders.map(s=>'<div class="cov-role">' +
+    '<div class="cov-roles" id="cov-roles-list">' +
+    stks.map(s=>'<div class="cov-role">' +
       '<span class="cov-dot" style="background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>' +
       '<span class="cov-rname">'+s.role+'</span>' +
       (s.present?'<span class="cov-ok">✓ En reunión</span>':'<span class="cov-miss">✗ Faltante</span>') +
     '</div>').join('') +
-    '</div>';
+    '</div>' +
+    '<div class="stk-edit-rows" id="stk-edit-rows">' + editRows +
+    '<div class="stk-edit-add">' +
+      '<input class="stk-edit-add-inp" id="stk-add-inp" placeholder="Agregar participante...">' +
+      '<button class="btn b-s" style="font-size:11px;padding:4px 10px" onclick="addStkParticipant(\''+c.name.replace(/'/g,"\\'")+'\')">+</button>' +
+    '</div></div>';
+}
+
+function toggleCovEdit(){
+  const rows = document.getElementById('stk-edit-rows');
+  const list = document.getElementById('cov-roles-list');
+  if(!rows) return;
+  const isOpen = rows.classList.toggle('open');
+  if(list) list.style.display = isOpen ? 'none' : '';
+}
+
+function toggleStkPresent(companyName, idx){
+  if(!current) return;
+  const stks = getStakeholders(current);
+  if(stks[idx]) stks[idx].present = !stks[idx].present;
+  saveStakeholders(current, stks);
+  renderCovCard(current);
+  renderStakeholders(current);
+  // re-open edit mode
+  setTimeout(()=>{ toggleCovEdit(); },10);
+}
+
+function updateStkRole(companyName, idx, val){
+  if(!current) return;
+  const stks = getStakeholders(current);
+  if(stks[idx]) stks[idx].role = val;
+  saveStakeholders(current, stks);
+}
+
+function addStkParticipant(companyName){
+  if(!current) return;
+  const inp = document.getElementById('stk-add-inp');
+  if(!inp || !inp.value.trim()) return;
+  const stks = getStakeholders(current);
+  stks.push({role: inp.value.trim(), title: inp.value.trim(), type:'influencer', cares:[], present:true});
+  saveStakeholders(current, stks);
+  renderCovCard(current);
+  renderStakeholders(current);
+  setTimeout(()=>{ toggleCovEdit(); },10);
+  toast('Participante agregado ✓');
 }
 
 function renderStakeholders(c){ c=_safe(c);
@@ -1949,6 +2024,302 @@ function copyBrief(){
   navigator.clipboard?.writeText(brief).catch(()=>{});
   toast('📋 Brief completo copiado');
 }
+// ═══════════════════════════════════════════
+// LANGUAGE SYSTEM
+// ═══════════════════════════════════════════
+let lang = 'es';
+const T = {
+  es: {
+    tabCompany:'Empresa', tabTech:'Tech Stack', tabPitch:'Cómo vender',
+    tabQuestions:'Preguntas clave', tabStakeholders:'Stakeholders',
+    tabDeal:'Deal Strategy', tabMeeting:'Plan de reunión',
+    tabResources:'Recursos', tabNotes:'Notas',
+    newSearch:'← Nueva búsqueda', copyBrief:'Copiar brief', save:'Guardar',
+    myAnalyses:'Mis análisis',
+    stageLabel:'Etapa del deal', covLabel:'Cobertura de stakeholders',
+    notesLabel:'Notas', notesSaved:'✓ Guardado', notesPlaceholder:'Anotá lo que escuchás en la llamada...',
+    discTip:'💡 Estás en Discovery — anotá lo que dice el cliente en tiempo real.',
+    allStages:'Visibles en todas las etapas',
+    qNotice:'💡 Preguntas personalizadas para',
+    qRespBtn:'Anotar resp.', qRespLabel:'RESPUESTA DEL CLIENTE',
+    qRespPlaceholder:'Anotá lo que respondió el cliente...',
+    inMeeting:'✓ En reunión', missing:'✗ Faltante',
+  },
+  en: {
+    tabCompany:'Company', tabTech:'Tech Stack', tabPitch:'How to Sell',
+    tabQuestions:'Key Questions', tabStakeholders:'Stakeholders',
+    tabDeal:'Deal Strategy', tabMeeting:'Meeting Plan',
+    tabResources:'Resources', tabNotes:'Notes',
+    newSearch:'← New Search', copyBrief:'Copy Brief', save:'Save',
+    myAnalyses:'My analyses',
+    stageLabel:'Deal Stage', covLabel:'Stakeholder Coverage',
+    notesLabel:'Notes', notesSaved:'✓ Saved', notesPlaceholder:'Take notes during the call...',
+    discTip:'💡 You are in Discovery — take notes in real time.',
+    allStages:'Visible in all stages',
+    qNotice:'💡 Questions personalized for',
+    qRespBtn:'Add answer', qRespLabel:'CLIENT RESPONSE',
+    qRespPlaceholder:'Note what the client said...',
+    inMeeting:'✓ In meeting', missing:'✗ Missing',
+  }
+};
+function t(key){ return (T[lang]||T.es)[key] || (T.es[key]) || key; }
+
+function toggleLang(){
+  lang = lang==='es'?'en':'es';
+  applyLang();
+}
+
+function applyLang(){
+  const isEN = lang==='en';
+  // Update all lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.textContent = isEN ? '🌐 ES' : '🌐 EN';
+    b.classList.toggle('en', isEN);
+  });
+  // Update tab labels
+  document.querySelectorAll('[data-i18n-tab]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-tab');
+    const span = el.querySelector('span');
+    if(span && T[lang][key]) span.textContent = T[lang][key];
+  });
+  // Update data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(T[lang][key]) el.textContent = T[lang][key];
+  });
+  // Re-render dynamic panels if results are showing
+  if(current && document.getElementById('s3').classList.contains('on')){
+    renderQuestions(current);
+    renderMeeting(current);
+    renderStageSidebar(current);
+    renderCovCard(current);
+    renderSidebarNotes(current);
+  }
+}
+
+// ═══════════════════════════════════════════
+// SIDEBAR NOTES
+// ═══════════════════════════════════════════
+function renderSidebarNotes(c){
+  const el = document.getElementById('notes-side-card');
+  if(!el) return;
+  const isDisc = currentStage === 'discovery';
+  const saved = localStorage.getItem(notesKey(c.name)) || '';
+  el.className = 'notes-side-card' + (isDisc ? ' disc-active' : '');
+  el.innerHTML =
+    '<div class="nsc-disc-tip">'+t('discTip')+'</div>' +
+    '<div class="nsc-head">' +
+      '<span class="nsc-lbl">📝 '+t('notesLabel')+'</span>' +
+      '<span style="font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px;background:'+(isDisc?'var(--p)':'var(--px)')+';color:'+(isDisc?'#fff':'var(--p)')+'">'+t('allStages')+'</span>' +
+    '</div>' +
+    '<textarea class="nsc-ta" id="nsc-ta" placeholder="'+t('notesPlaceholder')+'" oninput="saveSideNotes(\''+c.name.replace(/'/g,"\\'")+'\',this.value)">'+saved+'</textarea>' +
+    '<div class="nsc-footer">' +
+      '<span class="nsc-meta">'+(saved.length>0?saved.length+' chars':'')+'</span>' +
+      '<span class="nsc-saved" id="nsc-saved-ind">'+t('notesSaved')+'</span>' +
+    '</div>';
+}
+
+function saveSideNotes(companyName, text){
+  localStorage.setItem(notesKey(companyName), text);
+  // sync full notes tab too
+  const fullTA = document.getElementById('notes-area');
+  if(fullTA) fullTA.value = text;
+  const ind = document.getElementById('nsc-saved-ind');
+  if(ind){ ind.classList.add('on'); clearTimeout(ind._t); ind._t=setTimeout(()=>ind.classList.remove('on'),2000); }
+}
+
+// ═══════════════════════════════════════════
+// STAGE-SPECIFIC CONTENT
+// ═══════════════════════════════════════════
+const STAGE_QUESTIONS = {
+  lead: (c) => [
+    {cat:'Calificación', catCls:'style="background:var(--px);color:var(--p)"', role:'all',
+     text:'"Para entender si tiene sentido avanzar — ¿están evaluando activamente una herramienta de comunicación interna o employee experience este año?"'},
+    {cat:'Contexto', catCls:'style="background:var(--bg);color:var(--t2);border:1px solid var(--br)"', role:'all',
+     text:'"¿Cuántas personas tiene el equipo de HR y cuántos empleados en total gestionan?"'},
+    {cat:'Dolor', catCls:'style="background:var(--wal);color:var(--wa)"', role:'all',
+     text:'"¿Cuál diría que es el mayor dolor que tiene HR con las herramientas que están usando hoy?"'},
+    {cat:'Proceso', catCls:'style="background:var(--okl);color:var(--ok)"', role:'all',
+     text:'"¿Tienen un proceso formal para evaluar nuevas herramientas de HR o es algo más informal?"'},
+    {cat:'Timing', catCls:'style="background:var(--pul);color:var(--pu)"', role:'all',
+     text:'"¿Hay algún deadline o evento que haga urgente resolver esto — o están explorando sin apuro?"'},
+  ],
+  discovery: (c) => c.questions,
+  champion: (c) => [
+    {cat:'Apoyo interno', catCls:'style="background:var(--okl);color:var(--ok)"', role:'all',
+     text:'"¿Quién más dentro de la empresa creés que estaría abierto a esta solución? ¿Y quién podría resistirla?"'},
+    {cat:'DM', catCls:'style="background:var(--px);color:var(--p)"', role:'all',
+     text:'"Para avanzar — ¿necesitamos presentarle esto al CHRO/VP People o puede aprobarse a nivel de tu área?"'},
+    {cat:'Caso interno', catCls:'style="background:var(--wal);color:var(--wa)"', role:'all',
+     text:'"Si tuvieras que justificar esta inversión internamente, ¿cuál sería el argumento más fuerte que usarías?"'},
+    {cat:'Bloqueadores', catCls:'style="background:var(--redl);color:var(--red)"', role:'all',
+     text:'"¿Ves algún obstáculo interno — presupuesto, IT, otros proyectos — que podría frenar esto?"'},
+    {cat:'Timeline', catCls:'style="background:var(--pul);color:var(--pu)"', role:'all',
+     text:'"¿Cuál sería el proceso de aprobación una vez que estemos alineados en el valor?"'},
+  ],
+  dm: (c) => [
+    {cat:'Estrategia', catCls:'style="background:var(--px);color:var(--p)"', role:'exec',
+     text:'"¿Cuál es el mayor desafío de personas que tiene en el radar para este año a nivel estratégico?"'},
+    {cat:'ROI', catCls:'style="background:var(--okl);color:var(--ok)"', role:'exec',
+     text:'"Si pudieran reducir el tiempo de HR Ops un 40% y bajar la rotación un 25%, ¿cuánto impacto tendría eso en el negocio de '+c.name+'?"'},
+    {cat:'Visión', catCls:'style="background:var(--wal);color:var(--wa)"', role:'exec',
+     text:'"¿Cómo imagina la experiencia del empleado en '+c.name+' en 2-3 años? ¿Qué rol tendría la tecnología?"'},
+    {cat:'Criterios', catCls:'style="background:var(--pul);color:var(--pu)"', role:'exec',
+     text:'"¿Cuáles son los criterios más importantes para tomar esta decisión — precio, velocidad de implementación, integraciones?"'},
+    {cat:'Piloto', catCls:'style="background:var(--redl);color:var(--red)"', role:'exec',
+     text:'"¿Estarían abiertos a un piloto acotado para tener datos reales antes de decidir el rollout completo?"'},
+  ],
+  procure: (c) => [
+    {cat:'Proceso', catCls:'style="background:var(--wal);color:var(--wa)"', role:'all',
+     text:'"¿Cuál es el proceso formal de aprobación de un nuevo proveedor de tecnología? ¿Hay un área de compras?"'},
+    {cat:'Legal / IT', catCls:'style="background:var(--pul);color:var(--pu)"', role:'all',
+     text:'"¿Hay requerimientos legales o de seguridad de IT que necesitemos cumplir antes de firmar — DPA, certificaciones?"'},
+    {cat:'Presupuesto', catCls:'style="background:var(--okl);color:var(--ok)"', role:'all',
+     text:'"¿El presupuesto para esto ya está aprobado o todavía hay que conseguir el OK de finanzas?"'},
+    {cat:'Contrato', catCls:'style="background:var(--px);color:var(--p)"', role:'all',
+     text:'"¿Prefieren un contrato anual o mensual para el piloto? ¿Tienen templates de contrato que usen?"'},
+    {cat:'Cierre', catCls:'style="background:var(--redl);color:var(--red)"', role:'all',
+     text:'"¿Qué falta para poder firmar esta semana? ¿Hay algo del lado de ustedes que todavía no esté resuelto?"'},
+  ],
+};
+
+const STAGE_MEETING = {
+  lead: (c) => [
+    {step:1, title:'Apertura y contexto', dur:'2 min', body:'Presentate brevemente y mostrá que hiciste tarea: mencioná 1-2 datos de la empresa. El objetivo es generar confianza rápido.', tip:'No más de 30 segundos hablando de Humand. El foco es ellos.'},
+    {step:2, title:'Calificar el pain', dur:'5 min', body:'"¿Cuál es el mayor dolor que tiene HR con las herramientas actuales?" y "¿Están evaluando soluciones activamente?" — Dos preguntas que te dicen todo lo que necesitás saber.', tip:'Si no hay dolor o urgencia real, acordá un follow-up para cuando el timing mejore. No hagas el pitch completo.'},
+    {step:3, title:'Señales de fit', dur:'5 min', body:'Preguntá por el stack actual, el tamaño del equipo de HR y cuántos empleados tienen. Con eso estimás el potential del deal.', tip:'Si usan WhatsApp para comunicaciones internas o Excel para HR Ops → verde. Estás ante el pain correcto.'},
+    {step:4, title:'Próximo paso', dur:'3 min', body:'Si hay fit: proponer una sesión de discovery de 45 minutos con el equipo core. Si no hay urgencia: acordar un follow-up en 30 días.', tip:'"¿Qué les parece si la próxima semana exploramos el pain en más profundidad y les muestro cómo lo resolvemos?" — esa es la pregunta de cierre.'},
+  ],
+  discovery: (c) => c.meeting,
+  champion: (c) => [
+    {step:1, title:'Revisar aprendizajes de la discovery', dur:'3 min', body:'Resumí los puntos clave que surgieron: "Identificamos que el mayor dolor es X, y que Y stakeholder también estaría interesado." Validá que tu lectura es correcta.', tip:'Esto muestra que escuchaste y que estás siguiendo el hilo. Genera confianza.'},
+    {step:2, title:'Equipar al champion para vender internamente', dur:'10 min', body:'"¿Cómo presentarías esto a tu director/CHRO? ¿Qué argumentos te parecen más sólidos?" Ayudalo a construir el caso.', tip:'Tu trabajo acá no es vender — es darle al champion las herramientas para que él venda internamente. Prepará un one-pager personalizado.'},
+    {step:3, title:'Mapear el buying committee', dur:'8 min', body:'¿Quién aprueba el presupuesto? ¿Quién puede bloquearlo — IT, Legal, Finance? ¿Quién más tiene poder de influencia?', tip:'"¿Quién más debería estar en la siguiente reunión para avanzar más rápido?"'},
+    {step:4, title:'Planear el siguiente paso', dur:'4 min', body:'Proponer una reunión con el DM (CHRO, VP People, CEO). El champion debería ser quien la agende o facilite.', tip:'Dale al champion el deck personalizado y el caso de referencia más relevante para su sector.'},
+  ],
+  dm: (c) => [
+    {step:1, title:'Encuadre ejecutivo', dur:'2 min', body:'"Empresas similares a '+c.name+' están reduciendo el costo de rotación y acelerando el onboarding digitalizando la experiencia del empleado." Empezá con el impacto de negocio, no con features.', tip:'Nunca empecés con "Humand es una plataforma que...". Empezá con el problema de negocio.'},
+    {step:2, title:'Validar prioridades ejecutivas', dur:'8 min', body:'Preguntá sobre los objetivos de People para el año, el impacto de la rotación en el negocio, y cómo evalúan el ROI de inversiones en HR Tech.', tip:'Escuchá cuál es el KPI más importante para este ejecutivo. Todo el pitch posterior tiene que conectar con ese KPI.'},
+    {step:3, title:'Presentar el caso de negocio', dur:'10 min', body:'Mostrá el ROI calculado con sus datos reales. Case de referencia de empresa similar. Timeline: 3 semanas go-live → 60 días de datos.', tip:'Los ejecutivos necesitan justificar la inversión internamente. Dales los números para hacerlo.'},
+    {step:4, title:'Definir el piloto y el acuerdo', dur:'5 min', body:'"¿Qué les parece si arrancamos con [área/región] y en 60 días tenemos los datos para decidir el rollout completo?" Scope acotado con KPIs claros.', tip:'Salí con: fecha de siguiente reunión + nombre del responsable de procurement del lado de ellos.'},
+  ],
+  procure: (c) => [
+    {step:1, title:'Mapear el proceso de aprobación', dur:'5 min', body:'¿Quién aprueba? ¿Qué documentación necesitan — DPA, SOC2, propuesta formal? ¿Cuál es el deadline interno?', tip:'Preguntá: "¿Cuál es el paso que podría demorar más el proceso?" — eso es lo que hay que resolver primero.'},
+    {step:2, title:'Resolver bloqueadores técnicos y legales', dur:'10 min', body:'IT/Legal muchas veces bloquean en el último minuto. Anticipate: ficha técnica, certificaciones de seguridad, modelo de datos. Si necesitan integración con Workday/SAP, mostrá el conector.', tip:'Tené el security one-pager y el DPA listo para mandar en el momento.'},
+    {step:3, title:'Confirmar scope del piloto', dur:'8 min', body:'Número de empleados en el piloto, área o región, integraciones requeridas, y KPIs que van a medir al día 60.', tip:'Un scope acotado y bien definido acelera la aprobación. "Empezamos con 500 empleados de X área."'},
+    {step:4, title:'Próximo paso con fecha concreta', dur:'2 min', body:'"¿Podemos decir que si todo está aprobado el kickoff sería la semana del [fecha]?"', tip:'El "les mandamos la propuesta" sin fecha de respuesta es la muerte del deal en esta etapa.'},
+  ],
+};
+
+const STAGE_OPENERS = {
+  lead:      (c) => 'Hola, me contacto desde Humand. Vi que '+c.name+' opera en '+c.industry+' con un equipo de '+c.employees+' personas. Nuestros clientes en ese sector suelen tener gaps importantes en comunicación interna y employee experience. ¿Vale la pena que exploremos si ese es el caso acá?',
+  discovery: (c) => c.opener,
+  champion:  (c) => 'Basándonos en lo que nos contaron — especialmente el tema de [pain principal] — creo que tenemos una oportunidad real de resolver esto. Quiero mostrarte exactamente cómo lo haríamos y darte las herramientas para presentarlo internamente.',
+  dm:        (c) => c.name+' tiene '+c.employees+' empleados y opera en un sector donde la experiencia del empleado impacta directamente en la operación. Nuestros clientes similares redujeron el costo de rotación y el tiempo de HR Ops en más de un 40%. ¿Tiene sentido explorar cómo se vería eso para ustedes?',
+  procure:   (c) => 'Estamos en la recta final. El equipo de HR ya validó el fit, el DM dio el OK. Quiero asegurarme de que el proceso de aprobación sea lo más smooth posible y que podamos tener el kickoff definido.',
+};
+
+const STAGE_PITCH_TITLE = {
+  lead:      'Primer contacto — calificar el fit',
+  discovery: 'Discovery — validar el dolor',
+  champion:  'Champion — habilitar la venta interna',
+  dm:        'Ejecutivo — caso de negocio y ROI',
+  procure:   'Procurement — cerrar el deal',
+};
+
+function getStageQuestions(c){ return (STAGE_QUESTIONS[currentStage]||STAGE_QUESTIONS.discovery)(c); }
+function getStageMeeting(c)  { return (STAGE_MEETING[currentStage]||STAGE_MEETING.discovery)(c); }
+
+function renderQuestions(c){ c=_safe(c);
+  const qs = getStageQuestions(c);
+  const stageInfo = STAGES.find(s=>s.id===currentStage)||STAGES[1];
+  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
+  document.getElementById('panel-questions').innerHTML =
+    '<div style="display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:3px 10px;border-radius:10px;background:var(--px);color:var(--p);margin-bottom:12px">'+
+      stageInfo.num+' '+stageInfo.label+
+    '</div>' +
+    '<div class="q-notice">'+t('qNotice')+' <strong>'+c.name+'</strong> — etapa <em>'+stageInfo.label+'</em>. '+stageInfo.desc+'</div>' +
+    (currentStage==='discovery'?
+      '<div class="role-filter">' +
+        '<div class="rpill on" onclick="filterQ(\'all\',this)">Todas</div>' +
+        '<div class="rpill rh" onclick="filterQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
+        '<div class="rpill ro" onclick="filterQ(\'ops\',this)">⚙️ Ops Leader</div>' +
+        '<div class="rpill ri" onclick="filterQ(\'it\',this)">💻 IT Leader</div>' +
+        '<div class="rpill re" onclick="filterQ(\'exec\',this)">🏆 Exec</div>' +
+      '</div>':'') +
+    '<div class="q-list" id="q-list-main">' +
+    qs.map((q,i)=>{
+      const respKey = 'dc_qa_'+compKey+'_'+currentStage+'_'+i;
+      const savedResp = localStorage.getItem(respKey)||'';
+      return '<div class="q-item" data-role="'+(q.role||'all')+'">' +
+        '<div class="q-num">'+(i+1)+'</div>' +
+        '<div class="q-body" style="flex:1">' +
+          '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:5px">' +
+            '<span class="q-cat" '+q.catCls+'>'+q.cat+'</span>' +
+            '<button class="q-resp-btn'+(savedResp?' filled':'')+'" id="qrb'+i+'" onclick="toggleQResp('+i+',\''+respKey.replace(/'/g,"\\'")+'\')">'+t('qRespBtn')+'</button>' +
+          '</div>' +
+          '<div class="q-text">'+q.text+'</div>' +
+          '<div class="q-resp-area'+(savedResp?' open':'')+'" id="qra'+i+'">' +
+            '<div class="q-resp-label">'+t('qRespLabel')+'</div>' +
+            '<textarea class="q-resp-ta" placeholder="'+t('qRespPlaceholder')+'" oninput="saveQResp(\''+respKey.replace(/'/g,"\\'")+'\','+i+',this.value)">'+savedResp+'</textarea>' +
+          '</div>' +
+        '</div>' +
+        '<div class="q-copy" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</div>' +
+      '</div>';
+    }).join('') +
+    '</div>';
+}
+
+function toggleQResp(idx, key){
+  const area = document.getElementById('qra'+idx);
+  const btn  = document.getElementById('qrb'+idx);
+  if(!area) return;
+  area.classList.toggle('open');
+  if(area.classList.contains('open')) area.querySelector('textarea')?.focus();
+  btn.classList.toggle('filled', area.classList.contains('open') || !!localStorage.getItem(key));
+}
+
+function saveQResp(key, idx, val){
+  localStorage.setItem(key, val);
+  const btn = document.getElementById('qrb'+idx);
+  if(btn) btn.classList.toggle('filled', !!val);
+}
+
+function renderMeeting(c){ c=_safe(c);
+  const steps = getStageMeeting(c);
+  const stageInfo = STAGES.find(s=>s.id===currentStage)||STAGES[1];
+  document.getElementById('panel-meeting').innerHTML =
+    '<div style="display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:3px 10px;border-radius:10px;background:var(--px);color:var(--p);margin-bottom:12px">'+
+      stageInfo.num+' '+stageInfo.label+
+    '</div>' +
+    '<div class="meeting-plan">' +
+    steps.map(m=>'<div class="mp-step">' +
+      '<div class="mp-head"><div class="mp-num">'+m.step+'</div><div class="mp-t">'+m.title+'</div><div class="mp-dur">'+m.dur+'</div></div>' +
+      '<div class="mp-body">'+m.body+(m.tip?'<div class="mp-tip">💡 '+m.tip+'</div>':'')+'</div>' +
+    '</div>').join('') +
+    '</div>';
+}
+
+function renderPitchForStage(c){ c=_safe(c);
+  const stageInfo = STAGES.find(s=>s.id===currentStage)||STAGES[1];
+  const opener = (STAGE_OPENERS[currentStage]||STAGE_OPENERS.discovery)(c);
+  const title  = STAGE_PITCH_TITLE[currentStage]||'';
+  document.getElementById('panel-pitch').innerHTML =
+    '<div class="pitch-hero">' +
+      '<div class="ph-l">Etapa: '+stageInfo.label+'</div>' +
+      '<div class="ph-v">'+title+' — '+c.primaryModule+'</div>' +
+    '</div>' +
+    '<p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">'+c.primaryWhy+'</p>' +
+    '<div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Módulos a recomendar en este deal</div>' +
+    '<div class="rec-mods">' +
+      '<div class="rec-mod pri"><span class="rm-ico">📣</span><div class="rm-body"><div class="rm-name">'+c.primaryModule+'</div><div class="rm-why">'+c.primaryWhy+'</div></div><span class="rm-badge rm-pri">Módulo 1</span></div>' +
+      c.secondaryModules.map((m,i)=>'<div class="rec-mod"><span class="rm-ico">'+m.ico+'</span><div class="rm-body"><div class="rm-name">'+m.name+'</div><div class="rm-why">'+m.why+'</div></div><span class="rm-badge rm-sec">Módulo '+(i+2)+'</span></div>').join('') +
+    '</div>' +
+    '<div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;margin-top:16px">Opener para esta etapa</div>' +
+    '<div class="opener-box">"'+opener+'"</div>' +
+    '<button class="btn b-s" onclick="copyText('+JSON.stringify(opener)+')">📋 Copiar opener</button>';
+}
+
 let toastT;
 function toast(m){
   const el=document.getElementById('toast-el');

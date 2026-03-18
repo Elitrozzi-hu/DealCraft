@@ -1,7 +1,12 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.0.3",
+      "date": "2026-03-18",
+      "note": "Stage-aware content (questions, meeting, pitch), notes sidebar, question responses, editable participants, ES/EN toggle, logo as home"
+    },
     {
       "version": "1.0.2",
       "date": "2026-03-18",
