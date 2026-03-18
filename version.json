@@ -1,7 +1,12 @@
 {
-  "version": "1.2.3",
+  "version": "1.2.4",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.4",
+      "date": "2026-03-18",
+      "note": "Show company logo from Clearbit in header strip with fallback to colored initials avatar"
+    },
     {
       "version": "1.2.3",
       "date": "2026-03-18",
