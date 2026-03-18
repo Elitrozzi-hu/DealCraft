@@ -298,7 +298,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 /* stage-main is now transparent — nav and panels float as individual white cards */
 .stage-main{flex:1;min-width:0;display:flex;flex-direction:row;background:transparent;border:none;box-shadow:none;overflow:visible;gap:14px}
 /* Side panel is now a single white card with tabs */
-.stage-side{width:300px;flex-shrink:0;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;position:sticky;top:196px;align-self:flex-start}
+.stage-side{flex:0 0 25%;min-width:260px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);overflow:hidden;position:sticky;top:196px;align-self:flex-start}
 /* Stage section nav (left wizard) — floats as its own white card */
 .snav{width:204px;flex-shrink:0;padding:10px 8px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r3);box-shadow:var(--s1);display:flex;flex-direction:column;gap:2px;align-self:flex-start;position:sticky;top:196px}
 .snav-item{display:flex;align-items:center;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:400;color:var(--t2);transition:all .14s;border-radius:var(--r2);user-select:none}
@@ -314,7 +314,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sside-tab{padding:12px 10px;font-size:13px;font-weight:400;color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;transition:all .14s;user-select:none;white-space:nowrap}
 .sside-tab:hover{color:var(--t1)}
 .sside-tab.on{color:var(--p);font-weight:600;border-bottom-color:var(--p)}
-.sside-panel{display:none;padding:16px 16px}
+.sside-panel{display:none;padding:20px 20px}
 .sside-panel.on{display:block}
 /* Content cards */
 .sc-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);overflow:hidden;box-shadow:var(--s1)}
@@ -801,7 +801,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.1.4</span>
+  <span class="ver-badge">v1.1.5</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
