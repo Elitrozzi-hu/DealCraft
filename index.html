@@ -276,14 +276,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .toast{position:fixed;bottom:22px;right:22px;background:var(--t1);color:#fff;padding:10px 18px;border-radius:var(--r1);font-size:12px;font-weight:600;z-index:999;transform:translateY(60px);opacity:0;transition:all .28s;box-shadow:var(--s3)}
 .toast.on{transform:translateY(0);opacity:1}
 /* ════ WIZARD LAYOUT ════ */
-.co-strip{background:#fff;border-bottom:1px solid var(--br);padding:14px 40px;display:flex;align-items:center;gap:14px;position:sticky;top:60px;z-index:90;flex-shrink:0}
-.cos-logo{width:40px;height:40px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600;flex-shrink:0}
-.cos-info{flex:1;min-width:0}
-.cos-name{font-size:15px;font-weight:600;color:var(--t1)}
-.cos-meta{font-size:12px;color:var(--t2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cos-score{display:flex;align-items:center;gap:8px;background:var(--px);border-radius:var(--r2);padding:8px 14px;flex-shrink:0}
-.cos-score-num{font-size:22px;font-weight:600;color:var(--p);line-height:1}
-.cos-score-label{font-size:11px;color:var(--p);font-weight:600;line-height:1.3;max-width:90px}
+.co-strip{background:#fff;border-bottom:1px solid var(--br);padding:12px 40px;display:flex;align-items:center;gap:0;position:sticky;top:60px;z-index:90;flex-shrink:0}
+.cos-logo{width:38px;height:38px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;flex-shrink:0;margin-right:12px}
+.cos-info{min-width:0;margin-right:20px}
+.cos-name{font-size:15px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:8px}
+.cos-meta{font-size:11px;color:var(--t2);margin-top:2px}
+.cos-type{font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;flex-shrink:0}
+.cos-divider{width:1px;background:var(--br);height:32px;flex-shrink:0;margin:0 20px}
+.cos-stat{display:flex;flex-direction:column;align-items:flex-start;padding:0 20px;border-left:1px solid var(--br);min-width:0}
+.cos-stat:first-of-type{border-left:none;padding-left:0}
+.cos-stat-val{font-size:14px;font-weight:600;color:var(--t1);white-space:nowrap}
+.cos-stat-lbl{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-top:1px;white-space:nowrap}
+.cos-ae{display:flex;align-items:center;gap:9px;flex-shrink:0;margin-left:auto;padding-left:20px;border-left:1px solid var(--br)}
+.cos-ae-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pl));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;flex-shrink:0}
+.cos-ae-name{font-size:12px;font-weight:600;color:var(--t1);white-space:nowrap}
+.cos-ae-role{font-size:10px;color:var(--t2);white-space:nowrap}
 .stepper-wrap{background:#fff;border-bottom:1px solid var(--br);display:flex;position:sticky;top:128px;z-index:89;flex-shrink:0}
 .stepper{display:flex;align-items:stretch;width:100%}
 /* Stage progress bar — non-navigable */
@@ -889,7 +896,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.2</span>
+  <span class="ver-badge">v1.2.3</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1764,15 +1771,42 @@ function render(){
 }
 
 function renderCoStrip(c){
+  const headcount = parseInt((c.employees||'').replace(/[^\d]/g,'')) || 200;
+  const type = headcount > 2000
+    ? {label:'Large Enterprise', bg:'var(--pul)', color:'var(--pu)'}
+    : headcount > 500
+    ? {label:'Enterprise', bg:'var(--px)', color:'var(--p)'}
+    : {label:'SMB', bg:'var(--bg)', color:'var(--t2)'};
+  const rate = headcount > 2000 ? 3.5 : headcount > 500 ? 4 : 5;
+  const amount = '$' + Math.round(headcount * rate * 12).toLocaleString('en-US');
+
   document.getElementById('co-strip').innerHTML =
     '<div class="cos-logo" style="background:'+c.color+'">'+c.initials+'</div>'+
     '<div class="cos-info">'+
-      '<div class="cos-name">'+c.name+'</div>'+
-      '<div class="cos-meta">'+c.industry+' · '+c.country+' · '+c.employees+' empleados · 🌐 '+c.website+'</div>'+
+      '<div class="cos-name">'+c.name+
+        '<span class="cos-type" style="background:'+type.bg+';color:'+type.color+'">'+type.label+'</span>'+
+      '</div>'+
+      '<div class="cos-meta">'+c.country+' · 🌐 '+c.website+'</div>'+
     '</div>'+
-    '<div class="cos-score">'+
-      '<div class="cos-score-num">'+c.score+'</div>'+
-      '<div class="cos-score-label">Fit Score<br>'+c.scoreLabel+'</div>'+
+    '<div class="cos-divider"></div>'+
+    '<div class="cos-stat">'+
+      '<div class="cos-stat-val">'+amount+'</div>'+
+      '<div class="cos-stat-lbl">Amount / año</div>'+
+    '</div>'+
+    '<div class="cos-stat">'+
+      '<div class="cos-stat-val">'+headcount.toLocaleString('en-US')+'</div>'+
+      '<div class="cos-stat-lbl">Headcount</div>'+
+    '</div>'+
+    '<div class="cos-stat">'+
+      '<div class="cos-stat-val">'+c.industry+'</div>'+
+      '<div class="cos-stat-lbl">Industry</div>'+
+    '</div>'+
+    '<div class="cos-ae">'+
+      '<div class="cos-ae-av">ET</div>'+
+      '<div>'+
+        '<div class="cos-ae-name">Eli Trozzi</div>'+
+        '<div class="cos-ae-role">Account Executive</div>'+
+      '</div>'+
     '</div>';
 }
 
