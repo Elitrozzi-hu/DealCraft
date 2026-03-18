@@ -742,7 +742,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.0.4</span>
+  <span class="ver-badge">v1.0.5</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">18 Mar 2026</span>
 </div>
@@ -1443,6 +1443,7 @@ function render(){
   renderStageMain(c);
   renderStageSide(c);
   // Legacy: keep old render calls for drawer content
+  renderLegacyPanels(c);
   renderDealStrategy(c);
   renderStakeholders(c);
   renderRecursos(c);
@@ -1697,7 +1698,11 @@ function renderStageSide(c){ c=_safe(c);
   document.getElementById('stage-side').innerHTML = dealQuickHtml + covHtml + notesHtml;
 }
 
-  // OVERVIEW — rich dashboard
+// ═══════════════════════════════════════════
+// LEGACY PANEL RENDERS — used by drawers
+// ═══════════════════════════════════════════
+function renderLegacyPanels(c){ c=_safe(c);
+  // OVERVIEW panel (used by overview drawer)
   document.getElementById('panel-overview').innerHTML=`
     <div class="ov-hero" style="background:${c.color}">
       <div class="ov-hero-logo">${c.initials}</div>
