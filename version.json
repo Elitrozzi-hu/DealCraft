@@ -1,7 +1,12 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.1.1",
+      "date": "2026-03-18",
+      "note": "Replace collapsible cards with left wizard nav + section panels; remove nueva búsqueda button (logo navigates home)"
+    },
     {
       "version": "1.1.0",
       "date": "2026-03-18",
