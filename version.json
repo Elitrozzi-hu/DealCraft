@@ -1,7 +1,12 @@
 {
-  "version": "1.2.56",
+  "version": "1.2.57",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.57",
+      "date": "2026-03-19",
+      "note": "Add \"Actualizado: hace Xh\" timestamp and Refresh button to company header strip; refresh re-triggers POST /api/brief and re-renders"
+    },
     {
       "version": "1.2.56",
       "date": "2026-03-19",

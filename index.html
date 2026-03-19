@@ -317,6 +317,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .cos-ae-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pl));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;flex-shrink:0}
 .cos-ae-name{font-size:12px;font-weight:600;color:var(--t1);white-space:nowrap}
 .cos-ae-role{font-size:10px;color:var(--t2);white-space:nowrap}
+.cos-refresh{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:16px}
+.cos-refresh-ts{font-size:10px;color:var(--t2);white-space:nowrap}
+.cos-refresh-btn{font-size:11px;font-weight:600;color:var(--p);background:var(--px);border:none;border-radius:var(--r1);padding:4px 10px;cursor:pointer;white-space:nowrap;transition:background .12s}
+.cos-refresh-btn:hover{background:var(--pl)}
 .stepper-wrap{background:#fff;border-bottom:1px solid var(--br);display:flex;position:sticky;top:128px;z-index:89;flex-shrink:0}
 .stepper{display:flex;align-items:stretch;width:100%}
 /* Stage progress bar — non-navigable */
@@ -1055,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.56</span>
+  <span class="ver-badge">v1.2.57</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1629,6 +1633,7 @@ let rawBrief = null;
 // ─── API config ───────────────────────────────
 const API_BASE = 'https://dealcraft.onrender.com';
 let selectedDealId = null, selectedDealName = '', selectedDealStage = '';
+let currentAnalyzedAt = null;
 let dealSearchTimer = null;
 let cachedDeals = [];
 
@@ -1812,6 +1817,7 @@ async function openRecentBrief(key, name){
     selectedDealName = name;
     selectedDealId = null;
     selectedDealStage = (data.brief&&data.brief.deal_strategy&&data.brief.deal_strategy.sales_stage)||'lead';
+    currentAnalyzedAt = data.updated_at || data.analyzed_at || (data.brief&&data.brief.analyzed_at) || null;
     current = mapBriefToCompany(data);
     const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
     currentStage = stageMap[(selectedDealStage).toLowerCase()] || 'lead';
@@ -1889,6 +1895,7 @@ async function _runBrief(payload, displayName){
 
   rawBrief = apiResponse;
   current = mapBriefToCompany(apiResponse);
+  currentAnalyzedAt = apiResponse.analyzed_at || (apiResponse.brief && apiResponse.brief.analyzed_at) || new Date().toISOString();
   const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
   const brief = apiResponse.brief || apiResponse;
   const sugStage = (brief.deal_strategy&&brief.deal_strategy.sales_stage) || 'lead';
@@ -2391,6 +2398,11 @@ function renderCoStrip(c){
         '<div class="cos-ae-name">Eli Trozzi</div>'+
         '<div class="cos-ae-role">Account Executive</div>'+
       '</div>'+
+    '</div>'+
+    '<div class="cos-divider"></div>'+
+    '<div class="cos-refresh">'+
+      '<div class="cos-refresh-ts">Actualizado: '+timeAgo(currentAnalyzedAt)+'</div>'+
+      '<button id="refresh-btn" class="cos-refresh-btn" onclick="refreshBrief()">↻ Refresh</button>'+
     '</div>';
 }
 
@@ -3012,6 +3024,42 @@ function toggleAction(key, actionId){
 }
 
 function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function timeAgo(isoString){
+  if(!isoString) return '—';
+  const diff = Date.now() - new Date(isoString).getTime();
+  const m = Math.floor(diff / 60000);
+  const h = Math.floor(diff / 3600000);
+  const d = Math.floor(diff / 86400000);
+  if(m < 1) return 'justo ahora';
+  if(m < 60) return 'hace '+m+'m';
+  if(h < 24) return 'hace '+h+'h';
+  return 'hace '+d+'d';
+}
+
+async function refreshBrief(){
+  if(!current) return;
+  const btn = document.getElementById('refresh-btn');
+  if(btn){ btn.textContent='↻'; btn.style.opacity='.5'; btn.disabled=true; }
+  const payload = selectedDealId
+    ? {deal_id: selectedDealId}
+    : {company_name: current.name, website: current.website||''};
+  try {
+    const res = await fetch(API_BASE+'/api/brief', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const apiResponse = await res.json();
+    rawBrief = apiResponse;
+    current = mapBriefToCompany(apiResponse);
+    currentAnalyzedAt = apiResponse.analyzed_at || (apiResponse.brief&&apiResponse.brief.analyzed_at) || new Date().toISOString();
+    render();
+    toast('✅ Brief actualizado');
+  } catch(e){
+    toast('❌ Error al actualizar — intentá de nuevo');
+    if(btn){ btn.textContent='↻ Refresh'; btn.style.opacity=''; btn.disabled=false; }
+  }
+}
 
 function genPreMeetingEmail(c){
   // Use AI-generated email from brief if available
