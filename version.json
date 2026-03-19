@@ -1,7 +1,12 @@
 {
-  "version": "1.2.42",
+  "version": "1.2.43",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.43",
+      "date": "2026-03-19",
+      "note": "Show company favicon in recent searches history using domain from API"
+    },
     {
       "version": "1.2.42",
       "date": "2026-03-19",

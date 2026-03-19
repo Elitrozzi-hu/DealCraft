@@ -1044,7 +1044,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.42</span>
+  <span class="ver-badge">v1.2.43</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1775,8 +1775,12 @@ async function loadRecentBriefs(){
       const d = new Date(e.updated_at);
       const dateStr = d.toLocaleDateString('es-AR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
       const key = encodeURIComponent(e.key || (e.company_name||'').toLowerCase().trim());
+      const domain = (e.domain||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
+      const logoEl = domain
+        ? `<div class="hist-ico hist-ico-man" style="padding:0;overflow:hidden"><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64" style="width:100%;height:100%;object-fit:contain;border-radius:var(--r1)" onerror="this.parentElement.innerHTML='🏢'"></div>`
+        : `<div class="hist-ico hist-ico-man">🏢</div>`;
       return `<div class="hist-row" onclick="openRecentBrief('${key}','${escHtml(e.company_name||'')}')">
-        <div class="hist-ico hist-ico-man">🏢</div>
+        ${logoEl}
         <div class="hist-name">${escHtml(e.company_name||'—')}</div>
         <div class="hist-meta">${escHtml(e.industry||'')}${e.industry&&e.employee_count?' · ':''}${escHtml(e.employee_count||'')} · ${dateStr}</div>
         <span class="hist-badge">Abrir →</span>
