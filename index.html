@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.68</span>
+  <span class="ver-badge">v1.2.69</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2517,14 +2517,17 @@ function renderContext(c){ c=_safe(c);
       '<div class="ctx-card-head">'+
         '<span class="ctx-card-ico">🏢</span>'+
         '<span class="ctx-card-title">'+t('cardCompany')+'</span>'+
-        '<span class="ctx-card-badge">'+activeTech.length+' '+t('tools')+'</span>'+
+        '<span class="ctx-card-badge" style="color:'+(c._dealScore.status==='strong'?'var(--ok)':c._dealScore.status==='progressing'?'var(--p)':c._dealScore.status==='at_risk'?'#e65100':'var(--t2)')+'">'+((c._dealScore.score||'—')+' · '+(c._dealScore.label||'—'))+'</span>'+
         '<span class="ctx-card-arrow">→</span>'+
       '</div>'+
       '<div class="ctx-card-preview">'+
         '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevIndustry')+'</span><span class="ctx-prev-val">'+c.industry+'</span></div>'+
         '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevEmployees')+'</span><span class="ctx-prev-val">'+c.employees+'</span></div>'+
         '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevCountry')+'</span><span class="ctx-prev-val">'+c.country+'</span></div>'+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Score</span><span class="ctx-prev-val" style="color:var(--p);font-weight:600">'+c.score+' — '+c.scoreLabel+'</span></div>'+
+        (c._snapTechStack&&c._snapTechStack.length?
+          '<div class="ctx-prev-item" style="align-items:flex-start"><span class="ctx-prev-lbl" style="margin-top:3px">Tech Stack</span><span style="display:flex;flex-wrap:wrap;gap:4px">'+c._snapTechStack.slice(0,5).map(t_=>
+            '<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--t1)">'+escHtml(t_)+'</span>'
+          ).join('')+'</span></div>' : '')+
       '</div>'+
     '</div>';
 
