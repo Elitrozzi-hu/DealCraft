@@ -1053,7 +1053,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.53</span>
+  <span class="ver-badge">v1.2.54</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2881,22 +2881,6 @@ function renderActionPlan(c){ c=_safe(c);
         '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
       '</div>'+
     '</div>';
-
-  // TAB 3: Meeting Toolkit — stage-aware agenda steps
-  const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
-  const toolkitHtml = toolkitSteps.map((s,i)=>
-    '<div class="tk-step">'+
-      '<div class="tk-step-head" onclick="toggleTkStep(\'tks'+i+'\')">'+
-        '<div class="tk-step-num">'+s.num+'</div>'+
-        '<div class="tk-step-info">'+
-          '<div class="tk-step-title">'+s.title+'</div>'+
-          '<div class="tk-step-sub">'+s.sub+'</div>'+
-        '</div>'+
-        '<div class="tk-step-dur">'+s.dur+'</div>'+
-      '</div>'+
-      '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
-    '</div>'
-  ).join('');
 
   // TAB 3: Meeting Toolkit — stage-aware accordion steps
   const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
