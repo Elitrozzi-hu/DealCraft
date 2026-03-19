@@ -902,6 +902,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
           <div class="search-divider" data-i18n="searchDivider">o abre un deal reciente</div>
           <div class="chips" id="recent-chips">
             <span class="chip" style="opacity:.45;cursor:default;pointer-events:none">Cargando deals...</span>
+            <span class="chip" style="border-color:var(--p);color:var(--p);background:var(--px)" onclick="loadDemo()">⚡ Demo</span>
           </div>
         </div>
 
@@ -1019,7 +1020,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.28</span>
+  <span class="ver-badge">v1.2.29</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1615,21 +1616,22 @@ function swTab(id,el){
 // API HELPERS — health check + deal search
 // ═══════════════════════════════════════════
 async function checkHealth(){
-  try {
-    const r = await fetch(API_BASE+'/health', {signal: AbortSignal.timeout(4000)});
-    if(r.ok){
-      const warn = document.getElementById('api-warn');
-      if(warn) warn.classList.remove('on');
-      const btn = document.getElementById('analyze-btn');
-      if(btn && selectedDealId) btn.disabled = false;
-      loadRecentDeals();
-    } else { throw new Error('unhealthy'); }
-  } catch(e) {
-    const warn = document.getElementById('api-warn');
-    const msg = document.getElementById('api-warn-msg');
-    if(warn){ warn.classList.add('on'); }
-    if(msg){ msg.textContent = 'No se puede conectar con el servidor local (localhost:3001). Verificá que esté corriendo.'; }
+  const warn = document.getElementById('api-warn');
+  const msg  = document.getElementById('api-warn-msg');
+  // Try up to 2 times — Render cold starts can take 30-60s
+  for(let attempt = 0; attempt < 2; attempt++){
+    try {
+      if(msg && attempt > 0) msg.textContent = 'Despertando el servidor... un momento';
+      const r = await fetch(API_BASE+'/health', {signal: AbortSignal.timeout(attempt===0?5000:55000)});
+      if(r.ok){
+        if(warn) warn.classList.remove('on');
+        loadRecentDeals();
+        return;
+      }
+    } catch(e){ /* timeout or network error — retry */ }
   }
+  if(warn){ warn.classList.add('on'); }
+  if(msg){ msg.textContent = 'No se puede conectar con el servidor. Podés usar la entrada manual o cargar el demo.'; }
 }
 
 async function loadRecentDeals(){
@@ -4402,6 +4404,76 @@ function togglePainHyp(i){
 
 let SOLUTIONS_DATA = null;
 fetch('humand_solutions_map.json').then(r=>r.json()).then(d=>{SOLUTIONS_DATA=d;}).catch(()=>{});
+
+// ── Demo mode ─────────────────────────────
+function loadDemo(){
+  selectedDealId = 'demo';
+  selectedDealName = 'Globant';
+  selectedDealStage = 'discovery';
+  const DEMO_RESPONSE = {
+    brief: {
+      company_snapshot: {
+        name:'Globant', industry:'Technology / IT Services', employee_count:'27,000+ employees',
+        workforce_type:'Tech workforce — engineers, designers, QA', geographic_footprint:'Global · HQ Buenos Aires',
+        summary:'Globant es una empresa de tecnología global con operaciones en más de 30 países. Su equipo de HR gestiona procesos de onboarding, cultura y engagement para más de 27.000 colaboradores distribuidos.'
+      },
+      deal_strategy: {
+        sales_stage:'discovery',
+        key_risks:['Proceso de compra largo — múltiples aprobadores en IT y Finance','Ya tienen herramientas internas de HR Tech','Budget cycle Q3'],
+        next_actions:[
+          {action:'Confirmar reunión con VP People y CHRO', priority:'high', rationale:'Son los decision makers reales del deal'},
+          {action:'Preparar caso de uso sector tech con métricas de engagement', priority:'high', rationale:'Globant valora los datos y benchmarks de industria'},
+          {action:'Enviar one-pager sobre integración con Workday', priority:'medium', rationale:'IT va a preguntar por integraciones sí o sí'},
+        ]
+      },
+      pain_hypotheses:[
+        {pain:'Engagement caído post-pandemia — equipos distribuidos sin ritmo de comunicación interna clara', confidence:'high',
+         validation_question:'¿Cómo están midiendo hoy el engagement de los equipos remotos?',
+         if_confirmed:{push_opportunity:'Módulo de Comunicaciones + Surveys en tiempo real', show_module:'Communications Hub', highlight_impact:['Reduce churn en tech talent','Mejora NPS interno']},
+         if_not_confirmed:{fallback_question:'¿Tienen alguna herramienta de pulso de equipo que ya estén usando?', alternative_path:'Explorar dolor en onboarding masivo'}},
+        {pain:'Onboarding de nuevos ingenieros lento y manual — alta rotación en los primeros 90 días', confidence:'high',
+         validation_question:'¿Cuánto tarda en promedio el onboarding de un nuevo engineer hasta que es productivo?',
+         if_confirmed:{push_opportunity:'Onboarding digital con journeys automáticos', show_module:'Onboarding', highlight_impact:['Reducción del 40% en tiempo de onboarding','Menor rotación early stage']},
+         if_not_confirmed:{fallback_question:'¿Dónde ven más fricción en los primeros 3 meses de un nuevo ingreso?', alternative_path:'Validar si el dolor está más en la experiencia que en la velocidad'}},
+        {pain:'Dificultad para comunicar cultura y valores a escala global sin fragmentación por región', confidence:'medium',
+         validation_question:'¿Cómo aseguran que la cultura de Globant llegue igual a los equipos de Córdoba que a los de Nueva York?',
+         if_confirmed:{push_opportunity:'Content hub centralizado + segmentación por región', show_module:'Culture & Content', highlight_impact:['Coherencia de marca empleadora','Mayor alineación cultural']},
+         if_not_confirmed:{fallback_question:'¿Tienen algún programa de cultura activo hoy?', alternative_path:'Explorar dolor en reconocimiento y feedback'}},
+      ],
+      recommended_modules:[
+        {module_name:'📣 Communications Hub', why_relevant:'Globalización del equipo hace crítica la comunicación interna estructurada'},
+        {module_name:'🚀 Onboarding', why_relevant:'Alto volumen de ingresos mensuales — el onboarding manual no escala'},
+        {module_name:'❤️ Recognition & Culture', why_relevant:'Engagement y retención en tech workforce altamente competitivo'},
+      ],
+      stakeholder_map:{
+        present:[
+          {name:'Lucía Fernández', role:'VP People & Culture', type:'champion', likely_priority:'Mejorar engagement y reducir rotación de tech talent',
+           engagement_status:'warm', pitch_angle:'Posicioná Humand como la capa de experiencia que conecta todos sus procesos de HR',
+           opening_questions:['¿Cuál es el mayor dolor de comunicación interna hoy?','¿Cómo miden el engagement actualmente?','¿Qué herramientas de HR Tech ya tienen en el stack?'],
+           key_objections:[{objection:'Ya tenemos Workday',response:'Humand es la capa de experiencia encima de Workday — no lo reemplaza, lo potencia'},{objection:'Presupuesto comprometido este año',response:'Podemos arrancar con un piloto acotado a un país o BU para tener datos antes del ciclo Q1'}],
+           red_flags:['Satisfecha con herramientas actuales'],transcript_signals:['Mencionó dificultades con equipos remotos en la última reunión']},
+          {name:'Matías Rodríguez', role:'CHRO', type:'dm', likely_priority:'ROI en retención y productividad del engineering talent',
+           engagement_status:'cold', pitch_angle:'Framing ejecutivo: Humand como inversión que reduce el costo de rotación',
+           opening_questions:['¿Cuál es el KPI de people más importante para el año?','¿Cómo justifican inversiones en HR Tech al board?'],
+           key_objections:[{objection:'No es el momento',response:'Entiendo — ¿cuándo sería el mejor momento para revisitarlo? ¿Q3 cuando abre el budget?'}],
+           red_flags:['No mostró interés activo todavía'],transcript_signals:[]},
+        ],
+        missing:[{role:'IT Lead / CTO', why_important:'Aprobación técnica requerida para integraciones', recommended_action:'Pedir a Lucía que facilite intro con el equipo técnico'}]
+      },
+      deal_velocity:{deal_heat:'warm', engagement_score:72, meeting_count:2, transcript_count:1, days_since_last_activity:8,
+        signal:'Deal activo — tuvieron reunión hace 8 días, buen momentum. Próximo paso: discovery con CHRO.',
+        recommended_urgency:'medium'},
+      historical_patterns:{win_rate_pct:68, confidence:'medium', key_insight:'Deals en tech companies >20k empleados cierran en promedio en 90 días con 3 reuniones', watch_out:'Ciclos de aprobación largos en grandes enterprises — mantener momentum con quick wins'},
+      pre_meeting_emails:{body:'Hola Lucía,\n\nMuchas gracias por tu tiempo la semana pasada. Quería compartirte un resumen rápido de lo que hablamos y los próximos pasos que acordamos.\n\nPara preparar la reunión de esta semana, te adjunto un caso de uso de una empresa similar a Globant en el sector tech donde implementamos Humand para el onboarding y communication hub de 15.000 empleados distribuidos.\n\nQuedo disponible cualquier duda. ¡Hasta el jueves!\n\nSaludos,\nEl equipo Humand'},
+    },
+    enrichment:{ lusha:{ domain:'globant.com', location:'Buenos Aires, Argentina', employee_count:'27,000+' } }
+  };
+  current = mapBriefToCompany(DEMO_RESPONSE);
+  currentStage = 'discovery';
+  render();
+  show('s3');
+  toast('⚡ Modo demo cargado — datos de ejemplo');
+}
 
 // ── Init ──────────────────────────────────
 checkHealth();
