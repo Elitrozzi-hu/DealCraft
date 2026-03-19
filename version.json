@@ -1,7 +1,12 @@
 {
-  "version": "1.2.27",
+  "version": "1.2.28",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.28",
+      "date": "2026-03-19",
+      "note": "Fix company strip spacing and improve logo loading — add margin to initials fallback, use Clearbit as primary logo source with Google Favicon as fallback"
+    },
     {
       "version": "1.2.27",
       "date": "2026-03-19",
