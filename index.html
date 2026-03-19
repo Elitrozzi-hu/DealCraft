@@ -1046,7 +1046,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.48</span>
+  <span class="ver-badge">v1.2.49</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2526,29 +2526,87 @@ function openCtxDrawer(type){
 
   if(type==='company'){
     title = '🏢 ' + c.name;
+    // Compute Deal section values (same logic as renderCoStrip)
+    const hc = parseHeadcount(c.employees);
+    const headcount = hc.hi || hc.lo || 200;
+    const hcDisplay = hc.isRange
+      ? hc.lo.toLocaleString('en-US') + ' - ' + hc.hi.toLocaleString('en-US')
+      : headcount.toLocaleString('en-US');
+    const rate = headcount > 2000 ? 3.5 : headcount > 500 ? 4 : 5;
+    let dealAmount;
+    if(c.mrrLow != null && c.mrrHigh != null){
+      dealAmount = c.mrrLow === c.mrrHigh
+        ? '$' + c.mrrLow.toLocaleString('en-US')
+        : '$' + c.mrrLow.toLocaleString('en-US') + ' - $' + c.mrrHigh.toLocaleString('en-US');
+    } else {
+      const amtLo = Math.round(hc.lo * rate);
+      const amtHi = Math.round(hc.hi * rate);
+      dealAmount = hc.isRange
+        ? '$' + amtLo.toLocaleString('en-US') + ' - $' + amtHi.toLocaleString('en-US')
+        : '$' + amtHi.toLocaleString('en-US');
+    }
+    const presencia = c.mets[1]?.v || c.country || '—';
+    const workforce = c.mets[2]?.v || c.type || '—';
+    // White container helper
+    const wc = (content,mb='16px')=>'<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:'+mb+'">'+content+'</div>';
+    const secTitle = t=>'<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:12px">'+t+'</div>';
+    const dealRow = (l,v)=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bg)">'+
+      '<span style="font-size:12px;color:var(--t2)">'+l+'</span>'+
+      '<span style="font-size:13px;font-weight:600;color:var(--t1)">'+v+'</span>'+
+    '</div>';
     html =
-      '<div class="drw-section">'+
-        '<div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px">'+c.desc+'</div>'+
-        '<div class="drw-section-title">Key Metrics</div>'+
-        '<div class="drw-metric-grid">'+
-          c.mets.map(m=>'<div class="drw-metric"><div class="drw-metric-val">'+(m.v||'—')+'</div><div class="drw-metric-lbl">'+m.l+'</div></div>').join('')+
-        '</div>'+
-      '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Tech Stack ('+activeTech.length+' herramientas)</div>'+
-        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+
-          activeTech.map(t=>'<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t1)'+(t.status==='gap'?';color:var(--red);border-color:rgba(231,68,68,.4);background:var(--redl)':'')+'">'+t.name+'</span>').join('')+
-        '</div>'+
-        '<button class="btn b-s" style="font-size:12px" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'+
-      '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Deal</div>'+
-        c.mets.slice(0,2).map(m=>'<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+m.l+'</span><span style="font-size:13px;font-weight:600;color:var(--t1)">'+m.v+'</span></div>').join('')+
-      '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Señales de compra</div>'+
-        c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1;font-size:12px">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')+
-      '</div>';
+      // Company summary
+      wc('<div style="font-size:13px;color:var(--t1);line-height:1.7">'+c.desc+'</div>')+
+      // Key Metrics 2x2
+      wc(
+        secTitle('Key Metrics')+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+          [
+            {l:'Región', v: presencia},
+            {l:'Tamaño', v: c.employees||'—'},
+            {l:'Industria', v: c.industry||'—'},
+            {l:'Workforce', v: workforce},
+          ].map(m=>
+            '<div style="background:var(--bg);border-radius:var(--r1);padding:10px 12px">'+
+              '<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px">'+(m.v||'—')+'</div>'+
+              '<div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px">'+m.l+'</div>'+
+            '</div>'
+          ).join('')+
+        '</div>'
+      )+
+      // Tech Stack
+      wc(
+        secTitle('Tech Stack ('+activeTech.length+' herramientas)')+
+        (activeTech.length
+          ? '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+
+              activeTech.map(t=>'<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t1)'+(t.status==='gap'?';color:var(--red);border-color:rgba(231,68,68,.4);background:var(--redl)':'')+'">'+t.name+'</span>').join('')+
+            '</div>'
+          : '<div style="font-size:12px;color:var(--t2);margin-bottom:12px">Sin herramientas registradas</div>')+
+        '<button class="btn b-s" style="font-size:12px;width:100%" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'
+      )+
+      // Deal
+      wc(
+        secTitle('Deal')+
+        dealRow('Usuarios', hcDisplay)+
+        dealRow('Precio unitario / mes', '$'+rate.toFixed(2)+' USD')+
+        '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0">'+
+          '<span style="font-size:12px;font-weight:600;color:var(--t1)">Amount / mes</span>'+
+          '<span style="font-size:14px;font-weight:700;color:var(--p)">'+dealAmount+'</span>'+
+        '</div>'
+      )+
+      // Señales de compra
+      wc(
+        secTitle('Señales de compra')+
+        (c.signals.length
+          ? c.signals.map(s=>
+              '<div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--bg)">'+
+                '<span style="font-size:15px;flex-shrink:0;margin-top:1px">'+s.ico+'</span>'+
+                '<span style="flex:1;font-size:12px;color:var(--t1);line-height:1.5">'+s.text+'</span>'+
+                '<span class="sig-row-badge '+s.cls+'" style="flex-shrink:0;margin-left:8px">'+s.badge+'</span>'+
+              '</div>'
+            ).join('')
+          : '<div style="font-size:12px;color:var(--t2)">Sin señales detectadas</div>')
+      , '0');
   }
 
   if(type==='stakeholders'){
