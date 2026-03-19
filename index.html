@@ -1051,7 +1051,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.75</span>
+  <span class="ver-badge">v1.2.76</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2096,6 +2096,8 @@ function mapBriefToCompany(apiResponse){
     _snapTechStack: snap.tech_stack||[],
     _dealMetrics: brief.deal_metrics||{},
     _dealScore: brief.deal_score||{},
+    _actionChecklist: brief.action_checklist||[],
+    _coverageScore: (brief.stakeholder_map||{}).coverage_score,
     _historicalPatterns: hist,
     _preEmail:  emails.pre_meeting  || null,
     _postEmail: emails.post_meeting || null,
@@ -2546,20 +2548,23 @@ function renderContext(c){ c=_safe(c);
     '</div>';
 
 
-  // Action Plan tabs (inline in ctx-col)
-  const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
-  const completedCount = Object.values(savedActions).filter(Boolean).length;
+  // Action Plan tabs — dynamic checklist from brief.action_checklist[]
+  const checklistItems = [...(c._actionChecklist||[])];
+  if(typeof c._coverageScore==='number' && c._coverageScore<60){
+    checklistItems.push({title:'Map missing stakeholders',description:'Coverage below 60% — identify and engage missing decision makers before the meeting.'});
+  }
+  const completedCount = checklistItems.filter((_,i)=>!!savedActions['chk_'+i]).length;
   const actionsHtml =
     '<div style="margin-bottom:16px">'+
-      ACTION_ITEMS.map(a=>{
-        const checked = !!savedActions[a.id];
-        return '<div class="action-item'+(checked?' done':'')+'" onclick="toggleAction(\''+actionsKey+'\',\''+a.id+'\')">'+
+      checklistItems.map((item,i)=>{
+        const checked = !!savedActions['chk_'+i];
+        return '<div class="action-item'+(checked?' done':'')+'" onclick="toggleAction(\''+actionsKey+'\',\'chk_'+i+'\')">'+
           '<div class="action-cb">'+(checked?'✓':'')+'</div>'+
-          '<div><div class="action-label">'+a.label+'</div><div class="action-desc">'+a.desc+'</div></div>'+
+          '<div><div class="action-label">'+escHtml(item.title||'')+'</div><div class="action-desc">'+escHtml(item.description||'')+'</div></div>'+
         '</div>';
       }).join('')+
     '</div>'+
-    '<div style="font-size:11px;color:var(--t3)">'+t('completedCounter').replace('{n}',completedCount).replace('{m}',ACTION_ITEMS.length)+'</div>';
+    '<div style="font-size:11px;color:var(--t3)">'+t('completedCounter').replace('{n}',completedCount).replace('{m}',checklistItems.length)+'</div>';
 
   const materialsHtml =
     '<div class="mat-cards">'+

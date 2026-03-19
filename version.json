@@ -1,7 +1,12 @@
 {
-  "version": "1.2.75",
+  "version": "1.2.76",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.76",
+      "date": "2026-03-19",
+      "note": "Replace hardcoded Actions checklist with dynamic brief.action_checklist[], add auto stakeholder coverage item when below 60%"
+    },
     {
       "version": "1.2.75",
       "date": "2026-03-19",
