@@ -795,6 +795,35 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 /* Objections */
 .obj-search-inp{width:100%;padding:8px 12px;border:1.5px solid var(--br);border-radius:var(--ri);font-family:inherit;font-size:13px;color:var(--t1);outline:none;transition:border-color .15s;box-sizing:border-box;margin-bottom:14px;background:#fff}
 .obj-search-inp:focus{border-color:var(--p)}
+/* ─── Deal selector ─── */
+.deal-drop{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid var(--br);border-radius:var(--ri);box-shadow:var(--s2);z-index:50;max-height:260px;overflow-y:auto;display:none}
+.deal-drop.on{display:block}
+.ddrow{display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;transition:background .1s;border-bottom:1px solid var(--bg)}
+.ddrow:last-child{border-bottom:none}.ddrow:hover{background:var(--bg)}
+.ddrow-name{font-size:13px;font-weight:600;color:var(--t1);flex:1}
+.ddrow-co{font-size:11px;color:var(--t2)}.ddrow-stage{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--px);color:var(--p);flex-shrink:0}
+.ddrow-empty{padding:20px;text-align:center;font-size:13px;color:var(--t3)}
+.deal-pill{display:flex;align-items:center;gap:10px;background:var(--px);border:1.5px solid var(--p);border-radius:var(--ri);padding:10px 15px;margin-top:10px}
+.deal-pill-ico{font-size:16px;flex-shrink:0}.deal-pill-name{font-size:13px;font-weight:600;color:var(--p);flex:1}
+.deal-pill-stage{font-size:11px;color:var(--t2)}.deal-pill-x{background:none;border:none;cursor:pointer;font-size:14px;color:var(--t3);padding:2px;transition:color .14s;margin-left:4px}.deal-pill-x:hover{color:var(--red)}
+/* Offline/warning banner inside search */
+.api-warn{background:var(--wal);border-radius:var(--r1);padding:8px 12px;font-size:12px;color:#92400e;display:none;align-items:center;gap:7px;margin-bottom:12px}.api-warn.on{display:flex}
+/* Deal velocity */
+.dv-header{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--br)}
+.dv-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.dv-hot{background:var(--redl);color:var(--red)}.dv-warm{background:var(--wal);color:var(--wa)}.dv-cold{background:var(--bg);color:var(--t2)}.dv-eng{background:var(--px);color:var(--p)}.dv-stat{background:var(--bg);border:1px solid var(--br);color:var(--t2)}
+/* Pain hypotheses */
+.pain-hyp{border:1.5px solid var(--br);border-radius:var(--r2);margin-bottom:8px;overflow:hidden;cursor:pointer;transition:border-color .14s}
+.pain-hyp:hover{border-color:var(--p)}.pain-hyp.open{border-color:var(--p)}
+.pain-hyp-head{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;background:#fff}
+.pain-hyp-conf{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:2px}
+.pain-hi{background:var(--okl);color:var(--ok)}.pain-med{background:var(--wal);color:var(--wa)}.pain-low{background:var(--bg);color:var(--t2)}
+.pain-hyp-text{flex:1;font-size:13px;font-weight:600;color:var(--t1);line-height:1.4}
+.pain-hyp-body{display:none;padding:10px 14px;background:var(--bg);border-top:1px solid var(--br);font-size:12px;color:var(--t2);line-height:1.6}
+.pain-hyp.open .pain-hyp-body{display:block}
+.pain-branch{margin-top:6px;padding:6px 10px;border-radius:var(--r1);font-size:11px;line-height:1.5}
+.pain-branch-y{background:var(--okl);border-left:3px solid var(--ok);color:var(--t1)}
+.pain-branch-n{background:var(--redl);border-left:3px solid var(--red);color:var(--t1)}
 .obj-commons-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px}
 .obj-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
 .obj-chip{padding:5px 12px;border-radius:999px;background:#fff;color:var(--p);font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--px2);transition:all .14s;user-select:none}
@@ -837,19 +866,22 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <div class="body">
     <div class="search-wrap">
       <div class="search-eyebrow"><span class="dot-live"></span><span data-i18n="eyebrow">Inteligencia en tiempo real</span></div>
-      <h1 class="search-title" id="search-h1">¿Con qué empresa<br>tienes reunión? <span>Investígala.</span></h1>
+      <h1 class="search-title" id="search-h1">Elegí tu próxima<br>reunión. <span>Generá tu brief.</span></h1>
       <p class="search-sub" data-i18n="searchSub">Ingresa el nombre o la web de la empresa y prepárate para la llamada en segundos.</p>
       <div class="search-box">
-        <label class="search-label" data-i18n="searchLabel">Empresa o URL del sitio web</label>
-        <div class="search-row">
-          <input class="search-input" id="main-input" placeholder="ej. Pedidos Ya · google.com · Andreani" onkeydown="if(event.key==='Enter')analyze()" />
-          <button class="btn b-p btn-lg" onclick="analyze()" data-i18n="searchBtn">Investigar →</button>
+        <div class="api-warn" id="api-warn">⚠️ <span id="api-warn-msg">Conectando con el servidor local...</span></div>
+        <label class="search-label" data-i18n="searchLabel">Buscar deal en CRM</label>
+        <div style="position:relative">
+          <div class="search-row">
+            <input class="search-input" id="main-input" placeholder="Nombre de empresa o deal..." oninput="searchDeals(this.value)" autocomplete="off" />
+            <button class="btn b-p btn-lg" id="analyze-btn" onclick="analyze()" disabled data-i18n="searchBtn">Analizar →</button>
+          </div>
+          <div class="deal-drop" id="deal-drop"></div>
         </div>
-        <div class="search-divider" data-i18n="searchDivider">o elige un ejemplo</div>
-        <div class="chips">
-          <span class="chip" onclick="fillAndGo('Pedidos Ya')">🛵 Pedidos Ya</span>
-          <span class="chip" onclick="fillAndGo('Andreani')">📦 Andreani</span>
-          <span class="chip" onclick="fillAndGo('Farmacity')">💊 Farmacity</span>
+        <div id="deal-pill-wrap"></div>
+        <div class="search-divider" data-i18n="searchDivider">o abre un deal reciente</div>
+        <div class="chips" id="recent-chips">
+          <span class="chip" style="opacity:.45;cursor:default;pointer-events:none">Cargando deals...</span>
         </div>
       </div>
     </div>
@@ -947,7 +979,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.21</span>
+  <span class="ver-badge">v1.2.22</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1517,9 +1549,17 @@ function getPROC(){return[
 // NAVIGATION
 // ═══════════════════════════════════════════
 let current;
+// ─── API config ───────────────────────────────
+const API_BASE = 'http://localhost:3001';
+let selectedDealId = null, selectedDealName = '', selectedDealStage = '';
+let dealSearchTimer = null;
+
 function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0)}
-function goHome(){show('s1');document.getElementById('main-input').value='';history.pushState(null,'',location.pathname)}
-function fillAndGo(v){document.getElementById('main-input').value=v;analyze()}
+function goHome(){
+  show('s1');
+  clearSelectedDeal();
+  history.pushState(null,'',location.pathname);
+}
 function swTab(id,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
@@ -1532,25 +1572,108 @@ function swTab(id,el){
 }
 
 // ═══════════════════════════════════════════
-// ANALYZE
+// API HELPERS — health check + deal search
+// ═══════════════════════════════════════════
+async function checkHealth(){
+  try {
+    const r = await fetch(API_BASE+'/health', {signal: AbortSignal.timeout(4000)});
+    if(r.ok){
+      const warn = document.getElementById('api-warn');
+      if(warn) warn.classList.remove('on');
+      const btn = document.getElementById('analyze-btn');
+      if(btn && selectedDealId) btn.disabled = false;
+      loadRecentDeals();
+    } else { throw new Error('unhealthy'); }
+  } catch(e) {
+    const warn = document.getElementById('api-warn');
+    const msg = document.getElementById('api-warn-msg');
+    if(warn){ warn.classList.add('on'); }
+    if(msg){ msg.textContent = 'No se puede conectar con el servidor local (localhost:3001). Verificá que esté corriendo.'; }
+  }
+}
+
+async function loadRecentDeals(){
+  try {
+    const r = await fetch(API_BASE+'/api/deals?limit=5');
+    if(!r.ok) return;
+    const data = await r.json();
+    const deals = data.deals || data || [];
+    const chips = document.getElementById('recent-chips');
+    if(!chips || !deals.length) return;
+    chips.innerHTML = deals.map(d=>
+      `<span class="chip" onclick="selectDeal('${d.id}','${escHtml(d.name||d.company_name||'')}','${d.stage||''}','${escHtml(d.company_name||d.name||'')}')">🏢 ${escHtml(d.company_name||d.name||'Deal')}</span>`
+    ).join('');
+  } catch(e){ /* silent */ }
+}
+
+function searchDeals(val){
+  clearTimeout(dealSearchTimer);
+  const drop = document.getElementById('deal-drop');
+  if(!val || val.length < 2){ if(drop) drop.classList.remove('on'); return; }
+  dealSearchTimer = setTimeout(async ()=>{
+    try {
+      const r = await fetch(API_BASE+'/api/deals?search='+encodeURIComponent(val)+'&limit=8');
+      if(!r.ok) return;
+      const data = await r.json();
+      const deals = data.deals || data || [];
+      if(!drop) return;
+      if(!deals.length){
+        drop.innerHTML = '<div class="ddrow-empty">No se encontraron deals</div>';
+      } else {
+        drop.innerHTML = deals.map(d=>
+          `<div class="ddrow" onclick="selectDeal('${d.id}','${escHtml(d.name||d.company_name||'')}','${d.stage||''}','${escHtml(d.company_name||d.name||'')}')">
+            <div><div class="ddrow-name">${escHtml(d.company_name||d.name||'Deal')}</div><div class="ddrow-co">${escHtml(d.name||'')}${d.owner_name?' · '+escHtml(d.owner_name):''}</div></div>
+            <span class="ddrow-stage">${escHtml(d.stage||'Lead')}</span>
+          </div>`
+        ).join('');
+      }
+      drop.classList.add('on');
+    } catch(e){ /* backend down */ }
+  }, 280);
+}
+
+function selectDeal(id, name, stage, company){
+  selectedDealId = id;
+  selectedDealName = name || company || 'Deal';
+  selectedDealStage = stage;
+  const inp = document.getElementById('main-input');
+  if(inp){ inp.value = selectedDealName; inp.blur(); }
+  const drop = document.getElementById('deal-drop');
+  if(drop) drop.classList.remove('on');
+  const wrap = document.getElementById('deal-pill-wrap');
+  if(wrap) wrap.innerHTML =
+    `<div class="deal-pill">
+      <span class="deal-pill-ico">🏢</span>
+      <span class="deal-pill-name">${escHtml(selectedDealName)}</span>
+      <span class="deal-pill-stage">${escHtml(stage||'Lead')}</span>
+      <button class="deal-pill-x" onclick="clearSelectedDeal()" title="Cambiar deal">✕</button>
+    </div>`;
+  const btn = document.getElementById('analyze-btn');
+  if(btn) btn.disabled = false;
+}
+
+function clearSelectedDeal(){
+  selectedDealId = null; selectedDealName = ''; selectedDealStage = '';
+  const inp = document.getElementById('main-input');
+  if(inp) inp.value = '';
+  const wrap = document.getElementById('deal-pill-wrap');
+  if(wrap) wrap.innerHTML = '';
+  const drop = document.getElementById('deal-drop');
+  if(drop) drop.classList.remove('on');
+  const btn = document.getElementById('analyze-btn');
+  if(btn) btn.disabled = true;
+}
+
+// ═══════════════════════════════════════════
+// ANALYZE — real API call
 // ═══════════════════════════════════════════
 async function analyze(){
-  const val = document.getElementById('main-input').value.trim();
-  if(!val){document.getElementById('main-input').focus();return}
-  document.getElementById('proc-target').textContent = val;
+  if(!selectedDealId){ toast('⚠️ Seleccioná un deal primero'); return; }
+
+  document.getElementById('proc-target').textContent = selectedDealName;
   show('s2');
 
-  const key = val.toLowerCase().replace(/[^a-záéíóúüñ\s]/gi,'').trim();
-  const base = DB[key] || buildGeneric(val);
-  current = base;
-
-  // Fetch Apollo en paralelo con la animación
-  const apolloPromise = (DB[key] ? Promise.resolve(null) : fetchApollo(val))
-    .then(org => { if(org) current = mapApolloToCompany(org, val, base); })
-    .catch(err => { console.warn('Apollo fetch failed:', err); });
-
-  // Animación de pasos
-  let si=0;
+  // Build loading UI
   const PROC = getPROC();
   document.getElementById('proc-steps').innerHTML = PROC.map((_,i)=>`
     <div class="pstep" id="ps${i}">
@@ -1560,27 +1683,187 @@ async function analyze(){
     </div>`).join('');
   document.getElementById('prog-fill').style.width='0%';
 
-  const animPromise = new Promise(resolve => {
-    function next(){
-      if(si>=PROC.length){resolve();return}
-      document.getElementById('ps'+si).classList.add('act');
-      document.getElementById('pst'+si).textContent=t('procProcessing');
-      document.getElementById('prog-fill').style.width=Math.round((si+1)/PROC.length*100)+'%';
-      setTimeout(()=>{
-        document.getElementById('ps'+si).classList.remove('act');
-        document.getElementById('ps'+si).classList.add('done');
-        document.getElementById('ps'+si).querySelector('.ps-ico').textContent='✅';
-        document.getElementById('pst'+si).textContent=t('procDone');
-        si++;setTimeout(next,300);
-      },1400);
-    }
-    next();
+  function completeStep(i){
+    const el=document.getElementById('ps'+i), st=document.getElementById('pst'+i);
+    if(!el) return;
+    el.classList.remove('act'); el.classList.add('done');
+    el.querySelector('.ps-ico').textContent='✅';
+    st.textContent=t('procDone');
+  }
+  function activateStep(i, pct){
+    const el=document.getElementById('ps'+i), st=document.getElementById('pst'+i);
+    if(!el) return;
+    el.classList.add('act');
+    st.textContent=t('procProcessing');
+    document.getElementById('prog-fill').style.width=pct+'%';
+  }
+
+  // Fire API request immediately
+  const briefPromise = fetch(API_BASE+'/api/brief', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({deal_id: selectedDealId})
   });
 
-  await Promise.all([animPromise, apolloPromise]);
+  // Animate step 0 (CRM)
+  activateStep(0, 18);
+  await new Promise(r=>setTimeout(r, 1600));
+  completeStep(0);
+
+  // Animate step 1 (Enrich)
+  activateStep(1, 38);
+  await new Promise(r=>setTimeout(r, 1800));
+  completeStep(1);
+
+  // Activate step 2 (AI) — stays active until API resolves
+  activateStep(2, 60);
+
+  let brief;
+  try {
+    const res = await briefPromise;
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    brief = await res.json();
+  } catch(err){
+    console.error('Brief API error:', err);
+    show('s1');
+    toast('❌ Error al generar el brief — verificá que el servidor esté corriendo');
+    return;
+  }
+
+  completeStep(2);
+  activateStep(3, 88);
+  await new Promise(r=>setTimeout(r, 500));
+  completeStep(3);
+  document.getElementById('prog-fill').style.width='100%';
+
+  current = mapBriefToCompany(brief);
+  // Map suggested stage from API
+  const stageMap={lead:'lead',discovery:'discovery',champion:'champion',decision_maker:'dm',dm:'dm',procurement:'procure',procure:'procure'};
+  const sugStage = (brief.deal_strategy&&brief.deal_strategy.sales_stage) || (brief.deal&&brief.deal.stage) || 'lead';
+  currentStage = stageMap[sugStage.toLowerCase()] || 'lead';
+
   render();
-  history.pushState(null, '', '?company=' + encodeURIComponent(val));
+  history.pushState(null,'','?deal='+encodeURIComponent(selectedDealId));
   show('s3');
+}
+
+// ═══════════════════════════════════════════
+// MAP API BRIEF → current shape
+// ═══════════════════════════════════════════
+function mapBriefToCompany(brief){
+  const co    = brief.company || {};
+  const deal  = brief.deal    || {};
+  const snap  = brief.company_snapshot || {};
+  const mods  = brief.recommended_modules || [];
+  const stkMap= brief.stakeholder_map || {};
+  const strat = brief.deal_strategy || {};
+  const vel   = brief.deal_velocity || {};
+  const hist  = brief.historical_patterns || {};
+  const emails= brief.pre_meeting_emails || {};
+
+  const name = co.name || deal.company_name || selectedDealName || 'Empresa';
+  const initials = name.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const palettes = ['linear-gradient(135deg,#496BE3,#6B8AEC)','linear-gradient(135deg,#0891b2,#06b6d4)','linear-gradient(135deg,#7c3aed,#8b5cf6)','linear-gradient(135deg,#059669,#10b981)'];
+  const color = palettes[name.length % palettes.length];
+
+  // Modules
+  const primaryMod  = mods.find(m=>m.priority==='primary') || mods[0] || {};
+  const secondaryMods = mods.filter(m=>m.priority!=='primary').slice(0,4);
+
+  // Tech stack
+  const rawTech = co.tech_stack || brief.tech_stack || [];
+  const tech = rawTech.map(item=>({
+    name: item.name || item.tool_name || 'Tool',
+    cat:  item.category || 'Tech',
+    color:'#6B6B8A',
+    conf: item.confidence_pct || 75,
+    status: item.is_gap ? 'gap' : 'usa',
+    tooltip: item.notes || item.reason || ''
+  }));
+
+  // Stakeholders
+  const presentStks = (stkMap.present||[]).map(s=>({
+    role: s.role||s.title||'Contacto',
+    title: s.title||s.role||'',
+    type: s.type||'influencer',
+    cares: (s.opening_questions||[]).slice(0,3),
+    present: true,
+    _transcriptSignals: s.transcript_signals||'',
+    _objections: s.key_objections||[],
+    _redFlags: s.red_flags||[],
+    _pitchAngle: s.pitch_angle||''
+  }));
+  const missingStks = (stkMap.missing||[]).map(s=>({
+    role: s.role||'Rol pendiente', title: s.title||s.role||'',
+    type: 'dm', cares: [], present: false
+  }));
+  const stakeholders = [...presentStks, ...missingStks];
+  if(!stakeholders.length) stakeholders.push({role:'HR / People',title:'Responsable de People',type:'champion',cares:[],present:true});
+
+  // Signals
+  const signals = [];
+  const heat = vel.deal_heat||'';
+  if(heat==='hot')  signals.push({ico:'🔴',text:'Deal caliente — '+vel.days_since_last_activity+' días desde última actividad',badge:'Hot',cls:'sig-hot'});
+  else if(heat==='warm') signals.push({ico:'🟡',text:vel.meeting_count+' reuniones realizadas · deal en progreso',badge:'Warm',cls:'sig-wa'});
+  else if(heat==='cold') signals.push({ico:'❄️',text:'Deal frío — '+vel.days_since_last_activity+' días sin actividad',badge:'Frío',cls:'sig-wa'});
+  (brief.opportunity_areas||[]).slice(0,4).forEach(a=>{
+    const s=a.score||0;
+    signals.push({ico:s>=0.8?'🔴':s>=0.6?'🟡':'🟢',text:(a.name||'Área')+(a.why?': '+a.why:''),badge:Math.round(s*100)+'%',cls:s>=0.8?'sig-hot':s>=0.6?'sig-wa':'sig-ok'});
+  });
+  if(!signals.length) signals.push({ico:'🟢',text:'Brief generado con IA',badge:'IA',cls:'sig-ok'});
+
+  // Key insights from pain hypotheses
+  const pains = brief.pain_hypotheses||[];
+  const keyInsights = pains.slice(0,3).map(p=>p.hypothesis||p.validation_question||'').filter(Boolean);
+  if(keyInsights.length<1 && co.description) keyInsights.push(co.description.substring(0,140)+'...');
+  if(keyInsights.length<2) keyInsights.push('Identificar procesos de HR sin digitalizar.');
+
+  // Deal risks & next actions
+  const dealRisks = (strat.key_risks||[]).map(r=>({lvl:'warn',txt:typeof r==='string'?r:r.description||r.risk||JSON.stringify(r)}));
+  const nextActions = (strat.next_actions||[]).map(a=>typeof a==='string'?a:a.action||JSON.stringify(a));
+
+  // Score
+  const engScore = vel.engagement_score || 70;
+  const heatLabel = heat==='hot'?'Deal caliente · Acción urgente':heat==='warm'?'Deal en progreso':heat==='cold'?'Deal frío · Reactivar':'Fit estimado';
+
+  // Headcount
+  const hc = co.headcount || 0;
+  const hcStr = hc ? hc.toLocaleString('en-US') : (co.size || '500+');
+
+  return {
+    name, initials, color,
+    industry: co.industry||'B2B / Servicios',
+    country: co.country||'🌎 LatAm',
+    website: co.domain||co.website||'',
+    employees: hcStr, type: snap.workforce_type||'Mixed workforce',
+    founded: co.founded||'—', stage: deal.stage||'Lead',
+    score: engScore, scoreLabel: heatLabel,
+    desc: co.description || snap.operational_structure || 'Análisis generado por IA para '+name+'.',
+    tags: [co.industry, snap.workforce_type, co.country].filter(Boolean),
+    mets: [
+      {v:hcStr, l:'Headcount'},
+      {v:snap.geographic_footprint||co.country||'—', l:'Presencia'},
+      {v:snap.workforce_type||'—', l:'Workforce'},
+      {v:vel.meeting_count!=null?vel.meeting_count+' mtgs':'—', l:'Reuniones'},
+    ],
+    tech: tech.length ? tech : [{name:'Por confirmar',cat:'Tech Stack',color:'#6B6B8A',conf:50,status:'usa',tooltip:'Stack pendiente de enriquecimiento.'}],
+    signals, keyInsights,
+    primaryModule:  primaryMod.module_name || '📣 Communications',
+    primaryWhy:     primaryMod.reason||'',
+    secondaryModules: secondaryMods.map(m=>({ico:'🔧',name:m.module_name||'Módulo',why:m.reason||''})),
+    opener: pains.length ? '"'+pains[0].validation_question+'"' : 'Contame cuáles son los mayores desafíos de tu equipo de HR hoy.',
+    questions: pains.map(p=>({cat:'Hipótesis '+Math.round((p.confidence||0.5)*100)+'%',catCls:'style="background:var(--px);color:var(--p)"',text:'"'+(p.validation_question||p.hypothesis)+'"'})),
+    meeting: [],
+    stakeholders, roleQuestions:{hr:[],ops:[],it:[],exec:[]},
+    dealRisks, nextActions, nextSteps: nextActions,
+    similarCases:[],
+    // Raw data for new UI sections
+    _dealVelocity: vel,
+    _painHypotheses: pains,
+    _historicalPatterns: hist,
+    _preEmail:  emails.pre_meeting  || null,
+    _postEmail: emails.post_meeting || null,
+  };
 }
 
 // ═══════════════════════════════════════════
@@ -1910,9 +2193,14 @@ function moveStage(id){
   setStage(id);
 }
 
-document.addEventListener('click', function(){
+document.addEventListener('click', function(e){
   const p = document.getElementById('stage-picker');
   if(p) p.classList.remove('on');
+  // Close deal drop if click outside
+  const drop = document.getElementById('deal-drop');
+  if(drop && !drop.contains(e.target) && e.target.id!=='main-input'){
+    drop.classList.remove('on');
+  }
 });
 
 // ═══════════════════════════════════════════
@@ -1982,11 +2270,26 @@ function renderContext(c){ c=_safe(c);
       '<div class="col-header-title">'+t('ctxColTitle')+'</div>'+
       '<div class="col-header-desc">'+t('ctxColDesc')+'</div>'+
     '</div>';
+
+  // Deal velocity header (only when real API data exists)
+  let velHtml = '';
+  const vel = c._dealVelocity;
+  const hist = c._historicalPatterns;
+  if(vel && Object.keys(vel).length){
+    const heat = vel.deal_heat||'';
+    const heatPill = heat==='hot'?'<span class="dv-pill dv-hot">🔥 HOT</span>':heat==='warm'?'<span class="dv-pill dv-warm">♨️ Warm</span>':heat==='cold'?'<span class="dv-pill dv-cold">❄️ Cold</span>':'';
+    const engPill = vel.engagement_score!=null?'<span class="dv-pill dv-eng">Engagement '+vel.engagement_score+'</span>':'';
+    const mtgPill = vel.meeting_count!=null?'<span class="dv-pill dv-stat">'+vel.meeting_count+' reuniones</span>':'';
+    const actPill = vel.days_since_last_activity!=null?'<span class="dv-pill dv-stat">'+vel.days_since_last_activity+' días sin actividad</span>':'';
+    const histBit = hist&&hist.win_rate_pct!=null?'<span class="dv-pill dv-stat">Win rate '+hist.win_rate_pct+'%</span>':'';
+    velHtml = '<div class="dv-header">'+[heatPill,engPill,mtgPill,actPill,histBit].filter(Boolean).join('')+'</div>';
+  }
+
   const ctxCards =
     '<div style="display:flex;flex-direction:column;gap:12px">'+
       companyCard + stakeholdersCard + analysisCard +
     '</div>';
-  document.getElementById('ctx-col').innerHTML = ctxHeader + ctxCards;
+  document.getElementById('ctx-col').innerHTML = ctxHeader + velHtml + ctxCards;
 }
 
 function openCtxDrawer(type){
@@ -2152,10 +2455,32 @@ function renderActionPlan(c){ c=_safe(c);
   const actionsKey = 'dc_actions_'+compKey+'_'+stageId;
   const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
 
+  // Pain hypotheses (from API brief)
+  const pains = c._painHypotheses || [];
+  const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Hipótesis de dolor · IA</div>'+
+    pains.slice(0,4).map((p,i)=>{
+      const conf = p.confidence||0.5;
+      const confCls = conf>=0.75?'pain-hi':conf>=0.5?'pain-med':'pain-low';
+      const confLabel = Math.round(conf*100)+'%';
+      const branchY = p.if_confirmed?'<div class="pain-branch pain-branch-y">✓ Si confirmado: '+escHtml(p.if_confirmed)+'</div>':'';
+      const branchN = p.if_not_confirmed?'<div class="pain-branch pain-branch-n">✗ Si negado: '+escHtml(p.if_not_confirmed)+'</div>':'';
+      return '<div class="pain-hyp" id="ph'+i+'" onclick="togglePainHyp('+i+')">'+
+        '<div class="pain-hyp-head">'+
+          '<span class="pain-hyp-conf '+confCls+'">'+confLabel+'</span>'+
+          '<span class="pain-hyp-text">'+escHtml(p.hypothesis||p.validation_question||'')+'</span>'+
+        '</div>'+
+        '<div class="pain-hyp-body">'+
+          (p.validation_question?'<div style="margin-bottom:8px;font-style:italic;color:var(--t1)">❓ «'+escHtml(p.validation_question)+'»</div>':'')+
+          branchY + branchN +
+        '</div>'+
+      '</div>';
+    }).join('')+
+  '</div>' : '';
+
   // TAB 1: Actions checklist
   const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
   const completedCount = Object.values(savedActions).filter(Boolean).length;
-  const actionsHtml =
+  const actionsHtml = painHtml +
     '<a class="meet-action" href="https://meet.google.com" target="_blank" rel="noopener">'+
       '<img class="meet-icon" src="https://cdn.simpleicons.org/googlemeet/00897B" alt="Google Meet">'+
       '<div>'+
@@ -2260,6 +2585,11 @@ function toggleAction(key, actionId){
 function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function genPreMeetingEmail(c){
+  // Use AI-generated email from brief if available
+  if(c._preEmail && c._preEmail.body){
+    const e = c._preEmail;
+    return (e.subject ? 'Asunto: '+e.subject+'\n\n' : 'Asunto: '+c.name+' + Humand — Antes de nuestra reunión\n\n') + e.body;
+  }
   const mod = c.primaryModule || 'Humand';
   return `Asunto: ${c.name} + Humand — Antes de nuestra reunión
 
@@ -2277,6 +2607,11 @@ En la reunión voy a presentar cómo ${mod} puede ayudar a resolver esto de form
 }
 
 function genPostMeetingEmail(c){
+  // Use AI-generated email from brief if available
+  if(c._postEmail && c._postEmail.body){
+    const e = c._postEmail;
+    return (e.subject ? 'Asunto: '+e.subject+'\n\n' : 'Asunto: '+c.name+' + Humand — Próximos pasos\n\n') + e.body;
+  }
   const steps = c.nextSteps||['Agendar siguiente reunión'];
   return `Asunto: ${c.name} + Humand — Próximos pasos
 
@@ -3361,18 +3696,18 @@ const T = {
   es: {
     // Screen 1
     eyebrow:'Inteligencia en tiempo real',
-    searchTitleHTML:'¿Con qué empresa<br>tienes reunión? <span>Investígala.</span>',
-    searchSub:'Ingresa el nombre o la web de la empresa y prepárate para la llamada en segundos.',
-    searchLabel:'Empresa o URL del sitio web',
-    searchBtn:'Investigar →',
-    searchDivider:'o elige un ejemplo',
+    searchTitleHTML:'Elegí tu próxima<br>reunión. <span>Generá tu brief.</span>',
+    searchSub:'Seleccioná un deal activo del CRM y genera tu brief de reunión con IA en segundos.',
+    searchLabel:'Buscar deal en CRM',
+    searchBtn:'Analizar →',
+    searchDivider:'o abre un deal reciente',
     // Screen 2
-    procTitle:'Investigando empresa',
+    procTitle:'Preparando tu brief',
     procProcessing:'Procesando...', procDone:'✓ Listo',
-    proc1:'Analizando sitio web y datos públicos', proc1sub:'Descripción, industria, tamaño, presencia',
-    proc2:'Detectando tech stack y herramientas', proc2sub:'LinkedIn, ofertas laborales, menciones públicas',
-    proc3:'Mapeando estructura y personas clave', proc3sub:'Roles, decisores, tamaño de equipos',
-    proc4:'Generando inteligencia de ventas', proc4sub:'Módulos recomendados, opener, preguntas',
+    proc1:'Consultando CRM', proc1sub:'Obteniendo deal, contactos y reuniones previas',
+    proc2:'Enriqueciendo datos', proc2sub:'Señales de LinkedIn · Lusha · datos públicos',
+    proc3:'Analizando con IA', proc3sub:'Google AI generando brief personalizado...',
+    proc4:'Armando tu brief', proc4sub:'Contexto, estrategia y plan de acción listo',
     // Screen 3 — context column
     ctxColTitle:'Context', ctxColDesc:'Información clave de la empresa, stakeholders y análisis del deal. Haz clic en cada card para ver el detalle completo.',
     cardCompany:'Empresa', cardAnalysis:'Análisis',
@@ -3428,18 +3763,18 @@ const T = {
   en: {
     // Screen 1
     eyebrow:'Real-time intelligence',
-    searchTitleHTML:'Which company<br>are you meeting with? <span>Research it.</span>',
-    searchSub:'Enter the company name or website and get ready for the call in seconds.',
-    searchLabel:'Company or website URL',
-    searchBtn:'Research →',
-    searchDivider:'or choose an example',
+    searchTitleHTML:'Pick your next<br>meeting. <span>Generate your brief.</span>',
+    searchSub:'Select an active CRM deal and generate your AI-powered meeting brief in seconds.',
+    searchLabel:'Search CRM deal',
+    searchBtn:'Analyze →',
+    searchDivider:'or open a recent deal',
     // Screen 2
-    procTitle:'Researching company',
+    procTitle:'Preparing your brief',
     procProcessing:'Processing...', procDone:'✓ Done',
-    proc1:'Analyzing website and public data', proc1sub:'Description, industry, size, presence',
-    proc2:'Detecting tech stack and tools', proc2sub:'LinkedIn, job postings, public mentions',
-    proc3:'Mapping structure and key contacts', proc3sub:'Roles, decision makers, team sizes',
-    proc4:'Generating sales intelligence', proc4sub:'Recommended modules, opener, questions',
+    proc1:'Consulting CRM', proc1sub:'Fetching deal, contacts and past meetings',
+    proc2:'Enriching data', proc2sub:'LinkedIn signals · Lusha · public data',
+    proc3:'AI analysis', proc3sub:'Google AI generating your personalized brief...',
+    proc4:'Building your brief', proc4sub:'Context, strategy and action plan ready',
     // Screen 3 — context column
     ctxColTitle:'Context', ctxColDesc:'Key company information, stakeholders and deal analysis. Click each card to see full details.',
     cardCompany:'Company', cardAnalysis:'Analysis',
@@ -3914,8 +4249,16 @@ function toast(m){
   toastT=setTimeout(()=>el.classList.remove('on'),2500);
 }
 
+function togglePainHyp(i){
+  const el=document.getElementById('ph'+i);
+  if(el) el.classList.toggle('open');
+}
+
 let SOLUTIONS_DATA = null;
 fetch('humand_solutions_map.json').then(r=>r.json()).then(d=>{SOLUTIONS_DATA=d;}).catch(()=>{});
+
+// ── Init ──────────────────────────────────
+checkHealth();
 function getModuleDetail(name){
   if(!SOLUTIONS_DATA) return null;
   const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();

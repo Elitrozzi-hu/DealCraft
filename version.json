@@ -1,7 +1,12 @@
 {
-  "version": "1.2.21",
+  "version": "1.2.22",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.22",
+      "date": "2026-03-19",
+      "note": "Connect app to real backend API — deal picker from CRM, POST /api/brief for AI brief, mapBriefToCompany adapter, deal velocity header, pain hypotheses in actions tab"
+    },
     {
       "version": "1.2.21",
       "date": "2026-03-19",
