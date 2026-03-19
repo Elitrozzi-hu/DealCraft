@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.62</span>
+  <span class="ver-badge">v1.2.63</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2786,7 +2786,7 @@ function openCtxDrawer(type){
 
           // ── Confirm button + contact row
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">'+
-            '<button class="q-row-btn" style="flex-shrink:0" onclick="toggleStkPresent('+JSON.stringify(c.name)+','+i+');openCtxDrawer(\'stakeholders\')">'+
+            '<button class="q-row-btn" style="flex-shrink:0" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+');openCtxDrawer(\'stakeholders\')">'+
               (s.present ? '✓ Confirmado — Quitar' : '+ Confirmar asistencia')+
             '</button>'+
             (contactRow.length ? '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end">'+contactRow.join('')+'</div>' : '')+

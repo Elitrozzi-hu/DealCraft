@@ -1,7 +1,12 @@
 {
-  "version": "1.2.62",
+  "version": "1.2.63",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.63",
+      "date": "2026-03-19",
+      "note": "Fix stakeholder confirm button not firing — JSON.stringify double quotes broke onclick attribute, switch to single-quoted escape"
+    },
     {
       "version": "1.2.62",
       "date": "2026-03-19",
