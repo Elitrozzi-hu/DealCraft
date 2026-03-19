@@ -177,6 +177,7 @@ Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max
     "employee_count": "string",
     "workforce_type": "Frontline/Deskless | Mixed | Office-based",
     "geographic_footprint": "string",
+    "hq_country": "string — short country or region name, e.g. 'Argentina', 'Mexico', 'Brazil', 'LatAm', 'USA'",
     "operational_structure": "string",
     "summary": "2-3 sentences"
   },
