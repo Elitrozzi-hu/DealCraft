@@ -1,7 +1,12 @@
 {
-  "version": "1.2.65",
+  "version": "1.2.66",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.66",
+      "date": "2026-03-19",
+      "note": "Replace lightning bolt ⚡ with warning ⚠️ in Objeciones frecuentes and Riesgos del deal sections"
+    },
     {
       "version": "1.2.65",
       "date": "2026-03-19",

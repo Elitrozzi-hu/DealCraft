@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.65</span>
+  <span class="ver-badge">v1.2.66</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2842,7 +2842,7 @@ function openCtxDrawer(type){
           // ── Objections
           (s._objections&&s._objections.length ?
             divider+
-            secLbl('⚡','Objeciones clave')+
+            secLbl('⚠️','Objeciones clave')+
             s._objections.slice(0,3).map(o=>
               '<div style="margin-bottom:8px;background:var(--bg);border-radius:var(--r1);padding:8px 10px">'+
                 '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
@@ -2913,7 +2913,7 @@ function openCtxDrawer(type){
       '</div>'+
       '<div class="anl-card">'+
         '<div class="anl-card-title">⚠️ Riesgos del deal</div>'+
-        c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+
+        c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">⚠️</span><span>'+r.txt+'</span></div>').join('')+
       '</div>'+
       '<div class="anl-card">'+
         '<div class="anl-card-title">✅ Señales de compra</div>'+
@@ -3033,7 +3033,7 @@ function renderActionPlan(c){ c=_safe(c);
     risks.length
       ? risks.map(r=>
           '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
-            '<span style="flex-shrink:0">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span>'+
+            '<span style="flex-shrink:0">⚠️</span>'+
             '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(r.txt||'')+'</span>'+
           '</div>'
         ).join('')
@@ -4202,7 +4202,7 @@ function renderDealStrategy(c){ c=_safe(c);
       guide.provide.map(p=>'<div style="font-size:12px;color:var(--t1);display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;line-height:1.5"><span style="color:var(--p);font-weight:600;flex-shrink:0">✓</span>'+p+'</div>').join('') +
     '</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">⚠️ Riesgos del deal — '+c.name+'</div>' +
-    '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
+    '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">⚠️</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">✅ Próximas acciones para avanzar el deal</div>' +
     '<div class="next-list">'+nextItems+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">🏆 Casos similares de Humand que puedes usar</div>' +
