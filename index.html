@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.63</span>
+  <span class="ver-badge">v1.2.64</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2103,6 +2103,7 @@ function mapBriefToCompany(apiResponse){
     _mods: mods,
     _snapTechStack: snap.tech_stack||[],
     _dealMetrics: brief.deal_metrics||{},
+    _dealScore: brief.deal_score||{},
     _historicalPatterns: hist,
     _preEmail:  emails.pre_meeting  || null,
     _postEmail: emails.post_meeting || null,
@@ -2398,6 +2399,20 @@ function renderCoStrip(c){
       '</div>'
     : '<div class="cos-logo" style="background:'+c.color+'">'+c.initials+'</div>';
 
+  // Deal Score
+  const ds = c._dealScore||{};
+  const dsScore  = ds.score  != null ? ds.score  : (c.score||'—');
+  const dsLabel  = ds.label  || c.scoreLabel || '—';
+  const dsStatus = (ds.status||'').toLowerCase();
+  const dsColor  = dsStatus==='strong'      ? 'var(--ok)'
+                 : dsStatus==='progressing' ? 'var(--p)'
+                 : dsStatus==='at_risk'     ? '#e65100'
+                 : 'var(--t2)';
+  const dsBg     = dsStatus==='strong'      ? 'var(--okl)'
+                 : dsStatus==='progressing' ? 'var(--px)'
+                 : dsStatus==='at_risk'     ? '#fff3e0'
+                 : 'var(--bg)';
+
   document.getElementById('co-strip').innerHTML =
     logoHtml+
     '<div class="cos-info">'+
@@ -2408,8 +2423,15 @@ function renderCoStrip(c){
     '</div>'+
     '<div class="cos-divider"></div>'+
     '<div class="cos-stat">'+
+      '<div class="cos-stat-val" style="display:flex;align-items:center;gap:6px">'+
+        '<span style="font-size:18px;font-weight:700;color:'+dsColor+'">'+dsScore+'</span>'+
+        '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+dsBg+';color:'+dsColor+'">'+dsLabel+'</span>'+
+      '</div>'+
+      '<div class="cos-stat-lbl">Deal Score</div>'+
+    '</div>'+
+    '<div class="cos-stat">'+
       '<div class="cos-stat-val">'+amount+'</div>'+
-      '<div class="cos-stat-lbl">Amount / mes</div>'+
+      '<div class="cos-stat-lbl">MRR</div>'+
     '</div>'+
     '<div class="cos-stat">'+
       '<div class="cos-stat-val">'+hcDisplay+'</div>'+

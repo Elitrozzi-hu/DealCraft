@@ -1,7 +1,12 @@
 {
-  "version": "1.2.63",
+  "version": "1.2.64",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.64",
+      "date": "2026-03-19",
+      "note": "Add Deal Score stat to header (score + label pill colored by status), rename Amount/mes to MRR, reorder stats: Deal Score | MRR | Headcount | Industry"
+    },
     {
       "version": "1.2.63",
       "date": "2026-03-19",
