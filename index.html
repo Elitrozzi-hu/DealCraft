@@ -1044,7 +1044,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.41</span>
+  <span class="ver-badge">v1.2.42</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2243,12 +2243,16 @@ function quickFilterObj(id){
 function buildObjCard(inline){
   const commonObjs=OBJECTIONS.filter(o=>o.common);
   const inner=
-    '<input class="obj-search-inp" id="obj-search" placeholder="'+t('objSearchPlaceholder')+'" oninput="filterObjSearch(this.value)" />'+
-    '<div class="obj-commons-label">'+t('objCommonLabel')+'</div>'+
-    '<div class="obj-chips" id="obj-chips">'+
-      commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
+    '<div style="background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:12px">'+
+      '<input class="obj-search-inp" id="obj-search" placeholder="'+t('objSearchPlaceholder')+'" oninput="filterObjSearch(this.value)" style="margin-bottom:12px"/>'+
+      '<div class="obj-commons-label">'+t('objCommonLabel')+'</div>'+
+      '<div class="obj-chips" id="obj-chips" style="margin-bottom:0">'+
+        commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
+      '</div>'+
     '</div>'+
-    '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
+    '<div style="background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;margin-bottom:12px">'+
+      '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
+    '</div>'+
     '<div class="obj-nofit">'+
       '<div class="obj-nofit-title">'+t('noFitTitle')+'</div>'+
       NOFIT_SIGNALS.map(s=>'<div class="obj-nofit-item"><span>'+s.ico+'</span><span>'+s.txt+'</span></div>').join('')+

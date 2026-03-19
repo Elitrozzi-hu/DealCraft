@@ -1,7 +1,12 @@
 {
-  "version": "1.2.41",
+  "version": "1.2.42",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.42",
+      "date": "2026-03-19",
+      "note": "Wrap objection search/chips and objections list in separate white bordered containers for visual separation"
+    },
     {
       "version": "1.2.41",
       "date": "2026-03-19",
