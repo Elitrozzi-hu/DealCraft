@@ -858,99 +858,118 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <div class="body">
     <div class="proc-wrap">
       <div class="mascot-wrap">
-        <svg class="mascot-svg" viewBox="0 0 220 230" xmlns="http://www.w3.org/2000/svg">
+        <svg class="mascot-svg" viewBox="-5 -5 230 240" xmlns="http://www.w3.org/2000/svg" overflow="visible">
           <defs>
-            <radialGradient id="hbody" cx="38%" cy="28%" r="68%">
-              <stop offset="0%" stop-color="#818cf8"/>
-              <stop offset="48%" stop-color="#4f46e5"/>
-              <stop offset="100%" stop-color="#2d1fb3"/>
+            <!-- Fur displacement filter — makes circle edge look fluffy -->
+            <filter id="hfluff" x="-25%" y="-25%" width="150%" height="150%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.058" numOctaves="4" seed="7" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <!-- Softer fur for arms/feet -->
+            <filter id="hfluff2" x="-30%" y="-30%" width="160%" height="160%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="3" seed="3" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <!-- Body gradient: lit upper-left, dark lower-right -->
+            <radialGradient id="hbody" cx="33%" cy="25%" r="72%">
+              <stop offset="0%"   stop-color="#8B96F5"/>
+              <stop offset="28%"  stop-color="#5050E2"/>
+              <stop offset="62%"  stop-color="#3333CC"/>
+              <stop offset="100%" stop-color="#1A1898"/>
             </radialGradient>
-            <radialGradient id="heye" cx="35%" cy="28%" r="72%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#e0e3ff"/>
+            <!-- Sclera: white with slight lavender tint -->
+            <radialGradient id="hsclera" cx="38%" cy="32%" r="72%">
+              <stop offset="0%"   stop-color="#FFFFFF"/>
+              <stop offset="70%"  stop-color="#EDF0FF"/>
+              <stop offset="100%" stop-color="#D8DCFF"/>
+            </radialGradient>
+            <!-- Iris: medium blue -->
+            <radialGradient id="hiris" cx="42%" cy="38%" r="62%">
+              <stop offset="0%"   stop-color="#4A58E0"/>
+              <stop offset="100%" stop-color="#1C24A8"/>
             </radialGradient>
           </defs>
 
-          <!-- Laptop screen (behind mascot) -->
-          <rect x="55" y="148" width="110" height="64" rx="6" fill="#1e1b4b"/>
-          <rect x="58" y="151" width="104" height="58" rx="4" fill="#1e1b6a"/>
-          <text x="66" y="169" font-size="7.5" fill="#818cf8" font-family="monospace">$ análisis...</text>
-          <text x="66" y="181" font-size="7.5" fill="#60a5fa" font-family="monospace">Buscando</text>
-          <text x="66" y="193" font-size="7.5" fill="#60a5fa" font-family="monospace">datos...</text>
-          <rect x="108" y="186" width="4" height="8" rx="1" fill="#818cf8" class="h-cursor"/>
+          <!-- ─── LAPTOP SCREEN (behind mascot) ─── -->
+          <rect x="52" y="148" width="116" height="66" rx="7" fill="#151330"/>
+          <rect x="55" y="151" width="110" height="60" rx="5" fill="#1a1960"/>
+          <text x="63" y="170" font-size="7.5" fill="#818cf8" font-family="monospace">$ análisis...</text>
+          <text x="63" y="183" font-size="7.5" fill="#60a5fa" font-family="monospace">Buscando</text>
+          <text x="63" y="196" font-size="7.5" fill="#60a5fa" font-family="monospace">datos...</text>
+          <rect x="106" y="189" width="4" height="8" rx="1" fill="#818cf8" class="h-cursor"/>
 
-          <!-- Mascot group (bobs up/down) -->
+          <!-- ─── MASCOT (bobs up/down) ─── -->
           <g class="h-bob">
-            <!-- Fluffy outer glow -->
-            <circle cx="110" cy="88" r="70" fill="#3730a3" opacity="0.3"/>
-            <!-- Main body -->
-            <circle cx="110" cy="88" r="66" fill="url(#hbody)"/>
-            <!-- Subtle fur texture dots -->
-            <circle cx="56" cy="72" r="5" fill="#4f46e5" opacity="0.5"/>
-            <circle cx="48" cy="88" r="4" fill="#4f46e5" opacity="0.4"/>
-            <circle cx="58" cy="104" r="4.5" fill="#4f46e5" opacity="0.45"/>
-            <circle cx="164" cy="72" r="5" fill="#4f46e5" opacity="0.5"/>
-            <circle cx="172" cy="88" r="4" fill="#4f46e5" opacity="0.4"/>
-            <circle cx="162" cy="104" r="4.5" fill="#4f46e5" opacity="0.45"/>
-            <circle cx="88" cy="26" r="4" fill="#4f46e5" opacity="0.4"/>
-            <circle cx="110" cy="21" r="4.5" fill="#4f46e5" opacity="0.45"/>
-            <circle cx="132" cy="26" r="4" fill="#4f46e5" opacity="0.4"/>
 
-            <!-- Eyes (blink group) -->
+            <!-- Fluffy body: displaced circle = real fur edge -->
+            <circle cx="110" cy="83" r="73" fill="#2525A8" opacity="0.28" filter="url(#hfluff)"/>
+            <circle cx="110" cy="83" r="69" fill="url(#hbody)" filter="url(#hfluff)"/>
+
+            <!-- ─── EYES (blink) ─── -->
             <g class="h-blink">
-              <circle cx="88" cy="76" r="16" fill="url(#heye)"/>
-              <circle cx="89" cy="77" r="11" fill="#3730a3"/>
-              <circle cx="89" cy="77" r="6.5" fill="#0f0e25"/>
-              <circle cx="85" cy="72" r="3.2" fill="#fff" opacity="0.95"/>
-              <circle cx="132" cy="76" r="16" fill="url(#heye)"/>
-              <circle cx="133" cy="77" r="11" fill="#3730a3"/>
-              <circle cx="133" cy="77" r="6.5" fill="#0f0e25"/>
-              <circle cx="129" cy="72" r="3.2" fill="#fff" opacity="0.95"/>
+              <!-- Left eye -->
+              <ellipse cx="86"  cy="76" rx="20" ry="21" fill="url(#hsclera)"/>
+              <circle  cx="87"  cy="78" r="14"          fill="url(#hiris)"/>
+              <circle  cx="87"  cy="78" r="8"            fill="#0A0820"/>
+              <!-- Big upper-left highlight (the key feature) -->
+              <ellipse cx="80"  cy="70" rx="8"  ry="6.5" fill="white" opacity="0.96"/>
+              <!-- Small lower-right secondary highlight -->
+              <circle  cx="92"  cy="84" r="3"            fill="white" opacity="0.45"/>
+
+              <!-- Right eye -->
+              <ellipse cx="134" cy="76" rx="20" ry="21" fill="url(#hsclera)"/>
+              <circle  cx="135" cy="78" r="14"          fill="url(#hiris)"/>
+              <circle  cx="135" cy="78" r="8"            fill="#0A0820"/>
+              <ellipse cx="128" cy="70" rx="8"  ry="6.5" fill="white" opacity="0.96"/>
+              <circle  cx="140" cy="84" r="3"            fill="white" opacity="0.45"/>
             </g>
 
-            <!-- Reading glasses (over eyes) -->
-            <circle cx="88" cy="75" r="17.5" fill="none" stroke="#eab308" stroke-width="2.4"/>
-            <circle cx="132" cy="75" r="17.5" fill="none" stroke="#eab308" stroke-width="2.4"/>
-            <line x1="105.5" y1="75" x2="114.5" y2="75" stroke="#eab308" stroke-width="2.2"/>
-            <line x1="70.5" y1="70" x2="65" y2="67" stroke="#eab308" stroke-width="2"/>
-            <line x1="149.5" y1="70" x2="155" y2="67" stroke="#eab308" stroke-width="2"/>
+            <!-- ─── READING GLASSES ─── -->
+            <circle cx="86"  cy="75" r="21" fill="none" stroke="#D4950A" stroke-width="2.5"/>
+            <circle cx="134" cy="75" r="21" fill="none" stroke="#D4950A" stroke-width="2.5"/>
+            <!-- Bridge -->
+            <line x1="107" y1="75" x2="113" y2="75" stroke="#D4950A" stroke-width="2.2"/>
+            <!-- Arms -->
+            <line x1="65"  y1="70" x2="59"  y2="67" stroke="#D4950A" stroke-width="2"/>
+            <line x1="155" y1="70" x2="161" y2="67" stroke="#D4950A" stroke-width="2"/>
 
-            <!-- Smile -->
-            <path d="M 96 105 Q 110 119 124 105" stroke="#0f0e25" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <!-- ─── SMILE ─── -->
+            <path d="M 96 106 Q 110 121 124 106" stroke="#0A0820" stroke-width="3.2" fill="none" stroke-linecap="round"/>
 
-            <!-- Left arm (types) -->
+            <!-- ─── LEFT ARM (typing) ─── -->
             <g class="h-arm-l">
-              <ellipse cx="70" cy="136" rx="14" ry="28" fill="#3730a3" transform="rotate(-18 70 136)"/>
-              <ellipse cx="62" cy="158" rx="12" ry="8" fill="#2d26a0"/>
+              <ellipse cx="66" cy="130" rx="16" ry="30" fill="#2828BC" filter="url(#hfluff2)" transform="rotate(-22 66 130)"/>
+              <ellipse cx="57" cy="157" rx="15" ry="10" fill="#2020A8" filter="url(#hfluff2)"/>
             </g>
 
-            <!-- Right arm (types, opposite phase) -->
+            <!-- ─── RIGHT ARM (typing, opposite phase) ─── -->
             <g class="h-arm-r">
-              <ellipse cx="150" cy="136" rx="14" ry="28" fill="#3730a3" transform="rotate(18 150 136)"/>
-              <ellipse cx="158" cy="158" rx="12" ry="8" fill="#2d26a0"/>
+              <ellipse cx="154" cy="130" rx="16" ry="30" fill="#2828BC" filter="url(#hfluff2)" transform="rotate(22 154 130)"/>
+              <ellipse cx="163" cy="157" rx="15" ry="10" fill="#2020A8" filter="url(#hfluff2)"/>
             </g>
 
-            <!-- Feet -->
-            <ellipse cx="92" cy="155" rx="16" ry="9" fill="#2d26a0"/>
-            <ellipse cx="128" cy="155" rx="16" ry="9" fill="#2d26a0"/>
+            <!-- ─── FEET ─── -->
+            <ellipse cx="90"  cy="153" rx="20" ry="12" fill="#2020A8" filter="url(#hfluff2)"/>
+            <ellipse cx="130" cy="153" rx="20" ry="12" fill="#2020A8" filter="url(#hfluff2)"/>
+
           </g>
 
-          <!-- Laptop keyboard (in front) -->
-          <rect x="95" y="211" width="30" height="4" rx="2" fill="#a5b4fc" opacity="0.7"/>
-          <rect x="48" y="214" width="124" height="16" rx="5" fill="#c7d2fe"/>
-          <rect x="51" y="216" width="118" height="12" rx="3" fill="#a5b4fc"/>
-          <rect x="57" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="65" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="73" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="81" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="89" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="97" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="105" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="113" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="121" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="129" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="137" y="219" width="5" height="4" rx="1" fill="#6366f1"/>
-          <rect x="145" y="219" width="9" height="4" rx="1" fill="#6366f1"/>
+          <!-- ─── KEYBOARD (in front of mascot) ─── -->
+          <rect x="94" y="213" width="32" height="4" rx="2" fill="#a5b4fc" opacity="0.6"/>
+          <rect x="44" y="216" width="132" height="18" rx="5" fill="#c7d2fe"/>
+          <rect x="47" y="218" width="126" height="14" rx="3" fill="#a5b4fc"/>
+          <rect x="53"  y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="61"  y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="69"  y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="77"  y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="85"  y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="93"  y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="101" y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="109" y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="117" y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="125" y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="133" y="221" width="5" height="5" rx="1" fill="#6366f1"/>
+          <rect x="141" y="221" width="10" height="5" rx="1" fill="#6366f1"/>
         </svg>
       </div>
       <h2 class="proc-title">Investigando empresa</h2>
@@ -1025,9 +1044,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.14</span>
+  <span class="ver-badge">v1.2.15</span>
   <span class="ver-sep">·</span>
-  <span class="ver-date">18 Mar 2026</span>
+  <span class="ver-date">19 Mar 2026</span>
 </div>
 
 <!-- SLIDE MODAL -->
