@@ -85,6 +85,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .h-arm-r{animation:h-arm-r .36s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center top}
 @keyframes h-arm-l{0%{transform:translateY(0)}100%{transform:translateY(-5px)}}
 @keyframes h-arm-r{0%{transform:translateY(-5px)}100%{transform:translateY(0)}}
+@keyframes h-tap{0%,75%,100%{transform:translateY(0)}82%{transform:translateY(5px)}}
+.hf1{animation:h-tap .48s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom}
+.hf2{animation:h-tap .48s ease-in-out infinite .08s;transform-box:fill-box;transform-origin:center bottom}
+.hf3{animation:h-tap .48s ease-in-out infinite .16s;transform-box:fill-box;transform-origin:center bottom}
+.hf4{animation:h-tap .48s ease-in-out infinite .24s;transform-box:fill-box;transform-origin:center bottom}
+.hf5{animation:h-tap .48s ease-in-out infinite .32s;transform-box:fill-box;transform-origin:center bottom}
+.hf6{animation:h-tap .48s ease-in-out infinite .40s;transform-box:fill-box;transform-origin:center bottom}
 .h-cursor{animation:h-cursor 1s step-end infinite}
 @keyframes h-cursor{0%,100%{opacity:1}50%{opacity:0}}
 .proc-title{font-size:22px;font-weight:600;letter-spacing:-.4px;margin-bottom:6px}
@@ -318,8 +325,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sp-item.cur{color:var(--p);font-weight:600;background:var(--px);cursor:default}
 .sp-item-num{font-size:10px;font-weight:600;color:var(--t3);width:22px;flex-shrink:0}
 .sp-item.cur .sp-item-num{color:var(--p)}
-.s3-scroll{flex:1;overflow-y:auto}
-.stage-body{display:flex;width:100%;gap:0;align-items:flex-start}
+.s3-scroll{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.stage-body{display:flex;width:100%;gap:0;flex:1;align-items:stretch}
 /* stage-main is now transparent — nav and panels float as individual white cards */
 .stage-main{flex:1;min-width:0;display:flex;flex-direction:row;background:transparent;border:none;box-shadow:none;overflow:visible;gap:14px}
 /* Side panel is now a single white card with tabs */
@@ -858,7 +865,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <div class="body">
     <div class="proc-wrap">
       <div class="mascot-wrap">
-        <svg class="mascot-svg" viewBox="-5 -5 230 240" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+        <svg class="mascot-svg" viewBox="-5 -9 230 240" xmlns="http://www.w3.org/2000/svg" overflow="visible">
           <defs>
             <!-- Fur displacement filter — makes circle edge look fluffy -->
             <filter id="hfluff" x="-25%" y="-25%" width="150%" height="150%">
@@ -940,12 +947,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
             <g class="h-arm-l">
               <ellipse cx="66" cy="130" rx="16" ry="30" fill="#2828BC" filter="url(#hfluff2)" transform="rotate(-22 66 130)"/>
               <ellipse cx="57" cy="157" rx="15" ry="10" fill="#2020A8" filter="url(#hfluff2)"/>
+              <!-- Fingers -->
+              <ellipse cx="47" cy="161" rx="5" ry="6.5" fill="#1C1C99" class="hf1" filter="url(#hfluff2)"/>
+              <ellipse cx="56" cy="163" rx="5" ry="6.5" fill="#1C1C99" class="hf2" filter="url(#hfluff2)"/>
+              <ellipse cx="65" cy="161" rx="5" ry="6.5" fill="#1C1C99" class="hf3" filter="url(#hfluff2)"/>
             </g>
 
             <!-- ─── RIGHT ARM (typing, opposite phase) ─── -->
             <g class="h-arm-r">
               <ellipse cx="154" cy="130" rx="16" ry="30" fill="#2828BC" filter="url(#hfluff2)" transform="rotate(22 154 130)"/>
               <ellipse cx="163" cy="157" rx="15" ry="10" fill="#2020A8" filter="url(#hfluff2)"/>
+              <!-- Fingers -->
+              <ellipse cx="153" cy="161" rx="5" ry="6.5" fill="#1C1C99" class="hf4" filter="url(#hfluff2)"/>
+              <ellipse cx="162" cy="163" rx="5" ry="6.5" fill="#1C1C99" class="hf5" filter="url(#hfluff2)"/>
+              <ellipse cx="171" cy="161" rx="5" ry="6.5" fill="#1C1C99" class="hf6" filter="url(#hfluff2)"/>
             </g>
 
             <!-- ─── FEET ─── -->
@@ -1003,13 +1018,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
       <div class="ctx-col" id="ctx-col"></div>
     </div>
   </div>
-  <div class="fb-bar">
-    <span class="fb-t">¿Qué tan útil fue este análisis?</span>
-    <div class="fb-btns">
-      <button class="fb-btn" onclick="this.classList.toggle('on');toast('¡Gracias! 🙏')">👍 Útil</button>
-      <button class="fb-btn" onclick="this.classList.toggle('on');toast('Feedback registrado.')">👎 Mejorable</button>
-    </div>
-  </div>
   <!-- Hidden panels for drawer content (kept for compat) -->
   <div style="display:none" id="panel-overview"></div>
   <div style="display:none" id="panel-tech"></div>
@@ -1044,7 +1052,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.17</span>
+  <span class="ver-badge">v1.2.18</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
