@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.67</span>
+  <span class="ver-badge">v1.2.68</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2541,7 +2541,7 @@ function renderContext(c){ c=_safe(c);
       '<div class="ctx-card-preview">'+
         stks.slice(0,3).map(s=>
           '<div class="ctx-prev-item">'+
-            '<span class="ctx-prev-lbl" style="color:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--t3)')+'">'+s.type+'</span>'+
+            '<span class="ctx-prev-lbl" style="color:'+(s.type==='champion'?'var(--ok)':(s.type==='dm'||s.type==='decision_maker')?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--t3)')+'">'+({'champion':'Champion','dm':'Decision Maker','decision_maker':'Decision Maker','influencer':'Influencer','blocker':'Blocker'}[s.type]||s.type)+'</span>'+
             '<span class="ctx-prev-val">'+s.role+'</span>'+
             (s.present?'<span style="color:var(--ok);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✓</span>':'<span style="color:var(--red);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✗</span>')+
           '</div>'
@@ -3963,7 +3963,7 @@ function removeTechItem(idx){
 // ═══════════════════════════════════════════
 function buildStakeholdersDrawer(c){ c=_safe(c);
   const stks = getStakeholders(c);
-  const typeLabel={champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Bloqueador'};
+  const typeLabel={champion:'Champion',dm:'Decision Maker',decision_maker:'Decision Maker',influencer:'Influencer',blocker:'Blocker'};
   const missing = stks.filter(s=>!s.present);
 
   const editRows = stks.map((s,i)=>
@@ -4054,7 +4054,7 @@ function renderCovCard(c){ c=_safe(c);
     '<div class="cov-bar"><div class="cov-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div>' +
     '<div class="cov-roles" id="cov-roles-list">' +
     stks.map(s=>'<div class="cov-role">' +
-      '<span class="cov-dot" style="background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>' +
+      '<span class="cov-dot" style="background:'+(s.type==='champion'?'var(--ok)':(s.type==='dm'||s.type==='decision_maker')?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>' +
       '<span class="cov-rname">'+s.role+'</span>' +
       (s.present?'<span class="cov-ok">'+t('inMeeting')+'</span>':'<span class="cov-miss">'+t('missing')+'</span>') +
     '</div>').join('') +
@@ -4112,7 +4112,7 @@ function addStkParticipant(companyName){
 }
 
 function renderStakeholders(c){ c=_safe(c);
-  const typeLabel={champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Bloqueador'};
+  const typeLabel={champion:'Champion',dm:'Decision Maker',decision_maker:'Decision Maker',influencer:'Influencer',blocker:'Blocker'};
   const missing = c.stakeholders.filter(s=>!s.present);
   const alerts = missing.length ? missing.map(s=>'<div class="stk-alert"><span>⚠️</span><span><strong>'+s.role+'</strong> no está en esta reunión — ' + (s.type==='dm'?'es el aprobador final del deal.':s.type==='influencer'?'su apoyo puede acelerar o frenar el proceso.':'puede bloquear el avance.') + ' Busca cómo involucrarlo en la próxima llamada.</span></div>').join('') : '<div style="background:var(--okl);border-radius:var(--r2);padding:11px 14px;font-size:13px;color:var(--ok);font-weight:600;margin-bottom:14px">✅ Todos los stakeholders clave están en la reunión. Buen coverage.</div>';
   
