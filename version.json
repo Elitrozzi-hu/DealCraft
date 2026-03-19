@@ -1,7 +1,12 @@
 {
-  "version": "1.2.23",
+  "version": "1.2.24",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.24",
+      "date": "2026-03-19",
+      "note": "Fix mixed-language UI — translate all hardcoded English strings to use T object: AP tabs, email card titles, nav buttons, velocity pills, pain hypothesis labels, heat badges"
+    },
     {
       "version": "1.2.23",
       "date": "2026-03-19",
