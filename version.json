@@ -1,7 +1,12 @@
 {
-  "version": "1.2.32",
+  "version": "1.2.33",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.33",
+      "date": "2026-03-19",
+      "note": "Fix headcount and amount range parsing — properly split range strings with dash separator instead of concatenating digits"
+    },
     {
       "version": "1.2.32",
       "date": "2026-03-19",

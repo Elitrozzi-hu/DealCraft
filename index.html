@@ -1020,7 +1020,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.32</span>
+  <span class="ver-badge">v1.2.33</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2222,15 +2222,35 @@ function render(){
   renderNotes(c.name);
 }
 
+function parseHeadcount(str){
+  const s = (str||'').replace(/employees?/i,'').trim();
+  const parts = s.split(/[-–]/);
+  if(parts.length >= 2){
+    const lo = parseInt(parts[0].replace(/[^\d]/g,''))||0;
+    const hi = parseInt(parts[1].replace(/[^\d]/g,''))||0;
+    return {lo, hi: hi||lo, isRange: hi > 0};
+  }
+  const n = parseInt(s.replace(/[^\d]/g,''))||200;
+  return {lo: n, hi: n, isRange: false};
+}
+
 function renderCoStrip(c){
-  const headcount = parseInt((c.employees||'').replace(/[^\d]/g,'')) || 200;
+  const hc = parseHeadcount(c.employees);
+  const headcount = hc.hi || hc.lo || 200;
+  const hcDisplay = hc.isRange
+    ? hc.lo.toLocaleString('en-US') + ' - ' + hc.hi.toLocaleString('en-US')
+    : headcount.toLocaleString('en-US');
   const type = headcount > 2000
     ? {label:'Large Enterprise', bg:'var(--pul)', color:'var(--pu)'}
     : headcount > 500
     ? {label:'Enterprise', bg:'var(--px)', color:'var(--p)'}
     : {label:'SMB', bg:'var(--bg)', color:'var(--t2)'};
   const rate = headcount > 2000 ? 3.5 : headcount > 500 ? 4 : 5;
-  const amount = '$' + Math.round(headcount * rate * 12).toLocaleString('en-US');
+  const amtLo = Math.round(hc.lo * rate * 12);
+  const amtHi = Math.round(hc.hi * rate * 12);
+  const amount = hc.isRange
+    ? '$' + amtLo.toLocaleString('en-US') + ' - $' + amtHi.toLocaleString('en-US')
+    : '$' + amtHi.toLocaleString('en-US');
 
   const domain = (c.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
   const logoHtml = domain
@@ -2255,7 +2275,7 @@ function renderCoStrip(c){
       '<div class="cos-stat-lbl">Amount / año</div>'+
     '</div>'+
     '<div class="cos-stat">'+
-      '<div class="cos-stat-val">'+headcount.toLocaleString('en-US')+'</div>'+
+      '<div class="cos-stat-val">'+hcDisplay+'</div>'+
       '<div class="cos-stat-lbl">Headcount</div>'+
     '</div>'+
     '<div class="cos-stat">'+
