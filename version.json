@@ -1,7 +1,12 @@
 {
-  "version": "1.2.35",
+  "version": "1.2.36",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.36",
+      "date": "2026-03-19",
+      "note": "Remove deal pill card after selection — deal name stays in search input, no confirmation card shown"
+    },
     {
       "version": "1.2.35",
       "date": "2026-03-19",

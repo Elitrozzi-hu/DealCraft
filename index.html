@@ -1039,7 +1039,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.35</span>
+  <span class="ver-badge">v1.2.36</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1719,14 +1719,6 @@ function selectDeal(id, name, stage, company){
   if(inp){ inp.value = selectedDealName; inp.blur(); }
   const drop = document.getElementById('deal-drop');
   if(drop) drop.classList.remove('on');
-  const wrap = document.getElementById('deal-pill-wrap');
-  if(wrap) wrap.innerHTML =
-    `<div class="deal-pill">
-      <span class="deal-pill-ico">🏢</span>
-      <span class="deal-pill-name">${escHtml(selectedDealName)}</span>
-      <span class="deal-pill-stage">${escHtml(stage||'Lead')}</span>
-      <button class="deal-pill-x" onclick="clearSelectedDeal()" title="Cambiar deal">✕</button>
-    </div>`;
   const btn = document.getElementById('analyze-btn');
   if(btn) btn.disabled = false;
 }
@@ -1735,8 +1727,6 @@ function clearSelectedDeal(){
   selectedDealId = null; selectedDealName = ''; selectedDealStage = '';
   const inp = document.getElementById('main-input');
   if(inp) inp.value = '';
-  const wrap = document.getElementById('deal-pill-wrap');
-  if(wrap) wrap.innerHTML = '';
   const drop = document.getElementById('deal-drop');
   if(drop) drop.classList.remove('on');
   const btn = document.getElementById('analyze-btn');
