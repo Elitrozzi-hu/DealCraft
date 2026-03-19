@@ -1,7 +1,12 @@
 {
-  "version": "1.2.69",
+  "version": "1.2.70",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.70",
+      "date": "2026-03-19",
+      "note": "Set default language to English"
+    },
     {
       "version": "1.2.69",
       "date": "2026-03-19",
