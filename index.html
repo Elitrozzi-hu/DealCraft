@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.70</span>
+  <span class="ver-badge">v1.2.71</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2557,37 +2557,7 @@ function renderContext(c){ c=_safe(c);
   // Action Plan tabs (inline in ctx-col)
   const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
   const completedCount = Object.values(savedActions).filter(Boolean).length;
-  const pains = c._painHypotheses || [];
-  const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">'+t('painHypTitle')+'</div>'+
-    pains.slice(0,4).map((p,i)=>{
-      const conf = p.confidence||'medium';
-      const confCls = conf==='high'?'pain-hi':conf==='medium'?'pain-med':'pain-low';
-      const confLabel = conf==='high'?t('confHigh'):conf==='medium'?t('confMed'):t('confLow');
-      const ic = p.if_confirmed||{};
-      const inc = p.if_not_confirmed||{};
-      const branchY = ic.push_opportunity ? '<div class="pain-branch pain-branch-y">✓ '+escHtml(ic.push_opportunity)+(ic.show_module?' → <strong>'+escHtml(ic.show_module)+'</strong>':'')+'</div>' : '';
-      const branchN = inc.fallback_question ? '<div class="pain-branch pain-branch-n">↩ '+escHtml(inc.fallback_question)+'</div>' : '';
-      return '<div class="pain-hyp" id="ph'+i+'" onclick="togglePainHyp('+i+')">'+
-        '<div class="pain-hyp-head">'+
-          '<span class="pain-hyp-conf '+confCls+'">'+confLabel+'</span>'+
-          '<span class="pain-hyp-text">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
-        '</div>'+
-        '<div class="pain-hyp-body">'+
-          (p.validation_question?'<div style="margin-bottom:8px;font-style:italic;color:var(--t1)">❓ «'+escHtml(p.validation_question)+'»</div>':'')+
-          branchY + branchN +
-        '</div>'+
-      '</div>';
-    }).join('')+
-  '</div>' : '';
-  const actionsHtml = painHtml +
-    '<a class="meet-action" href="https://meet.google.com" target="_blank" rel="noopener">'+
-      '<img class="meet-icon" src="https://cdn.simpleicons.org/googlemeet/00897B" alt="Google Meet">'+
-      '<div>'+
-        '<div class="meet-action-label">'+t('joinMeeting')+'</div>'+
-        '<div class="meet-action-desc">'+t('openMeet')+'</div>'+
-      '</div>'+
-      '<span class="meet-action-cta">'+t('openBtn')+'</span>'+
-    '</a>'+
+  const actionsHtml =
     '<div style="margin-bottom:16px">'+
       ACTION_ITEMS.map(a=>{
         const checked = !!savedActions[a.id];
