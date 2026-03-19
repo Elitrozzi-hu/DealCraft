@@ -696,7 +696,8 @@ app.post('/api/brief', async (req, res) => {
       };
     }
 
-    // Calculate MRR = employees × 1.5 (cost per user per month)
+    // Calculate MRR + deal_metrics = employees × 1.5 (cost per user per month)
+    const UNIT_PRICE = 1.5;
     const rawHeadcount = brief.company_snapshot?.employee_count
       || employeeCount
       || enrichData?.lusha?.employee_count;
@@ -706,8 +707,13 @@ app.post('/api/brief', async (req, res) => {
       if (nums?.length) {
         const low  = parseInt(nums[0], 10);
         const high = nums[1] ? parseInt(nums[1], 10) : low;
-        brief.company_snapshot.mrr_low  = low  * 1.5;
-        brief.company_snapshot.mrr_high = high * 1.5;
+        brief.company_snapshot.mrr_low  = low  * UNIT_PRICE;
+        brief.company_snapshot.mrr_high = high * UNIT_PRICE;
+        brief.deal_metrics = {
+          users: low,
+          unit_price: UNIT_PRICE,
+          amount: low * UNIT_PRICE,
+        };
       }
     }
 

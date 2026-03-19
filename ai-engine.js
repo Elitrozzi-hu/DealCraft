@@ -179,6 +179,7 @@ Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max
     "geographic_footprint": "string",
     "hq_country": "string — short country or region name, e.g. 'Argentina', 'Mexico', 'Brazil', 'LatAm', 'USA'",
     "operational_structure": "string",
+    "tech_stack": ["string — inferred tools the company likely uses, e.g. SAP, Workday, WhatsApp, Excel, Salesforce. Max 6 items."],
     "summary": "2-3 sentences"
   },
   "pain_hypotheses": [
@@ -235,6 +236,7 @@ Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max
     "key_insight": "one sentence",
     "watch_out": "one sentence"
   },
+  "opportunities": ["string — concrete sales opportunity to push, derived from confirmed pain hypotheses. Max 4 bullets."],
   "pre_meeting_emails": {
     "pre_meeting": { "subject": "string", "body": "string" },
     "post_meeting": { "subject": "string", "body": "string with [PLACEHOLDERS]" }
