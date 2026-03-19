@@ -1053,7 +1053,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.54</span>
+  <span class="ver-badge">v1.2.55</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2065,6 +2065,8 @@ function mapBriefToCompany(apiResponse){
     // Raw data for new UI sections
     _dealVelocity: vel,
     _painHypotheses: pains,
+    _opportunities: brief.opportunities||[],
+    _mods: mods,
     _historicalPatterns: hist,
     _preEmail:  emails.pre_meeting  || null,
     _postEmail: emails.post_meeting || null,
@@ -2440,12 +2442,19 @@ document.addEventListener('click', function(e){
 });
 
 // ═══════════════════════════════════════════
-// CONTEXT COLUMN (left 40%)
+// CONTEXT COLUMN (right — narrower)
 // ═══════════════════════════════════════════
 function renderContext(c){ c=_safe(c);
   const stks = getStakeholders(c);
   const present = stks.filter(s=>s.present).length;
   const activeTech = getActiveTech(c);
+  const stageId = currentStage;
+  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
+  const opener = getStagePitchOpener(c);
+  const questions = getStageQuestions(c);
+  const meetingSteps = getStageMeeting(c);
+  const actionsKey = 'dc_actions_'+compKey+'_'+stageId;
+  const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
 
   // Company card preview
   const companyCard =
@@ -2486,27 +2495,6 @@ function renderContext(c){ c=_safe(c);
       '</div>'+
     '</div>';
 
-  // Analysis card preview
-  const analysisCard =
-    '<div class="ctx-card" onclick="openCtxDrawer(\'analysis\')">'+
-      '<div class="ctx-card-head">'+
-        '<span class="ctx-card-ico">🔍</span>'+
-        '<span class="ctx-card-title">'+t('cardAnalysis')+'</span>'+
-        '<span class="ctx-card-badge">'+c.signals.length+' '+t('prevSignals')+'</span>'+
-        '<span class="ctx-card-arrow">→</span>'+
-      '</div>'+
-      '<div class="ctx-card-preview">'+
-        c.keyInsights.slice(0,2).map(i=>'<div class="ctx-prev-item"><span class="ctx-prev-val" style="min-width:0;white-space:normal;line-height:1.4">'+i+'</span></div>').join('')+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevModule1')+'</span><span class="ctx-prev-val">'+c.primaryModule+'</span></div>'+
-      '</div>'+
-    '</div>';
-
-  const ctxHeader =
-    '<div class="col-header">'+
-      '<div class="col-header-title">'+t('ctxColTitle')+'</div>'+
-      '<div class="col-header-desc">'+t('ctxColDesc')+'</div>'+
-    '</div>';
-
   // Deal velocity header (only when real API data exists)
   let velHtml = '';
   const vel = c._dealVelocity;
@@ -2523,11 +2511,118 @@ function renderContext(c){ c=_safe(c);
     velHtml = '<div class="dv-header">'+[heatPill,engPill,mtgPill,tcPill,actPill,histBit].filter(Boolean).join('')+'</div>'+signalLine+(signalLine?'<div style="margin-bottom:12px"></div>':'');
   }
 
+  // Action Plan tabs (inline in ctx-col)
+  const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
+  const completedCount = Object.values(savedActions).filter(Boolean).length;
+  const pains = c._painHypotheses || [];
+  const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">'+t('painHypTitle')+'</div>'+
+    pains.slice(0,4).map((p,i)=>{
+      const conf = p.confidence||'medium';
+      const confCls = conf==='high'?'pain-hi':conf==='medium'?'pain-med':'pain-low';
+      const confLabel = conf==='high'?t('confHigh'):conf==='medium'?t('confMed'):t('confLow');
+      const ic = p.if_confirmed||{};
+      const inc = p.if_not_confirmed||{};
+      const branchY = ic.push_opportunity ? '<div class="pain-branch pain-branch-y">✓ '+escHtml(ic.push_opportunity)+(ic.show_module?' → <strong>'+escHtml(ic.show_module)+'</strong>':'')+'</div>' : '';
+      const branchN = inc.fallback_question ? '<div class="pain-branch pain-branch-n">↩ '+escHtml(inc.fallback_question)+'</div>' : '';
+      return '<div class="pain-hyp" id="ph'+i+'" onclick="togglePainHyp('+i+')">'+
+        '<div class="pain-hyp-head">'+
+          '<span class="pain-hyp-conf '+confCls+'">'+confLabel+'</span>'+
+          '<span class="pain-hyp-text">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
+        '</div>'+
+        '<div class="pain-hyp-body">'+
+          (p.validation_question?'<div style="margin-bottom:8px;font-style:italic;color:var(--t1)">❓ «'+escHtml(p.validation_question)+'»</div>':'')+
+          branchY + branchN +
+        '</div>'+
+      '</div>';
+    }).join('')+
+  '</div>' : '';
+  const actionsHtml = painHtml +
+    '<a class="meet-action" href="https://meet.google.com" target="_blank" rel="noopener">'+
+      '<img class="meet-icon" src="https://cdn.simpleicons.org/googlemeet/00897B" alt="Google Meet">'+
+      '<div>'+
+        '<div class="meet-action-label">'+t('joinMeeting')+'</div>'+
+        '<div class="meet-action-desc">'+t('openMeet')+'</div>'+
+      '</div>'+
+      '<span class="meet-action-cta">'+t('openBtn')+'</span>'+
+    '</a>'+
+    '<div style="margin-bottom:16px">'+
+      ACTION_ITEMS.map(a=>{
+        const checked = !!savedActions[a.id];
+        return '<div class="action-item'+(checked?' done':'')+'" onclick="toggleAction(\''+actionsKey+'\',\''+a.id+'\')">'+
+          '<div class="action-cb">'+(checked?'✓':'')+'</div>'+
+          '<div><div class="action-label">'+a.label+'</div><div class="action-desc">'+a.desc+'</div></div>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
+    '<div style="font-size:11px;color:var(--t3)">'+t('completedCounter').replace('{n}',completedCount).replace('{m}',ACTION_ITEMS.length)+'</div>';
+
+  const materialsHtml =
+    '<div class="mat-cards">'+
+      '<div class="mat-card" onclick="openEmailDrawer(\'pre\')">'+
+        '<div class="mat-card-icon">✉️</div>'+
+        '<div class="mat-card-title">'+t('matPreTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matPreDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
+      '</div>'+
+      '<div class="mat-card" onclick="openEmailDrawer(\'post\')">'+
+        '<div class="mat-card-icon">📨</div>'+
+        '<div class="mat-card-title">'+t('matPostTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
+      '</div>'+
+      '<div class="mat-card" onclick="generateDeck()">'+
+        '<div class="mat-card-icon">📊</div>'+
+        '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matDeckDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
+      '</div>'+
+      '<div class="mat-card" onclick="toast(t(\'comingSoonProp\'))">'+
+        '<div class="mat-card-icon">📄</div>'+
+        '<div class="mat-card-title">'+t('matPropTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matPropDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
+      '</div>'+
+    '</div>';
+
+  const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
+  const toolkitHtml = toolkitSteps.map((s,i)=>
+    '<div class="tk-step">'+
+      '<div class="tk-step-head" onclick="toggleTkStep(\'tks'+i+'\')">'+
+        '<div class="tk-step-num">'+s.num+'</div>'+
+        '<div class="tk-step-info">'+
+          '<div class="tk-step-title">'+s.title+'</div>'+
+          '<div class="tk-step-sub">'+s.sub+'</div>'+
+        '</div>'+
+        '<div class="tk-step-dur">'+s.dur+'</div>'+
+      '</div>'+
+      '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
+    '</div>'
+  ).join('');
+
+  const actionPlanCard =
+    '<div class="ap-card">'+
+      '<div class="ap-tabs">'+
+        '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">'+t('tabActions')+'</div>'+
+        '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">'+t('tabSalesMaterials')+'</div>'+
+        '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">'+t('tabMeetingToolkit')+'</div>'+
+      '</div>'+
+      '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
+      '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
+      '<div class="ap-panel" id="ap-toolkit">'+toolkitHtml+'</div>'+
+    '</div>';
+
+  const ctxHeader =
+    '<div class="col-header">'+
+      '<div class="col-header-title">'+t('ctxColTitle')+'</div>'+
+      '<div class="col-header-desc">'+t('ctxColDesc')+'</div>'+
+    '</div>';
+
   const ctxCards =
     '<div style="display:flex;flex-direction:column;gap:12px">'+
-      companyCard + stakeholdersCard + analysisCard +
+      companyCard + stakeholdersCard +
     '</div>';
-  document.getElementById('ctx-col').innerHTML = ctxHeader + velHtml + ctxCards;
+  document.getElementById('ctx-col').innerHTML = ctxHeader + velHtml + ctxCards +
+    '<div style="margin-top:12px">'+actionPlanCard+'</div>';
 }
 
 function openCtxDrawer(type){
@@ -2794,109 +2889,87 @@ function openEmailDrawer(type){
 }
 
 // ═══════════════════════════════════════════
-// ACTION PLAN COLUMN (right 60%)
+// ANALYSIS COLUMN (left — wider)
 // ═══════════════════════════════════════════
 function renderActionPlan(c){ c=_safe(c);
-  const stageId = currentStage;
-  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
-  const opener = getStagePitchOpener(c);
-  const questions = getStageQuestions(c);
-  const meetingSteps = getStageMeeting(c);
-  const actionsKey = 'dc_actions_'+compKey+'_'+stageId;
-  const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
-
-  // Pain hypotheses (from API brief)
-  const pains = c._painHypotheses || [];
-  const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">'+t('painHypTitle')+'</div>'+
-    pains.slice(0,4).map((p,i)=>{
-      const conf = p.confidence||'medium';
-      const confCls = conf==='high'?'pain-hi':conf==='medium'?'pain-med':'pain-low';
-      const confLabel = conf==='high'?t('confHigh'):conf==='medium'?t('confMed'):t('confLow');
-      // if_confirmed / if_not_confirmed are objects in real schema
-      const ic = p.if_confirmed||{};
-      const inc = p.if_not_confirmed||{};
-      const branchY = ic.push_opportunity ? '<div class="pain-branch pain-branch-y">✓ '+escHtml(ic.push_opportunity)+(ic.show_module?' → <strong>'+escHtml(ic.show_module)+'</strong>':'')+'</div>' : '';
-      const branchN = inc.fallback_question ? '<div class="pain-branch pain-branch-n">↩ '+escHtml(inc.fallback_question)+'</div>' : '';
-      return '<div class="pain-hyp" id="ph'+i+'" onclick="togglePainHyp('+i+')">'+
-        '<div class="pain-hyp-head">'+
-          '<span class="pain-hyp-conf '+confCls+'">'+confLabel+'</span>'+
-          '<span class="pain-hyp-text">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
-        '</div>'+
-        '<div class="pain-hyp-body">'+
-          (p.validation_question?'<div style="margin-bottom:8px;font-style:italic;color:var(--t1)">❓ «'+escHtml(p.validation_question)+'»</div>':'')+
-          branchY + branchN +
-        '</div>'+
-      '</div>';
-    }).join('')+
-  '</div>' : '';
-
-  // TAB 1: Actions checklist
-  const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
-  const completedCount = Object.values(savedActions).filter(Boolean).length;
-  const actionsHtml = painHtml +
-    '<a class="meet-action" href="https://meet.google.com" target="_blank" rel="noopener">'+
-      '<img class="meet-icon" src="https://cdn.simpleicons.org/googlemeet/00897B" alt="Google Meet">'+
-      '<div>'+
-        '<div class="meet-action-label">'+t('joinMeeting')+'</div>'+
-        '<div class="meet-action-desc">'+t('openMeet')+'</div>'+
-      '</div>'+
-      '<span class="meet-action-cta">'+t('openBtn')+'</span>'+
-    '</a>'+
-    '<div style="margin-bottom:16px">'+
-      ACTION_ITEMS.map(a=>{
-        const checked = !!savedActions[a.id];
-        return '<div class="action-item'+(checked?' done':'')+'" onclick="toggleAction(\''+actionsKey+'\',\''+a.id+'\')">'+
-          '<div class="action-cb">'+(checked?'✓':'')+'</div>'+
-          '<div><div class="action-label">'+a.label+'</div><div class="action-desc">'+a.desc+'</div></div>'+
-        '</div>';
-      }).join('')+
-    '</div>'+
-    '<div style="font-size:11px;color:var(--t3)">'+t('completedCounter').replace('{n}',completedCount).replace('{m}',ACTION_ITEMS.length)+'</div>';
-
-  // TAB 2: Sales Materials
-  const materialsHtml =
-    '<div class="mat-cards">'+
-      '<div class="mat-card" onclick="openEmailDrawer(\'pre\')">'+
-        '<div class="mat-card-icon">✉️</div>'+
-        '<div class="mat-card-title">'+t('matPreTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matPreDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
-      '</div>'+
-      '<div class="mat-card" onclick="openEmailDrawer(\'post\')">'+
-        '<div class="mat-card-icon">📨</div>'+
-        '<div class="mat-card-title">'+t('matPostTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
-      '</div>'+
-      '<div class="mat-card" onclick="generateDeck()">'+
-        '<div class="mat-card-icon">📊</div>'+
-        '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matDeckDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
-      '</div>'+
-      '<div class="mat-card" onclick="toast(t(\'comingSoonProp\'))">'+
-        '<div class="mat-card-icon">📄</div>'+
-        '<div class="mat-card-title">'+t('matPropTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matPropDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
-      '</div>'+
+  const wc = (title, content, mb) =>
+    '<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:'+(mb||'12px')+'">'+
+      '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:12px">'+title+'</div>'+
+      content+
     '</div>';
 
-  // TAB 3: Meeting Toolkit — stage-aware accordion steps
-  const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
-  const toolkitHtml = toolkitSteps.map((s,i)=>
-    '<div class="tk-step">'+
-      '<div class="tk-step-head" onclick="toggleTkStep(\'tks'+i+'\')">'+
-        '<div class="tk-step-num">'+s.num+'</div>'+
-        '<div class="tk-step-info">'+
-          '<div class="tk-step-title">'+s.title+'</div>'+
-          '<div class="tk-step-sub">'+s.sub+'</div>'+
-        '</div>'+
-        '<div class="tk-step-dur">'+s.dur+'</div>'+
-      '</div>'+
-      '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
-    '</div>'
-  ).join('');
+  const confBadge = conf => {
+    const map = {
+      high:   {bg:'var(--okl)',  color:'var(--ok)',  label: t('confHigh')},
+      medium: {bg:'var(--wal)',  color:'var(--wa)',  label: t('confMed')},
+      low:    {bg:'var(--bg)',   color:'var(--t2)',  label: t('confLow')},
+    };
+    const m = map[conf]||map.medium;
+    return '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+m.bg+';color:'+m.color+';flex-shrink:0;white-space:nowrap">'+m.label+'</span>';
+  };
+
+  // a. Context
+  const contextHtml = wc('Contexto',
+    '<div style="font-size:13px;color:var(--t1);line-height:1.7">'+escHtml(c.desc)+'</div>'
+  );
+
+  // b. Pain Points
+  const pains = c._painHypotheses||[];
+  const painsHtml = wc('Pain Points',
+    pains.length
+      ? pains.map(p=>
+          '<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bg)">'+
+            confBadge(p.confidence||'medium')+
+            '<span style="flex:1;font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
+          '</div>'
+        ).join('')
+      : '<div style="font-size:12px;color:var(--t2)">Sin pain points detectados</div>'
+  );
+
+  // c. Opportunities
+  const opps = c._opportunities||[];
+  const oppsHtml = wc('Oportunidades',
+    opps.length
+      ? opps.map(o=>
+          '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
+            '<span style="color:var(--ok);font-weight:700;flex-shrink:0;margin-top:1px">✓</span>'+
+            '<span style="flex:1;font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(typeof o==='string'?o:o.title||o.description||JSON.stringify(o))+'</span>'+
+          '</div>'
+        ).join('')
+      : '<div style="font-size:12px;color:var(--t2)">Sin oportunidades mapeadas</div>'
+  );
+
+  // d. Modules
+  const mods = c._mods||[];
+  const modsHtml = wc('Módulos recomendados',
+    mods.length
+      ? mods.map(m=>{
+          const isPri = m.priority==='primary';
+          return '<div style="background:'+(isPri?'var(--px)':'var(--bg)')+';border-radius:var(--r1);padding:10px 12px;margin-bottom:8px">'+
+            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">'+
+              '<span style="font-size:12px;font-weight:600;color:'+(isPri?'var(--p)':'var(--t1)')+'">'+escHtml(m.module_name||'Módulo')+'</span>'+
+              '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+(isPri?'var(--p)':'var(--br)')+';color:'+(isPri?'#fff':'var(--t2)')+'">'+
+                (isPri?'Principal':'Secundario')+
+              '</span>'+
+            '</div>'+
+            (m.why_relevant?'<div style="font-size:11px;color:var(--t2);line-height:1.5">'+escHtml(m.why_relevant)+'</div>':'')+
+          '</div>';
+        }).join('')
+      : '<div style="font-size:12px;color:var(--t2)">Sin módulos asignados</div>'
+  );
+
+  // e. Risks
+  const risks = c.dealRisks||[];
+  const risksHtml = wc('Riesgos del deal',
+    risks.length
+      ? risks.map(r=>
+          '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
+            '<span style="flex-shrink:0">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span>'+
+            '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(r.txt||'')+'</span>'+
+          '</div>'
+        ).join('')
+      : '<div style="font-size:12px;color:var(--t2)">Sin riesgos detectados</div>'
+  , '0');
 
   const apHeader =
     '<div class="col-header">'+
@@ -2904,15 +2977,8 @@ function renderActionPlan(c){ c=_safe(c);
       '<div class="col-header-desc">'+t('apColDesc')+'</div>'+
     '</div>';
   document.getElementById('ap-col').innerHTML = apHeader +
-    '<div class="ap-card">'+
-      '<div class="ap-tabs">'+
-        '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">'+t('tabActions')+'</div>'+
-        '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">'+t('tabSalesMaterials')+'</div>'+
-        '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">'+t('tabMeetingToolkit')+'</div>'+
-      '</div>'+
-      '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
-      '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
-      '<div class="ap-panel" id="ap-toolkit">'+toolkitHtml+'</div>'+
+    '<div style="display:flex;flex-direction:column">'+
+      contextHtml + painsHtml + oppsHtml + modsHtml + risksHtml +
     '</div>';
 }
 
@@ -2935,8 +3001,7 @@ function toggleAction(key, actionId){
   const saved = JSON.parse(localStorage.getItem(key)||'{}');
   saved[actionId] = !saved[actionId];
   localStorage.setItem(key, JSON.stringify(saved));
-  renderActionPlan(_safe(current));
-  // restore tab
+  renderContext(_safe(current));
   apTab('actions');
 }
 
@@ -4087,12 +4152,12 @@ const T = {
     proc3:'Analizando con IA', proc3sub:'Generando un brief personalizado con IA',
     proc4:'Armando tu brief', proc4sub:'Contexto, estrategia y plan de acción listo',
     // Screen 3 — context column
-    ctxColTitle:'Context', ctxColDesc:'Información clave de la empresa, stakeholders y análisis del deal. Haz clic en cada card para ver el detalle completo.',
+    ctxColTitle:'Contexto y Acciones', ctxColDesc:'Información de la empresa, stakeholders y plan de acción para esta etapa del deal.',
     cardCompany:'Empresa', cardAnalysis:'Análisis',
     prevIndustry:'Industria', prevEmployees:'Empleados', prevCountry:'País',
     prevModule1:'Módulo 1', prevSignals:'señales', prevMore:'más',
-    // Screen 3 — action plan column
-    apColTitle:'Action Plan', apColDesc:'Acciones concretas, materiales de venta y toolkit para preparar y ejecutar la reunión con esta etapa del deal.',
+    // Screen 3 — analysis column
+    apColTitle:'Análisis', apColDesc:'Contexto de la empresa, pain points, oportunidades, módulos recomendados y riesgos del deal.',
     tabActions:'Acciones',
     joinMeeting:'Unirse a la reunión', openMeet:'Abrir Google Meet', openBtn:'Abrir ↗',
     completedCounter:'{n} de {m} completados',
@@ -4178,12 +4243,12 @@ const T = {
     proc3:'AI analysis', proc3sub:'Generating your personalized brief with AI',
     proc4:'Building your brief', proc4sub:'Context, strategy and action plan ready',
     // Screen 3 — context column
-    ctxColTitle:'Context', ctxColDesc:'Key company information, stakeholders and deal analysis. Click each card to see full details.',
+    ctxColTitle:'Context & Actions', ctxColDesc:'Company info, stakeholders and action plan for this deal stage.',
     cardCompany:'Company', cardAnalysis:'Analysis',
     prevIndustry:'Industry', prevEmployees:'Employees', prevCountry:'Country',
     prevModule1:'Module 1', prevSignals:'signals', prevMore:'more',
-    // Screen 3 — action plan column
-    apColTitle:'Action Plan', apColDesc:'Concrete actions, sales materials and toolkit to prepare and execute the meeting at this deal stage.',
+    // Screen 3 — analysis column
+    apColTitle:'Analysis', apColDesc:'Company context, pain points, opportunities, recommended modules and deal risks.',
     tabActions:'Actions',
     joinMeeting:'Join the meeting', openMeet:'Open Google Meet', openBtn:'Open ↗',
     completedCounter:'{n} of {m} completed',

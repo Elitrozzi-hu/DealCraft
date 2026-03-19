@@ -1,7 +1,12 @@
 {
-  "version": "1.2.54",
+  "version": "1.2.55",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.55",
+      "date": "2026-03-19",
+      "note": "Swap Acciones ↔ Análisis panels: ap-col now shows Analysis (Context/Pains/Opportunities/Modules/Risks in white containers), ctx-col shows Company+Stakeholders cards + Action Plan tabs inline"
+    },
     {
       "version": "1.2.54",
       "date": "2026-03-19",
