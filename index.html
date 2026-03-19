@@ -1044,7 +1044,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.16</span>
+  <span class="ver-badge">v1.2.17</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1873,21 +1873,21 @@ function quickFilterObj(id){
 function buildObjCard(inline){
   const commonObjs=OBJECTIONS.filter(o=>o.common);
   const inner=
-    '<input class="obj-search-inp" id="obj-search" placeholder="Buscar objeción — ej. presupuesto, celular, SAP, tiempo..." oninput="filterObjSearch(this.value)" />'+
-    '<div class="obj-commons-label">⭐ Más frecuentes en prospección</div>'+
+    '<input class="obj-search-inp" id="obj-search" placeholder="'+t('objSearchPlaceholder')+'" oninput="filterObjSearch(this.value)" />'+
+    '<div class="obj-commons-label">'+t('objCommonLabel')+'</div>'+
     '<div class="obj-chips" id="obj-chips">'+
       commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
     '</div>'+
     '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
     '<div class="obj-nofit">'+
-      '<div class="obj-nofit-title">🚨 Señales de no-fit real — calificá out</div>'+
+      '<div class="obj-nofit-title">'+t('noFitTitle')+'</div>'+
       NOFIT_SIGNALS.map(s=>'<div class="obj-nofit-item"><span>'+s.ico+'</span><span>'+s.txt+'</span></div>').join('')+
     '</div>';
   if(inline) return inner;
   return '<div class="sc-card">'+
     '<div class="sc-card-head" onclick="toggleCard(\'c-obj\')">'+
       '<div class="sc-card-hl"><span class="sc-card-ico">🛡️</span>'+
-        '<div><div class="sc-card-title">Cómo manejar objeciones</div>'+
+        '<div><div class="sc-card-title">'+t('objTitle')+'</div>'+
           '<div class="sc-card-sub">Playbook · '+commonObjs.length+' frecuentes · '+OBJECTIONS.length+' en total</div></div></div>'+
       '<span class="sc-card-badge">'+OBJECTIONS.length+'</span>'+
     '</div>'+
@@ -1969,6 +1969,7 @@ function renderCoStrip(c){
 }
 
 function renderStepper(){
+  const STAGES = getStages();
   const idx = STAGES.findIndex(s=>s.id===currentStage);
   const st = STAGES[idx] || STAGES[0];
   const dots = STAGES.map((_,i)=>'<div class="sdot'+(i<idx?' done':i===idx?' on':'')+'"></div>').join('');
@@ -1982,13 +1983,13 @@ function renderStepper(){
       '<div class="stage-bar-l">'+
         '<div class="stage-dots">'+dots+'</div>'+
         '<div class="stage-bar-info">'+
-          '<div class="stage-bar-num">Etapa '+(idx+1)+' de '+STAGES.length+'</div>'+
+          '<div class="stage-bar-num">'+t('stageOf').replace('{n}',idx+1).replace('{m}',STAGES.length)+'</div>'+
           '<div class="stage-bar-name">'+st.label+'</div>'+
           '<div class="stage-bar-goal">'+st.goal+'</div>'+
         '</div>'+
       '</div>'+
       '<div class="stage-bar-r">'+
-        '<button class="btn b-p" style="font-size:13px" onclick="toggleStagePicker(event)">Mover deal <span style="opacity:.75">▾</span></button>'+
+        '<button class="btn b-p" style="font-size:13px" onclick="toggleStagePicker(event)">'+t('moveDeal')+' <span style="opacity:.75">▾</span></button>'+
         '<div class="stage-picker" id="stage-picker">'+pickerItems+'</div>'+
       '</div>'+
     '</div>';
@@ -2242,14 +2243,14 @@ function openEmailDrawer(type){
 function renderActionPlan(c){ c=_safe(c);
   const stageId = currentStage;
   const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
-  const opener = (STAGE_OPENERS[stageId]||STAGE_OPENERS.discovery)(c);
+  const opener = getStagePitchOpener(c);
   const questions = getStageQuestions(c);
   const meetingSteps = getStageMeeting(c);
   const actionsKey = 'dc_actions_'+compKey+'_'+stageId;
   const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
 
   // TAB 1: Actions checklist
-  const ACTION_ITEMS = STAGE_ACTIONS[stageId] || STAGE_ACTIONS.discovery;
+  const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
   const completedCount = Object.values(savedActions).filter(Boolean).length;
   const actionsHtml =
     '<a class="meet-action" href="https://meet.google.com" target="_blank" rel="noopener">'+
@@ -2393,13 +2394,13 @@ Quedo disponible para cualquier consulta. ¡Mucho éxito!
 }
 
 function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
+  const STAGES = getStages();
   const hasDisc = ['lead','discovery','champion'].includes(stageId);
-  const hasDemo = ['champion','dm','procure'].includes(stageId);
   const hasMeeting = stageId==='discovery';
 
   const openerBody =
     '<div class="stage-opener-box">"'+opener+'"</div>'+
-    '<button class="btn b-s" style="font-size:12px;margin-top:8px" onclick="copyText('+JSON.stringify(opener)+')">📋 Copiar opener</button>';
+    '<button class="btn b-s" style="font-size:12px;margin-top:8px" onclick="copyText('+JSON.stringify(opener)+')">📋 '+t('copyOpenerBtn')+'</button>';
 
   const questionsBody =
     questions.slice(0,5).map((q,i)=>
@@ -2408,7 +2409,7 @@ function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
         '<div class="q-row-body">'+
           '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
           '<div class="q-row-text">'+q.text+'</div>'+
-          '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</button></div>'+
+          '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</button></div>'+
         '</div>'+
       '</div>'
     ).join('')+
@@ -2417,30 +2418,30 @@ function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
   const demoBody =
     '<div class="mod-row pri"><span class="mod-row-ico">📣</span>'+
       '<div class="mod-row-body"><div class="mod-row-name">'+c.primaryModule+'</div><div class="mod-row-why">'+c.primaryWhy+'</div></div>'+
-      '<span class="mod-row-badge">Módulo 1</span></div>'+
+      '<span class="mod-row-badge">'+t('tkModN').replace('{n}','1')+'</span></div>'+
     c.secondaryModules.slice(0,2).map((m,i)=>
       '<div class="mod-row"><span class="mod-row-ico">'+m.ico+'</span>'+
       '<div class="mod-row-body"><div class="mod-row-name">'+m.name+'</div><div class="mod-row-why">'+m.why+'</div></div>'+
-      '<span class="mod-row-badge">Módulo '+(i+2)+'</span></div>'
+      '<span class="mod-row-badge">'+t('tkModN').replace('{n}',i+2)+'</span></div>'
     ).join('');
 
   const closureBody =
-    '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px">Posicionamiento</div>'+
+    '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px">'+t('tkPositioning')+'</div>'+
     '<div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:14px">'+
       (STAGES.find(s=>s.id===stageId)||{}).desc+
     '</div>'+
-    '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px">Próximos pasos</div>'+
+    '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px">'+t('tkNextSteps')+'</div>'+
     (c.nextSteps||[]).map(s=>'<div class="drw-bullet">'+s+'</div>').join('');
 
   const steps = [
-    {num:'1', title:'Opening', sub:'Opener personalizado', dur:'5 min', body: openerBody},
-    {num:'2', title:'Discovery', sub: hasDisc?'Preguntas + objeciones':'Validación de necesidades', dur:'15 min', body: questionsBody},
-    {num:'3', title:'Demo / Presentación', sub:'Módulos Humand relevantes', dur:'20 min', body: demoBody},
-    {num:'4', title:'Cierre', sub:'Posicionamiento + próximos pasos', dur:'10 min', body: closureBody},
+    {num:'1', title:'Opening', sub:t('tkOpenerSub'), dur:'5 min', body: openerBody},
+    {num:'2', title:'Discovery', sub: hasDisc?t('tkDiscSub1'):t('tkDiscSub2'), dur:'15 min', body: questionsBody},
+    {num:'3', title:t('tkDemo'), sub:t('tkDemoSub'), dur:'20 min', body: demoBody},
+    {num:'4', title:t('tkCierre'), sub:t('tkCierreSub'), dur:'10 min', body: closureBody},
   ];
 
   if(hasMeeting && meetingSteps.length){
-    steps.splice(2,0,{num:'2b', title:'Plan de reunión', sub:'Agenda detallada', dur:'',
+    steps.splice(2,0,{num:'2b', title:t('tkMeetingPlan'), sub:t('tkAgenda'), dur:'',
       body:'<div class="mp-rows">'+meetingSteps.map(m=>
         '<div class="mp-row">'+
           '<div class="mp-row-num">'+m.step+'</div>'+
@@ -2485,11 +2486,11 @@ function renderLegacyPanels(c){ c=_safe(c);
     <div class="ov-two-col">
       <div>
         <div class="ov-card">
-          <div class="ov-card-title">🏢 Sobre la empresa</div>
+          <div class="ov-card-title">${t('ovAbout')}</div>
           <div class="ov-desc">${c.desc}</div>
         </div>
         <div class="ov-card">
-          <div class="ov-card-title">📡 Señales de compra</div>
+          <div class="ov-card-title">${t('ovSignals')}</div>
           <div class="sig-list">${c.signals.map(s=>`
             <div class="sig-item"><span class="sig-ico">${s.ico}</span>
               <span class="sig-text">${s.text}</span>
@@ -2499,9 +2500,9 @@ function renderLegacyPanels(c){ c=_safe(c);
       </div>
       <div>
         <div class="ov-card">
-          <div class="ov-card-title">🎯 Qué vender</div>
+          <div class="ov-card-title">${t('ovWhatSell')}</div>
           <div class="ov-mod-primary">
-            <div class="ov-mod-pri-label">Módulo principal</div>
+            <div class="ov-mod-pri-label">${t('ovPrimaryMod')}</div>
             <div class="ov-mod-pri-name">${c.primaryModule}</div>
             <div class="ov-mod-pri-why">${c.primaryWhy}</div>
           </div>
@@ -2512,9 +2513,9 @@ function renderLegacyPanels(c){ c=_safe(c);
           </div>`).join('')}
         </div>
         <div class="ov-card">
-          <div class="ov-card-title">💬 Opener sugerido</div>
+          <div class="ov-card-title">${t('ovOpener')}</div>
           <div class="ov-opener">"${c.opener}"</div>
-          <button class="btn b-s" style="font-size:12px" onclick="copyText(${JSON.stringify(c.opener)})">📋 Copiar opener</button>
+          <button class="btn b-s" style="font-size:12px" onclick="copyText(${JSON.stringify(c.opener)})">📋 ${t('copyOpenerBtn')}</button>
         </div>
       </div>
     </div>`;
@@ -2969,13 +2970,21 @@ function copyBattleCard(){
 // GAVIN DIRECTIVES — Stakeholders + Deal Strategy
 // ═══════════════════════════════════════════
 let currentStage = 'lead';
-const STAGES = [
+const STAGES_ES = [
   {id:'lead',     label:'Lead / Early Intro',   num:'01', goal:'Establecer credibilidad y evaluar fit',      desc:'Muestra que hiciste la tarea. Presenta el contexto de la empresa e identifica si hay dolor real.'},
   {id:'discovery',label:'Discovery',            num:'02', goal:'Validar el dolor, la urgencia y el fit',     desc:'Profundiza en los problemas reales. Mapea stakeholders y entiende el proceso de decisión.'},
   {id:'champion', label:'Champion Identificado',num:'03', goal:'Fortalecer el apoyo interno',               desc:'Equipa al champion con argumentos para vender internamente. Identifica quién falta sumar.'},
   {id:'dm',       label:'DM Involucrado',        num:'04', goal:'Alinear Humand a las prioridades ejecutivas',desc:'Llevar la conversación al nivel estratégico. Framing de ROI, visión y impacto en el negocio.'},
   {id:'procure',  label:'Procurement / Cierre', num:'05', goal:'Reducir riesgo y mantener el momentum',    desc:'Mapear bloqueadores. Acelerar la aprobación técnica, legal y financiera.'},
 ];
+const STAGES_EN = [
+  {id:'lead',     label:'Lead / Early Intro',   num:'01', goal:'Establish credibility and evaluate fit',       desc:'Show you did your homework. Present company context and identify if there is real pain.'},
+  {id:'discovery',label:'Discovery',            num:'02', goal:'Validate the pain, urgency and fit',           desc:'Dig into real problems. Map stakeholders and understand the decision process.'},
+  {id:'champion', label:'Champion Identified',  num:'03', goal:'Strengthen internal support',                  desc:'Equip the champion with arguments to sell internally. Identify who else needs to be involved.'},
+  {id:'dm',       label:'DM Engaged',           num:'04', goal:'Align Humand to executive priorities',         desc:'Bring the conversation to a strategic level. ROI framing, vision and business impact.'},
+  {id:'procure',  label:'Procurement / Close',  num:'05', goal:'Reduce risk and maintain momentum',            desc:'Map blockers. Accelerate technical, legal and financial approval.'},
+];
+function getStages(){ return lang==='en' ? STAGES_EN : STAGES_ES; }
 const STAGE_GUIDANCE = {
   lead:     {provide:['Resumen de la empresa y contexto de industria','Desafíos probables basados en tipo de workforce','Preguntas iniciales de discovery','Stakeholders clave a identificar']},
   discovery:{provide:['Preguntas de discovery por rol (HR / Ops / IT / Exec)','Casos de uso de Humand relevantes','Gaps de stakeholders detectados','Mapping inicial de módulos a recomendar']},
@@ -3215,8 +3224,9 @@ function _safe(c){
   return c;
 }
 function renderStageSidebar(c){ c=_safe(c);
+  const STAGES = getStages();
   document.getElementById('stage-card').innerHTML =
-    '<div class="stage-top"><span>Etapa del deal</span></div>' +
+    '<div class="stage-top"><span>'+t('stageLabel')+'</span></div>' +
     '<div class="stage-pills">' +
     STAGES.map(s=>'<div class="stage-pill'+(s.id===currentStage?' on':'')+'" data-stage="'+s.id+'" onclick="setStage(\''+s.id+'\')">' +
       '<span class="sp-num">'+s.num+'</span><span style="flex:1">'+s.label+'</span>' +
@@ -3358,7 +3368,7 @@ function renderStkQuestions(c, role){
         '<span class="q-cat" style="background:'+rBg[x.r]+';color:'+rColor[x.r]+'">'+rLabel[x.r]+'</span>' +
         '<div class="q-text">'+x.q+'</div>' +
       '</div>' +
-      '<div class="q-copy" onclick="copyText('+JSON.stringify(x.q)+')">Copiar</div>' +
+      '<div class="q-copy" onclick="copyText('+JSON.stringify(x.q)+')">'+t('copyBtn')+'</div>' +
     '</div>'
   ).join('')+'</div>';
 }
@@ -3372,6 +3382,7 @@ function filterStkQ(role, el){
 }
 
 function renderDealStrategy(c){ c=_safe(c);
+  const STAGES = getStages();
   const st = STAGES.find(s=>s.id===currentStage)||STAGES[1];
   const guide = STAGE_GUIDANCE[currentStage];
   const nextItems = c.nextActions.map((a,i)=>
@@ -3489,6 +3500,27 @@ const T = {
     qRespBtn:'Anotar resp.', qRespLabel:'RESPUESTA DEL CLIENTE',
     qRespPlaceholder:'Anota lo que respondió el cliente...',
     inMeeting:'✓ En reunión', missing:'✗ Faltante',
+    // Stepper
+    stageOf:'Etapa {n} de {m}', moveDeal:'Mover deal',
+    // Toolkit step labels
+    tkOpenerSub:'Opener personalizado', tkDiscSub1:'Preguntas + objeciones', tkDiscSub2:'Validación de necesidades',
+    tkDemo:'Demo / Presentación', tkDemoSub:'Módulos Humand relevantes',
+    tkCierre:'Cierre', tkCierreSub:'Posicionamiento + próximos pasos',
+    tkPositioning:'Posicionamiento', tkNextSteps:'Próximos pasos',
+    tkMeetingPlan:'Plan de reunión', tkAgenda:'Agenda detallada',
+    tkModN:'Módulo {n}', copyBtn:'Copiar', copyOpenerBtn:'Copiar opener',
+    // Questions / filters
+    filterAll:'Todas',
+    // Pitch
+    pitchStage:'Etapa:', pitchModsTitle:'Módulos a recomendar en este deal', pitchOpenerTitle:'Opener para esta etapa',
+    // Legacy panels
+    ovAbout:'🏢 Sobre la empresa', ovSignals:'📡 Señales de compra',
+    ovWhatSell:'🎯 Qué vender', ovPrimaryMod:'Módulo principal', ovOpener:'💬 Opener sugerido',
+    // Objections
+    objTitle:'Cómo manejar objeciones',
+    objSearchPlaceholder:'Buscar objeción — ej. presupuesto, celular, SAP, tiempo...',
+    objCommonLabel:'⭐ Más frecuentes en prospección',
+    noFitTitle:'🚨 Señales de no-fit real — calificar out',
   },
   en: {
     // Screen 1
@@ -3535,6 +3567,27 @@ const T = {
     qRespBtn:'Add answer', qRespLabel:'CLIENT RESPONSE',
     qRespPlaceholder:'Note what the client said...',
     inMeeting:'✓ In meeting', missing:'✗ Missing',
+    // Stepper
+    stageOf:'Stage {n} of {m}', moveDeal:'Move deal',
+    // Toolkit step labels
+    tkOpenerSub:'Personalized opener', tkDiscSub1:'Questions + objections', tkDiscSub2:'Needs validation',
+    tkDemo:'Demo / Presentation', tkDemoSub:'Relevant Humand modules',
+    tkCierre:'Closing', tkCierreSub:'Positioning + next steps',
+    tkPositioning:'Positioning', tkNextSteps:'Next steps',
+    tkMeetingPlan:'Meeting plan', tkAgenda:'Detailed agenda',
+    tkModN:'Module {n}', copyBtn:'Copy', copyOpenerBtn:'Copy opener',
+    // Questions / filters
+    filterAll:'All',
+    // Pitch
+    pitchStage:'Stage:', pitchModsTitle:'Modules to recommend in this deal', pitchOpenerTitle:'Opener for this stage',
+    // Legacy panels
+    ovAbout:'🏢 About the company', ovSignals:'📡 Buy signals',
+    ovWhatSell:'🎯 What to sell', ovPrimaryMod:'Primary module', ovOpener:'💬 Suggested opener',
+    // Objections
+    objTitle:'How to handle objections',
+    objSearchPlaceholder:'Search objection — e.g. budget, mobile, SAP, timing...',
+    objCommonLabel:'⭐ Most frequent in prospecting',
+    noFitTitle:'🚨 Real no-fit signals — qualify out',
   }
 };
 function t(key){ return (T[lang]||T.es)[key] || (T.es[key]) || key; }
@@ -3682,7 +3735,7 @@ const STAGE_QUESTIONS = {
   ],
 };
 
-const STAGE_MEETING = {
+const STAGE_MEETING_ES = {
   lead: (c) => [
     {step:1, title:'Apertura y contexto', dur:'2 min', body:'Preséntate brevemente y muestra que hiciste tarea: menciona 1-2 datos de la empresa. El objetivo es generar confianza rápido.', tip:'No más de 30 segundos hablando de Humand. El foco es ellos.'},
     {step:2, title:'Calificar el pain', dur:'5 min', body:'"¿Cuál es el mayor dolor que tiene HR con las herramientas actuales?" y "¿Están evaluando soluciones activamente?" — Dos preguntas que te dicen todo lo que necesitas saber.', tip:'Si no hay dolor o urgencia real, acuerda un follow-up para cuando el timing mejore. No hagas el pitch completo.'},
@@ -3709,16 +3762,52 @@ const STAGE_MEETING = {
     {step:4, title:'Próximo paso con fecha concreta', dur:'2 min', body:'"¿Podemos decir que si todo está aprobado el kickoff sería la semana del [fecha]?"', tip:'El "les mandamos la propuesta" sin fecha de respuesta es la muerte del deal en esta etapa.'},
   ],
 };
+const STAGE_MEETING_EN = {
+  lead: (c) => [
+    {step:1, title:'Opening and context', dur:'2 min', body:'Briefly introduce yourself and show you did your homework: mention 1-2 facts about the company. The goal is to build trust quickly.', tip:'No more than 30 seconds talking about Humand. Keep the focus on them.'},
+    {step:2, title:'Qualify the pain', dur:'5 min', body:'"What\'s the biggest pain HR has with current tools?" and "Are you actively evaluating solutions?" — Two questions that tell you everything you need to know.', tip:'If there\'s no real pain or urgency, agree on a follow-up when timing improves. Don\'t do the full pitch.'},
+    {step:3, title:'Fit signals', dur:'5 min', body:'Ask about the current stack, HR team size, and total headcount. That gives you a deal potential estimate.', tip:'If they use WhatsApp for internal comms or Excel for HR Ops → green flag. You\'re looking at the right pain.'},
+    {step:4, title:'Next step', dur:'3 min', body:'If there\'s fit: propose a 45-minute discovery session with the core team. If no urgency: agree on a 30-day follow-up.', tip:'"How about next week we dig deeper into the pain and I show you how we solve it?" — that\'s the closing question.'},
+  ],
+  discovery: (c) => c.meeting,
+  champion: (c) => [
+    {step:1, title:'Review discovery learnings', dur:'3 min', body:'Recap the key points that emerged: "We identified the main pain is X, and Y stakeholder would also be interested." Validate that your read is correct.', tip:'This shows you listened and are following the thread. Builds trust.'},
+    {step:2, title:'Equip the champion to sell internally', dur:'10 min', body:'"How would you present this to your director/CHRO? Which arguments seem strongest to you?" Help them build the case.', tip:'Your job here isn\'t to sell — it\'s to give the champion the tools to sell internally. Prepare a personalized one-pager.'},
+    {step:3, title:'Map the buying committee', dur:'8 min', body:'Who approves the budget? Who can block it — IT, Legal, Finance? Who else has influence?', tip:'"Who else should be in the next meeting to move faster?"'},
+    {step:4, title:'Plan the next step', dur:'4 min', body:'Propose a meeting with the DM (CHRO, VP People, CEO). The champion should be the one to schedule or facilitate it.', tip:'Give the champion the personalized deck and the most relevant reference case for their sector.'},
+  ],
+  dm: (c) => [
+    {step:1, title:'Executive framing', dur:'2 min', body:'"Companies similar to '+c.name+' are reducing turnover costs and accelerating onboarding by digitizing the employee experience." Start with business impact, not features.', tip:'Never start with "Humand is a platform that...". Start with the business problem.'},
+    {step:2, title:'Validate executive priorities', dur:'8 min', body:'Ask about People goals for the year, the impact of turnover on the business, and how they evaluate ROI on HR Tech investments.', tip:'Listen for the most important KPI for this executive. Everything after needs to connect to that KPI.'},
+    {step:3, title:'Present the business case', dur:'10 min', body:'Show ROI calculated with their real data. Reference case from a similar company. Timeline: 3-week go-live → 60-day data.', tip:'Executives need to justify the investment internally. Give them the numbers to do it.'},
+    {step:4, title:'Define the pilot and the deal', dur:'5 min', body:'"What if we start with [area/region] and in 60 days we have the data to decide on the full rollout?" Scoped with clear KPIs.', tip:'Leave with: next meeting date + name of the procurement contact on their side.'},
+  ],
+  procure: (c) => [
+    {step:1, title:'Map the approval process', dur:'5 min', body:'Who approves? What documentation do they need — DPA, SOC2, formal proposal? What\'s the internal deadline?', tip:'Ask: "Which step could delay the process most?" — that\'s what you need to resolve first.'},
+    {step:2, title:'Resolve technical and legal blockers', dur:'10 min', body:'IT/Legal often block at the last minute. Anticipate: technical brief, security certifications, data model. If they need Workday/SAP integration, show the connector.', tip:'Have the security one-pager and DPA ready to send on the spot.'},
+    {step:3, title:'Confirm pilot scope', dur:'8 min', body:'Number of employees in the pilot, area or region, required integrations, and KPIs to measure at day 60.', tip:'A well-defined, scoped pilot accelerates approval. "We start with 500 employees from X area."'},
+    {step:4, title:'Next step with a concrete date', dur:'2 min', body:'"Can we say that if everything is approved, kickoff would be the week of [date]?"', tip:'"We\'ll send the proposal" without a response date is the death of the deal at this stage.'},
+  ],
+};
+function getStageMeetingMap(){ return lang==='en' ? STAGE_MEETING_EN : STAGE_MEETING_ES; }
 
-const STAGE_OPENERS = {
+const STAGE_OPENERS_ES = {
   lead:      (c) => 'Hola, me contacto desde Humand. Vi que '+c.name+' opera en '+c.industry+' con un equipo de '+c.employees+' personas. Nuestros clientes en ese sector suelen tener gaps importantes en comunicación interna y employee experience. ¿Vale la pena que exploremos si ese es el caso acá?',
   discovery: (c) => c.opener,
   champion:  (c) => 'Basándonos en lo que nos contaron — especialmente el tema de [pain principal] — creo que tenemos una oportunidad real de resolver esto. Quiero mostrarte exactamente cómo lo haríamos y darte las herramientas para presentarlo internamente.',
   dm:        (c) => c.name+' tiene '+c.employees+' empleados y opera en un sector donde la experiencia del empleado impacta directamente en la operación. Nuestros clientes similares redujeron el costo de rotación y el tiempo de HR Ops en más de un 40%. ¿Tiene sentido explorar cómo se vería eso para ustedes?',
   procure:   (c) => 'Estamos en la recta final. El equipo de HR ya validó el fit, el DM dio el OK. Quiero asegurarme de que el proceso de aprobación sea lo más smooth posible y que podamos tener el kickoff definido.',
 };
+const STAGE_OPENERS_EN = {
+  lead:      (c) => 'Hi, reaching out from Humand. I noticed '+c.name+' operates in '+c.industry+' with a team of '+c.employees+' people. Our clients in that sector often have significant gaps in internal communication and employee experience. Worth exploring if that\'s the case here?',
+  discovery: (c) => c.opener,
+  champion:  (c) => 'Based on what you shared — especially the issue of [main pain] — I think we have a real opportunity to solve this. I want to show you exactly how we\'d do it and give you the tools to present it internally.',
+  dm:        (c) => c.name+' has '+c.employees+' employees and operates in a sector where employee experience directly impacts operations. Our similar clients reduced turnover costs and HR Ops time by over 40%. Does it make sense to explore what that would look like for you?',
+  procure:   (c) => 'We\'re in the final stretch. The HR team has validated the fit, the DM gave the go-ahead. I want to make sure the approval process is as smooth as possible and that we can have a kickoff date locked in.',
+};
+function getStagePitchOpener(c){ const map = lang==='en' ? STAGE_OPENERS_EN : STAGE_OPENERS_ES; return (map[currentStage]||map.discovery)(c); }
 
-const STAGE_ACTIONS = {
+const STAGE_ACTIONS_ES = {
   lead: [
     {id:'research',  label:'Investigar la empresa',         desc:'Revisar web, LinkedIn, industria y señales públicas antes de la reunión'},
     {id:'techstack', label:'Revisar tech stack detectado',  desc:'Identificar gaps y herramientas que usa hoy para preparar el ángulo de entrada'},
@@ -3755,19 +3844,66 @@ const STAGE_ACTIONS = {
     {id:'kickoff',   label:'Confirmar fecha de kickoff',    desc:'Definir fecha de inicio de implementación y asignar el equipo de onboarding'},
   ],
 };
+const STAGE_ACTIONS_EN = {
+  lead: [
+    {id:'research',  label:'Research the company',          desc:'Review website, LinkedIn, industry and public signals before the meeting'},
+    {id:'techstack', label:'Review detected tech stack',    desc:'Identify gaps and tools they use today to prepare the entry angle'},
+    {id:'opener',    label:'Prepare personalized opener',   desc:'Adapt the opening message to the specific context of the company'},
+    {id:'stk',       label:'Map potential stakeholders',    desc:'Identify who could be the champion and who is the decision maker'},
+    {id:'premeet',   label:'Send pre-meeting email',        desc:'Personalized introduction email before the first meeting'},
+  ],
+  discovery: [
+    {id:'confirm',   label:'Confirm meeting and attendees', desc:'Verify participants and understand the role of each one'},
+    {id:'roleqs',    label:'Prepare role-based questions',  desc:'Review role questions based on who is attending the meeting'},
+    {id:'done',      label:'Meeting completed',             desc:'Discovery call completed with the prospect\'s team'},
+    {id:'buycomm',   label:'Map buying committee',          desc:'Identify champion, DM, influencers and potential blockers'},
+    {id:'followup',  label:'Send follow-up',                desc:'Post-meeting email with pain point recap and next steps'},
+  ],
+  champion: [
+    {id:'bizcase',   label:'Build business case',           desc:'Build a business case with real company data to justify the investment'},
+    {id:'cases',     label:'Share similar use cases',       desc:'Send use cases from clients with a similar industry profile'},
+    {id:'onepager',  label:'Prepare executive one-pager',   desc:'Material the champion can use to sell internally'},
+    {id:'dm',        label:'Get access to the DM',          desc:'Coordinate meeting with CHRO, VP People or other relevant decision maker'},
+    {id:'nextmeet',  label:'Schedule meeting with DM',      desc:'Confirm date and participants for the executive meeting'},
+  ],
+  dm: [
+    {id:'exec',      label:'DM meeting completed',          desc:'Meeting with the decision maker completed'},
+    {id:'roi',       label:'Present ROI and proposal',      desc:'Show financial impact calculated with the company\'s real data'},
+    {id:'obj',       label:'Handle key objections',         desc:'Prepare responses to price, implementation and security objections'},
+    {id:'it',        label:'Align with IT/Security',        desc:'Include the technical team to review integrations, compliance and governance'},
+    {id:'prop',      label:'Send formal proposal',          desc:'Commercial proposal with scope, price, terms and pilot timeline'},
+  ],
+  procure: [
+    {id:'legal',     label:'Send legal documentation',      desc:'DPA, SOC2, technical brief and security certifications'},
+    {id:'itreview',  label:'Complete technical review with IT', desc:'Technical session to review integrations, security and governance'},
+    {id:'neg',       label:'Negotiation completed',         desc:'Scope, price and terms agreed with the procurement team'},
+    {id:'sign',      label:'Contract signed',               desc:'Commercial agreement closed and documentation complete'},
+    {id:'kickoff',   label:'Confirm kickoff date',          desc:'Define implementation start date and assign onboarding team'},
+  ],
+};
+function getStageActions(){ return lang==='en' ? STAGE_ACTIONS_EN : STAGE_ACTIONS_ES; }
 
-const STAGE_PITCH_TITLE = {
+const STAGE_PITCH_TITLE_ES = {
   lead:      'Primer contacto — calificar el fit',
   discovery: 'Discovery — validar el dolor',
   champion:  'Champion — habilitar la venta interna',
   dm:        'Ejecutivo — caso de negocio y ROI',
   procure:   'Procurement — cerrar el deal',
 };
+const STAGE_PITCH_TITLE_EN = {
+  lead:      'First contact — qualify the fit',
+  discovery: 'Discovery — validate the pain',
+  champion:  'Champion — enable internal selling',
+  dm:        'Executive — business case and ROI',
+  procure:   'Procurement — close the deal',
+};
+function getStagePitchTitle(){ const map = lang==='en' ? STAGE_PITCH_TITLE_EN : STAGE_PITCH_TITLE_ES; return map[currentStage]||''; }
 
 function getStageQuestions(c){ return (STAGE_QUESTIONS[currentStage]||STAGE_QUESTIONS.discovery)(c); }
-function getStageMeeting(c)  { return (STAGE_MEETING[currentStage]||STAGE_MEETING.discovery)(c); }
+function getStageMeeting(c)  { const map = getStageMeetingMap(); return (map[currentStage]||map.discovery)(c); }
 
 function renderQuestions(c){ c=_safe(c);
+  const STAGES = getStages();
   const qs = getStageQuestions(c);
   const stageInfo = STAGES.find(s=>s.id===currentStage)||STAGES[1];
   const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
@@ -3777,7 +3913,7 @@ function renderQuestions(c){ c=_safe(c);
     '</div>' +
     '<div class="q-notice">'+t('qNotice')+' <strong>'+c.name+'</strong> — etapa <em>'+stageInfo.label+'</em>. '+stageInfo.desc+'</div>' +
     '<div class="role-filter">' +
-      '<div class="rpill on" onclick="filterQ(\'all\',this)">Todas</div>' +
+      '<div class="rpill on" onclick="filterQ(\'all\',this)">'+t('filterAll')+'</div>' +
       '<div class="rpill rh" onclick="filterQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
       '<div class="rpill ro" onclick="filterQ(\'ops\',this)">⚙️ Ops Leader</div>' +
       '<div class="rpill ri" onclick="filterQ(\'it\',this)">💻 IT Leader</div>' +
@@ -3800,7 +3936,7 @@ function renderQuestions(c){ c=_safe(c);
             '<textarea class="q-resp-ta" placeholder="'+t('qRespPlaceholder')+'" oninput="saveQResp(\''+respKey.replace(/'/g,"\\'")+'\','+i+',this.value)">'+savedResp+'</textarea>' +
           '</div>' +
         '</div>' +
-        '<div class="q-copy" onclick="copyText('+JSON.stringify(q.text)+')">Copiar</div>' +
+        '<div class="q-copy" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</div>' +
       '</div>';
     }).join('') +
     '</div>';
@@ -3831,6 +3967,7 @@ function saveQResp(key, idx, val){
 }
 
 function renderMeeting(c){ c=_safe(c);
+  const STAGES = getStages();
   const steps = getStageMeeting(c);
   const stageInfo = STAGES.find(s=>s.id===currentStage)||STAGES[1];
   document.getElementById('panel-meeting').innerHTML =
@@ -3846,23 +3983,24 @@ function renderMeeting(c){ c=_safe(c);
 }
 
 function renderPitchForStage(c){ c=_safe(c);
+  const STAGES = getStages();
   const stageInfo = STAGES.find(s=>s.id===currentStage)||STAGES[1];
-  const opener = (STAGE_OPENERS[currentStage]||STAGE_OPENERS.discovery)(c);
-  const title  = STAGE_PITCH_TITLE[currentStage]||'';
+  const opener = getStagePitchOpener(c);
+  const title  = getStagePitchTitle();
   document.getElementById('panel-pitch').innerHTML =
     '<div class="pitch-hero">' +
-      '<div class="ph-l">Etapa: '+stageInfo.label+'</div>' +
+      '<div class="ph-l">'+t('pitchStage')+' '+stageInfo.label+'</div>' +
       '<div class="ph-v">'+title+' — '+c.primaryModule+'</div>' +
     '</div>' +
     '<p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">'+c.primaryWhy+'</p>' +
-    '<div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">Módulos a recomendar en este deal</div>' +
+    '<div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">'+t('pitchModsTitle')+'</div>' +
     '<div class="rec-mods">' +
-      '<div class="rec-mod pri"><span class="rm-ico">📣</span><div class="rm-body"><div class="rm-name">'+c.primaryModule+'</div><div class="rm-why">'+c.primaryWhy+'</div></div><span class="rm-badge rm-pri">Módulo 1</span></div>' +
-      c.secondaryModules.map((m,i)=>'<div class="rec-mod"><span class="rm-ico">'+m.ico+'</span><div class="rm-body"><div class="rm-name">'+m.name+'</div><div class="rm-why">'+m.why+'</div></div><span class="rm-badge rm-sec">Módulo '+(i+2)+'</span></div>').join('') +
+      '<div class="rec-mod pri"><span class="rm-ico">📣</span><div class="rm-body"><div class="rm-name">'+c.primaryModule+'</div><div class="rm-why">'+c.primaryWhy+'</div></div><span class="rm-badge rm-pri">'+t('tkModN').replace('{n}','1')+'</span></div>' +
+      c.secondaryModules.map((m,i)=>'<div class="rec-mod"><span class="rm-ico">'+m.ico+'</span><div class="rm-body"><div class="rm-name">'+m.name+'</div><div class="rm-why">'+m.why+'</div></div><span class="rm-badge rm-sec">'+t('tkModN').replace('{n}',i+2)+'</span></div>').join('') +
     '</div>' +
-    '<div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;margin-top:16px">Opener para esta etapa</div>' +
+    '<div class="sec-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;margin-top:16px">'+t('pitchOpenerTitle')+'</div>' +
     '<div class="opener-box">"'+opener+'"</div>' +
-    '<button class="btn b-s" onclick="copyText('+JSON.stringify(opener)+')">📋 Copiar opener</button>';
+    '<button class="btn b-s" onclick="copyText('+JSON.stringify(opener)+')">📋 '+t('copyOpenerBtn')+'</button>';
 }
 
 let toastT;
