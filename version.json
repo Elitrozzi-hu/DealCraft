@@ -1,7 +1,12 @@
 {
-  "version": "1.2.50",
+  "version": "1.2.51",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.51",
+      "date": "2026-03-19",
+      "note": "Use snap.hq_country as primary source for company country field"
+    },
     {
       "version": "1.2.50",
       "date": "2026-03-19",

@@ -1053,7 +1053,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.50</span>
+  <span class="ver-badge">v1.2.51</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2015,7 +2015,7 @@ function mapBriefToCompany(apiResponse){
   return {
     name, initials, color,
     industry: snap.industry||'B2B / Servicios',
-    country: lusha.location||lusha.country||'🌎 LatAm',
+    country: snap.hq_country||lusha.location||lusha.country||'🌎 LatAm',
     website: domain,
     employees: hcStr,
     mrrLow: snap.mrr_low ?? null,
