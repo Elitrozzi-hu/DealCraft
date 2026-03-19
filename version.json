@@ -1,7 +1,12 @@
 {
-  "version": "1.2.40",
+  "version": "1.2.41",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.41",
+      "date": "2026-03-19",
+      "note": "Fix pre/post email schema in demo data, restore optional additional_context field in manual form"
+    },
     {
       "version": "1.2.40",
       "date": "2026-03-19",

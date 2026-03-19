@@ -942,6 +942,14 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
               <label class="mf-label" data-i18n="s1ManWeb">Sitio web</label>
               <input class="mf-input" id="man-web" data-i18n-ph="s1ManWebPh" placeholder="Ej. royalcaribbean.com" />
             </div>
+            <div class="mf-field">
+              <label class="mf-label" style="cursor:pointer;display:flex;align-items:center;gap:6px" onclick="document.getElementById('man-ctx-wrap').style.display=document.getElementById('man-ctx-wrap').style.display==='none'?'block':'none'">
+                <span style="font-size:11px;color:var(--t3)">+ Agregar contexto opcional</span>
+              </label>
+              <div id="man-ctx-wrap" style="display:none;margin-top:6px">
+                <textarea class="mf-textarea" id="man-ctx" placeholder="Industria, contexto de la reunión, info adicional..." style="min-height:64px"></textarea>
+              </div>
+            </div>
             <button class="btn b-p" id="manual-btn" onclick="analyzeManual()" style="width:100%;padding:13px 16px" data-i18n="s1ManBtn">Generar brief →</button>
           </div>
         </div>
@@ -1036,7 +1044,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.40</span>
+  <span class="ver-badge">v1.2.41</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1742,11 +1750,14 @@ function analyze(){
 function analyzeManual(){
   const name = (document.getElementById('man-name').value||'').trim();
   const web  = (document.getElementById('man-web').value||'').trim();
+  const ctx  = (document.getElementById('man-ctx')?.value||'').trim();
   if(!name){ toast('⚠️ Ingresá el nombre de la empresa'); return; }
   selectedDealId = null;
   selectedDealName = name;
   selectedDealStage = 'lead';
-  _runBrief({deal_data:{company_name:name, domain:web}}, name);
+  const payload = {deal_data:{company_name:name, domain:web, website:web}};
+  if(ctx) payload.additional_context = ctx;
+  _runBrief(payload, name);
 }
 
 async function loadRecentBriefs(){
@@ -4567,7 +4578,16 @@ function loadDemo(){
         signal:'Deal activo — tuvieron reunión hace 8 días, buen momentum. Próximo paso: discovery con CHRO.',
         recommended_urgency:'medium'},
       historical_patterns:{win_rate_pct:68, confidence:'medium', key_insight:'Deals en tech companies >20k empleados cierran en promedio en 90 días con 3 reuniones', watch_out:'Ciclos de aprobación largos en grandes enterprises — mantener momentum con quick wins'},
-      pre_meeting_emails:{body:'Hola Lucía,\n\nMuchas gracias por tu tiempo la semana pasada. Quería compartirte un resumen rápido de lo que hablamos y los próximos pasos que acordamos.\n\nPara preparar la reunión de esta semana, te adjunto un caso de uso de una empresa similar a Globant en el sector tech donde implementamos Humand para el onboarding y communication hub de 15.000 empleados distribuidos.\n\nQuedo disponible cualquier duda. ¡Hasta el jueves!\n\nSaludos,\nEl equipo Humand'},
+      pre_meeting_emails:{
+        pre_meeting:{
+          subject:'Globant + Humand — Antes de nuestra reunión',
+          body:'Hola Lucía,\n\nAntes de que nos juntemos, quería compartirte un poco de contexto de por qué creo que esta conversación puede ser muy relevante para Globant.\n\nInvestigando la empresa, veo que el equipo de HR gestiona más de 27.000 colaboradores distribuidos en 30+ países — un desafío enorme de comunicación interna y engagement. Casos similares en el sector tech muestran que sin una capa de experiencia digital, la rotación early-stage y el engagement caído post-pandemia son los dolores más frecuentes.\n\nEn la reunión voy a presentar cómo Humand puede ayudar a resolver esto de forma concreta y medible.\n\n¡Nos vemos pronto!\n[Tu nombre] — Humand'
+        },
+        post_meeting:{
+          subject:'Globant + Humand — Próximos pasos',
+          body:'Hola Lucía,\n\nGracias por el tiempo de hoy. Fue muy valioso entender mejor el contexto de Globant.\n\nResumen de lo que conversamos:\n• Desafío principal: Engagement caído en equipos distribuidos post-pandemia\n• Módulo propuesto: Communications Hub + Onboarding digital\n• Próximo paso: Reunión con Matías (CHRO) para validar ROI y presupuesto\n\nTe adjunto el caso de uso de referencia que mencionamos. Quedo disponible para cualquier consulta.\n\n¡Saludos!\n[Tu nombre] — Humand'
+        }
+      },
     },
     enrichment:{ lusha:{ domain:'globant.com', location:'Buenos Aires, Argentina', employee_count:'27,000+' } }
   };
