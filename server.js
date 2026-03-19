@@ -717,6 +717,23 @@ app.post('/api/brief', async (req, res) => {
       }
     }
 
+    // Calculate deal score (0–100) from engagement + stakeholder coverage + pain confidence
+    const engScore       = brief.deal_velocity?.engagement_score ?? 50;
+    const coverageScore  = brief.stakeholder_map?.coverage_score ?? 50;
+    const highPains      = (brief.pain_hypotheses || []).filter(p => p.confidence === 'high').length;
+    const medPains       = (brief.pain_hypotheses || []).filter(p => p.confidence === 'medium').length;
+    const painScore      = Math.min(100, highPains * 20 + medPains * 10);
+    const rawScore       = Math.round(engScore * 0.5 + coverageScore * 0.3 + painScore * 0.2);
+    const dealScore      = Math.min(100, Math.max(0, rawScore));
+
+    let dealStatus, dealLabel;
+    if (dealScore >= 75)      { dealStatus = 'strong';      dealLabel = 'Strong'; }
+    else if (dealScore >= 50) { dealStatus = 'progressing'; dealLabel = 'Progressing'; }
+    else if (dealScore >= 30) { dealStatus = 'at_risk';     dealLabel = 'At risk'; }
+    else                      { dealStatus = 'cold';        dealLabel = 'Re-engage'; }
+
+    brief.deal_score = { score: dealScore, status: dealStatus, label: dealLabel };
+
     // Save to cache
     const companyName = brief.company_snapshot?.name || dealData.company_name || dealData.company?.name || String(deal_id || '');
     const analyzedAt = new Date().toISOString();
