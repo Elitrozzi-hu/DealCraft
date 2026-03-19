@@ -698,8 +698,7 @@ app.post('/api/brief', async (req, res) => {
 
     // Save to cache
     const companyName = brief.company_snapshot?.name || dealData.company_name || dealData.company?.name || String(deal_id || '');
-    const domain = extractDomain(dealData) || enrichData?.lusha?.website || null;
-    saveBrief({ company_name: companyName, domain, brief, enrichment: enrichData });
+    saveBrief({ company_name: companyName, domain: domain || enrichData?.lusha?.website || null, brief, enrichment: enrichData });
 
     res.json({ brief, enrichment: enrichData });
   } catch (err) {
