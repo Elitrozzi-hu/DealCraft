@@ -76,27 +76,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 #s2 .body{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
 .proc-wrap{max-width:500px;width:100%;text-align:center}
 .mascot-wrap{width:240px;height:240px;margin:0 auto 12px}
-.mascot-anim{width:100%;height:100%;position:relative;animation:h-img-type 0.72s ease-in-out infinite}
-@keyframes h-img-type{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-4px) rotate(0.4deg)}70%{transform:translateY(-3px) rotate(-0.4deg)}}
 .mascot-img{width:100%;height:100%;object-fit:contain}
-.mascot-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
-.h-bob{animation:h-bob 2.2s ease-in-out infinite}
-@keyframes h-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-.h-blink{animation:h-blink 3.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-@keyframes h-blink{0%,87%,100%{transform:scaleY(1)}92%{transform:scaleY(0.07)}}
-.h-arm-l{animation:h-arm-l .36s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center top}
-.h-arm-r{animation:h-arm-r .36s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center top}
-@keyframes h-arm-l{0%{transform:translateY(0)}100%{transform:translateY(-5px)}}
-@keyframes h-arm-r{0%{transform:translateY(-5px)}100%{transform:translateY(0)}}
-@keyframes h-tap{0%,75%,100%{transform:translateY(0)}82%{transform:translateY(5px)}}
-.hf1{animation:h-tap .48s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom}
-.hf2{animation:h-tap .48s ease-in-out infinite .08s;transform-box:fill-box;transform-origin:center bottom}
-.hf3{animation:h-tap .48s ease-in-out infinite .16s;transform-box:fill-box;transform-origin:center bottom}
-.hf4{animation:h-tap .48s ease-in-out infinite .24s;transform-box:fill-box;transform-origin:center bottom}
-.hf5{animation:h-tap .48s ease-in-out infinite .32s;transform-box:fill-box;transform-origin:center bottom}
-.hf6{animation:h-tap .48s ease-in-out infinite .40s;transform-box:fill-box;transform-origin:center bottom}
-.h-cursor{animation:h-cursor 1s step-end infinite}
-@keyframes h-cursor{0%,100%{opacity:1}50%{opacity:0}}
 .proc-title{font-size:22px;font-weight:600;letter-spacing:-.4px;margin-bottom:6px}
 .proc-url{font-size:13px;color:var(--t2);margin-bottom:32px}
 .proc-steps{display:flex;flex-direction:column;gap:8px;text-align:left;max-width:400px;margin:0 auto 22px}
@@ -900,19 +880,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <div class="body">
     <div class="proc-wrap">
       <div class="mascot-wrap">
-        <div class="mascot-anim">
-          <img class="mascot-img" src="mascot.png" alt="Humand mascot">
-          <svg class="mascot-overlay" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
-            <!-- Left paw fingers -->
-            <ellipse cx="76"  cy="174" rx="5" ry="6" fill="#1a1a8a" opacity="0.55" class="hf1"/>
-            <ellipse cx="86"  cy="177" rx="5" ry="6" fill="#1a1a8a" opacity="0.55" class="hf2"/>
-            <ellipse cx="96"  cy="174" rx="5" ry="6" fill="#1a1a8a" opacity="0.55" class="hf3"/>
-            <!-- Right paw fingers -->
-            <ellipse cx="113" cy="174" rx="5" ry="6" fill="#1a1a8a" opacity="0.55" class="hf4"/>
-            <ellipse cx="123" cy="177" rx="5" ry="6" fill="#1a1a8a" opacity="0.55" class="hf5"/>
-            <ellipse cx="133" cy="174" rx="5" ry="6" fill="#1a1a8a" opacity="0.55" class="hf6"/>
-          </svg>
-        </div>
+        <img class="mascot-img" src="mascot.gif" alt="Humand mascot">
       </div>
       <h2 class="proc-title" data-i18n="procTitle">Investigando empresa</h2>
       <p class="proc-url" id="proc-target"></p>
@@ -979,7 +947,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.25</span>
+  <span class="ver-badge">v1.2.26</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
