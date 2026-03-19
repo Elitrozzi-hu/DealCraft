@@ -1,7 +1,12 @@
 {
-  "version": "1.2.12",
+  "version": "1.2.13",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.13",
+      "date": "2026-03-18",
+      "note": "Add Google Meet join button at top of action checklist with Meet branding"
+    },
     {
       "version": "1.2.12",
       "date": "2026-03-18",
