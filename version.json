@@ -1,7 +1,12 @@
 {
-  "version": "1.2.38",
+  "version": "1.2.39",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.39",
+      "date": "2026-03-19",
+      "note": "Connect Presentación card to POST /api/deck — generates real Google Slides deck and opens deckUrl"
+    },
     {
       "version": "1.2.38",
       "date": "2026-03-19",

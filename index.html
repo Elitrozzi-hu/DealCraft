@@ -1036,7 +1036,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.38</span>
+  <span class="ver-badge">v1.2.39</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1606,6 +1606,7 @@ function getPROC(){return[
 // NAVIGATION
 // ═══════════════════════════════════════════
 let current;
+let rawBrief = null;
 // ─── API config ───────────────────────────────
 const API_BASE = 'https://dealcraft.onrender.com';
 let selectedDealId = null, selectedDealName = '', selectedDealStage = '';
@@ -1844,6 +1845,7 @@ async function _runBrief(payload, displayName){
   completeStep(3);
   document.getElementById('prog-fill').style.width='100%';
 
+  rawBrief = apiResponse;
   current = mapBriefToCompany(apiResponse);
   const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
   const brief = apiResponse.brief || apiResponse;
@@ -2694,7 +2696,7 @@ function renderActionPlan(c){ c=_safe(c);
         '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
         '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
-      '<div class="mat-card" onclick="toast(t(\'comingSoonDeck\'))">'+
+      '<div class="mat-card" onclick="generateDeck()">'+
         '<div class="mat-card-icon">📊</div>'+
         '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
         '<div class="mat-card-desc">'+t('matDeckDesc')+'</div>'+
@@ -4557,6 +4559,36 @@ function loadDemo(){
   render();
   show('s3');
   toast('⚡ Modo demo cargado — datos de ejemplo');
+}
+
+// ── Deck generation ───────────────────────
+async function generateDeck(){
+  if(!rawBrief){ toast('⚠️ Generá un brief primero'); return; }
+  toast('⏳ Generando presentación...');
+  try {
+    const r = await fetch(API_BASE+'/api/deck', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        brief: rawBrief.brief || rawBrief,
+        deal_data: {
+          company_name: selectedDealName,
+          hubspot_deal_id: selectedDealId || null
+        }
+      })
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const json = await r.json();
+    const url = json?.apps_script?.response?.deckUrl || json?.deckUrl;
+    if(url){
+      toast('✅ Presentación lista');
+      window.open(url, '_blank');
+    } else {
+      toast('⚠️ No se recibió el link de la presentación');
+    }
+  } catch(e){
+    toast('❌ Error al generar la presentación. Intentá de nuevo.');
+  }
 }
 
 // ── Init ──────────────────────────────────
