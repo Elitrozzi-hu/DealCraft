@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.66</span>
+  <span class="ver-badge">v1.2.67</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2725,8 +2725,8 @@ function openCtxDrawer(type){
           ? '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+
               techChips.map(name=>'<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t1)">'+escHtml(name)+'</span>').join('')+
             '</div>'
-          : '<div style="font-size:12px;color:var(--t2);margin-bottom:12px">Sin herramientas registradas</div>')+
-        '<button class="btn b-s" style="font-size:12px;width:100%" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'
+          : '<div style="font-size:12px;color:var(--t2);margin-bottom:12px">'+t('noTools')+'</div>')+
+        '<button class="btn b-s" style="font-size:12px;width:100%" onclick="openDrawer(\'tech\')">'+t('editTechBtn')+'</button>'
       )+
       // d. Deal
       wc(
@@ -2749,9 +2749,9 @@ function openCtxDrawer(type){
       unknown:        {label:'Unknown',        bg:'var(--bg)',   color:'var(--t2)'},
     };
     const engConfig = {
-      pending:   {label:'Pendiente', bg:'var(--bg)',   color:'var(--t2)'},
-      contacted: {label:'Contactado',bg:'var(--px)',   color:'var(--p)'},
-      engaged:   {label:'Engaged',   bg:'var(--okl)',  color:'var(--ok)'},
+      pending:   {label:t('engPending'),   bg:'var(--bg)',   color:'var(--t2)'},
+      contacted: {label:t('engContacted'), bg:'var(--px)',   color:'var(--p)'},
+      engaged:   {label:t('engEngaged'),   bg:'var(--okl)',  color:'var(--ok)'},
       warm:      {label:'Warm',      bg:'#fff3e0',     color:'#e65100'},
       cold:      {label:'Cold',      bg:'#e3f2fd',     color:'#1565c0'},
     };
@@ -2764,7 +2764,7 @@ function openCtxDrawer(type){
         '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden">'+
           '<div style="height:100%;width:'+Math.round(confirmed/Math.max(stks.length,1)*100)+'%;background:var(--ok);border-radius:3px"></div>'+
         '</div>'+
-        '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+confirmed+'/'+stks.length+' confirmados</span>'+
+        '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+confirmed+'/'+stks.length+' '+t('stkConfirmedCount')+'</span>'+
       '</div>'+
       // One card per stakeholder
       stks.map((s,i)=>{
@@ -2808,7 +2808,7 @@ function openCtxDrawer(type){
           // ── Confirm button + contact row
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">'+
             '<button class="q-row-btn" style="flex-shrink:0" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+');openCtxDrawer(\'stakeholders\')">'+
-              (s.present ? '✓ Confirmado — Quitar' : '+ Confirmar asistencia')+
+              (s.present ? t('stkConfirmed') : t('stkConfirmBtn'))+
             '</button>'+
             (contactRow.length ? '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end">'+contactRow.join('')+'</div>' : '')+
           '</div>'+
@@ -2818,12 +2818,12 @@ function openCtxDrawer(type){
             '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
               (s._likelyPriority ?
                 '<div style="background:var(--bg);border-radius:var(--r1);padding:10px">'+
-                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:5px">💡 Qué le importa</div>'+
+                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:5px">'+t('stkPriority')+'</div>'+
                   '<div style="font-size:11px;color:var(--t1);line-height:1.5">'+escHtml(s._likelyPriority)+'</div>'+
                 '</div>' : '<div></div>')+
               (s._pitchAngle ?
                 '<div style="background:var(--px);border-radius:var(--r1);padding:10px">'+
-                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:5px">💬 Cómo hablarle</div>'+
+                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:5px">'+t('stkPitch')+'</div>'+
                   '<div style="font-size:11px;color:var(--p);line-height:1.5;font-style:italic">"'+escHtml(s._pitchAngle)+'"</div>'+
                 '</div>' : '<div></div>')+
             '</div>' : '')+
@@ -2831,7 +2831,7 @@ function openCtxDrawer(type){
           // ── Opening questions
           (s._openingQuestions&&s._openingQuestions.length ?
             divider+
-            secLbl('❓','Preguntas de apertura')+
+            secLbl('❓',t('stkOpeningQ'))+
             s._openingQuestions.slice(0,3).map((q,qi)=>
               '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
                 '<span style="font-size:10px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px">'+(qi+1)+'.</span>'+
@@ -2842,7 +2842,7 @@ function openCtxDrawer(type){
           // ── Objections
           (s._objections&&s._objections.length ?
             divider+
-            secLbl('⚠️','Objeciones clave')+
+            secLbl('⚠️',t('stkObjLabel'))+
             s._objections.slice(0,3).map(o=>
               '<div style="margin-bottom:8px;background:var(--bg);border-radius:var(--r1);padding:8px 10px">'+
                 '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
@@ -2853,7 +2853,7 @@ function openCtxDrawer(type){
           // ── Red flags
           (s._redFlags&&s._redFlags.length ?
             divider+
-            secLbl('🚩','Red flags')+
+            secLbl('🚩',t('stkRedFlags'))+
             '<div style="background:#fff5f5;border-radius:var(--r1);padding:8px 10px">'+
               s._redFlags.map(r=>
                 '<div style="display:flex;gap:6px;font-size:11px;color:var(--red);line-height:1.5;padding:3px 0">'+
@@ -2866,7 +2866,7 @@ function openCtxDrawer(type){
           // ── Transcript signals
           (s._transcriptSignals&&s._transcriptSignals.length ?
             divider+
-            secLbl('🎙️','Del transcript')+
+            secLbl('🎙️',t('stkTranscript'))+
             s._transcriptSignals.map(r=>
               '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--bg);font-style:italic">"'+escHtml(r)+'"</div>'
             ).join('') : '')+
@@ -2882,7 +2882,7 @@ function openCtxDrawer(type){
     title = '🔍 Análisis';
     html =
       '<div class="drw-section">'+
-        '<div class="drw-section-title">Contexto</div>'+
+        '<div class="drw-section-title">'+t('anlContext')+'</div>'+
         c.keyInsights.map(i=>'<div class="drw-bullet">'+i+'</div>').join('')+
       '</div>'+
       '<div class="anl-card">'+
@@ -2912,7 +2912,7 @@ function openCtxDrawer(type){
         })()+
       '</div>'+
       '<div class="anl-card">'+
-        '<div class="anl-card-title">⚠️ Riesgos del deal</div>'+
+        '<div class="anl-card-title">⚠️ '+t('anlRisks')+'</div>'+
         c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">⚠️</span><span>'+r.txt+'</span></div>').join('')+
       '</div>'+
       '<div class="anl-card">'+
@@ -2978,7 +2978,7 @@ function renderActionPlan(c){ c=_safe(c);
   };
 
   // a. Context
-  const contextHtml = wc('Contexto',
+  const contextHtml = wc(t('anlContext'),
     '<div style="font-size:13px;color:var(--t1);line-height:1.7">'+escHtml(c.desc)+'</div>'
   );
 
@@ -2992,12 +2992,12 @@ function renderActionPlan(c){ c=_safe(c);
             '<span style="flex:1;font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
           '</div>'
         ).join('')
-      : '<div style="font-size:12px;color:var(--t2)">Sin pain points detectados</div>'
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoPains')+'</div>'
   );
 
   // c. Opportunities
   const opps = c._opportunities||[];
-  const oppsHtml = wc('Oportunidades',
+  const oppsHtml = wc(t('anlOpportunities'),
     opps.length
       ? opps.map(o=>
           '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
@@ -3005,12 +3005,12 @@ function renderActionPlan(c){ c=_safe(c);
             '<span style="flex:1;font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(typeof o==='string'?o:o.title||o.description||JSON.stringify(o))+'</span>'+
           '</div>'
         ).join('')
-      : '<div style="font-size:12px;color:var(--t2)">Sin oportunidades mapeadas</div>'
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoOpps')+'</div>'
   );
 
   // d. Modules
   const mods = c._mods||[];
-  const modsHtml = wc('Módulos recomendados',
+  const modsHtml = wc(t('anlModules'),
     mods.length
       ? mods.map(m=>{
           const isPri = m.priority==='primary';
@@ -3018,18 +3018,18 @@ function renderActionPlan(c){ c=_safe(c);
             '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">'+
               '<span style="font-size:12px;font-weight:600;color:'+(isPri?'var(--p)':'var(--t1)')+'">'+escHtml(m.module_name||'Módulo')+'</span>'+
               '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+(isPri?'var(--p)':'var(--br)')+';color:'+(isPri?'#fff':'var(--t2)')+'">'+
-                (isPri?'Principal':'Secundario')+
+                (isPri?t('modPrimary'):t('modSecondary'))+
               '</span>'+
             '</div>'+
             (m.why_relevant?'<div style="font-size:11px;color:var(--t2);line-height:1.5">'+escHtml(m.why_relevant)+'</div>':'')+
           '</div>';
         }).join('')
-      : '<div style="font-size:12px;color:var(--t2)">Sin módulos asignados</div>'
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoModules')+'</div>'
   );
 
   // e. Risks
   const risks = c.dealRisks||[];
-  const risksHtml = wc('Riesgos del deal',
+  const risksHtml = wc(t('anlRisks'),
     risks.length
       ? risks.map(r=>
           '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
@@ -3037,7 +3037,7 @@ function renderActionPlan(c){ c=_safe(c);
             '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(r.txt||'')+'</span>'+
           '</div>'
         ).join('')
-      : '<div style="font-size:12px;color:var(--t2)">Sin riesgos detectados</div>'
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoRisks')+'</div>'
   , '0');
 
   const apHeader =
@@ -3182,11 +3182,11 @@ function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
           '</div>'+
         '</div>'
       ).join('')
-    : '<div style="padding:8px 0;font-size:13px;color:var(--t2)">Sin preguntas disponibles.</div>';
+    : '<div style="padding:8px 0;font-size:13px;color:var(--t2)">'+t('noQuestions')+'</div>';
 
   const discRoleHtml =
     '<div class="role-filter" id="stk-role-filter">'+
-      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">'+t('filterAll')+'</div>'+
       '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
       '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
       '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
@@ -3196,9 +3196,9 @@ function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
 
   const questionsBody =
     '<div class="tk-subtabs">'+
-      '<div class="tk-subtab on" data-stk="tk-disc" onclick="tkSubTab(\'tk-disc\')">Preguntas disparadoras</div>'+
-      '<div class="tk-subtab" data-stk="tk-role" onclick="tkSubTab(\'tk-role\')">Preguntas por rol</div>'+
-      '<div class="tk-subtab" data-stk="tk-obj" onclick="tkSubTab(\'tk-obj\')">Objeciones frecuentes</div>'+
+      '<div class="tk-subtab on" data-stk="tk-disc" onclick="tkSubTab(\'tk-disc\')">'+t('tkSubDisp')+'</div>'+
+      '<div class="tk-subtab" data-stk="tk-role" onclick="tkSubTab(\'tk-role\')">'+t('tkSubRole')+'</div>'+
+      '<div class="tk-subtab" data-stk="tk-obj" onclick="tkSubTab(\'tk-obj\')">'+t('tkSubObj')+'</div>'+
     '</div>'+
     '<div class="tk-subpanel on" id="tk-disc">'+discQuestionsHtml+'</div>'+
     '<div class="tk-subpanel" id="tk-role">'+discRoleHtml+'</div>'+
@@ -3968,14 +3968,14 @@ function buildStakeholdersDrawer(c){ c=_safe(c);
 
   const editRows = stks.map((s,i)=>
     '<div class="stk-edit-row">'+
-      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+')" title="'+(s.present?'En reunión':'Faltante')+'">'+(s.present?'✓':'—')+'</button>'+
+      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+')" title="'+(s.present?t('inMeeting'):t('missing'))+'">'+(s.present?'✓':'—')+'</button>'+
       '<input class="stk-edit-inp" value="'+s.role.replace(/"/g,'&quot;')+'" onchange="updateStkRole(\''+c.name.replace(/'/g,"\\'")+'\','+i+',this.value)" placeholder="Rol / nombre">'+
     '</div>'
   ).join('');
 
   const grid = '<div class="stk-grid">'+
     stks.map(s=>'<div class="stk-card stk-'+s.type+'">'+
-      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?'✓ En reunión':'✗ Faltante')+'</span>'+
+      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?t('inMeeting'):t('missing'))+'</span>'+
       '<div class="stk-badge">'+typeLabel[s.type]+'</div>'+
       '<div class="stk-role">'+s.role+'</div>'+
       '<div class="stk-title">'+s.title+'</div>'+
@@ -4043,7 +4043,7 @@ function renderCovCard(c){ c=_safe(c);
   const barColor = pct>=75?'var(--ok)':pct>=50?'var(--wa)':'var(--red)';
   const editRows = stks.map((s,i)=>
     '<div class="stk-edit-row">' +
-      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\',' +i+')" title="'+(s.present?'En reunión':'Faltante')+'">'+(s.present?'✓':'—')+'</button>' +
+      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\',' +i+')" title="'+(s.present?t('inMeeting'):t('missing'))+'">'+(s.present?'✓':'—')+'</button>' +
       '<input class="stk-edit-inp" value="'+s.role.replace(/"/g,'&quot;')+'" onchange="updateStkRole(\''+c.name.replace(/'/g,"\\'")+'\','+i+',this.value)" placeholder="Rol / nombre">' +
     '</div>'
   ).join('');
@@ -4056,7 +4056,7 @@ function renderCovCard(c){ c=_safe(c);
     stks.map(s=>'<div class="cov-role">' +
       '<span class="cov-dot" style="background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>' +
       '<span class="cov-rname">'+s.role+'</span>' +
-      (s.present?'<span class="cov-ok">✓ En reunión</span>':'<span class="cov-miss">✗ Faltante</span>') +
+      (s.present?'<span class="cov-ok">'+t('inMeeting')+'</span>':'<span class="cov-miss">'+t('missing')+'</span>') +
     '</div>').join('') +
     '</div>' +
     '<div class="stk-edit-rows" id="stk-edit-rows">' + editRows +
@@ -4120,7 +4120,7 @@ function renderStakeholders(c){ c=_safe(c);
     '<div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Basado en el perfil de <strong>'+c.name+'</strong>. Las personas marcadas como "Faltante" no están confirmadas en la reunión — son críticas para avanzar el deal.</div>' +
     '<div class="stk-grid">' +
     c.stakeholders.map(s=>'<div class="stk-card stk-'+s.type+'">' +
-      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?'✓ En reunión':'✗ Faltante')+'</span>' +
+      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?t('inMeeting'):t('missing'))+'</span>' +
       '<div class="stk-badge">'+typeLabel[s.type]+'</div>' +
       '<div class="stk-role">'+s.role+'</div>' +
       '<div class="stk-title">'+s.title+'</div>' +
@@ -4128,9 +4128,9 @@ function renderStakeholders(c){ c=_safe(c);
     '</div>').join('') +
     '</div>' +
     (missing.length?'<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:10px">⚠️ Stakeholders faltantes</div>'+alerts:'') +
-    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol — elige el perfil de quien tienes en la llamada</div>' +
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">'+t('stkRoleFilter')+'</div>' +
     '<div class="role-filter" id="stk-role-filter">' +
-      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>' +
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">'+t('filterAll')+'</div>' +
       '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
       '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>' +
       '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>' +
@@ -4201,7 +4201,7 @@ function renderDealStrategy(c){ c=_safe(c);
     '<div style="background:var(--bg);border-radius:var(--r2);padding:13px 15px;margin-bottom:18px">' +
       guide.provide.map(p=>'<div style="font-size:12px;color:var(--t1);display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;line-height:1.5"><span style="color:var(--p);font-weight:600;flex-shrink:0">✓</span>'+p+'</div>').join('') +
     '</div>' +
-    '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">⚠️ Riesgos del deal — '+c.name+'</div>' +
+    '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">⚠️ '+t('anlRisks')+' — '+c.name+'</div>' +
     '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">⚠️</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">✅ Próximas acciones para avanzar el deal</div>' +
     '<div class="next-list">'+nextItems+'</div>' +
@@ -4334,6 +4334,25 @@ const T = {
     s1ManNamePh:'Ej. Royal Caribbean', s1ManWebPh:'Ej. royalcaribbean.com',
     s1ManCtxPh:'Industria, tipo de empresa, contexto de la reunión...',
     s1ManBtn:'Generar brief →',
+    // Analysis panel sections
+    anlContext:'Contexto', anlOpportunities:'Oportunidades', anlModules:'Módulos recomendados',
+    anlRisks:'Riesgos del deal', anlNoPains:'Sin pain points detectados',
+    anlNoOpps:'Sin oportunidades mapeadas', anlNoModules:'Sin módulos asignados', anlNoRisks:'Sin riesgos detectados',
+    modPrimary:'Principal', modSecondary:'Secundario',
+    // Company drawer
+    noTools:'Sin herramientas registradas', editTechBtn:'🔧 Ver análisis completo y editar →',
+    // Stakeholders drawer
+    stkConfirmed:'✓ Confirmado — Quitar', stkConfirmBtn:'+ Confirmar asistencia',
+    stkPriority:'💡 Qué le importa', stkPitch:'💬 Cómo hablarle',
+    stkOpeningQ:'Preguntas de apertura', stkObjLabel:'Objeciones clave',
+    stkRedFlags:'Red flags', stkTranscript:'Del transcript',
+    stkConfirmedCount:'confirmados',
+    engPending:'Pendiente', engContacted:'Contactado', engEngaged:'Engaged',
+    // Toolkit subtabs
+    tkSubDisp:'Preguntas disparadoras', tkSubRole:'Preguntas por rol', tkSubObj:'Objeciones frecuentes',
+    noQuestions:'Sin preguntas disponibles.',
+    // Stakeholders drawer (legacy)
+    stkRoleFilter:'Preguntas por rol — elige el perfil de quien tienes en la llamada',
   },
   en: {
     // Screen 1
@@ -4425,6 +4444,25 @@ const T = {
     s1ManNamePh:'e.g. Royal Caribbean', s1ManWebPh:'e.g. royalcaribbean.com',
     s1ManCtxPh:'Industry, company type, meeting context...',
     s1ManBtn:'Generate brief →',
+    // Analysis panel sections
+    anlContext:'Context', anlOpportunities:'Opportunities', anlModules:'Recommended modules',
+    anlRisks:'Deal risks', anlNoPains:'No pain points detected',
+    anlNoOpps:'No opportunities mapped', anlNoModules:'No modules assigned', anlNoRisks:'No risks detected',
+    modPrimary:'Primary', modSecondary:'Secondary',
+    // Company drawer
+    noTools:'No tools registered', editTechBtn:'🔧 View full analysis and edit →',
+    // Stakeholders drawer
+    stkConfirmed:'✓ Confirmed — Remove', stkConfirmBtn:'+ Confirm attendance',
+    stkPriority:'💡 What matters to them', stkPitch:'💬 How to talk to them',
+    stkOpeningQ:'Opening questions', stkObjLabel:'Key objections',
+    stkRedFlags:'Red flags', stkTranscript:'From transcript',
+    stkConfirmedCount:'confirmed',
+    engPending:'Pending', engContacted:'Contacted', engEngaged:'Engaged',
+    // Toolkit subtabs
+    tkSubDisp:'Trigger questions', tkSubRole:'Questions by role', tkSubObj:'Frequent objections',
+    noQuestions:'No questions available.',
+    // Stakeholders drawer (legacy)
+    stkRoleFilter:'Questions by role — choose the profile of who you have on the call',
   }
 };
 function t(key){ return (T[lang]||T.es)[key] || (T.es[key]) || key; }

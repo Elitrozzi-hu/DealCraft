@@ -1,7 +1,12 @@
 {
-  "version": "1.2.66",
+  "version": "1.2.67",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.67",
+      "date": "2026-03-19",
+      "note": "Translate all hardcoded Spanish strings to use i18n t() keys for full EN support"
+    },
     {
       "version": "1.2.66",
       "date": "2026-03-19",
