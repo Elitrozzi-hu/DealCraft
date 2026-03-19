@@ -1,7 +1,12 @@
 {
-  "version": "1.2.49",
+  "version": "1.2.50",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.50",
+      "date": "2026-03-19",
+      "note": "Move role questions out of stakeholders drawer; add 3 sub-tabs to Toolkit de reunión: Preguntas disparadoras, Preguntas por rol, Objeciones frecuentes"
+    },
     {
       "version": "1.2.49",
       "date": "2026-03-19",

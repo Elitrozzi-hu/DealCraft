@@ -434,6 +434,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .tk-step-dur{font-size:11px;color:var(--t3);flex-shrink:0}
 .tk-step-body{padding:0 0 16px 36px;display:none}
 .tk-step-body.on{display:block}
+/* Toolkit sub-tabs */
+.tk-subtabs{display:flex;border-bottom:1.5px solid var(--br);margin-bottom:16px}
+.tk-subtab{font-size:12px;font-weight:600;color:var(--t2);padding:9px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;white-space:nowrap;transition:color .12s,border-color .12s}
+.tk-subtab:hover{color:var(--t1)}
+.tk-subtab.on{color:var(--p);border-bottom-color:var(--p)}
+.tk-subpanel{display:none}
+.tk-subpanel.on{display:block}
 /* Drawer content sections */
 .drw-section{margin-bottom:20px}
 .drw-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--br)}
@@ -1046,7 +1053,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.49</span>
+  <span class="ver-badge">v1.2.50</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2633,15 +2640,6 @@ function openCtxDrawer(type){
           '</div>'
         ).join('')+
       '</div>'+
-      '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol</div>'+
-      '<div class="role-filter" id="stk-role-filter">'+
-        '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
-      '</div>'+
-      '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>'+
       '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">'+
         '<button class="btn b-s" onclick="openDrawer(\'stakeholders\')">✏️ Editar stakeholders</button>'+
       '</div>';
@@ -2831,6 +2829,40 @@ function renderActionPlan(c){ c=_safe(c);
     '</div>'
   ).join('');
 
+  // Toolkit sub-tab panels
+  const tkQuestionsHtml = questions.length
+    ? questions.slice(0,5).map((q,i)=>
+        '<div class="q-row">'+
+          '<div class="q-row-num">'+(i+1)+'</div>'+
+          '<div class="q-row-body">'+
+            '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
+            '<div class="q-row-text">'+q.text+'</div>'+
+            '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</button></div>'+
+          '</div>'+
+        '</div>'
+      ).join('')
+    : '<div style="padding:16px;font-size:13px;color:var(--t2)">Sin preguntas disponibles para esta etapa.</div>';
+
+  const tkRoleHtml =
+    '<div class="role-filter" id="stk-role-filter">'+
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
+    '</div>'+
+    '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>';
+
+  const tkToolkitHtml =
+    '<div class="tk-subtabs">'+
+      '<div class="tk-subtab on" data-stk="tk-disc" onclick="tkSubTab(\'tk-disc\')">Preguntas disparadoras</div>'+
+      '<div class="tk-subtab" data-stk="tk-role" onclick="tkSubTab(\'tk-role\')">Preguntas por rol</div>'+
+      '<div class="tk-subtab" data-stk="tk-obj" onclick="tkSubTab(\'tk-obj\')">Objeciones frecuentes</div>'+
+    '</div>'+
+    '<div class="tk-subpanel on" id="tk-disc">'+tkQuestionsHtml+'</div>'+
+    '<div class="tk-subpanel" id="tk-role">'+tkRoleHtml+'</div>'+
+    '<div class="tk-subpanel" id="tk-obj">'+buildObjCard(true)+'</div>';
+
   const apHeader =
     '<div class="col-header">'+
       '<div class="col-header-title">'+t('apColTitle')+'</div>'+
@@ -2845,13 +2877,18 @@ function renderActionPlan(c){ c=_safe(c);
       '</div>'+
       '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
       '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
-      '<div class="ap-panel" id="ap-toolkit">'+toolkitHtml+'</div>'+
+      '<div class="ap-panel" id="ap-toolkit">'+tkToolkitHtml+'</div>'+
     '</div>';
 }
 
 function apTab(id){
   document.querySelectorAll('.ap-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===id));
   document.querySelectorAll('.ap-panel').forEach(p=>p.classList.toggle('on',p.id==='ap-'+id));
+}
+
+function tkSubTab(id){
+  document.querySelectorAll('.tk-subtab').forEach(t=>t.classList.toggle('on',t.dataset.stk===id));
+  document.querySelectorAll('.tk-subpanel').forEach(p=>p.classList.toggle('on',p.id===id));
 }
 
 function toggleTkStep(id){
