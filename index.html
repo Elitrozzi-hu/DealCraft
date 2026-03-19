@@ -928,8 +928,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
     <div class="logo" style="cursor:pointer" onclick="goHome()"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
       <button class="btn b-g" onclick="copyBrief()">📋 <span data-i18n="copyBrief">Brief</span></button>
-      <button class="btn b-g" onclick="openDrawer('tech')">🔧 Tech Stack</button>
-      <button class="btn b-g" onclick="openDrawer('recursos')">📁 Recursos</button>
+      <button class="btn b-g" onclick="openDrawer('tech')">🔧 <span data-i18n="navTechStack">Tech Stack</span></button>
+      <button class="btn b-g" onclick="openDrawer('recursos')">📁 <span data-i18n="navResources">Recursos</span></button>
       <button class="lang-btn" id="lang-btn-s3" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
     </div>
@@ -979,7 +979,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.23</span>
+  <span class="ver-badge">v1.2.24</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1809,7 +1809,7 @@ function mapBriefToCompany(apiResponse){
   // Signals from deal heat + opportunity areas
   const signals = [];
   const heat = vel.deal_heat||'';
-  if(vel.signal) signals.push({ico:heat==='hot'?'🔴':heat==='warm'?'🟡':'❄️',text:vel.signal,badge:heat==='hot'?'Hot':heat==='warm'?'Warm':'Frío',cls:heat==='hot'?'sig-hot':'sig-wa'});
+  if(vel.signal) signals.push({ico:heat==='hot'?'🔴':heat==='warm'?'🟡':'❄️',text:vel.signal,badge:heat==='hot'?t('heatHot'):heat==='warm'?t('heatWarm'):t('heatCold'),cls:heat==='hot'?'sig-hot':'sig-wa'});
   (brief.opportunity_areas||[]).slice(0,4).forEach(a=>{
     const sc=a.score||0;
     signals.push({ico:sc>=0.8?'🔴':sc>=0.6?'🟡':'🟢',text:(a.title||a.name||'Área')+(a.rationale?': '+a.rationale:''),badge:Math.round(sc*100)+'%',cls:sc>=0.8?'sig-hot':sc>=0.6?'sig-wa':'sig-ok'});
@@ -2240,7 +2240,7 @@ function renderContext(c){ c=_safe(c);
       '<div class="ctx-card-head">'+
         '<span class="ctx-card-ico">🏢</span>'+
         '<span class="ctx-card-title">'+t('cardCompany')+'</span>'+
-        '<span class="ctx-card-badge">'+activeTech.length+' tools</span>'+
+        '<span class="ctx-card-badge">'+activeTech.length+' '+t('tools')+'</span>'+
         '<span class="ctx-card-arrow">→</span>'+
       '</div>'+
       '<div class="ctx-card-preview">'+
@@ -2257,7 +2257,7 @@ function renderContext(c){ c=_safe(c);
     '<div class="ctx-card" onclick="openCtxDrawer(\'stakeholders\')">'+
       '<div class="ctx-card-head">'+
         '<span class="ctx-card-ico">👥</span>'+
-        '<span class="ctx-card-title">Stakeholders</span>'+
+        '<span class="ctx-card-title">'+t('tabStakeholders')+'</span>'+
         '<span class="ctx-card-badge" style="color:'+stkColor+'">'+present+'/'+stks.length+'</span>'+
         '<span class="ctx-card-arrow">→</span>'+
       '</div>'+
@@ -2300,12 +2300,12 @@ function renderContext(c){ c=_safe(c);
   const hist = c._historicalPatterns;
   if(vel && Object.keys(vel).length){
     const heat = vel.deal_heat||'';
-    const heatPill = heat==='hot'?'<span class="dv-pill dv-hot">🔥 HOT</span>':heat==='warm'?'<span class="dv-pill dv-warm">♨️ Warm</span>':heat==='cold'?'<span class="dv-pill dv-cold">❄️ Cold</span>':'';
+    const heatPill = heat==='hot'?'<span class="dv-pill dv-hot">🔥 '+t('heatHot')+'</span>':heat==='warm'?'<span class="dv-pill dv-warm">♨️ '+t('heatWarm')+'</span>':heat==='cold'?'<span class="dv-pill dv-cold">❄️ '+t('heatCold')+'</span>':'';
     const engPill = vel.engagement_score!=null?'<span class="dv-pill dv-eng">Score '+vel.engagement_score+'</span>':'';
-    const mtgPill = vel.meeting_count!=null?'<span class="dv-pill dv-stat">'+vel.meeting_count+' reuniones</span>':'';
-    const tcPill  = vel.transcript_count!=null&&vel.transcript_count>0?'<span class="dv-pill dv-stat">'+vel.transcript_count+' transcripciones</span>':'';
-    const actPill = vel.days_since_last_activity!=null?'<span class="dv-pill dv-stat">'+vel.days_since_last_activity+'d sin actividad</span>':'';
-    const histBit = hist&&hist.win_rate_pct!=null&&hist.confidence!=='none'?'<span class="dv-pill dv-stat">Win rate '+hist.win_rate_pct+'%</span>':'';
+    const mtgPill = vel.meeting_count!=null?'<span class="dv-pill dv-stat">'+vel.meeting_count+' '+t('meetings')+'</span>':'';
+    const tcPill  = vel.transcript_count!=null&&vel.transcript_count>0?'<span class="dv-pill dv-stat">'+vel.transcript_count+' '+t('transcripts')+'</span>':'';
+    const actPill = vel.days_since_last_activity!=null?'<span class="dv-pill dv-stat">'+vel.days_since_last_activity+' '+t('daysInactive')+'</span>':'';
+    const histBit = hist&&hist.win_rate_pct!=null&&hist.confidence!=='none'?'<span class="dv-pill dv-stat">'+t('winRate')+' '+hist.win_rate_pct+'%</span>':'';
     const signalLine = vel.signal?'<div style="font-size:11px;color:var(--t2);margin-top:4px;line-height:1.4">'+escHtml(vel.signal)+'</div>':'';
     velHtml = '<div class="dv-header">'+[heatPill,engPill,mtgPill,tcPill,actPill,histBit].filter(Boolean).join('')+'</div>'+signalLine+(signalLine?'<div style="margin-bottom:12px"></div>':'');
   }
@@ -2482,11 +2482,11 @@ function renderActionPlan(c){ c=_safe(c);
 
   // Pain hypotheses (from API brief)
   const pains = c._painHypotheses || [];
-  const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Hipótesis de dolor · IA</div>'+
+  const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">'+t('painHypTitle')+'</div>'+
     pains.slice(0,4).map((p,i)=>{
       const conf = p.confidence||'medium';
       const confCls = conf==='high'?'pain-hi':conf==='medium'?'pain-med':'pain-low';
-      const confLabel = conf==='high'?'Alta':conf==='medium'?'Media':'Baja';
+      const confLabel = conf==='high'?t('confHigh'):conf==='medium'?t('confMed'):t('confLow');
       // if_confirmed / if_not_confirmed are objects in real schema
       const ic = p.if_confirmed||{};
       const inc = p.if_not_confirmed||{};
@@ -2533,23 +2533,23 @@ function renderActionPlan(c){ c=_safe(c);
     '<div class="mat-cards">'+
       '<div class="mat-card" onclick="openEmailDrawer(\'pre\')">'+
         '<div class="mat-card-icon">✉️</div>'+
-        '<div class="mat-card-title">Pre-meeting Email</div>'+
+        '<div class="mat-card-title">'+t('matPreTitle')+'</div>'+
         '<div class="mat-card-desc">'+t('matPreDesc')+'</div>'+
         '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
       '<div class="mat-card" onclick="openEmailDrawer(\'post\')">'+
         '<div class="mat-card-icon">📨</div>'+
-        '<div class="mat-card-title">Post-meeting Email</div>'+
+        '<div class="mat-card-title">'+t('matPostTitle')+'</div>'+
         '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
         '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
-      '<div class="mat-card" onclick="toast(\'Próximamente: link a presentación\')">'+
+      '<div class="mat-card" onclick="toast(t(\'comingSoonDeck\'))">'+
         '<div class="mat-card-icon">📊</div>'+
         '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
         '<div class="mat-card-desc">'+t('matDeckDesc')+'</div>'+
         '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
       '</div>'+
-      '<div class="mat-card" onclick="toast(\'Próximamente: link a propuesta\')">'+
+      '<div class="mat-card" onclick="toast(t(\'comingSoonProp\'))">'+
         '<div class="mat-card-icon">📄</div>'+
         '<div class="mat-card-title">'+t('matPropTitle')+'</div>'+
         '<div class="mat-card-desc">'+t('matPropDesc')+'</div>'+
@@ -2582,8 +2582,8 @@ function renderActionPlan(c){ c=_safe(c);
     '<div class="ap-card">'+
       '<div class="ap-tabs">'+
         '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">'+t('tabActions')+'</div>'+
-        '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">Sales Materials</div>'+
-        '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">Meeting Toolkit</div>'+
+        '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">'+t('tabSalesMaterials')+'</div>'+
+        '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">'+t('tabMeetingToolkit')+'</div>'+
       '</div>'+
       '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
       '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
@@ -3787,6 +3787,22 @@ const T = {
     objSearchPlaceholder:'Buscar objeción — ej. presupuesto, celular, SAP, tiempo...',
     objCommonLabel:'⭐ Más frecuentes en prospección',
     noFitTitle:'🚨 Señales de no-fit real — calificar out',
+    // Nav
+    navTechStack:'Tech Stack', navResources:'Recursos',
+    // AP tabs
+    tabSalesMaterials:'Materiales de venta', tabMeetingToolkit:'Toolkit de reunión',
+    // Email card titles
+    matPreTitle:'Email pre-reunión', matPostTitle:'Email post-reunión',
+    // Context card
+    tools:'herramientas',
+    // Velocity pills
+    meetings:'reuniones', transcripts:'transcripciones', daysInactive:'d sin actividad', winRate:'Win rate',
+    // Toast coming soon
+    comingSoonDeck:'Próximamente: link a presentación', comingSoonProp:'Próximamente: link a propuesta',
+    // Heat labels
+    heatHot:'HOT', heatWarm:'Caliente', heatCold:'Frío',
+    // Pain hypotheses
+    painHypTitle:'Hipótesis de dolor · IA', confHigh:'Alta', confMed:'Media', confLow:'Baja',
   },
   en: {
     // Screen 1
@@ -3854,6 +3870,22 @@ const T = {
     objSearchPlaceholder:'Search objection — e.g. budget, mobile, SAP, timing...',
     objCommonLabel:'⭐ Most frequent in prospecting',
     noFitTitle:'🚨 Real no-fit signals — qualify out',
+    // Nav
+    navTechStack:'Tech Stack', navResources:'Resources',
+    // AP tabs
+    tabSalesMaterials:'Sales Materials', tabMeetingToolkit:'Meeting Toolkit',
+    // Email card titles
+    matPreTitle:'Pre-meeting Email', matPostTitle:'Post-meeting Email',
+    // Context card
+    tools:'tools',
+    // Velocity pills
+    meetings:'meetings', transcripts:'transcripts', daysInactive:'d no activity', winRate:'Win rate',
+    // Toast coming soon
+    comingSoonDeck:'Coming soon: deck link', comingSoonProp:'Coming soon: proposal link',
+    // Heat labels
+    heatHot:'HOT', heatWarm:'Warm', heatCold:'Cold',
+    // Pain hypotheses
+    painHypTitle:'Pain hypotheses · AI', confHigh:'High', confMed:'Medium', confLow:'Low',
   }
 };
 function t(key){ return (T[lang]||T.es)[key] || (T.es[key]) || key; }
