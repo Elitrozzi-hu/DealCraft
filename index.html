@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Humand · B2B Intelligence</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231a2b7a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-family='Arial Rounded MT Bold%2C Arial%2C sans-serif' font-size='20' font-weight='bold' fill='white'%3Eh%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
@@ -34,6 +35,7 @@ body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--t1);min-he
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:#fff;border-bottom:1px solid var(--br);position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:9px;font-weight:600;font-size:16px;letter-spacing:-.3px}
 .logo-i{width:30px;height:30px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600}
+.logo-img{height:24px;width:auto;object-fit:contain}
 .npill{background:var(--px);color:var(--p);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px}
 .nav-r{display:flex;align-items:center;gap:10px}
 .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pl));display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
@@ -879,7 +881,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <!-- ══ SCREEN 1: SEARCH ══ -->
 <div class="scr on" id="s1">
   <nav>
-    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="logo"><img src="Humand logo.webp" class="logo-img" alt="Humand"><span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
       <button class="btn b-g" style="font-size:12px" onclick="toast('Mis análisis (próximamente)')"><span data-i18n="myAnalyses">Mis análisis</span></button>
       <button class="lang-btn" id="lang-btn-s1" onclick="toggleLang()">🌐 EN</button>
@@ -971,7 +973,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <!-- ══ SCREEN 2: PROCESSING ══ -->
 <div class="scr" id="s2">
   <nav>
-    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="logo"><img src="Humand logo.webp" class="logo-img" alt="Humand"><span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
       <button class="lang-btn" id="lang-btn-s2" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
@@ -993,7 +995,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <!-- ══ SCREEN 3: RESULTS ══ -->
 <div class="scr" id="s3" style="flex-direction:column">
   <nav>
-    <div class="logo" style="cursor:pointer" onclick="goHome()"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="logo" style="cursor:pointer" onclick="goHome()"><img src="Humand logo.webp" class="logo-img" alt="Humand"><span class="npill">B2B Intelligence</span></div>
     <div class="nav-r">
       <button class="lang-btn" id="lang-btn-s3" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
@@ -1044,7 +1046,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.43</span>
+  <span class="ver-badge">v1.2.44</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
