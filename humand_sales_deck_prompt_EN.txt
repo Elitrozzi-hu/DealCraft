@@ -79,6 +79,14 @@ CORE RULES:
   "In today's fast-paced environment..." or "More than ever before...".
 
 
+CHARACTER LIMIT RULES (apply to every variable below)
+-------------------------------------------------------
+All character counts are inclusive of spaces and punctuation.
+A value that exceeds the upper limit will be truncated in the slide —
+shorten it until it fits within the stated range.
+Never pad values to meet the lower limit; if the content is naturally
+shorter, write it shorter and stay within bounds.
+
 INSTRUCTIONS BY VARIABLE
 --------------------------
 
@@ -124,7 +132,7 @@ Humand has deep expertise in driving adoption and engagement at scale across
 environments, where adoption must be earned."
 Avoid: generic claims, superlatives without evidence.
 
-[exec_summ_key_takeway] — 7 to 70 characters
+[exec_summ_key_takeaway] — 7 to 70 characters
 Objective: A single strategic line — the thesis of the entire proposal.
 Instruction: This is the arrow at the bottom of the executive summary slide.
 It should feel like a conclusion the prospect would agree with, not a
@@ -222,7 +230,7 @@ FIXED STRUCTURE — always generate exactly these keys, no more, no less:
     exec_summ_client_context
     exec_summ_humand_value_proposition
     exec_summ_humand_credentials
-    exec_summ_key_takeway
+    exec_summ_key_takeaway
     positioning
 
   Groups with exactly 3 instances each:
@@ -255,9 +263,10 @@ VISIBILITY RULES:
 - If there is not enough prospect context to fill an instance with real,
   specific content, mark that key as false in visibility AND set both
   title and description to empty string "".
-- Non-hideable fields (exec_summ_*, positioning) can NEVER be empty.
-  If there is not enough information to fill them with real, prospect-specific
-  content, do not return the content JSON — return the error object instead.
+- Non-hideable fields (exec_summ_*, exec_summ_key_takeaway, positioning) can
+  NEVER be empty. If there is not enough information to fill them with real,
+  prospect-specific content, do not return the content JSON — return the
+  error object instead.
 
 ERROR OBJECT — return this when any non-hideable field cannot be completed
 with real, specific prospect information:
@@ -286,7 +295,7 @@ VALID OUTPUT EXAMPLE
   "exec_summ_client_context": "Oahu Transit Services operates a unionized, shift-based, and highly distributed frontline workforce where speed, clarity, and consistency are critical to daily operations.",
   "exec_summ_humand_value_proposition": "Humand will serve as OTS's secure, mobile-first internal network—connecting employees across shifts and locations with targeted communication, a moderated internal community, and self-service access to HR forms and information.",
   "exec_summ_humand_credentials": "Purpose-built for frontline and deskless organizations, Humand has deep expertise in driving adoption at scale across 1.5M users and 1,500+ clients—particularly in unionized environments, where adoption must be earned.",
-  "exec_summ_key_takeway": "Sustainable adoption defines success.",
+  "exec_summ_key_takeaway": "Sustainable adoption defines success.",
   "context_title_1": "Workforce scale",
   "context_description_1": "~2,000 employees across distributed locations. 65% in frontline, field-based roles.",
   "context_title_2": "Labor structure",
