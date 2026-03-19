@@ -712,12 +712,14 @@ app.post('/api/deck', async (req, res) => {
     const deckContent = await generateDeckContent(brief, dealData);
     const dealId = dealData.id || `new_${Date.now()}`;
 
-    const sheetResult = await writeToSheet(dealId, deckContent, dealData);
+    const sheetResult = await writeToSheet(dealId, deckContent, dealData, brief);
 
     let scriptResult = null;
     const scriptUrl = process.env.APPS_SCRIPT_URL;
     if (scriptUrl) {
-      scriptResult = await triggerAppsScript(scriptUrl, dealId);
+      // Send full row data so Apps Script can write to sheet itself
+      const rowData = sheetResult.row || {};
+      scriptResult = await triggerAppsScript(scriptUrl, dealId, rowData);
     }
 
     res.json({ deck_content: deckContent, sheet: sheetResult, apps_script: scriptResult, deal_id: dealId });
@@ -765,10 +767,10 @@ app.post('/api/generate', async (req, res) => {
     if (generate_deck) {
       const deckContent = await generateDeckContent(brief, dealData);
       const dealId = dealData.id || `new_${Date.now()}`;
-      const sheetResult = await writeToSheet(dealId, deckContent, dealData);
+      const sheetResult = await writeToSheet(dealId, deckContent, dealData, brief);
       let scriptResult = null;
       const scriptUrl = process.env.APPS_SCRIPT_URL;
-      if (scriptUrl) scriptResult = await triggerAppsScript(scriptUrl, dealId);
+      if (scriptUrl) scriptResult = await triggerAppsScript(scriptUrl, dealId, sheetResult.row || {});
       deckResult = { deck_content: deckContent, sheet: sheetResult, apps_script: scriptResult };
     }
 
