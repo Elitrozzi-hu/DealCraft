@@ -922,7 +922,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
           <label class="search-label" data-i18n="searchLabel">Buscar deal en CRM</label>
           <div style="position:relative;margin-top:8px">
             <div class="search-row">
-              <input class="search-input" id="main-input" placeholder="Nombre de empresa o deal..." oninput="searchDeals(this.value)" autocomplete="off" />
+              <input class="search-input" id="main-input" data-i18n-ph="searchPlaceholder" placeholder="Nombre de empresa o deal..." oninput="searchDeals(this.value)" autocomplete="off" />
               <button class="btn b-p" id="analyze-btn" onclick="analyze()" disabled data-i18n="searchBtn">Analizar →</button>
             </div>
             <div class="deal-drop" id="deal-drop"></div>
@@ -973,9 +973,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
       <!-- ── Search history ── -->
       <div class="hist-wrap" id="hist-wrap">
-        <div class="hist-title">Búsquedas recientes</div>
+        <div class="hist-title" data-i18n="histTitle">Búsquedas recientes</div>
         <div class="hist-list" id="hist-list">
-          <div class="hist-empty">Aún no hay búsquedas recientes</div>
+          <div class="hist-empty" data-i18n="histEmpty">Aún no hay búsquedas recientes</div>
         </div>
       </div>
 
@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.72</span>
+  <span class="ver-badge">v1.2.73</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1784,7 +1784,7 @@ async function loadRecentBriefs(){
     if(!r.ok) throw new Error();
     const { entries } = await r.json();
     if(!entries || !entries.length){
-      list.innerHTML = '<div class="hist-empty">Aún no hay búsquedas recientes</div>';
+      list.innerHTML = '<div class="hist-empty">'+t('histEmpty')+'</div>';
       return;
     }
     list.innerHTML = entries.map(e=>{
@@ -1799,7 +1799,7 @@ async function loadRecentBriefs(){
         ${logoEl}
         <div class="hist-name">${escHtml(e.company_name||'—')}</div>
         <div class="hist-meta">${escHtml(e.industry||'')}${e.industry&&e.employee_count?' · ':''}${escHtml(e.employee_count||'')} · ${dateStr}</div>
-        <span class="hist-badge">Abrir →</span>
+        <span class="hist-badge">${t('histOpen')}</span>
       </div>`;
     }).join('');
   } catch(e){
@@ -4307,6 +4307,9 @@ const T = {
     s1ManNamePh:'Ej. Royal Caribbean', s1ManWebPh:'Ej. royalcaribbean.com',
     s1ManCtxPh:'Industria, tipo de empresa, contexto de la reunión...',
     s1ManBtn:'Generar brief →',
+    // Search screen
+    searchPlaceholder:'Nombre de empresa o deal...',
+    histTitle:'Búsquedas recientes', histEmpty:'Aún no hay búsquedas recientes', histOpen:'Abrir →',
     // Analysis panel sections
     anlContext:'Contexto', anlOpportunities:'Oportunidades', anlModules:'Módulos recomendados',
     anlRisks:'Riesgos del deal', anlNoPains:'Sin pain points detectados',
@@ -4417,6 +4420,9 @@ const T = {
     s1ManNamePh:'e.g. Royal Caribbean', s1ManWebPh:'e.g. royalcaribbean.com',
     s1ManCtxPh:'Industry, company type, meeting context...',
     s1ManBtn:'Generate brief →',
+    // Search screen
+    searchPlaceholder:'Company or deal name...',
+    histTitle:'Recent searches', histEmpty:'No recent searches yet', histOpen:'Open →',
     // Analysis panel sections
     anlContext:'Context', anlOpportunities:'Opportunities', anlModules:'Recommended modules',
     anlRisks:'Deal risks', anlNoPains:'No pain points detected',
