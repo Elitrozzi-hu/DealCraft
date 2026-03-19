@@ -1036,7 +1036,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.39</span>
+  <span class="ver-badge">v1.2.40</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1749,39 +1749,55 @@ function analyzeManual(){
   _runBrief({deal_data:{company_name:name, domain:web}}, name);
 }
 
-function saveToHistory(name, type, stage){
-  const hist = JSON.parse(localStorage.getItem('dc_search_history')||'[]');
-  hist.unshift({name, type, stage, date: new Date().toISOString()});
-  const deduped = hist.filter((h,i)=>hist.findIndex(x=>x.name===h.name)===i).slice(0,10);
-  localStorage.setItem('dc_search_history', JSON.stringify(deduped));
-  renderHistory();
-}
-
-function renderHistory(){
+async function loadRecentBriefs(){
   const list = document.getElementById('hist-list');
   if(!list) return;
-  const hist = JSON.parse(localStorage.getItem('dc_search_history')||'[]');
-  if(!hist.length){
-    list.innerHTML = '<div class="hist-empty">Aún no hay búsquedas recientes</div>';
-    return;
+  try {
+    const r = await fetch(API_BASE+'/api/briefs/recent');
+    if(!r.ok) throw new Error();
+    const { entries } = await r.json();
+    if(!entries || !entries.length){
+      list.innerHTML = '<div class="hist-empty">Aún no hay búsquedas recientes</div>';
+      return;
+    }
+    list.innerHTML = entries.map(e=>{
+      const d = new Date(e.updated_at);
+      const dateStr = d.toLocaleDateString('es-AR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      const key = encodeURIComponent(e.key || (e.company_name||'').toLowerCase().trim());
+      return `<div class="hist-row" onclick="openRecentBrief('${key}','${escHtml(e.company_name||'')}')">
+        <div class="hist-ico hist-ico-man">🏢</div>
+        <div class="hist-name">${escHtml(e.company_name||'—')}</div>
+        <div class="hist-meta">${escHtml(e.industry||'')}${e.industry&&e.employee_count?' · ':''}${escHtml(e.employee_count||'')} · ${dateStr}</div>
+        <span class="hist-badge">Abrir →</span>
+      </div>`;
+    }).join('');
+  } catch(e){
+    list.innerHTML = '<div class="hist-empty">No se pudo cargar el historial</div>';
   }
-  list.innerHTML = hist.map(h=>{
-    const d = new Date(h.date);
-    const dateStr = d.toLocaleDateString('es-AR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-    const ico = h.type==='hubspot' ? '🔗' : '🏢';
-    const icoCls = h.type==='hubspot' ? 'hist-ico-hs' : 'hist-ico-man';
-    return `<div class="hist-row" onclick="toast('Generá un nuevo brief desde el buscador')">
-      <div class="hist-ico ${icoCls}">${ico}</div>
-      <div class="hist-name">${escHtml(h.name)}</div>
-      <div class="hist-meta">${dateStr}</div>
-      <span class="hist-badge">${escHtml(h.stage||'Lead')}</span>
-    </div>`;
-  }).join('');
+}
+
+async function openRecentBrief(key, name){
+  toast('⏳ Cargando brief de '+name+'...');
+  try {
+    const r = await fetch(API_BASE+'/api/briefs/recent/'+key);
+    if(!r.ok) throw new Error();
+    const data = await r.json();
+    rawBrief = data;
+    selectedDealName = name;
+    selectedDealId = null;
+    selectedDealStage = (data.brief&&data.brief.deal_strategy&&data.brief.deal_strategy.sales_stage)||'lead';
+    current = mapBriefToCompany(data);
+    const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
+    currentStage = stageMap[(selectedDealStage).toLowerCase()] || 'lead';
+    render();
+    show('s3');
+    toast('✅ Brief cargado — '+name);
+  } catch(e){
+    toast('❌ No se pudo cargar el brief');
+  }
 }
 
 async function _runBrief(payload, displayName){
-  const histType = payload.deal_id ? 'hubspot' : 'manual';
-  saveToHistory(displayName, histType, selectedDealStage||'Lead');
   document.getElementById('proc-target').textContent = displayName;
   show('s2');
 
@@ -1855,6 +1871,7 @@ async function _runBrief(payload, displayName){
   render();
   if(payload.deal_id) history.pushState(null,'','?deal='+encodeURIComponent(payload.deal_id));
   show('s3');
+  loadRecentBriefs();
 }
 
 // ═══════════════════════════════════════════
@@ -4593,7 +4610,7 @@ async function generateDeck(){
 
 // ── Init ──────────────────────────────────
 checkHealth();
-renderHistory();
+loadRecentBriefs();
 function getModuleDetail(name){
   if(!SOLUTIONS_DATA) return null;
   const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();

@@ -1,7 +1,12 @@
 {
-  "version": "1.2.39",
+  "version": "1.2.40",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.40",
+      "date": "2026-03-19",
+      "note": "Replace localStorage history with server-side /api/briefs/recent — clickable entries load full cached brief without regenerating"
+    },
     {
       "version": "1.2.39",
       "date": "2026-03-19",
