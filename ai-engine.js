@@ -116,6 +116,12 @@ function buildBriefUserMessage(dealData, enrichData, historicalDeals) {
     sections.push(JSON.stringify(enrichData.lusha, null, 2));
   }
 
+  if (enrichData?.stakeholders?.length) {
+    sections.push('\n=== LUSHA STAKEHOLDERS — REAL PEOPLE AT THIS COMPANY (confidence: medium) ===');
+    sections.push('These are verified employees found at this company via Lusha. Use their names, titles, LinkedIn URLs, and contact details directly in the stakeholder_map. Do NOT invent contacts beyond this list.');
+    sections.push(JSON.stringify(enrichData.stakeholders, null, 2));
+  }
+
   if (enrichData?.scrape) {
     sections.push('\n=== WEBSITE SCRAPE (confidence: low — public information) ===');
     sections.push(JSON.stringify(enrichData.scrape, null, 2));

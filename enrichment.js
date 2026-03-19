@@ -2,32 +2,85 @@ require('dotenv').config();
 const axios = require('axios');
 const cheerio = require('cheerio');
 
+// Job title keywords that indicate a relevant stakeholder for Humand
+const RELEVANT_TITLE_KEYWORDS = [
+  'hr', 'human resource', 'people', 'talent', 'culture', 'engagement',
+  'employee experience', 'hrbp', 'chief people', 'chro',
+  'coo', 'chief operating', 'operations director', 'vp operations', 'head of operations',
+  'ceo', 'chief executive', 'president', 'founder', 'general manager',
+  'internal comms', 'communications', 'comms director',
+  'learning', 'training', 'l&d',
+  'cfo', 'chief financial',
+];
+
+function isRelevantTitle(title) {
+  if (!title) return false;
+  const t = title.toLowerCase();
+  return RELEVANT_TITLE_KEYWORDS.some((k) => t.includes(k));
+}
+
 async function enrichWithLusha(domain) {
   try {
-    const response = await axios.get('https://api.lusha.com/company', {
+    const response = await axios.get('https://api.lusha.com/v2/company', {
       params: { domain },
       headers: { api_key: process.env.LUSHA_API_KEY },
       timeout: 8000,
     });
-    const d = response.data;
+    const d = response.data?.data || response.data;
     return {
       source: 'lusha',
+      lusha_company_id: d.lushaCompanyId || null,
       company_name: d.name || null,
-      industry: d.industry || null,
-      employee_count: d.employeeCount || d.employee_count || null,
-      employee_range: d.employeeCountRange || null,
-      revenue: d.revenue || null,
+      industry: d.mainIndustry || d.industry || null,
+      employee_count: d.employeesInLinkedin || null,
+      employee_range: d.employees || null,
+      revenue_range: d.revenueRange?.length ? d.revenueRange : null,
       founded: d.founded || null,
-      hq_location: d.hqCity
-        ? `${d.hqCity}, ${d.hqCountry || ''}`.trim()
-        : d.hqCountry || null,
+      hq_location: d.location?.fullLocation || null,
       description: d.description || null,
-      website: d.website || domain,
-      linkedin_url: d.linkedinUrl || null,
+      website: d.domain || domain,
+      linkedin_url: d.social?.linkedin?.url || null,
     };
   } catch (err) {
-    console.warn(`[Lusha] Failed for domain "${domain}": ${err.message}`);
+    console.warn(`[Lusha] Company failed for "${domain}": ${err.message}`);
     return null;
+  }
+}
+
+async function searchLushaStakeholders(lushaCompanyId) {
+  if (!lushaCompanyId) return [];
+  try {
+    const response = await axios.get(
+      `https://api.lusha.com/v2/company/${lushaCompanyId}/employees`,
+      {
+        params: { limit: 25 },
+        headers: { api_key: process.env.LUSHA_API_KEY },
+        timeout: 10000,
+      }
+    );
+
+    const employees = response.data?.data || response.data?.employees || response.data || [];
+    if (!Array.isArray(employees)) return [];
+
+    // Filter to relevant stakeholders only
+    const relevant = employees.filter((e) => isRelevantTitle(e.jobTitle || e.job_title || e.title));
+
+    return relevant.slice(0, 8).map((e) => ({
+      full_name: [e.firstName || e.first_name, e.lastName || e.last_name].filter(Boolean).join(' ') || e.fullName || e.name || null,
+      job_title: e.jobTitle || e.job_title || e.title || null,
+      linkedin_url: e.linkedinUrl || e.linkedin_url || e.social?.linkedin?.url || null,
+      email: e.email || e.emails?.[0]?.email || null,
+      phone: e.phone || e.phones?.[0]?.number || null,
+      city: e.city || e.location?.city || null,
+      country: e.country || e.location?.country || null,
+    }));
+  } catch (err) {
+    if (err.response?.status === 429) {
+      console.warn('[Lusha] Rate limit reached for stakeholder search');
+    } else {
+      console.warn(`[Lusha] Stakeholder search failed: ${err.message}`);
+    }
+    return [];
   }
 }
 
@@ -99,7 +152,20 @@ async function enrichCompany(domain, companyName) {
     cleanDomain ? scrapeWebsite(cleanDomain) : Promise.resolve(null),
   ]);
 
-  return { lusha: lushaData, scrape: scrapeData };
+  // If we got a Lusha company ID, fetch relevant stakeholders
+  let stakeholders = [];
+  if (lushaData?.lusha_company_id) {
+    stakeholders = await searchLushaStakeholders(lushaData.lusha_company_id);
+    if (stakeholders.length) {
+      console.log(`[Lusha] Found ${stakeholders.length} relevant stakeholders for ${cleanDomain}`);
+    }
+  }
+
+  return {
+    lusha: lushaData,
+    scrape: scrapeData,
+    stakeholders: stakeholders.length ? stakeholders : null,
+  };
 }
 
-module.exports = { enrichCompany, enrichWithLusha, scrapeWebsite };
+module.exports = { enrichCompany, enrichWithLusha, searchLushaStakeholders, scrapeWebsite };
