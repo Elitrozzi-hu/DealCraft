@@ -1,0 +1,206 @@
+{
+  "version": "1.2.22",
+  "date": "2026-03-19",
+  "history": [
+    {
+      "version": "1.2.22",
+      "date": "2026-03-19",
+      "note": "Connect app to real backend API — deal picker from CRM, POST /api/brief for AI brief, mapBriefToCompany adapter, deal velocity header, pain hypotheses in actions tab"
+    },
+    {
+      "version": "1.2.21",
+      "date": "2026-03-19",
+      "note": "Add SVG finger-tap overlay on top of mascot PNG for animated typing effect on loading screen"
+    },
+    {
+      "version": "1.2.20",
+      "date": "2026-03-19",
+      "note": "Replace mascot with transparent background PNG — no grey background, better visual on loading screen"
+    },
+    {
+      "version": "1.2.19",
+      "date": "2026-03-19",
+      "note": "Replace SVG mascot with real Humand mascot PNG and typing bob animation on loading screen"
+    },
+    {
+      "version": "1.2.18",
+      "date": "2026-03-19",
+      "note": "Fix context column height gap, remove feedback footer, move mascot up and add staggered finger-tap animations"
+    },
+    {
+      "version": "1.2.17",
+      "date": "2026-03-19",
+      "note": "Translate action checklists, meeting toolkit steps, stage data, openers, pitch titles, legacy panels, and objection card — full ES/EN coverage across all content"
+    },
+    {
+      "version": "1.2.16",
+      "date": "2026-03-19",
+      "note": "Full language toggle coverage across all screens — screen 1 search, screen 2 loading steps, and all hardcoded strings in screen 3 render functions now respond to ES/EN toggle"
+    },
+    {
+      "version": "1.2.15",
+      "date": "2026-03-19",
+      "note": "Redesign mascot SVG with turbulence fur filter, large lavender eyes with prominent highlights, and better proportions matching Humand mascot"
+    },
+    {
+      "version": "1.2.14",
+      "date": "2026-03-18",
+      "note": "Replace loading orbit animation with Humand mascot SVG wearing reading glasses and typing on a laptop"
+    },
+    {
+      "version": "1.2.13",
+      "date": "2026-03-18",
+      "note": "Add Google Meet join button at top of action checklist with Meet branding"
+    },
+    {
+      "version": "1.2.12",
+      "date": "2026-03-18",
+      "note": "Remove box-shadows from all containers and cards, keep only on floating elements (drawer, dropdowns, toast)"
+    },
+    {
+      "version": "1.2.11",
+      "date": "2026-03-18",
+      "note": "Fix role filter scoping, fix duplicate toggleAction conflict breaking checkboxes, add visual containers per section in analysis drawer and simplify signals to text+chip"
+    },
+    {
+      "version": "1.2.10",
+      "date": "2026-03-18",
+      "note": "Fix voseo to neutral Spanish throughout and fix language toggle to fully re-render all content"
+    },
+    {
+      "version": "1.2.9",
+      "date": "2026-03-18",
+      "note": "Move role questions to main stakeholders drawer, remove from edit drawer, add back arrow to edit drawer"
+    },
+    {
+      "version": "1.2.8",
+      "date": "2026-03-18",
+      "note": "Add back arrow to Tech Stack drawer to return to company detail drawer"
+    },
+    {
+      "version": "1.2.7",
+      "date": "2026-03-18",
+      "note": "Switch company logo source from discontinued Clearbit API to Google Favicon Service"
+    },
+    {
+      "version": "1.2.6",
+      "date": "2026-03-18",
+      "note": "Stage-specific action checklists per pipeline step and role-based question filter chips for all stages"
+    },
+    {
+      "version": "1.2.5",
+      "date": "2026-03-18",
+      "note": "Enrich módulos with solutions JSON, redesign sales materials as 4 cards with editable email drawer, clean risk/signals style"
+    },
+    {
+      "version": "1.2.4",
+      "date": "2026-03-18",
+      "note": "Show company logo from Clearbit in header strip with fallback to colored initials avatar"
+    },
+    {
+      "version": "1.2.3",
+      "date": "2026-03-18",
+      "note": "Redesign company header strip: add Amount (USD/año calculated from headcount), Headcount, Industry stats, SMB/Enterprise/Large Enterprise type pill, and AE avatar with name"
+    },
+    {
+      "version": "1.2.2",
+      "date": "2026-03-18",
+      "note": "Swap columns: Action Plan left (grey background) and Context right (white sidebar with left border); remove outer stage-body padding so backgrounds fill edge to edge"
+    },
+    {
+      "version": "1.2.1",
+      "date": "2026-03-18",
+      "note": "Add company name to URL param; default stage to Lead; add section titles with descriptions to Context and Action Plan columns; fix 40/60 column split"
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-03-18",
+      "note": "Redesign results layout: Context column (40%) with 3 expandable cards (Company, Stakeholders, Analysis) and Action Plan column (60%) with tabs (Actions checklist, Sales Materials with email templates, Meeting Toolkit with stage-aware agenda)"
+    },
+    {
+      "version": "1.1.6",
+      "date": "2026-03-18",
+      "note": "Replace navigable stepper with fixed stage progress bar showing current stage + objective; add Mover deal dropdown CTA to change stage"
+    },
+    {
+      "version": "1.1.5",
+      "date": "2026-03-18",
+      "note": "Make right side panel 25% of screen width with more internal padding"
+    },
+    {
+      "version": "1.1.4",
+      "date": "2026-03-18",
+      "note": "Redesign stage detail layout: floating white cards on grey background, sticky wizard nav card, panels as individual cards, tabbed side panel (Objetivo / Stakeholders / Notas)"
+    },
+    {
+      "version": "1.1.3",
+      "date": "2026-03-18",
+      "note": "Replace tech stack pills with square logo cards (grid layout with name + category); widen stage-body to full width with 40px margins"
+    },
+    {
+      "version": "1.1.2",
+      "date": "2026-03-18",
+      "note": "Update wizard nav to Hugo style: plain text items, rounded grey pill on selected, no left-border, border-left on content instead; stage-main fills available height"
+    },
+    {
+      "version": "1.1.1",
+      "date": "2026-03-18",
+      "note": "Replace collapsible cards with left wizard nav + section panels; remove nueva búsqueda button (logo navigates home)"
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-03-18",
+      "note": "Redesign tech stack cards to Hugo horizontal style: grey circular avatar with initial, status label, tool name + description, category chip and trash icon on right"
+    },
+    {
+      "version": "1.0.9",
+      "date": "2026-03-18",
+      "note": "Align UI to Hugo design system: updated primary blue, rounded buttons and inputs, left-accent info banners, outlined chips, cleaner focus states"
+    },
+    {
+      "version": "1.0.8",
+      "date": "2026-03-18",
+      "note": "Fix recursos drawer: render directly into drawer body to avoid duplicate IDs with hidden panel, fix swResTab to scope queries to container"
+    },
+    {
+      "version": "1.0.7",
+      "date": "2026-03-18",
+      "note": "Add objection handling playbook to Lead stage with keyword search, common objections chips, and no-fit signals; slim down stage content per GAVIN priorities"
+    },
+    {
+      "version": "1.0.6",
+      "date": "2026-03-18",
+      "note": "Replace Clearbit with Simple Icons CDN for reliable tool logos across tech stack cards and search dropdown"
+    },
+    {
+      "version": "1.0.5",
+      "date": "2026-03-18",
+      "note": "Fix JS syntax error that blocked chip navigation — wire renderLegacyPanels into render()"
+    },
+    {
+      "version": "1.0.4",
+      "date": "2026-03-18",
+      "note": "Rediseño completo de pantalla de resultados: wizard por etapa de pipeline, company strip, stepper horizontal, cards por etapa, drawer para tech stack editable con buscador y módulos Humand, drawer para stakeholders, recursos y deal strategy"
+    },
+    {
+      "version": "1.0.3",
+      "date": "2026-03-18",
+      "note": "Stage-aware content (questions, meeting, pitch), notes sidebar, question responses, editable participants, ES/EN toggle, logo as home"
+    },
+    {
+      "version": "1.0.2",
+      "date": "2026-03-18",
+      "note": "Apply Hugo design system tokens: Roboto font, updated color palette, DS shadows and border radius"
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-03-17",
+      "note": "Add Apollo API integration, visual tech stack cards with logos and Humand module mapping, and editable notes tab with localStorage persistence"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-03-17",
+      "note": "Initial release — B2B Intelligence tool with company profiles, tech stack analysis, pitch recommendations and resources"
+    }
+  ]
+}
