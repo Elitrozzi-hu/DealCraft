@@ -1020,7 +1020,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.33</span>
+  <span class="ver-badge">v1.2.34</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2246,8 +2246,8 @@ function renderCoStrip(c){
     ? {label:'Enterprise', bg:'var(--px)', color:'var(--p)'}
     : {label:'SMB', bg:'var(--bg)', color:'var(--t2)'};
   const rate = headcount > 2000 ? 3.5 : headcount > 500 ? 4 : 5;
-  const amtLo = Math.round(hc.lo * rate * 12);
-  const amtHi = Math.round(hc.hi * rate * 12);
+  const amtLo = Math.round(hc.lo * rate);
+  const amtHi = Math.round(hc.hi * rate);
   const amount = hc.isRange
     ? '$' + amtLo.toLocaleString('en-US') + ' - $' + amtHi.toLocaleString('en-US')
     : '$' + amtHi.toLocaleString('en-US');
@@ -2272,7 +2272,7 @@ function renderCoStrip(c){
     '<div class="cos-divider"></div>'+
     '<div class="cos-stat">'+
       '<div class="cos-stat-val">'+amount+'</div>'+
-      '<div class="cos-stat-lbl">Amount / año</div>'+
+      '<div class="cos-stat-lbl">Amount / mes</div>'+
     '</div>'+
     '<div class="cos-stat">'+
       '<div class="cos-stat-val">'+hcDisplay+'</div>'+
