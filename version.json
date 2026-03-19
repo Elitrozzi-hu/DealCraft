@@ -1,7 +1,12 @@
 {
-  "version": "1.2.76",
+  "version": "1.2.77",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.77",
+      "date": "2026-03-19",
+      "note": "Update DealCraft logo to new version with \"by Humand\" subtitle, increase nav height to 40px"
+    },
     {
       "version": "1.2.76",
       "date": "2026-03-19",
