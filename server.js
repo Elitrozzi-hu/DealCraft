@@ -696,6 +696,21 @@ app.post('/api/brief', async (req, res) => {
       };
     }
 
+    // Calculate MRR = employees × 1.5 (cost per user per month)
+    const rawHeadcount = brief.company_snapshot?.employee_count
+      || employeeCount
+      || enrichData?.lusha?.employee_count;
+    if (rawHeadcount) {
+      // Parse ranges like "5,000 - 10,000" or "500" → use lower bound
+      const nums = String(rawHeadcount).replace(/,/g, '').match(/\d+/g);
+      if (nums?.length) {
+        const low  = parseInt(nums[0], 10);
+        const high = nums[1] ? parseInt(nums[1], 10) : low;
+        brief.company_snapshot.mrr_low  = low  * 1.5;
+        brief.company_snapshot.mrr_high = high * 1.5;
+      }
+    }
+
     // Save to cache
     const companyName = brief.company_snapshot?.name || dealData.company_name || dealData.company?.name || String(deal_id || '');
     saveBrief({ company_name: companyName, domain: domain || enrichData?.lusha?.website || null, brief, enrichment: enrichData });
