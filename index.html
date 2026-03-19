@@ -1046,7 +1046,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.45</span>
+  <span class="ver-badge">v1.2.46</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2011,6 +2011,8 @@ function mapBriefToCompany(apiResponse){
     country: lusha.location||lusha.country||'🌎 LatAm',
     website: domain,
     employees: hcStr,
+    mrrLow: snap.mrr_low ?? null,
+    mrrHigh: snap.mrr_high ?? null,
     type: snap.workforce_type||'Mixed workforce',
     founded: '—',
     stage: strat.sales_stage||selectedDealStage||'Lead',
@@ -2323,11 +2325,18 @@ function renderCoStrip(c){
     ? {label:'Enterprise', bg:'var(--px)', color:'var(--p)'}
     : {label:'SMB', bg:'var(--bg)', color:'var(--t2)'};
   const rate = headcount > 2000 ? 3.5 : headcount > 500 ? 4 : 5;
-  const amtLo = Math.round(hc.lo * rate);
-  const amtHi = Math.round(hc.hi * rate);
-  const amount = hc.isRange
-    ? '$' + amtLo.toLocaleString('en-US') + ' - $' + amtHi.toLocaleString('en-US')
-    : '$' + amtHi.toLocaleString('en-US');
+  let amount;
+  if(c.mrrLow != null && c.mrrHigh != null){
+    amount = c.mrrLow === c.mrrHigh
+      ? '$' + c.mrrLow.toLocaleString('en-US')
+      : '$' + c.mrrLow.toLocaleString('en-US') + ' - $' + c.mrrHigh.toLocaleString('en-US');
+  } else {
+    const amtLo = Math.round(hc.lo * rate);
+    const amtHi = Math.round(hc.hi * rate);
+    amount = hc.isRange
+      ? '$' + amtLo.toLocaleString('en-US') + ' - $' + amtHi.toLocaleString('en-US')
+      : '$' + amtHi.toLocaleString('en-US');
+  }
 
   const domain = (c.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
   const logoHtml = domain
