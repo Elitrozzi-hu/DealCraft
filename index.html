@@ -979,7 +979,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.22</span>
+  <span class="ver-badge">v1.2.23</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1550,7 +1550,7 @@ function getPROC(){return[
 // ═══════════════════════════════════════════
 let current;
 // ─── API config ───────────────────────────────
-const API_BASE = 'http://localhost:3001';
+const API_BASE = 'https://dealcraft.onrender.com';
 let selectedDealId = null, selectedDealName = '', selectedDealStage = '';
 let dealSearchTimer = null;
 
@@ -1601,7 +1601,7 @@ async function loadRecentDeals(){
     const chips = document.getElementById('recent-chips');
     if(!chips || !deals.length) return;
     chips.innerHTML = deals.map(d=>
-      `<span class="chip" onclick="selectDeal('${d.id}','${escHtml(d.name||d.company_name||'')}','${d.stage||''}','${escHtml(d.company_name||d.name||'')}')">🏢 ${escHtml(d.company_name||d.name||'Deal')}</span>`
+      `<span class="chip" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">🏢 ${escHtml(d.display_name||d.company_name||'Deal')}</span>`
     ).join('');
   } catch(e){ /* silent */ }
 }
@@ -1621,9 +1621,9 @@ function searchDeals(val){
         drop.innerHTML = '<div class="ddrow-empty">No se encontraron deals</div>';
       } else {
         drop.innerHTML = deals.map(d=>
-          `<div class="ddrow" onclick="selectDeal('${d.id}','${escHtml(d.name||d.company_name||'')}','${d.stage||''}','${escHtml(d.company_name||d.name||'')}')">
-            <div><div class="ddrow-name">${escHtml(d.company_name||d.name||'Deal')}</div><div class="ddrow-co">${escHtml(d.name||'')}${d.owner_name?' · '+escHtml(d.owner_name):''}</div></div>
-            <span class="ddrow-stage">${escHtml(d.stage||'Lead')}</span>
+          `<div class="ddrow" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">
+            <div><div class="ddrow-name">${escHtml(d.display_name||d.company_name||'Deal')}</div><div class="ddrow-co">${escHtml(d.deal_name||'')}${d.owner_name?' · '+escHtml(d.owner_name):''}</div></div>
+            <span class="ddrow-stage">${escHtml(d.display_stage||d.deal_stage||'Lead')}</span>
           </div>`
         ).join('');
       }
@@ -1718,15 +1718,15 @@ async function analyze(){
   // Activate step 2 (AI) — stays active until API resolves
   activateStep(2, 60);
 
-  let brief;
+  let apiResponse;
   try {
     const res = await briefPromise;
     if(!res.ok) throw new Error('HTTP '+res.status);
-    brief = await res.json();
+    apiResponse = await res.json();
   } catch(err){
     console.error('Brief API error:', err);
     show('s1');
-    toast('❌ Error al generar el brief — verificá que el servidor esté corriendo');
+    toast('❌ Error al generar el brief — intentá de nuevo en unos segundos');
     return;
   }
 
@@ -1736,10 +1736,11 @@ async function analyze(){
   completeStep(3);
   document.getElementById('prog-fill').style.width='100%';
 
-  current = mapBriefToCompany(brief);
+  current = mapBriefToCompany(apiResponse);
   // Map suggested stage from API
-  const stageMap={lead:'lead',discovery:'discovery',champion:'champion',decision_maker:'dm',dm:'dm',procurement:'procure',procure:'procure'};
-  const sugStage = (brief.deal_strategy&&brief.deal_strategy.sales_stage) || (brief.deal&&brief.deal.stage) || 'lead';
+  const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
+  const brief = apiResponse.brief || apiResponse;
+  const sugStage = (brief.deal_strategy&&brief.deal_strategy.sales_stage) || 'lead';
   currentStage = stageMap[sugStage.toLowerCase()] || 'lead';
 
   render();
@@ -1750,110 +1751,132 @@ async function analyze(){
 // ═══════════════════════════════════════════
 // MAP API BRIEF → current shape
 // ═══════════════════════════════════════════
-function mapBriefToCompany(brief){
-  const co    = brief.company || {};
-  const deal  = brief.deal    || {};
-  const snap  = brief.company_snapshot || {};
-  const mods  = brief.recommended_modules || [];
-  const stkMap= brief.stakeholder_map || {};
-  const strat = brief.deal_strategy || {};
-  const vel   = brief.deal_velocity || {};
-  const hist  = brief.historical_patterns || {};
-  const emails= brief.pre_meeting_emails || {};
+function mapBriefToCompany(apiResponse){
+  // The API wraps the brief: { brief: {...}, enrichment: {...} }
+  const brief  = apiResponse.brief || apiResponse;
+  const lusha  = ((apiResponse.enrichment||{}).lusha) || {};
 
-  const name = co.name || deal.company_name || selectedDealName || 'Empresa';
+  const snap   = brief.company_snapshot || {};
+  const mods   = brief.recommended_modules || [];
+  const stkMap = brief.stakeholder_map || {};
+  const strat  = brief.deal_strategy || {};
+  const vel    = brief.deal_velocity || {};
+  const hist   = brief.historical_patterns || {};
+  const emails = brief.pre_meeting_emails || {};
+
+  // Company name: company_snapshot.name is the source of truth
+  const name = snap.name || lusha.name || selectedDealName || 'Empresa';
   const initials = name.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
   const palettes = ['linear-gradient(135deg,#496BE3,#6B8AEC)','linear-gradient(135deg,#0891b2,#06b6d4)','linear-gradient(135deg,#7c3aed,#8b5cf6)','linear-gradient(135deg,#059669,#10b981)'];
   const color = palettes[name.length % palettes.length];
 
-  // Modules
-  const primaryMod  = mods.find(m=>m.priority==='primary') || mods[0] || {};
+  // Modules — field is why_relevant (not reason)
+  const primaryMod    = mods.find(m=>m.priority==='primary') || mods[0] || {};
   const secondaryMods = mods.filter(m=>m.priority!=='primary').slice(0,4);
 
-  // Tech stack
-  const rawTech = co.tech_stack || brief.tech_stack || [];
-  const tech = rawTech.map(item=>({
-    name: item.name || item.tool_name || 'Tool',
-    cat:  item.category || 'Tech',
-    color:'#6B6B8A',
-    conf: item.confidence_pct || 75,
-    status: item.is_gap ? 'gap' : 'usa',
-    tooltip: item.notes || item.reason || ''
+  // Tech stack from Lusha enrichment
+  const rawTech = lusha.web_technologies || [];
+  const tech = rawTech.map(t=>({
+    name: typeof t==='string' ? t : (t.name||'Tool'),
+    cat: 'Tech Stack', color:'#6B6B8A', conf:70, status:'usa', tooltip:''
   }));
 
-  // Stakeholders
+  // Stakeholders — full rich schema
   const presentStks = (stkMap.present||[]).map(s=>({
-    role: s.role||s.title||'Contacto',
-    title: s.title||s.role||'',
-    type: s.type||'influencer',
+    role:  s.role||s.name||'Contacto',
+    title: s.role||s.name||'',
+    type:  s.type||'influencer',
     cares: (s.opening_questions||[]).slice(0,3),
     present: true,
-    _transcriptSignals: s.transcript_signals||'',
+    _name: s.name||'',
+    _likelyPriority: s.likely_priority||'',
+    _engagementStatus: s.engagement_status||'pending',
+    _pitchAngle: s.pitch_angle||'',
+    _transcriptSignals: s.transcript_signals||[],
     _objections: s.key_objections||[],
     _redFlags: s.red_flags||[],
-    _pitchAngle: s.pitch_angle||''
   }));
   const missingStks = (stkMap.missing||[]).map(s=>({
-    role: s.role||'Rol pendiente', title: s.title||s.role||'',
-    type: 'dm', cares: [], present: false
+    role: s.role||'Rol clave pendiente',
+    title: s.role||'',
+    type: 'dm', cares:[], present: false,
+    _whyImportant: s.why_important||'',
+    _recommendedAction: s.recommended_action||''
   }));
   const stakeholders = [...presentStks, ...missingStks];
   if(!stakeholders.length) stakeholders.push({role:'HR / People',title:'Responsable de People',type:'champion',cares:[],present:true});
 
-  // Signals
+  // Signals from deal heat + opportunity areas
   const signals = [];
   const heat = vel.deal_heat||'';
-  if(heat==='hot')  signals.push({ico:'🔴',text:'Deal caliente — '+vel.days_since_last_activity+' días desde última actividad',badge:'Hot',cls:'sig-hot'});
-  else if(heat==='warm') signals.push({ico:'🟡',text:vel.meeting_count+' reuniones realizadas · deal en progreso',badge:'Warm',cls:'sig-wa'});
-  else if(heat==='cold') signals.push({ico:'❄️',text:'Deal frío — '+vel.days_since_last_activity+' días sin actividad',badge:'Frío',cls:'sig-wa'});
+  if(vel.signal) signals.push({ico:heat==='hot'?'🔴':heat==='warm'?'🟡':'❄️',text:vel.signal,badge:heat==='hot'?'Hot':heat==='warm'?'Warm':'Frío',cls:heat==='hot'?'sig-hot':'sig-wa'});
   (brief.opportunity_areas||[]).slice(0,4).forEach(a=>{
-    const s=a.score||0;
-    signals.push({ico:s>=0.8?'🔴':s>=0.6?'🟡':'🟢',text:(a.name||'Área')+(a.why?': '+a.why:''),badge:Math.round(s*100)+'%',cls:s>=0.8?'sig-hot':s>=0.6?'sig-wa':'sig-ok'});
+    const sc=a.score||0;
+    signals.push({ico:sc>=0.8?'🔴':sc>=0.6?'🟡':'🟢',text:(a.title||a.name||'Área')+(a.rationale?': '+a.rationale:''),badge:Math.round(sc*100)+'%',cls:sc>=0.8?'sig-hot':sc>=0.6?'sig-wa':'sig-ok'});
   });
   if(!signals.length) signals.push({ico:'🟢',text:'Brief generado con IA',badge:'IA',cls:'sig-ok'});
 
-  // Key insights from pain hypotheses
+  // Pain hypotheses — confidence is "high"|"medium"|"low" string
   const pains = brief.pain_hypotheses||[];
-  const keyInsights = pains.slice(0,3).map(p=>p.hypothesis||p.validation_question||'').filter(Boolean);
-  if(keyInsights.length<1 && co.description) keyInsights.push(co.description.substring(0,140)+'...');
+  const keyInsights = pains.slice(0,3).map(p=>p.pain||p.validation_question||'').filter(Boolean);
+  if(!keyInsights.length && snap.summary) keyInsights.push(snap.summary.substring(0,140)+'...');
   if(keyInsights.length<2) keyInsights.push('Identificar procesos de HR sin digitalizar.');
 
   // Deal risks & next actions
-  const dealRisks = (strat.key_risks||[]).map(r=>({lvl:'warn',txt:typeof r==='string'?r:r.description||r.risk||JSON.stringify(r)}));
+  const dealRisks = (strat.key_risks||[]).map(r=>({lvl:'warn',txt:typeof r==='string'?r:r.description||r}));
   const nextActions = (strat.next_actions||[]).map(a=>typeof a==='string'?a:a.action||JSON.stringify(a));
 
-  // Score
+  // Historical patterns — win_rate_pct can be null, confidence is string
+  const histConf = hist.confidence||'none';
+  if(histConf!=='none' && hist.key_insight) keyInsights.push('📊 '+hist.key_insight);
+  if(hist.watch_out) dealRisks.push({lvl:'warn',txt:'⚠ '+hist.watch_out});
+
+  // Score and heat label
   const engScore = vel.engagement_score || 70;
   const heatLabel = heat==='hot'?'Deal caliente · Acción urgente':heat==='warm'?'Deal en progreso':heat==='cold'?'Deal frío · Reactivar':'Fit estimado';
 
-  // Headcount
-  const hc = co.headcount || 0;
-  const hcStr = hc ? hc.toLocaleString('en-US') : (co.size || '500+');
+  // Headcount: snap.employee_count is a string like "1,200 employees"
+  const hcStr = snap.employee_count || lusha.employee_count || '500+';
+
+  // Domain for favicon
+  const domain = lusha.domain || lusha.website || '';
+
+  // Opener from first pain hypothesis validation question
+  const opener = pains.length && pains[0].validation_question
+    ? '"'+pains[0].validation_question+'"'
+    : (snap.summary ? snap.summary.split('.')[0]+'.' : 'Contame cuáles son los mayores desafíos de tu equipo de HR hoy.');
+
+  // Questions from pain hypotheses
+  const questions = pains.map(p=>{
+    const conf = p.confidence||'medium';
+    const confLabel = conf==='high'?'Alta':conf==='medium'?'Media':'Baja';
+    return {cat:'Confianza '+confLabel,catCls:'style="background:var(--px);color:var(--p)"',text:'"'+(p.validation_question||p.pain)+'"'};
+  });
 
   return {
     name, initials, color,
-    industry: co.industry||'B2B / Servicios',
-    country: co.country||'🌎 LatAm',
-    website: co.domain||co.website||'',
-    employees: hcStr, type: snap.workforce_type||'Mixed workforce',
-    founded: co.founded||'—', stage: deal.stage||'Lead',
+    industry: snap.industry||'B2B / Servicios',
+    country: lusha.location||lusha.country||'🌎 LatAm',
+    website: domain,
+    employees: hcStr,
+    type: snap.workforce_type||'Mixed workforce',
+    founded: '—',
+    stage: strat.sales_stage||selectedDealStage||'Lead',
     score: engScore, scoreLabel: heatLabel,
-    desc: co.description || snap.operational_structure || 'Análisis generado por IA para '+name+'.',
-    tags: [co.industry, snap.workforce_type, co.country].filter(Boolean),
+    desc: snap.summary||snap.operational_structure||'Análisis generado por IA para '+name+'.',
+    tags: [snap.industry, snap.workforce_type].filter(Boolean),
     mets: [
       {v:hcStr, l:'Headcount'},
-      {v:snap.geographic_footprint||co.country||'—', l:'Presencia'},
+      {v:snap.geographic_footprint||lusha.location||'—', l:'Presencia'},
       {v:snap.workforce_type||'—', l:'Workforce'},
       {v:vel.meeting_count!=null?vel.meeting_count+' mtgs':'—', l:'Reuniones'},
     ],
     tech: tech.length ? tech : [{name:'Por confirmar',cat:'Tech Stack',color:'#6B6B8A',conf:50,status:'usa',tooltip:'Stack pendiente de enriquecimiento.'}],
     signals, keyInsights,
-    primaryModule:  primaryMod.module_name || '📣 Communications',
-    primaryWhy:     primaryMod.reason||'',
-    secondaryModules: secondaryMods.map(m=>({ico:'🔧',name:m.module_name||'Módulo',why:m.reason||''})),
-    opener: pains.length ? '"'+pains[0].validation_question+'"' : 'Contame cuáles son los mayores desafíos de tu equipo de HR hoy.',
-    questions: pains.map(p=>({cat:'Hipótesis '+Math.round((p.confidence||0.5)*100)+'%',catCls:'style="background:var(--px);color:var(--p)"',text:'"'+(p.validation_question||p.hypothesis)+'"'})),
-    meeting: [],
+    primaryModule:  primaryMod.module_name||'📣 Communications',
+    primaryWhy:     primaryMod.why_relevant||'',
+    secondaryModules: secondaryMods.map(m=>({ico:'🔧',name:m.module_name||'Módulo',why:m.why_relevant||''})),
+    opener, questions, meeting:[],
     stakeholders, roleQuestions:{hr:[],ops:[],it:[],exec:[]},
     dealRisks, nextActions, nextSteps: nextActions,
     similarCases:[],
@@ -2278,11 +2301,13 @@ function renderContext(c){ c=_safe(c);
   if(vel && Object.keys(vel).length){
     const heat = vel.deal_heat||'';
     const heatPill = heat==='hot'?'<span class="dv-pill dv-hot">🔥 HOT</span>':heat==='warm'?'<span class="dv-pill dv-warm">♨️ Warm</span>':heat==='cold'?'<span class="dv-pill dv-cold">❄️ Cold</span>':'';
-    const engPill = vel.engagement_score!=null?'<span class="dv-pill dv-eng">Engagement '+vel.engagement_score+'</span>':'';
+    const engPill = vel.engagement_score!=null?'<span class="dv-pill dv-eng">Score '+vel.engagement_score+'</span>':'';
     const mtgPill = vel.meeting_count!=null?'<span class="dv-pill dv-stat">'+vel.meeting_count+' reuniones</span>':'';
-    const actPill = vel.days_since_last_activity!=null?'<span class="dv-pill dv-stat">'+vel.days_since_last_activity+' días sin actividad</span>':'';
-    const histBit = hist&&hist.win_rate_pct!=null?'<span class="dv-pill dv-stat">Win rate '+hist.win_rate_pct+'%</span>':'';
-    velHtml = '<div class="dv-header">'+[heatPill,engPill,mtgPill,actPill,histBit].filter(Boolean).join('')+'</div>';
+    const tcPill  = vel.transcript_count!=null&&vel.transcript_count>0?'<span class="dv-pill dv-stat">'+vel.transcript_count+' transcripciones</span>':'';
+    const actPill = vel.days_since_last_activity!=null?'<span class="dv-pill dv-stat">'+vel.days_since_last_activity+'d sin actividad</span>':'';
+    const histBit = hist&&hist.win_rate_pct!=null&&hist.confidence!=='none'?'<span class="dv-pill dv-stat">Win rate '+hist.win_rate_pct+'%</span>':'';
+    const signalLine = vel.signal?'<div style="font-size:11px;color:var(--t2);margin-top:4px;line-height:1.4">'+escHtml(vel.signal)+'</div>':'';
+    velHtml = '<div class="dv-header">'+[heatPill,engPill,mtgPill,tcPill,actPill,histBit].filter(Boolean).join('')+'</div>'+signalLine+(signalLine?'<div style="margin-bottom:12px"></div>':'');
   }
 
   const ctxCards =
@@ -2459,15 +2484,18 @@ function renderActionPlan(c){ c=_safe(c);
   const pains = c._painHypotheses || [];
   const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">Hipótesis de dolor · IA</div>'+
     pains.slice(0,4).map((p,i)=>{
-      const conf = p.confidence||0.5;
-      const confCls = conf>=0.75?'pain-hi':conf>=0.5?'pain-med':'pain-low';
-      const confLabel = Math.round(conf*100)+'%';
-      const branchY = p.if_confirmed?'<div class="pain-branch pain-branch-y">✓ Si confirmado: '+escHtml(p.if_confirmed)+'</div>':'';
-      const branchN = p.if_not_confirmed?'<div class="pain-branch pain-branch-n">✗ Si negado: '+escHtml(p.if_not_confirmed)+'</div>':'';
+      const conf = p.confidence||'medium';
+      const confCls = conf==='high'?'pain-hi':conf==='medium'?'pain-med':'pain-low';
+      const confLabel = conf==='high'?'Alta':conf==='medium'?'Media':'Baja';
+      // if_confirmed / if_not_confirmed are objects in real schema
+      const ic = p.if_confirmed||{};
+      const inc = p.if_not_confirmed||{};
+      const branchY = ic.push_opportunity ? '<div class="pain-branch pain-branch-y">✓ '+escHtml(ic.push_opportunity)+(ic.show_module?' → <strong>'+escHtml(ic.show_module)+'</strong>':'')+'</div>' : '';
+      const branchN = inc.fallback_question ? '<div class="pain-branch pain-branch-n">↩ '+escHtml(inc.fallback_question)+'</div>' : '';
       return '<div class="pain-hyp" id="ph'+i+'" onclick="togglePainHyp('+i+')">'+
         '<div class="pain-hyp-head">'+
           '<span class="pain-hyp-conf '+confCls+'">'+confLabel+'</span>'+
-          '<span class="pain-hyp-text">'+escHtml(p.hypothesis||p.validation_question||'')+'</span>'+
+          '<span class="pain-hyp-text">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
         '</div>'+
         '<div class="pain-hyp-body">'+
           (p.validation_question?'<div style="margin-bottom:8px;font-style:italic;color:var(--t1)">❓ «'+escHtml(p.validation_question)+'»</div>':'')+

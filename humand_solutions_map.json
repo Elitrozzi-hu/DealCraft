@@ -1,0 +1,652 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "description": "Humand Solutions Map — module-level knowledge base. Value propositions are used by the AI to semantically match client opportunity areas to relevant modules.",
+    "maintained_by": "Product Marketing"
+  },
+  "modules": [
+    {
+      "module_id": "MOD-001",
+      "module_name": "Social Feed",
+      "category": "Internal Communications",
+      "value_proposition": "A centralized, mobile-first feed that ensures every employee — regardless of location, shift, or role — can receive, engage with, and respond to company communications in real time.",
+      "features": [
+        "Post updates, alerts, and quick surveys with rich media support (video, images, PDFs, links)",
+        "Segment content by location, department, team, or role",
+        "Employees interact through comments, reactions, and GIFs",
+        "Admins control who can post and who can view each piece of content"
+      ],
+      "key_messages": [
+        "Replace fragmented emails and printed notices with one digital channel",
+        "Reach frontline and deskless employees who don't have corporate email",
+        "Enable two-way communication — not just top-down broadcasting"
+      ],
+      "proof_points": [
+        "34% reduction in time for employees to receive updates",
+        "25% reduction in communication costs",
+        "30% reduction in unnecessary emails and paperwork"
+      ]
+    },
+    {
+      "module_id": "MOD-002",
+      "module_name": "Groups",
+      "category": "Internal Communications",
+      "value_proposition": "Targeted communication channels that allow organizations to create segmented spaces where specific teams, locations, or functions can share information and collaborate without noise.",
+      "features": [
+        "Create groups by team, location, project, or any custom criteria",
+        "Each group has its own wall and content feed",
+        "Configurable posting permissions per group",
+        "Support for all file types including video, images, and documents"
+      ],
+      "key_messages": [
+        "Eliminate information overload by giving each team their own channel",
+        "Operational updates reach the right people — not everyone",
+        "Build community within specific teams or locations"
+      ],
+      "proof_points": [
+        "30% reduction in unnecessary communication noise",
+        "Supervisors report faster team response to operational updates"
+      ]
+    },
+    {
+      "module_id": "MOD-003",
+      "module_name": "Magazine",
+      "category": "Internal Communications",
+      "value_proposition": "A digital publication space that gives organizations a dedicated, professional channel for institutional news, achievements, and important announcements — separate from the day-to-day feed.",
+      "features": [
+        "Publish articles with rich formatting, images, and embedded media",
+        "Supports all file types including videos, PDFs, and links",
+        "Separate from the social feed — designed for formal communications"
+      ],
+      "key_messages": [
+        "Elevate institutional communications beyond a generic news feed",
+        "Give leadership a professional channel to share company news and milestones",
+        "Improve the perception and reach of internal communications"
+      ],
+      "proof_points": [
+        "25% reduction in communication costs",
+        "Increased engagement with institutional content vs email newsletters"
+      ]
+    },
+    {
+      "module_id": "MOD-004",
+      "module_name": "Live Streaming",
+      "category": "Internal Communications",
+      "value_proposition": "A built-in live broadcast tool that lets organizations stream company events, town halls, and leadership messages directly to all employees — with real-time interaction and post-event replay.",
+      "features": [
+        "Stream from desktop or mobile to the entire workforce",
+        "Real-time comments and Q&A during the broadcast",
+        "Push notifications to alert employees when a stream starts",
+        "Save and share recordings for employees who missed the live event",
+        "Live viewer statistics and engagement tracking"
+      ],
+      "key_messages": [
+        "Connect distributed teams to leadership in real time",
+        "Replace expensive in-person events with scalable digital broadcasts",
+        "Increase participation with interactive comments and Q&A"
+      ],
+      "proof_points": [
+        "300% increase in employee engagement with company events",
+        "Significant reduction in event logistics costs"
+      ]
+    },
+    {
+      "module_id": "MOD-005",
+      "module_name": "Chats, Queries and Tickets",
+      "category": "Internal Communications",
+      "value_proposition": "A structured internal messaging system that combines direct communication with organized support channels — enabling faster, more accountable responses to employee questions and requests.",
+      "features": [
+        "Direct and group messaging between employees",
+        "Create dedicated consultation channels for specific topics",
+        "Configure automated responses and FAQ sections",
+        "Track and manage queries as tickets for accountability",
+        "Share all file types within conversations"
+      ],
+      "key_messages": [
+        "Move employee queries out of email inboxes and into organized channels",
+        "Reduce response time with automated answers to common questions",
+        "Create accountability for every employee request"
+      ],
+      "proof_points": [
+        "Significant reduction in email volume for HR and operations teams",
+        "Faster resolution times for employee queries"
+      ]
+    },
+    {
+      "module_id": "MOD-006",
+      "module_name": "Videocalls",
+      "category": "Internal Communications",
+      "value_proposition": "Native voice and video calling built into the Humand platform, enabling face-to-face collaboration between employees without switching to external tools.",
+      "features": [
+        "One-on-one and group voice or video calls",
+        "Available on mobile and desktop",
+        "Push notifications for incoming calls",
+        "Integrated within private chats — no external app needed"
+      ],
+      "key_messages": [
+        "Eliminate the need for external video conferencing tools for internal calls",
+        "Keep all employee communication within one secure platform",
+        "Enable quick decision-making with instant face-to-face access"
+      ],
+      "proof_points": [
+        "20% faster decision-making enabled by instant communication",
+        "Reduced dependency on external tools improves IT governance"
+      ]
+    },
+    {
+      "module_id": "MOD-007",
+      "module_name": "Forms and Workflows",
+      "category": "People Operations",
+      "value_proposition": "A no-code workflow builder that allows HR and operations teams to digitize any internal process — from simple requests to multi-step approvals — and give employees mobile access to submit and track them.",
+      "features": [
+        "Create fully custom digital forms for any internal procedure",
+        "Configure multi-step approval workflows by role or position",
+        "Employees submit requests and track status from any device",
+        "Full audit trail and record of every procedure",
+        "Notifications at each step of the approval process"
+      ],
+      "key_messages": [
+        "Eliminate paper forms, email chains, and manual approval processes",
+        "Give employees 24/7 access to submit any HR or operational request",
+        "Standardize processes across all locations and teams"
+      ],
+      "proof_points": [
+        "2.3x increase in HR team productivity",
+        "3 hours saved per employee per week",
+        "30% reduction in paperwork and manual processes"
+      ]
+    },
+    {
+      "module_id": "MOD-008",
+      "module_name": "Time Off Management",
+      "category": "People Operations",
+      "value_proposition": "A complete vacation and leave management system that gives employees self-service control over their time off while giving HR full visibility, policy configurability, and calendar integration.",
+      "features": [
+        "Employees request vacations, leaves, and permissions from the app",
+        "Real-time visibility into available and used leave balances",
+        "HR receives instant alerts on new requests",
+        "Configurable approval workflows and leave policies",
+        "Calendar integration and automatic notifications",
+        "Reports on who is out of office at any time"
+      ],
+      "key_messages": [
+        "Replace email-based leave management with a self-service system",
+        "Give HR immediate visibility and control over all time-off requests",
+        "Eliminate errors and delays in leave tracking and payroll"
+      ],
+      "proof_points": [
+        "Significant reduction in HR time spent processing leave requests",
+        "30% reduction in manual administrative processes"
+      ]
+    },
+    {
+      "module_id": "MOD-009",
+      "module_name": "Employee Documents and Electronic Signature",
+      "category": "People Operations",
+      "value_proposition": "A secure digital document distribution and signature system that allows HR to send, collect, and store signed documents from any employee — eliminating paper entirely.",
+      "features": [
+        "Distribute recurring documents and payslips to employees digitally",
+        "Employees can view and sign documents from any device, anywhere",
+        "Secure, organized storage for all employee documents",
+        "Full visibility into who has and hasn't signed"
+      ],
+      "key_messages": [
+        "Eliminate paper documents and manual signature collection",
+        "Ensure compliance with a complete digital audit trail",
+        "Give employees instant access to their own documents at any time"
+      ],
+      "proof_points": [
+        "30% reduction in paperwork",
+        "Compliance risk reduced with complete digital signature records"
+      ]
+    },
+    {
+      "module_id": "MOD-010",
+      "module_name": "Service Management",
+      "category": "People Operations",
+      "value_proposition": "A structured internal ticketing system that brings accountability and transparency to HR, IT, and operational support requests — ensuring every employee need is tracked and resolved efficiently.",
+      "features": [
+        "Employees submit requests from any device with ease",
+        "Track request status, assigned agent, and estimated resolution time",
+        "Direct communication channel between requester and agent",
+        "Reassign tickets based on availability or specialization",
+        "Create and configure custom service types for any department"
+      ],
+      "key_messages": [
+        "Replace informal support requests with a structured, trackable system",
+        "Give employees full transparency on the status of their requests",
+        "Ensure nothing falls through the cracks in HR, IT, or operations"
+      ],
+      "proof_points": [
+        "Significant reduction in unresolved or lost employee requests",
+        "2.3x increase in HR team productivity through structured workflows"
+      ]
+    },
+    {
+      "module_id": "MOD-011",
+      "module_name": "Onboarding",
+      "category": "People Operations",
+      "value_proposition": "A configurable digital onboarding journey that guides new hires through their first days with structured steps, automated notifications, and full HR visibility into progress at every stage.",
+      "features": [
+        "Design custom onboarding flows with tasks, steps, and due dates",
+        "Automated notifications guide new hires through each step",
+        "HR can track which stage each employee is at in real time",
+        "Deliver culture, values, and role expectations digitally before day one",
+        "Integrated with documents for digital signature collection"
+      ],
+      "key_messages": [
+        "Standardize onboarding across all roles and locations",
+        "Reduce time-to-productivity for new hires",
+        "Eliminate manual HR coordination during onboarding"
+      ],
+      "proof_points": [
+        "82% increase in employee retention",
+        "Automated process reduces HR administrative burden significantly"
+      ]
+    },
+    {
+      "module_id": "MOD-012",
+      "module_name": "Space Reservation",
+      "category": "People Operations",
+      "value_proposition": "A simple booking system that lets employees reserve shared spaces — meeting rooms, desks, or any physical resource — directly from the app, eliminating scheduling conflicts and manual coordination.",
+      "features": [
+        "Employees book spaces from mobile or desktop in seconds",
+        "Real-time availability visibility",
+        "Configurable space types and booking rules",
+        "Automated confirmations and reminders"
+      ],
+      "key_messages": [
+        "Eliminate back-and-forth emails to reserve meeting rooms or shared spaces",
+        "Give employees instant visibility into space availability",
+        "Centralize all workplace logistics within one platform"
+      ],
+      "proof_points": [
+        "3 hours saved per employee per week across administrative tasks",
+        "Reduced friction in hybrid and flexible workplace environments"
+      ]
+    },
+    {
+      "module_id": "MOD-013",
+      "module_name": "Quick Access and Integrations",
+      "category": "Platform & IT",
+      "value_proposition": "A centralized launcher that gives every employee one-click access to all the tools, platforms, and resources they need — eliminating the need to remember multiple URLs or switch between apps.",
+      "features": [
+        "Add quick links to any website, platform, app, file, or resource",
+        "Organized and accessible from the main Humand interface",
+        "Segmentable by role, team, or location",
+        "Supports integration with HR, payroll, and operational systems"
+      ],
+      "key_messages": [
+        "Give employees one place to access everything they need",
+        "Reduce time lost switching between systems and looking for tools",
+        "Increase adoption of existing HR and operational platforms"
+      ],
+      "proof_points": [
+        "25% reduction in IT costs",
+        "Increased adoption of existing enterprise tools"
+      ]
+    },
+    {
+      "module_id": "MOD-014",
+      "module_name": "App Integrations",
+      "category": "Platform & IT",
+      "value_proposition": "Native connectors to the most widely used HR, identity, and enterprise platforms — allowing Humand to become the unified front door that works with your existing tech stack rather than replacing it.",
+      "features": [
+        "Native integrations with SAP, Active Directory, Office365, Google Workspace, Workday, Meta4, PeopleSoft, and more",
+        "SSO and identity provider compatibility for secure access",
+        "Centralize all content and tools without duplicating data",
+        "API-ready architecture for custom integrations"
+      ],
+      "key_messages": [
+        "Connect your entire HR stack without replacing what already works",
+        "Give IT full governance and security control over employee access",
+        "One login — one platform — all tools"
+      ],
+      "proof_points": [
+        "25% reduction in IT costs",
+        "Enterprise-grade security certified by the world's largest organizations"
+      ]
+    },
+    {
+      "module_id": "MOD-015",
+      "module_name": "Profile and Directory",
+      "category": "Internal Communications",
+      "value_proposition": "A living employee directory that helps people find colleagues, understand who does what, and build connections across the organization — especially valuable in large or distributed companies.",
+      "features": [
+        "Employees create personalized profiles with role, contact info, interests, and skills",
+        "Searchable company-wide directory",
+        "Quick access buttons for contacting or connecting with any colleague",
+        "Supports relationship-building across teams and locations"
+      ],
+      "key_messages": [
+        "Help employees find the right person quickly in large organizations",
+        "Build connections across teams, locations, and departments",
+        "Reduce silos by making the organization visible and accessible"
+      ],
+      "proof_points": [
+        "Improved cross-functional collaboration in distributed organizations",
+        "Faster onboarding as new hires can immediately find and connect with colleagues"
+      ]
+    },
+    {
+      "module_id": "MOD-016",
+      "module_name": "Org Chart",
+      "category": "Internal Communications",
+      "value_proposition": "An always up-to-date visual representation of the company's organizational structure — automatically maintained as employees join, leave, or change roles.",
+      "features": [
+        "Visual org chart auto-updated as employee records change",
+        "New employees are added automatically",
+        "Helps employees understand reporting lines and team structures",
+        "Accessible from mobile and desktop"
+      ],
+      "key_messages": [
+        "Eliminate outdated org charts maintained manually in PowerPoint or Excel",
+        "Give every employee clarity on the company structure and who to go to",
+        "Streamline communication by knowing exactly who owns what"
+      ],
+      "proof_points": [
+        "Faster decision-making when reporting lines are clear",
+        "Reduces misdirected communication and requests"
+      ]
+    },
+    {
+      "module_id": "MOD-017",
+      "module_name": "Kudos",
+      "category": "Culture & Engagement",
+      "value_proposition": "A structured, visible recognition system that lets organizations celebrate employee achievements and reinforce company values — making appreciation a daily habit rather than an occasional gesture.",
+      "features": [
+        "Recognize employees tied to specific company values or behaviors",
+        "Configurable recognition flows: peer-to-peer, manager-to-employee, or company-wide",
+        "Points system redeemable for prizes and perks",
+        "Recognition visible across the organization in the social feed",
+        "Reports on recognition activity and participation"
+      ],
+      "key_messages": [
+        "Make recognition visible, frequent, and tied to real company values",
+        "Enable peer recognition — not just top-down praise",
+        "Drive retention by making employees feel seen and valued"
+      ],
+      "proof_points": [
+        "300% increase in employee engagement",
+        "82% improvement in employee retention"
+      ]
+    },
+    {
+      "module_id": "MOD-018",
+      "module_name": "Birthdays and Anniversaries",
+      "category": "Culture & Engagement",
+      "value_proposition": "An automated milestone celebration tool that ensures no birthday or work anniversary goes unnoticed — reinforcing a culture of appreciation without requiring manual HR coordination.",
+      "features": [
+        "Automatic visibility of employee birthdays and work anniversaries",
+        "Notifications to teams and managers",
+        "Integrated with the social feed to amplify celebrations"
+      ],
+      "key_messages": [
+        "Never miss a milestone — automate the moments that matter",
+        "Strengthen the employee-company relationship through consistent recognition",
+        "Build culture through small, frequent moments of appreciation"
+      ],
+      "proof_points": [
+        "Improved employee sentiment in organizations that celebrate milestones consistently",
+        "Zero HR coordination required once configured"
+      ]
+    },
+    {
+      "module_id": "MOD-019",
+      "module_name": "Surveys",
+      "category": "Culture & Engagement",
+      "value_proposition": "A flexible survey tool that allows HR and operations teams to gather employee feedback on any topic — quickly, at scale, and with real-time results segmented by team, location, or department.",
+      "features": [
+        "Create and distribute surveys to any segment of the workforce",
+        "Real-time response tracking and analytics",
+        "Segment results by team, department, or location",
+        "Support for multiple question types"
+      ],
+      "key_messages": [
+        "Get employee input on any topic in minutes — not weeks",
+        "Make decisions based on real data, not assumptions",
+        "Show employees their voice matters by acting on feedback quickly"
+      ],
+      "proof_points": [
+        "Faster decision cycles enabled by real-time survey data",
+        "Higher participation rates vs email surveys"
+      ]
+    },
+    {
+      "module_id": "MOD-020",
+      "module_name": "People Experience",
+      "category": "Culture & Engagement",
+      "value_proposition": "A science-backed employee engagement measurement platform that gives HR and area leaders continuous, actionable visibility into workforce sentiment — enabling proactive action before disengagement becomes turnover.",
+      "features": [
+        "Engagement surveys built with validated psychometric methodology",
+        "Real-time dashboards with participation tracking",
+        "Filtered views by area, team, or location for managers and leaders",
+        "Trend tracking over time to identify improving or declining areas",
+        "Anonymized responses to encourage honest feedback"
+      ],
+      "key_messages": [
+        "Move from annual engagement surveys to continuous pulse measurement",
+        "Give every area leader visibility into their own team's engagement",
+        "Identify risks before they become turnover"
+      ],
+      "proof_points": [
+        "300% increase in employee engagement reported by customers",
+        "82% improvement in employee retention"
+      ]
+    },
+    {
+      "module_id": "MOD-021",
+      "module_name": "Intranet and Content",
+      "category": "Internal Communications",
+      "value_proposition": "A flexible content hub that lets organizations publish and organize important company information — from benefits and policies to job openings and cultural values — in a user-friendly, always accessible format.",
+      "features": [
+        "Display any type of content in a structured, readable format",
+        "Publish benefits, policies, cultural values, job openings, and product information",
+        "Segmentable by role, location, or team",
+        "Accessible from mobile and desktop"
+      ],
+      "key_messages": [
+        "Give employees a single source of truth for company information",
+        "Replace outdated intranets that no one visits",
+        "Make company culture and values tangible and accessible"
+      ],
+      "proof_points": [
+        "10% average adoption rate from day one",
+        "Significant reduction in repetitive HR questions about policies and benefits"
+      ]
+    },
+    {
+      "module_id": "MOD-022",
+      "module_name": "Files",
+      "category": "Internal Communications",
+      "value_proposition": "A secure, organized document repository that gives employees role-based access to the files, resources, and reference materials they need — from anywhere, on any device.",
+      "features": [
+        "Create organized folder structures for any type of content",
+        "Supports all file types: videos, images, PDFs, Excel, Word, links",
+        "Segment access by role, team, location, or group",
+        "Mobile accessible for frontline and field employees"
+      ],
+      "key_messages": [
+        "Replace shared drives and email attachments with an organized, accessible repository",
+        "Ensure frontline employees can find what they need from the field",
+        "Control who sees what with role-based access"
+      ],
+      "proof_points": [
+        "Reduced time employees spend searching for documents",
+        "Improved compliance with controlled document access"
+      ]
+    },
+    {
+      "module_id": "MOD-023",
+      "module_name": "Training",
+      "category": "Talent & Development",
+      "value_proposition": "A mobile-first learning management system that allows organizations to create, assign, and track role-specific training at scale — ensuring compliance, consistency, and accessibility for every employee.",
+      "features": [
+        "Create multi-format courses: video, text, quizzes, and interactive content",
+        "Assign training by role, department, location, or team with due dates",
+        "Automated push notifications for pending or expiring courses",
+        "Full reporting on completion rates, quiz scores, and participation",
+        "Mobile-first delivery for frontline and field employees"
+      ],
+      "key_messages": [
+        "Deliver consistent training to every employee regardless of location or shift",
+        "Track compliance certifications without manual follow-up",
+        "Reduce training costs by replacing in-person sessions with digital delivery"
+      ],
+      "proof_points": [
+        "18% reduction in training costs",
+        "Compliance tracking eliminates manual HR follow-up",
+        "Frontline employees complete training faster with mobile delivery"
+      ]
+    },
+    {
+      "module_id": "MOD-024",
+      "module_name": "Performance Review",
+      "category": "Talent & Development",
+      "value_proposition": "A configurable performance evaluation system that moves organizations beyond annual reviews — enabling continuous feedback cycles, multi-directional assessments, and goal accountability.",
+      "features": [
+        "Configurable evaluation forms: 360°, upward, downward, and peer review",
+        "Define and manage evaluation cycles with company-wide visibility",
+        "Continuous feedback loops with comment history on goals",
+        "Track individual and team performance over time"
+      ],
+      "key_messages": [
+        "Replace one-time annual reviews with ongoing performance conversations",
+        "Give managers and employees a shared view of progress and expectations",
+        "Enable fair, structured assessments at any organizational level"
+      ],
+      "proof_points": [
+        "20% faster decision-making enabled by performance visibility",
+        "Reduced time spent in review administration cycles"
+      ]
+    },
+    {
+      "module_id": "MOD-025",
+      "module_name": "Goals",
+      "category": "Talent & Development",
+      "value_proposition": "A goal management system that connects individual accountability to company strategy — giving employees, managers, and leaders a shared, real-time view of progress across the organization.",
+      "features": [
+        "Create, assign, and track individual and collective goals",
+        "Multiple measurement types: binary, numerical, percentage, monetary",
+        "Define evaluation cycles for a company-wide view of all goals",
+        "Progress updates with comments and recorded history",
+        "Segment goals by individual, team, department, or company level"
+      ],
+      "key_messages": [
+        "Align every employee's work to company-level objectives",
+        "Give managers real-time visibility into team progress without status meetings",
+        "Create a culture of accountability through transparent goal tracking"
+      ],
+      "proof_points": [
+        "20% faster decision-making with clear goal visibility",
+        "Reduction in goal-setting meetings with always-updated progress dashboards"
+      ]
+    },
+    {
+      "module_id": "MOD-026",
+      "module_name": "Employee Development",
+      "category": "Talent & Development",
+      "value_proposition": "A career growth framework that gives employees clarity on what success looks like in their role and what it takes to advance — turning managers into coaches and reducing turnover driven by lack of growth visibility.",
+      "features": [
+        "Define role expectations and competency frameworks per position",
+        "Employees can see their growth path within the company",
+        "Managers are equipped to have meaningful development conversations",
+        "Linked to performance reviews for a unified talent development view"
+      ],
+      "key_messages": [
+        "Give employees a clear answer to 'what does growing here look like?'",
+        "Reduce turnover caused by lack of career development visibility",
+        "Turn every manager into a coach with structured development tools"
+      ],
+      "proof_points": [
+        "82% improvement in employee retention",
+        "Reduced regrettable turnover in organizations with clear career frameworks"
+      ]
+    },
+    {
+      "module_id": "MOD-027",
+      "module_name": "Work Shifts",
+      "category": "Operations",
+      "value_proposition": "A shift management system that gives operations teams full control over complex schedules — and gives frontline employees real-time visibility into their own shifts — eliminating confusion and coordination overhead.",
+      "features": [
+        "Create and manage complex shift schedules for frontline teams",
+        "Employees access their schedules from mobile in real time",
+        "Shift updates communicated instantly via push notification",
+        "Supports multiple locations and shift patterns"
+      ],
+      "key_messages": [
+        "Eliminate scheduling confusion for managers and frontline workers",
+        "Reduce no-shows and coverage gaps with real-time schedule visibility",
+        "Coordinate distributed teams across shifts and locations from one place"
+      ],
+      "proof_points": [
+        "3 hours saved per employee per week",
+        "Supervisors report faster team response to scheduling changes"
+      ]
+    },
+    {
+      "module_id": "MOD-028",
+      "module_name": "Time Tracking",
+      "category": "Operations",
+      "value_proposition": "A digital time and attendance system that gives frontline employees a simple way to clock in and out — with geolocation, automated reminders, and clean payroll-ready reports for HR and operations.",
+      "features": [
+        "Clock in/out from mobile with geolocation capture",
+        "Automated reminders to ensure accurate marking",
+        "Downloadable reports filterable by team, location, or date",
+        "Work location indicated at start and end of each day"
+      ],
+      "key_messages": [
+        "Eliminate manual time sheets and payroll errors",
+        "Give HR accurate, real-time attendance data without chasing employees",
+        "Ensure compliance with labor regulations through digital records"
+      ],
+      "proof_points": [
+        "3 hours saved per employee per week",
+        "Payroll processing time significantly reduced with accurate digital records"
+      ]
+    },
+    {
+      "module_id": "MOD-029",
+      "module_name": "Marketplace",
+      "category": "Culture & Engagement",
+      "value_proposition": "An internal peer-to-peer marketplace that creates community by giving employees a safe, organized space to buy and sell second-hand items within the company.",
+      "features": [
+        "Employees post items for sale with photos and descriptions",
+        "Configurable categories for different product types",
+        "Safe, moderated environment within the company platform"
+      ],
+      "key_messages": [
+        "Build a sense of community through peer connection beyond work",
+        "Add a unique employee benefit with zero cost to the company",
+        "Increase daily app engagement through non-work interactions"
+      ],
+      "proof_points": [
+        "Increased daily platform engagement",
+        "Employees report stronger sense of community in organizations with peer exchange features"
+      ]
+    },
+    {
+      "module_id": "MOD-030",
+      "module_name": "Sammy AI",
+      "category": "AI-Powered HR",
+      "value_proposition": "An AI-powered conversational assistant that gives every employee instant, accurate answers to HR questions and guides them through processes — 24/7, without requiring HR team involvement.",
+      "features": [
+        "Natural language AI assistant accessible via mobile and desktop",
+        "Answers questions about HR policies, benefits, processes, and procedures",
+        "Guides employees through forms and workflows autonomously",
+        "Trained on the company's own knowledge base and documentation",
+        "Escalation paths to human agents when needed",
+        "Analytics on most common questions and knowledge gaps"
+      ],
+      "key_messages": [
+        "Give every employee an always-available HR assistant in their pocket",
+        "Reduce HR ticket volume from repetitive, low-value questions",
+        "Free HR teams to focus on strategic work — not answering FAQs"
+      ],
+      "proof_points": [
+        "2.3x increase in HR team productivity",
+        "Available 24/7 regardless of time zone, shift, or business hours"
+      ]
+    }
+  ]
+}

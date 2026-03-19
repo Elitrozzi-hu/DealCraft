@@ -1,7 +1,12 @@
 {
-  "version": "1.2.22",
+  "version": "1.2.23",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.23",
+      "date": "2026-03-19",
+      "note": "Point frontend to dealcraft.onrender.com and fix field mapping to match real API schema — display_name/deal_stage fields, brief unwrapping, pain confidence strings, if_confirmed objects, company_snapshot as source of truth"
+    },
     {
       "version": "1.2.22",
       "date": "2026-03-19",
