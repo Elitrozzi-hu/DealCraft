@@ -48,26 +48,55 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 /* ════════════════════════════════
    SCREEN 1 — SEARCH
 ════════════════════════════════ */
-#s1 .body{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
-.search-wrap{width:100%;max-width:640px}
+#s1 .body{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:40px 24px;overflow-y:auto}
+.search-wrap{width:100%;max-width:920px}
 .search-eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--px);color:var(--p);padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:24px}
 .dot-live{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:blink 2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.search-title{font-size:40px;font-weight:600;line-height:1.12;letter-spacing:-1px;margin-bottom:14px}
+.search-title{font-size:36px;font-weight:600;line-height:1.12;letter-spacing:-1px;margin-bottom:10px}
 .search-title span{color:var(--p)}
-.search-sub{font-size:15px;color:var(--t2);line-height:1.65;margin-bottom:36px}
-.search-box{background:#fff;border:2px solid var(--br);border-radius:var(--r3);padding:20px;transition:border-color .2s}
-.search-box:focus-within{border-color:var(--p);box-shadow:0 0 0 4px rgba(73,107,227,.1)}
-.search-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;display:block}
+.search-sub{font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:28px}
+/* Two-card grid */
+.s1-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:start}
+@media(max-width:720px){.s1-grid{grid-template-columns:1fr}}
+.s1-card{background:#fff;border:2px solid var(--br);border-radius:var(--r3);padding:22px;transition:border-color .2s}
+.s1-card:focus-within{border-color:var(--p);box-shadow:0 0 0 4px rgba(73,107,227,.1)}
+.s1-card-head{display:flex;align-items:flex-start;gap:11px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--br)}
+.s1-card-ico{width:36px;height:36px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.s1-ico-hs{background:#fff1ed}
+.s1-ico-man{background:var(--px)}
+.s1-card-info{flex:1;min-width:0}
+.s1-card-title{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px}
+.s1-card-desc{font-size:12px;color:var(--t2);line-height:1.45}
+.s1-card-badge{font-size:10px;font-weight:600;padding:2px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.s1-badge-hs{background:#fff1ed;color:#e8533a}
+.s1-badge-man{background:var(--px);color:var(--p)}
+/* Separator */
+.s1-sep{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 18px;color:var(--t3);font-size:11px;font-weight:600;min-height:160px}
+.s1-sep::before,.s1-sep::after{content:'';width:1px;flex:1;background:var(--br)}
+.s1-sep span{padding:8px 0}
+@media(max-width:720px){.s1-sep{flex-direction:row;min-height:auto;padding:16px 0}.s1-sep::before,.s1-sep::after{height:1px;width:auto;flex:1}}
+/* Legacy search styles still used */
+.search-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px;display:block}
 .search-row{display:flex;gap:10px}
-.search-input{flex:1;padding:13px 16px;border:1.5px solid var(--br);border-radius:var(--ri);font-size:14px;color:var(--t1);background:#fff;outline:none;transition:border-color .15s}
+.search-input{flex:1;padding:11px 14px;border:1.5px solid var(--br);border-radius:var(--ri);font-size:13px;color:var(--t1);background:#fff;outline:none;transition:border-color .15s}
 .search-input:focus{border-color:var(--p)}
 .search-input::placeholder{color:var(--t3)}
-.search-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--t3);font-size:11px}
+.search-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--t3);font-size:11px}
 .search-divider::before,.search-divider::after{content:'';flex:1;height:1px;background:var(--br)}
 .chips{display:flex;gap:7px;flex-wrap:wrap}
 .chip{background:#fff;border:1.5px solid var(--br);color:var(--t2);font-size:12px;padding:5px 13px;border-radius:20px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
 .chip:hover,.chip.on{border-color:var(--p);color:var(--p);background:var(--px)}
+/* Manual form */
+.manual-form{display:flex;flex-direction:column;gap:12px}
+.mf-field{display:flex;flex-direction:column;gap:5px}
+.mf-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2)}
+.mf-input{padding:11px 14px;border:1.5px solid var(--br);border-radius:var(--ri);font-size:13px;color:var(--t1);background:#fff;outline:none;transition:border-color .15s;font-family:inherit}
+.mf-input:focus{border-color:var(--p)}
+.mf-input::placeholder{color:var(--t3)}
+.mf-textarea{padding:11px 14px;border:1.5px solid var(--br);border-radius:var(--r2);font-size:13px;color:var(--t1);background:#fff;outline:none;transition:border-color .15s;font-family:inherit;resize:vertical;min-height:76px;line-height:1.55}
+.mf-textarea:focus{border-color:var(--p)}
+.mf-textarea::placeholder{color:var(--t3)}
 
 /* ════════════════════════════════
    SCREEN 2 — PROCESSING
@@ -847,22 +876,65 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
     <div class="search-wrap">
       <div class="search-eyebrow"><span class="dot-live"></span><span data-i18n="eyebrow">Inteligencia en tiempo real</span></div>
       <h1 class="search-title" id="search-h1">Elegí tu próxima<br>reunión. <span>Generá tu brief.</span></h1>
-      <p class="search-sub" data-i18n="searchSub">Ingresa el nombre o la web de la empresa y prepárate para la llamada en segundos.</p>
-      <div class="search-box">
-        <div class="api-warn" id="api-warn">⚠️ <span id="api-warn-msg">Conectando con el servidor local...</span></div>
-        <label class="search-label" data-i18n="searchLabel">Buscar deal en CRM</label>
-        <div style="position:relative">
-          <div class="search-row">
-            <input class="search-input" id="main-input" placeholder="Nombre de empresa o deal..." oninput="searchDeals(this.value)" autocomplete="off" />
-            <button class="btn b-p btn-lg" id="analyze-btn" onclick="analyze()" disabled data-i18n="searchBtn">Analizar →</button>
+      <p class="search-sub" data-i18n="searchSub">Seleccioná un deal activo del CRM y genera tu brief de reunión con IA en segundos.</p>
+      <div class="s1-grid">
+
+        <!-- ── Card HubSpot ── -->
+        <div class="s1-card">
+          <div class="s1-card-head">
+            <div class="s1-card-ico s1-ico-hs">🔗</div>
+            <div class="s1-card-info">
+              <div class="s1-card-title" data-i18n="s1HsTitle">Deal en HubSpot</div>
+              <div class="s1-card-desc" data-i18n="s1HsDesc">Buscá un deal activo del CRM y generá tu brief en segundos</div>
+            </div>
+            <span class="s1-card-badge s1-badge-hs">HubSpot</span>
           </div>
-          <div class="deal-drop" id="deal-drop"></div>
+          <div class="api-warn" id="api-warn">⚠️ <span id="api-warn-msg">Conectando...</span></div>
+          <label class="search-label" data-i18n="searchLabel">Buscar deal en CRM</label>
+          <div style="position:relative;margin-top:8px">
+            <div class="search-row">
+              <input class="search-input" id="main-input" placeholder="Nombre de empresa o deal..." oninput="searchDeals(this.value)" autocomplete="off" />
+              <button class="btn b-p" id="analyze-btn" onclick="analyze()" disabled data-i18n="searchBtn">Analizar →</button>
+            </div>
+            <div class="deal-drop" id="deal-drop"></div>
+          </div>
+          <div id="deal-pill-wrap"></div>
+          <div class="search-divider" data-i18n="searchDivider">o abre un deal reciente</div>
+          <div class="chips" id="recent-chips">
+            <span class="chip" style="opacity:.45;cursor:default;pointer-events:none">Cargando deals...</span>
+          </div>
         </div>
-        <div id="deal-pill-wrap"></div>
-        <div class="search-divider" data-i18n="searchDivider">o abre un deal reciente</div>
-        <div class="chips" id="recent-chips">
-          <span class="chip" style="opacity:.45;cursor:default;pointer-events:none">Cargando deals...</span>
+
+        <!-- ── Separator ── -->
+        <div class="s1-sep"><span>o</span></div>
+
+        <!-- ── Card Manual ── -->
+        <div class="s1-card">
+          <div class="s1-card-head">
+            <div class="s1-card-ico s1-ico-man">🏢</div>
+            <div class="s1-card-info">
+              <div class="s1-card-title" data-i18n="s1ManTitle">Nueva empresa</div>
+              <div class="s1-card-desc" data-i18n="s1ManDesc">¿La empresa no está en HubSpot? Ingresá los datos a mano</div>
+            </div>
+            <span class="s1-card-badge s1-badge-man" data-i18n="s1ManBadge">Manual</span>
+          </div>
+          <div class="manual-form">
+            <div class="mf-field">
+              <label class="mf-label" data-i18n="s1ManName">Nombre de la empresa</label>
+              <input class="mf-input" id="man-name" data-i18n-ph="s1ManNamePh" placeholder="Ej. Royal Caribbean" />
+            </div>
+            <div class="mf-field">
+              <label class="mf-label" data-i18n="s1ManWeb">Sitio web</label>
+              <input class="mf-input" id="man-web" data-i18n-ph="s1ManWebPh" placeholder="Ej. royalcaribbean.com" />
+            </div>
+            <div class="mf-field">
+              <label class="mf-label" data-i18n="s1ManCtx">Contexto</label>
+              <textarea class="mf-textarea" id="man-ctx" data-i18n-ph="s1ManCtxPh" placeholder="Industria, tipo de empresa, contexto de la reunión..."></textarea>
+            </div>
+            <button class="btn b-p" id="manual-btn" onclick="analyzeManual()" style="width:100%;padding:13px 16px" data-i18n="s1ManBtn">Generar brief →</button>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -947,7 +1019,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.26</span>
+  <span class="ver-badge">v1.2.27</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1635,10 +1707,24 @@ function clearSelectedDeal(){
 // ═══════════════════════════════════════════
 // ANALYZE — real API call
 // ═══════════════════════════════════════════
-async function analyze(){
+function analyze(){
   if(!selectedDealId){ toast('⚠️ Seleccioná un deal primero'); return; }
+  _runBrief({deal_id: selectedDealId}, selectedDealName);
+}
 
-  document.getElementById('proc-target').textContent = selectedDealName;
+function analyzeManual(){
+  const name = (document.getElementById('man-name').value||'').trim();
+  const web  = (document.getElementById('man-web').value||'').trim();
+  const ctx  = (document.getElementById('man-ctx').value||'').trim();
+  if(!name){ toast('⚠️ Ingresá el nombre de la empresa'); return; }
+  selectedDealId = null;
+  selectedDealName = name;
+  selectedDealStage = 'lead';
+  _runBrief({deal_data:{company_name:name, domain:web, context:ctx}}, name);
+}
+
+async function _runBrief(payload, displayName){
+  document.getElementById('proc-target').textContent = displayName;
   show('s2');
 
   // Build loading UI
@@ -1670,20 +1756,17 @@ async function analyze(){
   const briefPromise = fetch(API_BASE+'/api/brief', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({deal_id: selectedDealId})
+    body: JSON.stringify(payload)
   });
 
-  // Animate step 0 (CRM)
   activateStep(0, 18);
   await new Promise(r=>setTimeout(r, 1600));
   completeStep(0);
 
-  // Animate step 1 (Enrich)
   activateStep(1, 38);
   await new Promise(r=>setTimeout(r, 1800));
   completeStep(1);
 
-  // Activate step 2 (AI) — stays active until API resolves
   activateStep(2, 60);
 
   let apiResponse;
@@ -1705,14 +1788,13 @@ async function analyze(){
   document.getElementById('prog-fill').style.width='100%';
 
   current = mapBriefToCompany(apiResponse);
-  // Map suggested stage from API
   const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
   const brief = apiResponse.brief || apiResponse;
   const sugStage = (brief.deal_strategy&&brief.deal_strategy.sales_stage) || 'lead';
   currentStage = stageMap[sugStage.toLowerCase()] || 'lead';
 
   render();
-  history.pushState(null,'','?deal='+encodeURIComponent(selectedDealId));
+  if(payload.deal_id) history.pushState(null,'','?deal='+encodeURIComponent(payload.deal_id));
   show('s3');
 }
 
@@ -3786,6 +3868,14 @@ const T = {
     heatHot:'HOT', heatWarm:'Caliente', heatCold:'Frío',
     // Pain hypotheses
     painHypTitle:'Hipótesis de dolor · IA', confHigh:'Alta', confMed:'Media', confLow:'Baja',
+    // Screen 1 — two cards
+    s1HsTitle:'Deal en HubSpot', s1HsDesc:'Buscá un deal activo del CRM y generá tu brief en segundos',
+    s1ManTitle:'Nueva empresa', s1ManDesc:'¿La empresa no está en HubSpot? Ingresá los datos a mano',
+    s1ManBadge:'Manual',
+    s1ManName:'Nombre de la empresa', s1ManWeb:'Sitio web', s1ManCtx:'Contexto',
+    s1ManNamePh:'Ej. Royal Caribbean', s1ManWebPh:'Ej. royalcaribbean.com',
+    s1ManCtxPh:'Industria, tipo de empresa, contexto de la reunión...',
+    s1ManBtn:'Generar brief →',
   },
   en: {
     // Screen 1
@@ -3869,6 +3959,14 @@ const T = {
     heatHot:'HOT', heatWarm:'Warm', heatCold:'Cold',
     // Pain hypotheses
     painHypTitle:'Pain hypotheses · AI', confHigh:'High', confMed:'Medium', confLow:'Low',
+    // Screen 1 — two cards
+    s1HsTitle:'HubSpot Deal', s1HsDesc:'Search an active CRM deal and generate your brief in seconds',
+    s1ManTitle:'New company', s1ManDesc:"Company not in HubSpot? Enter the details manually",
+    s1ManBadge:'Manual',
+    s1ManName:'Company name', s1ManWeb:'Website', s1ManCtx:'Context',
+    s1ManNamePh:'e.g. Royal Caribbean', s1ManWebPh:'e.g. royalcaribbean.com',
+    s1ManCtxPh:'Industry, company type, meeting context...',
+    s1ManBtn:'Generate brief →',
   }
 };
 function t(key){ return (T[lang]||T.es)[key] || (T.es[key]) || key; }
@@ -3895,6 +3993,11 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
     if(T[lang][key]) el.textContent = T[lang][key];
+  });
+  // Update placeholder translations
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-ph');
+    if(T[lang][key]) el.placeholder = T[lang][key];
   });
   // Update search h1 (has inner HTML with span)
   const h1 = document.getElementById('search-h1');

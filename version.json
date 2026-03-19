@@ -1,7 +1,12 @@
 {
-  "version": "1.2.26",
+  "version": "1.2.27",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.27",
+      "date": "2026-03-19",
+      "note": "Redesign screen 1 with two distinct cards: HubSpot deal search and manual company entry (name, web, context) — AE can use either path to generate a brief"
+    },
     {
       "version": "1.2.26",
       "date": "2026-03-19",
