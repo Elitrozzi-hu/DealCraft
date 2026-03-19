@@ -1,7 +1,12 @@
 {
-  "version": "1.2.14",
-  "date": "2026-03-18",
+  "version": "1.2.15",
+  "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.15",
+      "date": "2026-03-19",
+      "note": "Redesign mascot SVG with turbulence fur filter, large lavender eyes with prominent highlights, and better proportions matching Humand mascot"
+    },
     {
       "version": "1.2.14",
       "date": "2026-03-18",
