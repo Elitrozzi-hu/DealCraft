@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.57</span>
+  <span class="ver-badge">v1.2.58</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1808,9 +1808,31 @@ async function loadRecentBriefs(){
 }
 
 async function openRecentBrief(key, name){
-  toast('⏳ Cargando brief de '+name+'...');
+  // Show loading screen with mascot
+  const titleEl = document.querySelector('#s2 .proc-title');
+  const targetEl = document.getElementById('proc-target');
+  const stepsEl  = document.getElementById('proc-steps');
+  const fillEl   = document.getElementById('prog-fill');
+  if(titleEl)  titleEl.textContent = 'Cargando brief...';
+  if(targetEl) targetEl.textContent = name;
+  if(stepsEl)  stepsEl.innerHTML = '';
+  if(fillEl)   fillEl.style.width = '0%';
+  show('s2');
+
+  // Animate progress bar while fetching
+  let pct = 0;
+  const fillTimer = setInterval(()=>{
+    pct = Math.min(pct + 8, 85);
+    if(fillEl) fillEl.style.width = pct+'%';
+  }, 120);
+
   try {
-    const r = await fetch(API_BASE+'/api/briefs/recent/'+key);
+    const [r] = await Promise.all([
+      fetch(API_BASE+'/api/briefs/recent/'+key),
+      new Promise(res=>setTimeout(res, 1500))  // minimum display time
+    ]);
+    clearInterval(fillTimer);
+    if(fillEl) fillEl.style.width = '100%';
     if(!r.ok) throw new Error();
     const data = await r.json();
     rawBrief = data;
@@ -1823,8 +1845,11 @@ async function openRecentBrief(key, name){
     currentStage = stageMap[(selectedDealStage).toLowerCase()] || 'lead';
     render();
     show('s3');
-    toast('✅ Brief cargado — '+name);
+    // Restore s2 title for next real analysis
+    if(titleEl) titleEl.setAttribute('data-i18n','procTitle');
   } catch(e){
+    clearInterval(fillTimer);
+    show('s1');
     toast('❌ No se pudo cargar el brief');
   }
 }
