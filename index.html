@@ -432,6 +432,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .tk-step-title{font-size:13px;font-weight:600;color:var(--t1)}
 .tk-step-sub{font-size:11px;color:var(--t2);margin-top:2px}
 .tk-step-dur{font-size:11px;color:var(--t3);flex-shrink:0}
+.tk-step-chevron{font-size:12px;color:var(--t3);flex-shrink:0;margin-left:6px;transition:transform .18s;display:inline-block}
+.tk-step-body.on~.tk-step-head .tk-step-chevron,.tk-step.open .tk-step-chevron{transform:rotate(180deg)}
 .tk-step-body{padding:0 0 16px 36px;display:none}
 .tk-step-body.on{display:block}
 /* Toolkit sub-tabs */
@@ -1053,7 +1055,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.55</span>
+  <span class="ver-badge">v1.2.56</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2594,6 +2596,7 @@ function renderContext(c){ c=_safe(c);
           '<div class="tk-step-sub">'+s.sub+'</div>'+
         '</div>'+
         '<div class="tk-step-dur">'+s.dur+'</div>'+
+        '<span class="tk-step-chevron">▾</span>'+
       '</div>'+
       '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
     '</div>'
@@ -2994,7 +2997,10 @@ function tkSubTab(id){
 
 function toggleTkStep(id){
   const el = document.getElementById(id);
-  if(el) el.classList.toggle('on');
+  if(!el) return;
+  el.classList.toggle('on');
+  const step = el.closest('.tk-step');
+  if(step) step.classList.toggle('open', el.classList.contains('on'));
 }
 
 function toggleAction(key, actionId){
