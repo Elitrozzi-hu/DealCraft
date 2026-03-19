@@ -734,6 +734,65 @@ app.post('/api/brief', async (req, res) => {
 
     brief.deal_score = { score: dealScore, status: dealStatus, label: dealLabel };
 
+    // Build action checklist based on sales stage and deal context
+    const stage = (brief.deal_strategy?.sales_stage || 'lead').toLowerCase();
+    const hasEmail = !!(brief.pre_meeting_emails?.pre_meeting?.body);
+    const lowCoverage = (brief.stakeholder_map?.coverage_score ?? 100) < 60;
+    const missingStakeholders = (brief.stakeholder_map?.missing || []).length > 0;
+    const topPain = brief.pain_hypotheses?.[0]?.pain || null;
+    const topModule = brief.recommended_modules?.[0]?.module_name || null;
+
+    const STAGE_ACTIONS = {
+      lead: [
+        { title: 'Send personalized pre-meeting email', description: 'Use the pre-meeting email template from the brief — it\'s already tailored to this company' },
+        { title: 'Prepare your opener', description: `Lead with the top pain: "${topPain || 'review pain hypotheses'}" — frame it as a question, not a statement` },
+        { title: `Review the ${topModule || 'recommended'} module`, description: 'Know the 1-2 most relevant modules cold before the call so you can demo with confidence' },
+        { title: 'Set a clear meeting objective', description: 'Define what a successful first call looks like: confirm pain, identify stakeholders, earn the right to a discovery session' },
+      ],
+      discovery: [
+        { title: 'Validate top pain hypotheses', description: 'Use the validation questions in the brief — don\'t pitch until at least one pain is confirmed' },
+        { title: 'Map the buying process', description: 'Ask: who approves, what\'s the internal timeline, what criteria will they use to evaluate vendors' },
+        { title: 'Qualify urgency', description: 'Find out if there\'s a trigger event or deadline driving this — no urgency = no deal' },
+        { title: 'Prepare a relevant customer story', description: 'Have one similar customer example ready that matches their industry or workforce type' },
+        { title: 'Send post-meeting email within 2h', description: 'Use the post-meeting template — recap pain confirmed, agreed next step, and timeline' },
+      ],
+      champion_identified: [
+        { title: 'Coach the champion on internal selling', description: 'Help them build the business case — give them the language to pitch Humand internally' },
+        { title: 'Get introduced to the decision maker', description: 'Ask the champion directly: "Who else needs to be part of this conversation?"' },
+        { title: 'Draft a one-page business case', description: 'Frame ROI around the pains confirmed in discovery — use headcount × cost savings as a baseline' },
+        { title: 'Define pilot scope', description: 'Align on a concrete pilot: team size, duration, 2-3 KPIs to measure success' },
+        { title: 'Send follow-up with pain summary', description: 'Document the pains confirmed, the modules that address them, and proposed next step' },
+      ],
+      decision_maker_engaged: [
+        { title: 'Generate the sales deck', description: 'Use the Deck tab to create a customized presentation for this account' },
+        { title: 'Prepare executive summary', description: 'One page: the problem, the solution, the ROI estimate, the ask — no more than 5 bullets' },
+        { title: 'Confirm evaluation criteria', description: 'Ask the DM directly what success looks like and how they\'ll make the decision' },
+        { title: 'Align on timeline and budget', description: 'Surface any budget cycle constraints or competing priorities before moving to procurement' },
+        { title: 'Identify potential blockers', description: `Watch out for: ${(brief.deal_strategy?.key_risks || ['procurement delay', 'IT security review']).slice(0,2).join(', ')}` },
+      ],
+      procurement: [
+        { title: 'Send DPA and security documentation', description: 'Anticipate IT and legal requirements — share the security one-pager and DPA proactively' },
+        { title: 'Define pilot KPIs', description: 'Agree on 2-3 measurable outcomes for the pilot before kickoff — this becomes the success benchmark' },
+        { title: 'Lock in a kickoff date', description: 'Don\'t leave procurement without a target kickoff date on the calendar' },
+        { title: 'Keep champion engaged', description: 'Procurement can stall deals — maintain momentum by checking in with your champion weekly' },
+      ],
+    };
+
+    const stageKey = stage.includes('champion') ? 'champion_identified'
+      : stage.includes('decision') ? 'decision_maker_engaged'
+      : stage.includes('procure') || stage.includes('negotiat') ? 'procurement'
+      : stage.includes('discovery') ? 'discovery'
+      : 'lead';
+
+    const checklist = (STAGE_ACTIONS[stageKey] || STAGE_ACTIONS.lead).map(a => ({ ...a, done: false }));
+
+    // Dynamic additions based on deal context
+    if (lowCoverage || missingStakeholders) {
+      checklist.push({ title: 'Map missing stakeholders', description: `Coverage is low — identify and reach: ${(brief.stakeholder_map?.missing || []).map(m => m.role).join(', ') || 'decision maker and champion'}`, done: false });
+    }
+
+    brief.action_checklist = checklist;
+
     // Save to cache
     const companyName = brief.company_snapshot?.name || dealData.company_name || dealData.company?.name || String(deal_id || '');
     const analyzedAt = new Date().toISOString();
