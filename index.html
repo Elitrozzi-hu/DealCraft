@@ -1020,7 +1020,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.31</span>
+  <span class="ver-badge">v1.2.32</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1594,6 +1594,7 @@ let current;
 const API_BASE = 'https://dealcraft.onrender.com';
 let selectedDealId = null, selectedDealName = '', selectedDealStage = '';
 let dealSearchTimer = null;
+let cachedDeals = [];
 
 function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0)}
 function goHome(){
@@ -1636,42 +1637,59 @@ async function checkHealth(){
 
 async function loadRecentDeals(){
   try {
-    const r = await fetch(API_BASE+'/api/deals?limit=5');
+    const r = await fetch(API_BASE+'/api/deals?limit=80');
     if(!r.ok) return;
     const data = await r.json();
     const deals = data.deals || data || [];
+    cachedDeals = deals;
     const chips = document.getElementById('recent-chips');
     if(!chips || !deals.length) return;
-    chips.innerHTML = deals.map(d=>
+    chips.innerHTML = deals.slice(0,5).map(d=>
       `<span class="chip" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">🏢 ${escHtml(d.display_name||d.company_name||'Deal')}</span>`
     ).join('');
   } catch(e){ /* silent */ }
 }
 
+function renderDrop(deals, drop){
+  if(!drop) return;
+  if(!deals.length){
+    drop.innerHTML = '<div class="ddrow-empty">No se encontraron deals</div>';
+  } else {
+    drop.innerHTML = deals.map(d=>
+      `<div class="ddrow" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">
+        <div><div class="ddrow-name">${escHtml(d.display_name||d.company_name||'Deal')}</div><div class="ddrow-co">${escHtml(d.deal_name||'')}${d.owner_name?' · '+escHtml(d.owner_name):''}</div></div>
+        <span class="ddrow-stage">${escHtml(d.display_stage||d.deal_stage||'Lead')}</span>
+      </div>`
+    ).join('');
+  }
+  drop.classList.add('on');
+}
+
 function searchDeals(val){
   clearTimeout(dealSearchTimer);
   const drop = document.getElementById('deal-drop');
-  if(!val || val.length < 2){ if(drop) drop.classList.remove('on'); return; }
-  dealSearchTimer = setTimeout(async ()=>{
-    try {
-      const r = await fetch(API_BASE+'/api/deals?search='+encodeURIComponent(val)+'&limit=8');
-      if(!r.ok) return;
-      const data = await r.json();
-      const deals = data.deals || data || [];
-      if(!drop) return;
-      if(!deals.length){
-        drop.innerHTML = '<div class="ddrow-empty">No se encontraron deals</div>';
-      } else {
-        drop.innerHTML = deals.map(d=>
-          `<div class="ddrow" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">
-            <div><div class="ddrow-name">${escHtml(d.display_name||d.company_name||'Deal')}</div><div class="ddrow-co">${escHtml(d.deal_name||'')}${d.owner_name?' · '+escHtml(d.owner_name):''}</div></div>
-            <span class="ddrow-stage">${escHtml(d.display_stage||d.deal_stage||'Lead')}</span>
-          </div>`
-        ).join('');
-      }
-      drop.classList.add('on');
-    } catch(e){ /* backend down */ }
-  }, 280);
+  if(!val || val.length < 1){ if(drop) drop.classList.remove('on'); return; }
+
+  // Instant local filter from cache
+  const q = val.toLowerCase();
+  const local = cachedDeals.filter(d=>{
+    const name = (d.display_name||d.company_name||d.deal_name||'').toLowerCase();
+    return name.includes(q);
+  }).slice(0,8);
+  renderDrop(local, drop);
+
+  // Also hit the API for broader results (debounced)
+  if(val.length >= 2){
+    dealSearchTimer = setTimeout(async ()=>{
+      try {
+        const r = await fetch(API_BASE+'/api/deals?search='+encodeURIComponent(val)+'&limit=8');
+        if(!r.ok) return;
+        const data = await r.json();
+        const deals = data.deals || data || [];
+        renderDrop(deals, drop);
+      } catch(e){ /* backend down — local results already shown */ }
+    }, 300);
+  }
 }
 
 function selectDeal(id, name, stage, company){
