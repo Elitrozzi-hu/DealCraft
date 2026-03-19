@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.59</span>
+  <span class="ver-badge">v1.2.60</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2536,21 +2536,6 @@ function renderContext(c){ c=_safe(c);
       '</div>'+
     '</div>';
 
-  // Deal velocity header (only when real API data exists)
-  let velHtml = '';
-  const vel = c._dealVelocity;
-  const hist = c._historicalPatterns;
-  if(vel && Object.keys(vel).length){
-    const heat = vel.deal_heat||'';
-    const heatPill = heat==='hot'?'<span class="dv-pill dv-hot">🔥 '+t('heatHot')+'</span>':heat==='warm'?'<span class="dv-pill dv-warm">♨️ '+t('heatWarm')+'</span>':heat==='cold'?'<span class="dv-pill dv-cold">❄️ '+t('heatCold')+'</span>':'';
-    const engPill = vel.engagement_score!=null?'<span class="dv-pill dv-eng">Score '+vel.engagement_score+'</span>':'';
-    const mtgPill = vel.meeting_count!=null?'<span class="dv-pill dv-stat">'+vel.meeting_count+' '+t('meetings')+'</span>':'';
-    const tcPill  = vel.transcript_count!=null&&vel.transcript_count>0?'<span class="dv-pill dv-stat">'+vel.transcript_count+' '+t('transcripts')+'</span>':'';
-    const actPill = vel.days_since_last_activity!=null?'<span class="dv-pill dv-stat">'+vel.days_since_last_activity+' '+t('daysInactive')+'</span>':'';
-    const histBit = hist&&hist.win_rate_pct!=null&&hist.confidence!=='none'?'<span class="dv-pill dv-stat">'+t('winRate')+' '+hist.win_rate_pct+'%</span>':'';
-    const signalLine = vel.signal?'<div style="font-size:11px;color:var(--t2);margin-top:4px;line-height:1.4">'+escHtml(vel.signal)+'</div>':'';
-    velHtml = '<div class="dv-header">'+[heatPill,engPill,mtgPill,tcPill,actPill,histBit].filter(Boolean).join('')+'</div>'+signalLine+(signalLine?'<div style="margin-bottom:12px"></div>':'');
-  }
 
   // Action Plan tabs (inline in ctx-col)
   const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
@@ -2663,7 +2648,7 @@ function renderContext(c){ c=_safe(c);
     '<div style="display:flex;flex-direction:column;gap:12px">'+
       companyCard + stakeholdersCard +
     '</div>';
-  document.getElementById('ctx-col').innerHTML = ctxHeader + velHtml + ctxCards +
+  document.getElementById('ctx-col').innerHTML = ctxHeader + ctxCards +
     '<div style="margin-top:12px">'+actionPlanCard+'</div>';
 }
 
