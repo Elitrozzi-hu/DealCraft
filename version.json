@@ -1,7 +1,12 @@
 {
-  "version": "1.2.30",
+  "version": "1.2.31",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.31",
+      "date": "2026-03-19",
+      "note": "Fix buying signals — use pain_hypotheses as source when opportunity_areas is empty"
+    },
     {
       "version": "1.2.30",
       "date": "2026-03-19",

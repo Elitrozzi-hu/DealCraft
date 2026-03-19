@@ -1020,7 +1020,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.30</span>
+  <span class="ver-badge">v1.2.31</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1866,7 +1866,16 @@ function mapBriefToCompany(apiResponse){
     const sc=a.score||0;
     signals.push({ico:sc>=0.8?'🔴':sc>=0.6?'🟡':'🟢',text:(a.title||a.name||'Área')+(a.rationale?': '+a.rationale:''),badge:Math.round(sc*100)+'%',cls:sc>=0.8?'sig-hot':sc>=0.6?'sig-wa':'sig-ok'});
   });
-  if(!signals.length) signals.push({ico:'🟢',text:'Brief generado con IA',badge:'IA',cls:'sig-ok'});
+  if(signals.length<3){
+    (brief.pain_hypotheses||[]).slice(0,4).forEach(p=>{
+      const conf=p.confidence||'medium';
+      const ico=conf==='high'?'🔴':conf==='medium'?'🟡':'🟢';
+      const cls=conf==='high'?'sig-hot':conf==='medium'?'sig-wa':'sig-ok';
+      const badge=conf==='high'?t('confHigh'):conf==='medium'?t('confMed'):t('confLow');
+      if(p.pain) signals.push({ico,text:p.pain,badge,cls});
+    });
+  }
+  if(!signals.length) signals.push({ico:'🟡',text:'Señales a validar en reunión inicial',badge:'Pendiente',cls:'sig-wa'});
 
   // Pain hypotheses — confidence is "high"|"medium"|"low" string
   const pains = brief.pain_hypotheses||[];
