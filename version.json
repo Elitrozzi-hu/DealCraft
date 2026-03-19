@@ -1,7 +1,12 @@
 {
-  "version": "1.2.18",
+  "version": "1.2.19",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.19",
+      "date": "2026-03-19",
+      "note": "Replace SVG mascot with real Humand mascot PNG and typing bob animation on loading screen"
+    },
     {
       "version": "1.2.18",
       "date": "2026-03-19",
