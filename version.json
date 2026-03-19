@@ -1,7 +1,12 @@
 {
-  "version": "1.2.44",
+  "version": "1.2.45",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.45",
+      "date": "2026-03-19",
+      "note": "Replace Humand logo with DealCraft logo in all navbars"
+    },
     {
       "version": "1.2.44",
       "date": "2026-03-19",
