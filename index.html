@@ -1051,7 +1051,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.74</span>
+  <span class="ver-badge">v1.2.75</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1805,7 +1805,7 @@ async function openRecentBrief(key, name){
   const targetEl = document.getElementById('proc-target');
   const stepsEl  = document.getElementById('proc-steps');
   const fillEl   = document.getElementById('prog-fill');
-  if(titleEl)  titleEl.textContent = 'Cargando brief...';
+  if(titleEl)  titleEl.textContent = t('loadingBrief');
   if(targetEl) targetEl.textContent = name;
   if(stepsEl)  stepsEl.innerHTML = '';
   if(fillEl)   fillEl.style.width = '0%';
@@ -4302,6 +4302,7 @@ const T = {
     // Search screen
     searchPlaceholder:'Nombre de empresa o deal...',
     histTitle:'Búsquedas recientes', histEmpty:'Aún no hay búsquedas recientes', histOpen:'Abrir →',
+    loadingBrief:'Cargando brief...',
     // Analysis panel sections
     anlContext:'Contexto', anlOpportunities:'Oportunidades', anlModules:'Módulos recomendados',
     anlRisks:'Riesgos del deal', anlNoPains:'Sin pain points detectados',
@@ -4415,6 +4416,7 @@ const T = {
     // Search screen
     searchPlaceholder:'Company or deal name...',
     histTitle:'Recent searches', histEmpty:'No recent searches yet', histOpen:'Open →',
+    loadingBrief:'Loading brief...',
     // Analysis panel sections
     anlContext:'Context', anlOpportunities:'Opportunities', anlModules:'Recommended modules',
     anlRisks:'Deal risks', anlNoPains:'No pain points detected',

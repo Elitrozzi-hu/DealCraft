@@ -1,7 +1,12 @@
 {
-  "version": "1.2.74",
+  "version": "1.2.75",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.75",
+      "date": "2026-03-19",
+      "note": "Translate loading screen title \"Cargando brief...\" to use i18n"
+    },
     {
       "version": "1.2.74",
       "date": "2026-03-19",
