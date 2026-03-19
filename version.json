@@ -1,7 +1,12 @@
 {
-  "version": "1.2.37",
+  "version": "1.2.38",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.38",
+      "date": "2026-03-19",
+      "note": "Fix company logo loading — replace discontinued Clearbit with Google Favicon service, simplify onerror fallback"
+    },
     {
       "version": "1.2.37",
       "date": "2026-03-19",

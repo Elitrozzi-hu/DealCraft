@@ -1036,7 +1036,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.37</span>
+  <span class="ver-badge">v1.2.38</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2292,8 +2292,8 @@ function renderCoStrip(c){
   const domain = (c.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
   const logoHtml = domain
     ? '<div class="cos-logo-wrap">'+
-        '<img class="cos-logo-img" id="cos-logo-img" src="https://logo.clearbit.com/'+domain+'" alt="" '+
-          'onerror="this.src=\'https://www.google.com/s2/favicons?domain='+domain+'&sz=128\';this.onerror=function(){this.style.display=\'none\';document.getElementById(\'cos-logo-fb\').style.display=\'flex\';}">'+
+        '<img class="cos-logo-img" id="cos-logo-img" src="https://www.google.com/s2/favicons?domain='+domain+'&sz=128" alt="" '+
+          'onerror="this.style.display=\'none\';document.getElementById(\'cos-logo-fb\').style.display=\'flex\'">'+
         '<div class="cos-logo" id="cos-logo-fb" style="background:'+c.color+';display:none">'+c.initials+'</div>'+
       '</div>'
     : '<div class="cos-logo" style="background:'+c.color+'">'+c.initials+'</div>';
