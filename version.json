@@ -1,7 +1,12 @@
 {
-  "version": "1.2.52",
+  "version": "1.2.53",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.53",
+      "date": "2026-03-19",
+      "note": "Redesign stakeholders drawer with rich per-stakeholder cards showing all Lusha and AI fields"
+    },
     {
       "version": "1.2.52",
       "date": "2026-03-19",

@@ -1053,7 +1053,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.52</span>
+  <span class="ver-badge">v1.2.53</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1945,6 +1945,12 @@ function mapBriefToCompany(apiResponse){
     _transcriptSignals: s.transcript_signals||[],
     _objections: s.key_objections||[],
     _redFlags: s.red_flags||[],
+    _openingQuestions: s.opening_questions||[],
+    _linkedin: s.linkedin_url||null,
+    _email: s.email||null,
+    _phone: s.phone||null,
+    _city: s.city||null,
+    _country: s.country||null,
   }));
   const missingStks = (stkMap.missing||[]).map(s=>({
     role: s.role||'Rol clave pendiente',
@@ -2618,29 +2624,92 @@ function openCtxDrawer(type){
 
   if(type==='stakeholders'){
     title = '👥 Stakeholders';
-    const typeColor = t=>t==='champion'?'var(--ok)':t==='dm'?'var(--p)':t==='influencer'?'var(--wa)':'var(--t3)';
-    const statusLabel = s=>s.present?'<span class="stk-drw-status" style="background:var(--okl);color:var(--ok)">Confirmado</span>':'<span class="stk-drw-status" style="background:var(--bg);color:var(--t3)">Pendiente</span>';
+    const confirmed = stks.filter(s=>s.present).length;
+    const typeConfig = {
+      champion:       {label:'Champion',       bg:'var(--okl)',  color:'var(--ok)'},
+      dm:             {label:'Decision Maker', bg:'var(--px)',   color:'var(--p)'},
+      decision_maker: {label:'Decision Maker', bg:'var(--px)',   color:'var(--p)'},
+      influencer:     {label:'Influencer',     bg:'var(--wal)',  color:'var(--wa)'},
+      blocker:        {label:'Blocker',        bg:'var(--redl)', color:'var(--red)'},
+      unknown:        {label:'Unknown',        bg:'var(--bg)',   color:'var(--t2)'},
+    };
+    const engConfig = {
+      pending:   {label:'Pendiente', bg:'var(--bg)',   color:'var(--t2)'},
+      contacted: {label:'Contactado',bg:'var(--px)',   color:'var(--p)'},
+      engaged:   {label:'Engaged',   bg:'var(--okl)',  color:'var(--ok)'},
+      warm:      {label:'Warm',      bg:'#fff3e0',     color:'#e65100'},
+      cold:      {label:'Cold',      bg:'#e3f2fd',     color:'#1565c0'},
+    };
+    const pill = (label,bg,color)=>'<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:'+bg+';color:'+color+';white-space:nowrap">'+label+'</span>';
+    const miniSec = (title,content)=>'<div style="margin-top:10px"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t2);margin-bottom:5px">'+title+'</div>'+content+'</div>';
+
     html =
-      '<div style="margin-bottom:16px">'+
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'+
-          '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden">'+
-            '<div style="height:100%;width:'+Math.round(stks.filter(s=>s.present).length/stks.length*100)+'%;background:var(--ok);border-radius:3px"></div>'+
-          '</div>'+
-          '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+stks.filter(s=>s.present).length+'/'+stks.length+' confirmados</span>'+
+      // Progress bar
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">'+
+        '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden">'+
+          '<div style="height:100%;width:'+Math.round(confirmed/Math.max(stks.length,1)*100)+'%;background:var(--ok);border-radius:3px"></div>'+
         '</div>'+
-        stks.map((s,i)=>
-          '<div class="stk-drw-row">'+
-            '<div class="stk-drw-dot" style="background:'+typeColor(s.type)+'"></div>'+
-            '<div class="stk-drw-body">'+
-              '<div class="stk-drw-role">'+s.role+'</div>'+
-              '<div class="stk-drw-meta">'+s.type.charAt(0).toUpperCase()+s.type.slice(1)+(s.title?' · '+s.title:'')+'</div>'+
-            '</div>'+
-            statusLabel(s)+
-            '<button class="q-row-btn" style="margin-left:6px" onclick="toggleStkPresent('+JSON.stringify(c.name)+','+i+');openCtxDrawer(\'stakeholders\')">'+( s.present?'Quitar':'Confirmar')+'</button>'+
-          '</div>'
-        ).join('')+
+        '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+confirmed+'/'+stks.length+' confirmados</span>'+
       '</div>'+
-      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">'+
+      // One card per stakeholder
+      stks.map((s,i)=>{
+        const tc = typeConfig[s.type]||typeConfig.unknown;
+        const ec = engConfig[s._engagementStatus]||engConfig.pending;
+        const contactItems = [
+          s._linkedin ? '<a href="'+s._linkedin+'" target="_blank" style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--p);text-decoration:none">🔗 LinkedIn</a>' : null,
+          s._email    ? '<span style="font-size:12px;color:var(--t1)">✉️ '+s._email+'</span>' : null,
+          s._phone    ? '<span style="font-size:12px;color:var(--t1)">📞 '+s._phone+'</span>' : null,
+          (s._city||s._country) ? '<span style="font-size:12px;color:var(--t2)">📍 '+[s._city,s._country].filter(Boolean).join(', ')+'</span>' : null,
+        ].filter(Boolean);
+
+        return '<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:14px;margin-bottom:12px">'+
+          // Header
+          '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px">'+
+            '<div style="flex:1;min-width:0">'+
+              '<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px">'+(s._name||s.role)+'</div>'+
+              '<div style="font-size:12px;color:var(--t2)">'+(s._name?s.role:'')+'</div>'+
+            '</div>'+
+            '<div style="display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">'+
+              pill(tc.label,tc.bg,tc.color)+
+              pill(ec.label,ec.bg,ec.color)+
+            '</div>'+
+          '</div>'+
+          // Confirm/remove button
+          '<div style="margin-bottom:8px">'+
+            '<button class="q-row-btn" onclick="toggleStkPresent('+JSON.stringify(c.name)+','+i+');openCtxDrawer(\'stakeholders\')">'+
+              (s.present?'✓ Confirmado — Quitar':'+ Confirmar asistencia')+
+            '</button>'+
+          '</div>'+
+          // Likely priority
+          (s._likelyPriority ? miniSec('Qué le importa','<div style="font-size:12px;color:var(--t1);line-height:1.5">'+s._likelyPriority+'</div>') : '')+
+          // Pitch angle
+          (s._pitchAngle ? miniSec('Cómo hablarle','<div style="font-size:12px;color:var(--t1);line-height:1.5;font-style:italic">"'+s._pitchAngle+'"</div>') : '')+
+          // Contact
+          (contactItems.length ? miniSec('Contacto','<div style="display:flex;flex-direction:column;gap:4px">'+contactItems.join('')+'</div>') : '')+
+          // Opening questions
+          (s._openingQuestions&&s._openingQuestions.length ? miniSec('Preguntas de apertura',
+            s._openingQuestions.slice(0,3).map(q=>'<div style="font-size:12px;color:var(--t1);padding:4px 0;border-bottom:1px solid var(--bg)">'+q+'</div>').join('')
+          ) : '')+
+          // Key objections
+          (s._objections&&s._objections.length ? miniSec('Objeciones clave',
+            s._objections.slice(0,2).map(o=>
+              '<div style="margin-bottom:6px;font-size:12px">'+
+                '<div style="font-weight:600;color:var(--t1)">'+o.objection+'</div>'+
+                '<div style="color:var(--t2);margin-top:2px">→ '+o.response+'</div>'+
+              '</div>'
+            ).join('')
+          ) : '')+
+          // Red flags
+          (s._redFlags&&s._redFlags.length ? miniSec('Red flags',
+            s._redFlags.map(r=>'<div style="font-size:12px;color:var(--red);padding:2px 0">⚠️ '+r+'</div>').join('')
+          ) : '')+
+          // Transcript signals
+          (s._transcriptSignals&&s._transcriptSignals.length ? miniSec('Del transcript',
+            s._transcriptSignals.map(r=>'<div style="font-size:12px;color:var(--t2);padding:2px 0;font-style:italic">"'+r+'"</div>').join('')
+          ) : '')+
+        '</div>';
+      }).join('')+
+      '<div style="margin-top:4px">'+
         '<button class="btn b-s" onclick="openDrawer(\'stakeholders\')">✏️ Editar stakeholders</button>'+
       '</div>';
   }
