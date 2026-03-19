@@ -162,7 +162,7 @@ function buildSheetRow(hubspotDealId, deckContent, dealData = {}, briefData = {}
     // ── From deal / CRM data ────────────────────────────────────────────────
     client_name:   dealData.company_name || dealData.company?.name || String(hubspotDealId),
     logo:          dealData.logo || dealData.company?.logo || '',
-    current_month: `${MONTHS_ES[now.getMonth()]} ${now.getFullYear()}`,
+    current_month: `${MONTHS_EN[now.getMonth()]} ${now.getFullYear()}`,
 
     // ── AI-generated fields ─────────────────────────────────────────────────
     ...aiFields,
