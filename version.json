@@ -1,7 +1,12 @@
 {
-  "version": "1.2.15",
+  "version": "1.2.16",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.16",
+      "date": "2026-03-19",
+      "note": "Full language toggle coverage across all screens — screen 1 search, screen 2 loading steps, and all hardcoded strings in screen 3 render functions now respond to ES/EN toggle"
+    },
     {
       "version": "1.2.15",
       "date": "2026-03-19",

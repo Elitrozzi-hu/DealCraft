@@ -826,16 +826,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   </nav>
   <div class="body">
     <div class="search-wrap">
-      <div class="search-eyebrow"><span class="dot-live"></span>Inteligencia en tiempo real</div>
-      <h1 class="search-title">¿Con qué empresa<br>tienes reunión? <span>Investígala.</span></h1>
-      <p class="search-sub">Ingresa el nombre o la web de la empresa y prepárate para la llamada en segundos.</p>
+      <div class="search-eyebrow"><span class="dot-live"></span><span data-i18n="eyebrow">Inteligencia en tiempo real</span></div>
+      <h1 class="search-title" id="search-h1">¿Con qué empresa<br>tienes reunión? <span>Investígala.</span></h1>
+      <p class="search-sub" data-i18n="searchSub">Ingresa el nombre o la web de la empresa y prepárate para la llamada en segundos.</p>
       <div class="search-box">
-        <label class="search-label">Empresa o URL del sitio web</label>
+        <label class="search-label" data-i18n="searchLabel">Empresa o URL del sitio web</label>
         <div class="search-row">
           <input class="search-input" id="main-input" placeholder="ej. Pedidos Ya · google.com · Andreani" onkeydown="if(event.key==='Enter')analyze()" />
-          <button class="btn b-p btn-lg" onclick="analyze()">Investigar →</button>
+          <button class="btn b-p btn-lg" onclick="analyze()" data-i18n="searchBtn">Investigar →</button>
         </div>
-        <div class="search-divider">o elige un ejemplo</div>
+        <div class="search-divider" data-i18n="searchDivider">o elige un ejemplo</div>
         <div class="chips">
           <span class="chip" onclick="fillAndGo('Pedidos Ya')">🛵 Pedidos Ya</span>
           <span class="chip" onclick="fillAndGo('Andreani')">📦 Andreani</span>
@@ -972,7 +972,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
           <rect x="141" y="221" width="10" height="5" rx="1" fill="#6366f1"/>
         </svg>
       </div>
-      <h2 class="proc-title">Investigando empresa</h2>
+      <h2 class="proc-title" data-i18n="procTitle">Investigando empresa</h2>
       <p class="proc-url" id="proc-target"></p>
       <div class="proc-steps" id="proc-steps"></div>
       <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
@@ -1044,7 +1044,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.15</span>
+  <span class="ver-badge">v1.2.16</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1603,12 +1603,12 @@ function toolColor(name) {
 // ═══════════════════════════════════════════
 // PROCESS STEPS
 // ═══════════════════════════════════════════
-const PROC = [
-  {ico:'🌐',name:'Analizando sitio web y datos públicos',sub:'Descripción, industria, tamaño, presencia'},
-  {ico:'🔧',name:'Detectando tech stack y herramientas',sub:'LinkedIn, ofertas laborales, menciones públicas'},
-  {ico:'👥',name:'Mapeando estructura y personas clave',sub:'Roles, decisores, tamaño de equipos'},
-  {ico:'🧠',name:'Generando inteligencia de ventas',sub:'Módulos recomendados, opener, preguntas'},
-];
+function getPROC(){return[
+  {ico:'🌐',name:t('proc1'),sub:t('proc1sub')},
+  {ico:'🔧',name:t('proc2'),sub:t('proc2sub')},
+  {ico:'👥',name:t('proc3'),sub:t('proc3sub')},
+  {ico:'🧠',name:t('proc4'),sub:t('proc4sub')},
+];}
 
 // ═══════════════════════════════════════════
 // NAVIGATION
@@ -1648,6 +1648,7 @@ async function analyze(){
 
   // Animación de pasos
   let si=0;
+  const PROC = getPROC();
   document.getElementById('proc-steps').innerHTML = PROC.map((_,i)=>`
     <div class="pstep" id="ps${i}">
       <div class="ps-ico">${PROC[i].ico}</div>
@@ -1660,13 +1661,13 @@ async function analyze(){
     function next(){
       if(si>=PROC.length){resolve();return}
       document.getElementById('ps'+si).classList.add('act');
-      document.getElementById('pst'+si).textContent='Procesando...';
+      document.getElementById('pst'+si).textContent=t('procProcessing');
       document.getElementById('prog-fill').style.width=Math.round((si+1)/PROC.length*100)+'%';
       setTimeout(()=>{
         document.getElementById('ps'+si).classList.remove('act');
         document.getElementById('ps'+si).classList.add('done');
         document.getElementById('ps'+si).querySelector('.ps-ico').textContent='✅';
-        document.getElementById('pst'+si).textContent='✓ Listo';
+        document.getElementById('pst'+si).textContent=t('procDone');
         si++;setTimeout(next,300);
       },1400);
     }
@@ -2023,14 +2024,14 @@ function renderContext(c){ c=_safe(c);
     '<div class="ctx-card" onclick="openCtxDrawer(\'company\')">'+
       '<div class="ctx-card-head">'+
         '<span class="ctx-card-ico">🏢</span>'+
-        '<span class="ctx-card-title">Empresa</span>'+
+        '<span class="ctx-card-title">'+t('cardCompany')+'</span>'+
         '<span class="ctx-card-badge">'+activeTech.length+' tools</span>'+
         '<span class="ctx-card-arrow">→</span>'+
       '</div>'+
       '<div class="ctx-card-preview">'+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Industria</span><span class="ctx-prev-val">'+c.industry+'</span></div>'+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Empleados</span><span class="ctx-prev-val">'+c.employees+'</span></div>'+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">País</span><span class="ctx-prev-val">'+c.country+'</span></div>'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevIndustry')+'</span><span class="ctx-prev-val">'+c.industry+'</span></div>'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevEmployees')+'</span><span class="ctx-prev-val">'+c.employees+'</span></div>'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevCountry')+'</span><span class="ctx-prev-val">'+c.country+'</span></div>'+
         '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Score</span><span class="ctx-prev-val" style="color:var(--p);font-weight:600">'+c.score+' — '+c.scoreLabel+'</span></div>'+
       '</div>'+
     '</div>';
@@ -2053,7 +2054,7 @@ function renderContext(c){ c=_safe(c);
             (s.present?'<span style="color:var(--ok);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✓</span>':'<span style="color:var(--red);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✗</span>')+
           '</div>'
         ).join('')+
-        (stks.length>3?'<div style="font-size:11px;color:var(--t3);padding-top:6px">+'+(stks.length-3)+' más</div>':'')+
+        (stks.length>3?'<div style="font-size:11px;color:var(--t3);padding-top:6px">+'+(stks.length-3)+' '+t('prevMore')+'</div>':'')+
       '</div>'+
     '</div>';
 
@@ -2062,20 +2063,20 @@ function renderContext(c){ c=_safe(c);
     '<div class="ctx-card" onclick="openCtxDrawer(\'analysis\')">'+
       '<div class="ctx-card-head">'+
         '<span class="ctx-card-ico">🔍</span>'+
-        '<span class="ctx-card-title">Análisis</span>'+
-        '<span class="ctx-card-badge">'+c.signals.length+' señales</span>'+
+        '<span class="ctx-card-title">'+t('cardAnalysis')+'</span>'+
+        '<span class="ctx-card-badge">'+c.signals.length+' '+t('prevSignals')+'</span>'+
         '<span class="ctx-card-arrow">→</span>'+
       '</div>'+
       '<div class="ctx-card-preview">'+
         c.keyInsights.slice(0,2).map(i=>'<div class="ctx-prev-item"><span class="ctx-prev-val" style="min-width:0;white-space:normal;line-height:1.4">'+i+'</span></div>').join('')+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Módulo 1</span><span class="ctx-prev-val">'+c.primaryModule+'</span></div>'+
+        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevModule1')+'</span><span class="ctx-prev-val">'+c.primaryModule+'</span></div>'+
       '</div>'+
     '</div>';
 
   const ctxHeader =
     '<div class="col-header">'+
-      '<div class="col-header-title">Context</div>'+
-      '<div class="col-header-desc">Información clave de la empresa, stakeholders y análisis del deal. Haz clic en cada card para ver el detalle completo.</div>'+
+      '<div class="col-header-title">'+t('ctxColTitle')+'</div>'+
+      '<div class="col-header-desc">'+t('ctxColDesc')+'</div>'+
     '</div>';
   const ctxCards =
     '<div style="display:flex;flex-direction:column;gap:12px">'+
@@ -2249,14 +2250,15 @@ function renderActionPlan(c){ c=_safe(c);
 
   // TAB 1: Actions checklist
   const ACTION_ITEMS = STAGE_ACTIONS[stageId] || STAGE_ACTIONS.discovery;
+  const completedCount = Object.values(savedActions).filter(Boolean).length;
   const actionsHtml =
     '<a class="meet-action" href="https://meet.google.com" target="_blank" rel="noopener">'+
       '<img class="meet-icon" src="https://cdn.simpleicons.org/googlemeet/00897B" alt="Google Meet">'+
       '<div>'+
-        '<div class="meet-action-label">Unirse a la reunión</div>'+
-        '<div class="meet-action-desc">Abrir Google Meet</div>'+
+        '<div class="meet-action-label">'+t('joinMeeting')+'</div>'+
+        '<div class="meet-action-desc">'+t('openMeet')+'</div>'+
       '</div>'+
-      '<span class="meet-action-cta">Abrir ↗</span>'+
+      '<span class="meet-action-cta">'+t('openBtn')+'</span>'+
     '</a>'+
     '<div style="margin-bottom:16px">'+
       ACTION_ITEMS.map(a=>{
@@ -2267,7 +2269,7 @@ function renderActionPlan(c){ c=_safe(c);
         '</div>';
       }).join('')+
     '</div>'+
-    '<div style="font-size:11px;color:var(--t3)">'+Object.values(savedActions).filter(Boolean).length+' de '+ACTION_ITEMS.length+' completados</div>';
+    '<div style="font-size:11px;color:var(--t3)">'+t('completedCounter').replace('{n}',completedCount).replace('{m}',ACTION_ITEMS.length)+'</div>';
 
   // TAB 2: Sales Materials
   const materialsHtml =
@@ -2275,26 +2277,26 @@ function renderActionPlan(c){ c=_safe(c);
       '<div class="mat-card" onclick="openEmailDrawer(\'pre\')">'+
         '<div class="mat-card-icon">✉️</div>'+
         '<div class="mat-card-title">Pre-meeting Email</div>'+
-        '<div class="mat-card-desc">Email de introducción antes de la primera reunión</div>'+
-        '<div class="mat-card-cta">Ver y editar →</div>'+
+        '<div class="mat-card-desc">'+t('matPreDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
       '<div class="mat-card" onclick="openEmailDrawer(\'post\')">'+
         '<div class="mat-card-icon">📨</div>'+
         '<div class="mat-card-title">Post-meeting Email</div>'+
-        '<div class="mat-card-desc">Follow-up y recap para después de la reunión</div>'+
-        '<div class="mat-card-cta">Ver y editar →</div>'+
+        '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
       '<div class="mat-card" onclick="toast(\'Próximamente: link a presentación\')">'+
         '<div class="mat-card-icon">📊</div>'+
-        '<div class="mat-card-title">Presentación</div>'+
-        '<div class="mat-card-desc">Deck corporativo Humand</div>'+
-        '<div class="mat-card-cta">Abrir ↗</div>'+
+        '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matDeckDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
       '</div>'+
       '<div class="mat-card" onclick="toast(\'Próximamente: link a propuesta\')">'+
         '<div class="mat-card-icon">📄</div>'+
-        '<div class="mat-card-title">Propuesta</div>'+
-        '<div class="mat-card-desc">Documento de propuesta comercial</div>'+
-        '<div class="mat-card-cta">Abrir ↗</div>'+
+        '<div class="mat-card-title">'+t('matPropTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matPropDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
       '</div>'+
     '</div>';
 
@@ -2316,13 +2318,13 @@ function renderActionPlan(c){ c=_safe(c);
 
   const apHeader =
     '<div class="col-header">'+
-      '<div class="col-header-title">Action Plan</div>'+
-      '<div class="col-header-desc">Acciones concretas, materiales de venta y toolkit para preparar y ejecutar la reunión con esta etapa del deal.</div>'+
+      '<div class="col-header-title">'+t('apColTitle')+'</div>'+
+      '<div class="col-header-desc">'+t('apColDesc')+'</div>'+
     '</div>';
   document.getElementById('ap-col').innerHTML = apHeader +
     '<div class="ap-card">'+
       '<div class="ap-tabs">'+
-        '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">Acciones</div>'+
+        '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">'+t('tabActions')+'</div>'+
         '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">Sales Materials</div>'+
         '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">Meeting Toolkit</div>'+
       '</div>'+
@@ -3443,6 +3445,36 @@ function copyBrief(){
 let lang = 'es';
 const T = {
   es: {
+    // Screen 1
+    eyebrow:'Inteligencia en tiempo real',
+    searchTitleHTML:'¿Con qué empresa<br>tienes reunión? <span>Investígala.</span>',
+    searchSub:'Ingresa el nombre o la web de la empresa y prepárate para la llamada en segundos.',
+    searchLabel:'Empresa o URL del sitio web',
+    searchBtn:'Investigar →',
+    searchDivider:'o elige un ejemplo',
+    // Screen 2
+    procTitle:'Investigando empresa',
+    procProcessing:'Procesando...', procDone:'✓ Listo',
+    proc1:'Analizando sitio web y datos públicos', proc1sub:'Descripción, industria, tamaño, presencia',
+    proc2:'Detectando tech stack y herramientas', proc2sub:'LinkedIn, ofertas laborales, menciones públicas',
+    proc3:'Mapeando estructura y personas clave', proc3sub:'Roles, decisores, tamaño de equipos',
+    proc4:'Generando inteligencia de ventas', proc4sub:'Módulos recomendados, opener, preguntas',
+    // Screen 3 — context column
+    ctxColTitle:'Context', ctxColDesc:'Información clave de la empresa, stakeholders y análisis del deal. Haz clic en cada card para ver el detalle completo.',
+    cardCompany:'Empresa', cardAnalysis:'Análisis',
+    prevIndustry:'Industria', prevEmployees:'Empleados', prevCountry:'País',
+    prevModule1:'Módulo 1', prevSignals:'señales', prevMore:'más',
+    // Screen 3 — action plan column
+    apColTitle:'Action Plan', apColDesc:'Acciones concretas, materiales de venta y toolkit para preparar y ejecutar la reunión con esta etapa del deal.',
+    tabActions:'Acciones',
+    joinMeeting:'Unirse a la reunión', openMeet:'Abrir Google Meet', openBtn:'Abrir ↗',
+    completedCounter:'{n} de {m} completados',
+    matPreDesc:'Email de introducción antes de la primera reunión',
+    matPostDesc:'Follow-up y recap para después de la reunión',
+    matDeckTitle:'Presentación', matDeckDesc:'Deck corporativo Humand',
+    matPropTitle:'Propuesta', matPropDesc:'Documento de propuesta comercial',
+    matEdit:'Ver y editar →', matOpen:'Abrir ↗',
+    // Tabs and nav
     tabCompany:'Empresa', tabTech:'Tech Stack', tabPitch:'Cómo vender',
     tabQuestions:'Preguntas clave', tabStakeholders:'Stakeholders',
     tabDeal:'Deal Strategy', tabMeeting:'Plan de reunión',
@@ -3459,6 +3491,36 @@ const T = {
     inMeeting:'✓ En reunión', missing:'✗ Faltante',
   },
   en: {
+    // Screen 1
+    eyebrow:'Real-time intelligence',
+    searchTitleHTML:'Which company<br>are you meeting with? <span>Research it.</span>',
+    searchSub:'Enter the company name or website and get ready for the call in seconds.',
+    searchLabel:'Company or website URL',
+    searchBtn:'Research →',
+    searchDivider:'or choose an example',
+    // Screen 2
+    procTitle:'Researching company',
+    procProcessing:'Processing...', procDone:'✓ Done',
+    proc1:'Analyzing website and public data', proc1sub:'Description, industry, size, presence',
+    proc2:'Detecting tech stack and tools', proc2sub:'LinkedIn, job postings, public mentions',
+    proc3:'Mapping structure and key contacts', proc3sub:'Roles, decision makers, team sizes',
+    proc4:'Generating sales intelligence', proc4sub:'Recommended modules, opener, questions',
+    // Screen 3 — context column
+    ctxColTitle:'Context', ctxColDesc:'Key company information, stakeholders and deal analysis. Click each card to see full details.',
+    cardCompany:'Company', cardAnalysis:'Analysis',
+    prevIndustry:'Industry', prevEmployees:'Employees', prevCountry:'Country',
+    prevModule1:'Module 1', prevSignals:'signals', prevMore:'more',
+    // Screen 3 — action plan column
+    apColTitle:'Action Plan', apColDesc:'Concrete actions, sales materials and toolkit to prepare and execute the meeting at this deal stage.',
+    tabActions:'Actions',
+    joinMeeting:'Join the meeting', openMeet:'Open Google Meet', openBtn:'Open ↗',
+    completedCounter:'{n} of {m} completed',
+    matPreDesc:'Introduction email before the first meeting',
+    matPostDesc:'Follow-up and recap after the meeting',
+    matDeckTitle:'Presentation', matDeckDesc:'Humand corporate deck',
+    matPropTitle:'Proposal', matPropDesc:'Commercial proposal document',
+    matEdit:'View and edit →', matOpen:'Open ↗',
+    // Tabs and nav
     tabCompany:'Company', tabTech:'Tech Stack', tabPitch:'How to Sell',
     tabQuestions:'Key Questions', tabStakeholders:'Stakeholders',
     tabDeal:'Deal Strategy', tabMeeting:'Meeting Plan',
@@ -3500,6 +3562,9 @@ function applyLang(){
     const key = el.getAttribute('data-i18n');
     if(T[lang][key]) el.textContent = T[lang][key];
   });
+  // Update search h1 (has inner HTML with span)
+  const h1 = document.getElementById('search-h1');
+  if(h1) h1.innerHTML = T[lang].searchTitleHTML || T.es.searchTitleHTML;
   // Re-render all dynamic panels if results are showing
   if(current && document.getElementById('s3').classList.contains('on')){
     renderCoStrip(current);
