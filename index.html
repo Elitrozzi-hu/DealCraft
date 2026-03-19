@@ -858,6 +858,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .obj-nofit-item{font-size:12px;color:var(--t1);padding:5px 0;border-bottom:1px solid var(--br);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 .obj-nofit-item:last-child{border-bottom:none}
 
+/* Search history */
+.hist-wrap{margin-top:32px;padding-top:24px;border-top:1.5px solid var(--br)}
+.hist-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:12px}
+.hist-list{display:flex;flex-direction:column;gap:6px}
+.hist-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);cursor:pointer;transition:border-color .15s}
+.hist-row:hover{border-color:var(--p)}
+.hist-ico{width:30px;height:30px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.hist-ico-hs{background:var(--px)}
+.hist-ico-man{background:var(--bg)}
+.hist-name{font-size:13px;font-weight:600;color:var(--t1);flex:1}
+.hist-meta{font-size:11px;color:var(--t3)}
+.hist-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--bg);color:var(--t2);flex-shrink:0}
+.hist-empty{font-size:13px;color:var(--t3);padding:16px 0;text-align:center}
+
 </style>
 </head>
 <body>
@@ -928,15 +942,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
               <label class="mf-label" data-i18n="s1ManWeb">Sitio web</label>
               <input class="mf-input" id="man-web" data-i18n-ph="s1ManWebPh" placeholder="Ej. royalcaribbean.com" />
             </div>
-            <div class="mf-field">
-              <label class="mf-label" data-i18n="s1ManCtx">Contexto</label>
-              <textarea class="mf-textarea" id="man-ctx" data-i18n-ph="s1ManCtxPh" placeholder="Industria, tipo de empresa, contexto de la reunión..."></textarea>
-            </div>
             <button class="btn b-p" id="manual-btn" onclick="analyzeManual()" style="width:100%;padding:13px 16px" data-i18n="s1ManBtn">Generar brief →</button>
           </div>
         </div>
 
       </div>
+
+      <!-- ── Search history ── -->
+      <div class="hist-wrap" id="hist-wrap">
+        <div class="hist-title">Búsquedas recientes</div>
+        <div class="hist-list" id="hist-list">
+          <div class="hist-empty">Aún no hay búsquedas recientes</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -1020,7 +1039,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.34</span>
+  <span class="ver-badge">v1.2.35</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1735,15 +1754,46 @@ function analyze(){
 function analyzeManual(){
   const name = (document.getElementById('man-name').value||'').trim();
   const web  = (document.getElementById('man-web').value||'').trim();
-  const ctx  = (document.getElementById('man-ctx').value||'').trim();
   if(!name){ toast('⚠️ Ingresá el nombre de la empresa'); return; }
   selectedDealId = null;
   selectedDealName = name;
   selectedDealStage = 'lead';
-  _runBrief({deal_data:{company_name:name, domain:web, context:ctx}}, name);
+  _runBrief({deal_data:{company_name:name, domain:web}}, name);
+}
+
+function saveToHistory(name, type, stage){
+  const hist = JSON.parse(localStorage.getItem('dc_search_history')||'[]');
+  hist.unshift({name, type, stage, date: new Date().toISOString()});
+  const deduped = hist.filter((h,i)=>hist.findIndex(x=>x.name===h.name)===i).slice(0,10);
+  localStorage.setItem('dc_search_history', JSON.stringify(deduped));
+  renderHistory();
+}
+
+function renderHistory(){
+  const list = document.getElementById('hist-list');
+  if(!list) return;
+  const hist = JSON.parse(localStorage.getItem('dc_search_history')||'[]');
+  if(!hist.length){
+    list.innerHTML = '<div class="hist-empty">Aún no hay búsquedas recientes</div>';
+    return;
+  }
+  list.innerHTML = hist.map(h=>{
+    const d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('es-AR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+    const ico = h.type==='hubspot' ? '🔗' : '🏢';
+    const icoCls = h.type==='hubspot' ? 'hist-ico-hs' : 'hist-ico-man';
+    return `<div class="hist-row" onclick="toast('Generá un nuevo brief desde el buscador')">
+      <div class="hist-ico ${icoCls}">${ico}</div>
+      <div class="hist-name">${escHtml(h.name)}</div>
+      <div class="hist-meta">${dateStr}</div>
+      <span class="hist-badge">${escHtml(h.stage||'Lead')}</span>
+    </div>`;
+  }).join('');
 }
 
 async function _runBrief(payload, displayName){
+  const histType = payload.deal_id ? 'hubspot' : 'manual';
+  saveToHistory(displayName, histType, selectedDealStage||'Lead');
   document.getElementById('proc-target').textContent = displayName;
   show('s2');
 
@@ -4524,6 +4574,7 @@ function loadDemo(){
 
 // ── Init ──────────────────────────────────
 checkHealth();
+renderHistory();
 function getModuleDetail(name){
   if(!SOLUTIONS_DATA) return null;
   const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();
