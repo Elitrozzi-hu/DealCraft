@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.71</span>
+  <span class="ver-badge">v1.2.72</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -4993,6 +4993,9 @@ function getModuleDetail(name){
     return needle===mn||needle.includes(mn)||mn.includes(needle)||needle.split(' ').some(w=>w.length>3&&mn.includes(w));
   })||null;
 }
+
+// Apply default language on load
+document.addEventListener('DOMContentLoaded', applyLang);
 </script>
 </body>
 </html>

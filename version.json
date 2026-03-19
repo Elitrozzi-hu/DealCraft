@@ -1,7 +1,12 @@
 {
-  "version": "1.2.71",
+  "version": "1.2.72",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.72",
+      "date": "2026-03-19",
+      "note": "Call applyLang on DOMContentLoaded so search and loading screens render in English by default"
+    },
     {
       "version": "1.2.71",
       "date": "2026-03-19",
