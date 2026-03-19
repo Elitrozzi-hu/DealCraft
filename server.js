@@ -6,6 +6,7 @@ const { enrichCompany } = require('./enrichment');
 const { buildStakeholderProfiles } = require('./stakeholder-intel');
 const { generateAEBrief, generateDeckContent } = require('./ai-engine');
 const { writeToSheet, triggerAppsScript } = require('./sheets');
+const { saveBrief, getRecent } = require('./brief-cache');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -695,11 +696,41 @@ app.post('/api/brief', async (req, res) => {
       };
     }
 
+    // Save to cache
+    const companyName = brief.company_snapshot?.name || dealData.company_name || dealData.company?.name || String(deal_id || '');
+    const domain = extractDomain(dealData) || enrichData?.lusha?.website || null;
+    saveBrief({ company_name: companyName, domain, brief, enrichment: enrichData });
+
     res.json({ brief, enrichment: enrichData });
   } catch (err) {
     console.error('[/api/brief]', err);
     res.status(500).json({ error: err.message });
   }
+});
+
+// Recent briefs cache
+app.get('/api/briefs/recent', (req, res) => {
+  const entries = getRecent();
+  // Return metadata only (no full brief) for the list view
+  res.json({
+    entries: entries.map(e => ({
+      key: e.key,
+      company_name: e.company_name,
+      domain: e.domain,
+      industry: e.industry,
+      employee_count: e.employee_count,
+      created_at: e.created_at,
+      updated_at: e.updated_at,
+    })),
+  });
+});
+
+// Get full cached brief by key
+app.get('/api/briefs/recent/:key', (req, res) => {
+  const entries = getRecent();
+  const entry = entries.find(e => e.key === decodeURIComponent(req.params.key));
+  if (!entry) return res.status(404).json({ error: 'Not found' });
+  res.json({ brief: entry.brief, enrichment: entry.enrichment, updated_at: entry.updated_at });
 });
 
 // Generate deck content
