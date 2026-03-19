@@ -979,7 +979,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.24</span>
+  <span class="ver-badge">v1.2.25</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -1877,7 +1877,22 @@ function mapBriefToCompany(apiResponse){
     primaryWhy:     primaryMod.why_relevant||'',
     secondaryModules: secondaryMods.map(m=>({ico:'🔧',name:m.module_name||'Módulo',why:m.why_relevant||''})),
     opener, questions, meeting:[],
-    stakeholders, roleQuestions:{hr:[],ops:[],it:[],exec:[]},
+    stakeholders, roleQuestions: (()=>{
+      const rq = {hr:[],ops:[],it:[],exec:[]};
+      (stkMap.present||[]).forEach(s=>{
+        const qs = s.opening_questions||[];
+        if(!qs.length) return;
+        const rn = (s.role||s.name||'').toLowerCase();
+        const bucket = /\b(hr|people|talent|rrhh|recursos|nómina|payroll)\b/.test(rn) ? 'hr'
+          : /\b(it|tech|cto|cio|sistema|dev|infraestructura|digital)\b/.test(rn) ? 'it'
+          : /\b(ceo|coo|director|vp |chief|gerente|c-suite|exec|presidente)\b/.test(rn) ? 'exec'
+          : 'ops';
+        qs.forEach(q=> rq[bucket].push(typeof q==='string'?q:q.question||JSON.stringify(q)));
+      });
+      // If API gave us nothing, leave empty so _safe() fallback kicks in
+      const hasAny = Object.values(rq).some(arr=>arr.length>0);
+      return hasAny ? rq : null;
+    })(),
     dealRisks, nextActions, nextSteps: nextActions,
     similarCases:[],
     // Raw data for new UI sections
