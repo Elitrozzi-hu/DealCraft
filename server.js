@@ -6,7 +6,7 @@ const { enrichCompany } = require('./enrichment');
 const { buildStakeholderProfiles } = require('./stakeholder-intel');
 const { generateAEBrief, generateDeckContent } = require('./ai-engine');
 const { writeToSheet, triggerAppsScript } = require('./sheets');
-const { saveBrief, getRecent } = require('./brief-cache');
+const { saveBrief, getRecent, getByKey } = require('./brief-cache');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -709,28 +709,24 @@ app.post('/api/brief', async (req, res) => {
 });
 
 // Recent briefs cache
-app.get('/api/briefs/recent', (req, res) => {
-  const entries = getRecent();
-  // Return metadata only (no full brief) for the list view
-  res.json({
-    entries: entries.map(e => ({
-      key: e.key,
-      company_name: e.company_name,
-      domain: e.domain,
-      industry: e.industry,
-      employee_count: e.employee_count,
-      created_at: e.created_at,
-      updated_at: e.updated_at,
-    })),
-  });
+app.get('/api/briefs/recent', async (req, res) => {
+  try {
+    const entries = await getRecent();
+    res.json({ entries });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Get full cached brief by key
-app.get('/api/briefs/recent/:key', (req, res) => {
-  const entries = getRecent();
-  const entry = entries.find(e => e.key === decodeURIComponent(req.params.key));
-  if (!entry) return res.status(404).json({ error: 'Not found' });
-  res.json({ brief: entry.brief, enrichment: entry.enrichment, updated_at: entry.updated_at });
+app.get('/api/briefs/recent/:key', async (req, res) => {
+  try {
+    const entry = await getByKey(decodeURIComponent(req.params.key));
+    if (!entry) return res.status(404).json({ error: 'Not found' });
+    res.json(entry);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Generate deck content
