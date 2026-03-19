@@ -1053,7 +1053,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.51</span>
+  <span class="ver-badge">v1.2.52</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2829,39 +2829,21 @@ function renderActionPlan(c){ c=_safe(c);
     '</div>'
   ).join('');
 
-  // Toolkit sub-tab panels
-  const tkQuestionsHtml = questions.length
-    ? questions.slice(0,5).map((q,i)=>
-        '<div class="q-row">'+
-          '<div class="q-row-num">'+(i+1)+'</div>'+
-          '<div class="q-row-body">'+
-            '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
-            '<div class="q-row-text">'+q.text+'</div>'+
-            '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</button></div>'+
-          '</div>'+
-        '</div>'
-      ).join('')
-    : '<div style="padding:16px;font-size:13px;color:var(--t2)">Sin preguntas disponibles para esta etapa.</div>';
-
-  const tkRoleHtml =
-    '<div class="role-filter" id="stk-role-filter">'+
-      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
-      '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
-    '</div>'+
-    '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>';
-
-  const tkToolkitHtml =
-    '<div class="tk-subtabs">'+
-      '<div class="tk-subtab on" data-stk="tk-disc" onclick="tkSubTab(\'tk-disc\')">Preguntas disparadoras</div>'+
-      '<div class="tk-subtab" data-stk="tk-role" onclick="tkSubTab(\'tk-role\')">Preguntas por rol</div>'+
-      '<div class="tk-subtab" data-stk="tk-obj" onclick="tkSubTab(\'tk-obj\')">Objeciones frecuentes</div>'+
-    '</div>'+
-    '<div class="tk-subpanel on" id="tk-disc">'+tkQuestionsHtml+'</div>'+
-    '<div class="tk-subpanel" id="tk-role">'+tkRoleHtml+'</div>'+
-    '<div class="tk-subpanel" id="tk-obj">'+buildObjCard(true)+'</div>';
+  // TAB 3: Meeting Toolkit — stage-aware accordion steps
+  const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
+  const toolkitHtml = toolkitSteps.map((s,i)=>
+    '<div class="tk-step">'+
+      '<div class="tk-step-head" onclick="toggleTkStep(\'tks'+i+'\')">'+
+        '<div class="tk-step-num">'+s.num+'</div>'+
+        '<div class="tk-step-info">'+
+          '<div class="tk-step-title">'+s.title+'</div>'+
+          '<div class="tk-step-sub">'+s.sub+'</div>'+
+        '</div>'+
+        '<div class="tk-step-dur">'+s.dur+'</div>'+
+      '</div>'+
+      '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
+    '</div>'
+  ).join('');
 
   const apHeader =
     '<div class="col-header">'+
@@ -2877,7 +2859,7 @@ function renderActionPlan(c){ c=_safe(c);
       '</div>'+
       '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
       '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
-      '<div class="ap-panel" id="ap-toolkit">'+tkToolkitHtml+'</div>'+
+      '<div class="ap-panel" id="ap-toolkit">'+toolkitHtml+'</div>'+
     '</div>';
 }
 
@@ -2963,18 +2945,38 @@ function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
     '<div class="stage-opener-box">"'+opener+'"</div>'+
     '<button class="btn b-s" style="font-size:12px;margin-top:8px" onclick="copyText('+JSON.stringify(opener)+')">📋 '+t('copyOpenerBtn')+'</button>';
 
+  const discQuestionsHtml = questions.length
+    ? questions.slice(0,5).map((q,i)=>
+        '<div class="q-row">'+
+          '<div class="q-row-num">'+(i+1)+'</div>'+
+          '<div class="q-row-body">'+
+            '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
+            '<div class="q-row-text">'+q.text+'</div>'+
+            '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</button></div>'+
+          '</div>'+
+        '</div>'
+      ).join('')
+    : '<div style="padding:8px 0;font-size:13px;color:var(--t2)">Sin preguntas disponibles.</div>';
+
+  const discRoleHtml =
+    '<div class="role-filter" id="stk-role-filter">'+
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
+    '</div>'+
+    '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>';
+
   const questionsBody =
-    questions.slice(0,5).map((q,i)=>
-      '<div class="q-row">'+
-        '<div class="q-row-num">'+(i+1)+'</div>'+
-        '<div class="q-row-body">'+
-          '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
-          '<div class="q-row-text">'+q.text+'</div>'+
-          '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</button></div>'+
-        '</div>'+
-      '</div>'
-    ).join('')+
-    (stageId==='lead'?'<div style="margin-top:10px">'+buildObjCard(true)+'</div>':'');
+    '<div class="tk-subtabs">'+
+      '<div class="tk-subtab on" data-stk="tk-disc" onclick="tkSubTab(\'tk-disc\')">Preguntas disparadoras</div>'+
+      '<div class="tk-subtab" data-stk="tk-role" onclick="tkSubTab(\'tk-role\')">Preguntas por rol</div>'+
+      '<div class="tk-subtab" data-stk="tk-obj" onclick="tkSubTab(\'tk-obj\')">Objeciones frecuentes</div>'+
+    '</div>'+
+    '<div class="tk-subpanel on" id="tk-disc">'+discQuestionsHtml+'</div>'+
+    '<div class="tk-subpanel" id="tk-role">'+discRoleHtml+'</div>'+
+    '<div class="tk-subpanel" id="tk-obj">'+buildObjCard(true)+'</div>';
 
   const demoBody =
     '<div class="mod-row pri"><span class="mod-row-ico">📣</span>'+
