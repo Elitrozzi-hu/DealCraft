@@ -1,7 +1,12 @@
 {
-  "version": "1.2.13",
+  "version": "1.2.14",
   "date": "2026-03-18",
   "history": [
+    {
+      "version": "1.2.14",
+      "date": "2026-03-18",
+      "note": "Replace loading orbit animation with Humand mascot SVG wearing reading glasses and typing on a laptop"
+    },
     {
       "version": "1.2.13",
       "date": "2026-03-18",
