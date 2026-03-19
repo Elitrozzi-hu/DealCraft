@@ -1,7 +1,12 @@
 {
-  "version": "1.2.61",
+  "version": "1.2.62",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.62",
+      "date": "2026-03-19",
+      "note": "Redesign stakeholder cards: avatar initials, 2-col priority/pitch boxes, numbered questions, objections with response callout, red flags block, cleaner visual hierarchy"
+    },
     {
       "version": "1.2.61",
       "date": "2026-03-19",

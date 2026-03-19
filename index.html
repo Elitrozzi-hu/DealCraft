@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.61</span>
+  <span class="ver-badge">v1.2.62</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2749,58 +2749,107 @@ function openCtxDrawer(type){
       stks.map((s,i)=>{
         const tc = typeConfig[s.type]||typeConfig.unknown;
         const ec = engConfig[s._engagementStatus]||engConfig.pending;
-        const contactItems = [
-          s._linkedin ? '<a href="'+s._linkedin+'" target="_blank" style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--p);text-decoration:none">🔗 LinkedIn</a>' : null,
-          s._email    ? '<span style="font-size:12px;color:var(--t1)">✉️ '+s._email+'</span>' : null,
-          s._phone    ? '<span style="font-size:12px;color:var(--t1)">📞 '+s._phone+'</span>' : null,
-          (s._city||s._country) ? '<span style="font-size:12px;color:var(--t2)">📍 '+[s._city,s._country].filter(Boolean).join(', ')+'</span>' : null,
+        const displayName = s._name || s.role || 'Contacto';
+        const initials = displayName.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+        const avatarColors = ['#496BE3','#0891b2','#7c3aed','#059669','#d97706'];
+        const avatarBg = avatarColors[displayName.length % avatarColors.length];
+
+        // Section divider helper
+        const divider = '<div style="height:1px;background:var(--bg);margin:12px 0"></div>';
+        // Section label helper
+        const secLbl = (ico, lbl) => '<div style="display:flex;align-items:center;gap:5px;margin-bottom:8px">'+
+          '<span style="font-size:12px">'+ico+'</span>'+
+          '<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2)">'+lbl+'</span>'+
+        '</div>';
+
+        const contactRow = [
+          s._linkedin ? '<a href="'+s._linkedin+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--p);text-decoration:none;background:var(--px);padding:3px 8px;border-radius:20px">🔗 LinkedIn</a>' : null,
+          s._email    ? '<span style="font-size:11px;color:var(--t2)">✉️ '+escHtml(s._email)+'</span>' : null,
+          s._phone    ? '<span style="font-size:11px;color:var(--t2)">📞 '+escHtml(s._phone)+'</span>' : null,
+          (s._city||s._country) ? '<span style="font-size:11px;color:var(--t2)">📍 '+escHtml([s._city,s._country].filter(Boolean).join(', '))+'</span>' : null,
         ].filter(Boolean);
 
-        return '<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:14px;margin-bottom:12px">'+
-          // Header
-          '<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px">'+
+        return '<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:12px">'+
+
+          // ── Header row: avatar + name/role + pills
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">'+
+            '<div style="width:38px;height:38px;border-radius:50%;background:'+avatarBg+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;flex-shrink:0">'+initials+'</div>'+
             '<div style="flex:1;min-width:0">'+
-              '<div style="font-size:14px;font-weight:600;color:var(--t1);margin-bottom:3px">'+(s._name||s.role)+'</div>'+
-              '<div style="font-size:12px;color:var(--t2)">'+(s._name?s.role:'')+'</div>'+
+              '<div style="font-size:14px;font-weight:600;color:var(--t1);line-height:1.3">'+escHtml(displayName)+'</div>'+
+              (s._name && s.role ? '<div style="font-size:11px;color:var(--t2);margin-top:2px">'+escHtml(s.role)+'</div>' : '')+
             '</div>'+
-            '<div style="display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">'+
+            '<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0">'+
               pill(tc.label,tc.bg,tc.color)+
               pill(ec.label,ec.bg,ec.color)+
             '</div>'+
           '</div>'+
-          // Confirm/remove button
-          '<div style="margin-bottom:8px">'+
-            '<button class="q-row-btn" onclick="toggleStkPresent('+JSON.stringify(c.name)+','+i+');openCtxDrawer(\'stakeholders\')">'+
-              (s.present?'✓ Confirmado — Quitar':'+ Confirmar asistencia')+
+
+          // ── Confirm button + contact row
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">'+
+            '<button class="q-row-btn" style="flex-shrink:0" onclick="toggleStkPresent('+JSON.stringify(c.name)+','+i+');openCtxDrawer(\'stakeholders\')">'+
+              (s.present ? '✓ Confirmado — Quitar' : '+ Confirmar asistencia')+
             '</button>'+
+            (contactRow.length ? '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end">'+contactRow.join('')+'</div>' : '')+
           '</div>'+
-          // Likely priority
-          (s._likelyPriority ? miniSec('Qué le importa','<div style="font-size:12px;color:var(--t1);line-height:1.5">'+s._likelyPriority+'</div>') : '')+
-          // Pitch angle
-          (s._pitchAngle ? miniSec('Cómo hablarle','<div style="font-size:12px;color:var(--t1);line-height:1.5;font-style:italic">"'+s._pitchAngle+'"</div>') : '')+
-          // Contact
-          (contactItems.length ? miniSec('Contacto','<div style="display:flex;flex-direction:column;gap:4px">'+contactItems.join('')+'</div>') : '')+
-          // Opening questions
-          (s._openingQuestions&&s._openingQuestions.length ? miniSec('Preguntas de apertura',
-            s._openingQuestions.slice(0,3).map(q=>'<div style="font-size:12px;color:var(--t1);padding:4px 0;border-bottom:1px solid var(--bg)">'+q+'</div>').join('')
-          ) : '')+
-          // Key objections
-          (s._objections&&s._objections.length ? miniSec('Objeciones clave',
-            s._objections.slice(0,2).map(o=>
-              '<div style="margin-bottom:6px;font-size:12px">'+
-                '<div style="font-weight:600;color:var(--t1)">'+o.objection+'</div>'+
-                '<div style="color:var(--t2);margin-top:2px">→ '+o.response+'</div>'+
+
+          // ── Priority + Pitch (two highlighted boxes)
+          (s._likelyPriority || s._pitchAngle ?
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+              (s._likelyPriority ?
+                '<div style="background:var(--bg);border-radius:var(--r1);padding:10px">'+
+                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:5px">💡 Qué le importa</div>'+
+                  '<div style="font-size:11px;color:var(--t1);line-height:1.5">'+escHtml(s._likelyPriority)+'</div>'+
+                '</div>' : '<div></div>')+
+              (s._pitchAngle ?
+                '<div style="background:var(--px);border-radius:var(--r1);padding:10px">'+
+                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:5px">💬 Cómo hablarle</div>'+
+                  '<div style="font-size:11px;color:var(--p);line-height:1.5;font-style:italic">"'+escHtml(s._pitchAngle)+'"</div>'+
+                '</div>' : '<div></div>')+
+            '</div>' : '')+
+
+          // ── Opening questions
+          (s._openingQuestions&&s._openingQuestions.length ?
+            divider+
+            secLbl('❓','Preguntas de apertura')+
+            s._openingQuestions.slice(0,3).map((q,qi)=>
+              '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
+                '<span style="font-size:10px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px">'+(qi+1)+'.</span>'+
+                '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(q)+'</span>'+
               '</div>'
-            ).join('')
-          ) : '')+
-          // Red flags
-          (s._redFlags&&s._redFlags.length ? miniSec('Red flags',
-            s._redFlags.map(r=>'<div style="font-size:12px;color:var(--red);padding:2px 0">⚠️ '+r+'</div>').join('')
-          ) : '')+
-          // Transcript signals
-          (s._transcriptSignals&&s._transcriptSignals.length ? miniSec('Del transcript',
-            s._transcriptSignals.map(r=>'<div style="font-size:12px;color:var(--t2);padding:2px 0;font-style:italic">"'+r+'"</div>').join('')
-          ) : '')+
+            ).join('') : '')+
+
+          // ── Objections
+          (s._objections&&s._objections.length ?
+            divider+
+            secLbl('⚡','Objeciones clave')+
+            s._objections.slice(0,3).map(o=>
+              '<div style="margin-bottom:8px;background:var(--bg);border-radius:var(--r1);padding:8px 10px">'+
+                '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
+                (o.response ? '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding-left:8px;border-left:2px solid var(--p)">'+escHtml(o.response)+'</div>' : '')+
+              '</div>'
+            ).join('') : '')+
+
+          // ── Red flags
+          (s._redFlags&&s._redFlags.length ?
+            divider+
+            secLbl('🚩','Red flags')+
+            '<div style="background:#fff5f5;border-radius:var(--r1);padding:8px 10px">'+
+              s._redFlags.map(r=>
+                '<div style="display:flex;gap:6px;font-size:11px;color:var(--red);line-height:1.5;padding:3px 0">'+
+                  '<span style="flex-shrink:0">⚠️</span>'+
+                  '<span>'+escHtml(r)+'</span>'+
+                '</div>'
+              ).join('')+
+            '</div>' : '')+
+
+          // ── Transcript signals
+          (s._transcriptSignals&&s._transcriptSignals.length ?
+            divider+
+            secLbl('🎙️','Del transcript')+
+            s._transcriptSignals.map(r=>
+              '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--bg);font-style:italic">"'+escHtml(r)+'"</div>'
+            ).join('') : '')+
+
         '</div>';
       }).join('')+
       '<div style="margin-top:4px">'+
