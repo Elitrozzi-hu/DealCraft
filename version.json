@@ -1,7 +1,12 @@
 {
-  "version": "1.2.64",
+  "version": "1.2.65",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.65",
+      "date": "2026-03-19",
+      "note": "Push Actualizado/Refresh block to far right of header strip using margin-left:auto, remove divider before it"
+    },
     {
       "version": "1.2.64",
       "date": "2026-03-19",

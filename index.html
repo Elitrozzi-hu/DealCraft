@@ -1059,7 +1059,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.64</span>
+  <span class="ver-badge">v1.2.65</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">19 Mar 2026</span>
 </div>
@@ -2441,8 +2441,7 @@ function renderCoStrip(c){
       '<div class="cos-stat-val">'+c.industry+'</div>'+
       '<div class="cos-stat-lbl">Industry</div>'+
     '</div>'+
-    '<div class="cos-divider"></div>'+
-    '<div class="cos-refresh">'+
+    '<div class="cos-refresh" style="margin-left:auto">'+
       '<div class="cos-refresh-ts">Actualizado: '+timeAgo(currentAnalyzedAt)+'</div>'+
       '<button id="refresh-btn" class="cos-refresh-btn" onclick="refreshBrief()">↻ Refresh</button>'+
     '</div>';
