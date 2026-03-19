@@ -1,7 +1,12 @@
 {
-  "version": "1.2.36",
+  "version": "1.2.37",
   "date": "2026-03-19",
   "history": [
+    {
+      "version": "1.2.37",
+      "date": "2026-03-19",
+      "note": "Remove Brief, Tech Stack and Recursos nav buttons from screen 3 header"
+    },
     {
       "version": "1.2.36",
       "date": "2026-03-19",
