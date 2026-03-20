@@ -1051,7 +1051,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.79</span>
+  <span class="ver-badge">v1.2.80</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">20 Mar 2026</span>
 </div>
@@ -2029,8 +2029,9 @@ function mapBriefToCompany(apiResponse){
   // Headcount: snap.employee_count is a string like "1,200 employees"
   const hcStr = snap.employee_count || lusha.employee_count || '500+';
 
-  // Domain for favicon
-  const domain = lusha.domain || lusha.website || '';
+  // Domain for favicon — check all available sources
+  const domain = snap.domain || snap.website || lusha.domain || lusha.website ||
+    brief.company_domain || brief.domain || '';
 
   // Opener from first pain hypothesis validation question
   const opener = pains.length && pains[0].validation_question
@@ -4973,7 +4974,10 @@ async function generateDeck(){
         brief: rawBrief.brief || rawBrief,
         deal_data: {
           company_name: selectedDealName,
-          hubspot_deal_id: selectedDealId || null
+          hubspot_deal_id: selectedDealId || null,
+          logo_url: current?.website
+            ? 'https://www.google.com/s2/favicons?domain='+(current.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'')+'&sz=128'
+            : null
         }
       })
     });

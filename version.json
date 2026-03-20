@@ -1,7 +1,12 @@
 {
-  "version": "1.2.79",
+  "version": "1.2.80",
   "date": "2026-03-20",
   "history": [
+    {
+      "version": "1.2.80",
+      "date": "2026-03-20",
+      "note": "Fix company logo: broaden domain lookup to include snap.domain/website; fix PPT logo by sending logo_url in /api/deck payload"
+    },
     {
       "version": "1.2.79",
       "date": "2026-03-20",
