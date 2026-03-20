@@ -27,9 +27,11 @@ async function enrichWithLusha(domain) {
       timeout: 8000,
     });
     const d = response.data?.data || response.data;
+    console.log('[Lusha] Company response keys:', JSON.stringify(Object.keys(d)));
+    console.log('[Lusha] Company ID candidates:', JSON.stringify({ lushaCompanyId: d.lushaCompanyId, id: d.id, companyId: d.companyId, lushaId: d.lushaId }));
     return {
       source: 'lusha',
-      lusha_company_id: d.lushaCompanyId || null,
+      lusha_company_id: d.lushaCompanyId || d.id || d.companyId || d.lushaId || null,
       company_name: d.name || null,
       industry: d.mainIndustry || d.industry || null,
       employee_count: d.employeesInLinkedin || null,
