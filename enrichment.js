@@ -81,6 +81,8 @@ async function searchLushaStakeholders(lushaCompanyId) {
       console.warn('[Lusha] Rate limit reached for stakeholder search');
     } else {
       console.warn(`[Lusha] Stakeholder search failed: ${err.message}`);
+      console.warn(`[Lusha] Status: ${err.response?.status}, Body: ${JSON.stringify(err.response?.data)}`);
+      console.warn(`[Lusha] URL called: /v2/company/${lushaCompanyId}/employees`);
     }
     return [];
   }
