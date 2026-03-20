@@ -1,7 +1,12 @@
 {
-  "version": "1.2.77",
-  "date": "2026-03-19",
+  "version": "1.2.78",
+  "date": "2026-03-20",
   "history": [
+    {
+      "version": "1.2.78",
+      "date": "2026-03-20",
+      "note": "Fix Presentation card: show inline loading state, open deckUrl in new tab on success, show error/retry on failure"
+    },
     {
       "version": "1.2.77",
       "date": "2026-03-19",

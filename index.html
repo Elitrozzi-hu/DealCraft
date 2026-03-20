@@ -1051,9 +1051,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.77</span>
+  <span class="ver-badge">v1.2.78</span>
   <span class="ver-sep">·</span>
-  <span class="ver-date">19 Mar 2026</span>
+  <span class="ver-date">20 Mar 2026</span>
 </div>
 
 <!-- SLIDE MODAL -->
@@ -2580,11 +2580,11 @@ function renderContext(c){ c=_safe(c);
         '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
         '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
-      '<div class="mat-card" onclick="generateDeck()">'+
+      '<div class="mat-card" id="deck-card" onclick="generateDeck()">'+
         '<div class="mat-card-icon">📊</div>'+
         '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matDeckDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
+        '<div class="mat-card-desc" id="deck-card-desc">'+t('matDeckDesc')+'</div>'+
+        '<div class="mat-card-cta" id="deck-card-cta">'+t('matOpen')+'</div>'+
       '</div>'+
       '<div class="mat-card" onclick="toast(t(\'comingSoonProp\'))">'+
         '<div class="mat-card-icon">📄</div>'+
@@ -4958,8 +4958,13 @@ function loadDemo(){
 
 // ── Deck generation ───────────────────────
 async function generateDeck(){
-  if(!rawBrief){ toast('⚠️ Generá un brief primero'); return; }
-  toast('⏳ Generando presentación...');
+  if(!rawBrief){ toast('Generate a brief first'); return; }
+  const card = document.getElementById('deck-card');
+  const descEl = document.getElementById('deck-card-desc');
+  const ctaEl  = document.getElementById('deck-card-cta');
+  if(card){ card.style.pointerEvents='none'; card.style.opacity='.7'; }
+  if(descEl) descEl.textContent = 'Generating presentation…';
+  if(ctaEl)  ctaEl.textContent  = '⏳';
   try {
     const r = await fetch(API_BASE+'/api/deck', {
       method:'POST',
@@ -4976,13 +4981,19 @@ async function generateDeck(){
     const json = await r.json();
     const url = json?.apps_script?.response?.deckUrl || json?.deckUrl;
     if(url){
-      toast('✅ Presentación lista');
+      if(descEl) descEl.textContent = 'Presentation ready — opening now';
+      if(ctaEl)  ctaEl.textContent  = 'Open ↗';
+      if(card){ card.style.opacity='1'; card.onclick = ()=>window.open(url,'_blank'); }
       window.open(url, '_blank');
     } else {
-      toast('⚠️ No se recibió el link de la presentación');
+      if(descEl) descEl.textContent = 'No link received — try again';
+      if(ctaEl)  ctaEl.textContent  = 'Retry';
+      if(card){ card.style.pointerEvents=''; card.style.opacity='1'; card.onclick = generateDeck; }
     }
   } catch(e){
-    toast('❌ Error al generar la presentación. Intentá de nuevo.');
+    if(descEl) descEl.textContent = 'Error generating — try again';
+    if(ctaEl)  ctaEl.textContent  = 'Retry';
+    if(card){ card.style.pointerEvents=''; card.style.opacity='1'; card.onclick = generateDeck; }
   }
 }
 
