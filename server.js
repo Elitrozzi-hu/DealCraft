@@ -826,6 +826,19 @@ app.get('/api/briefs/recent/:key', async (req, res) => {
   }
 });
 
+// Debug: Lusha company lookup only (no employee credits consumed)
+app.get('/api/debug/lusha', async (req, res) => {
+  const domain = req.query.domain;
+  if (!domain) return res.status(400).json({ error: 'domain query param required' });
+  try {
+    const { enrichWithLusha } = require('./enrichment');
+    const result = await enrichWithLusha(domain);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Generate deck content
 app.post('/api/deck', async (req, res) => {
   try {
