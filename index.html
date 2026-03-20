@@ -1051,7 +1051,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.80</span>
+  <span class="ver-badge">v1.2.81</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">20 Mar 2026</span>
 </div>
@@ -1773,17 +1773,19 @@ async function loadRecentBriefs(){
   if(!list) return;
   try {
     const r = await fetch(API_BASE+'/api/briefs/recent');
-    if(!r.ok) throw new Error();
-    const { entries } = await r.json();
-    if(!entries || !entries.length){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data = await r.json();
+    console.log('[loadRecentBriefs] response:', data);
+    const entries = data.entries || data.briefs || data.data || (Array.isArray(data) ? data : []);
+    if(!entries.length){
       list.innerHTML = '<div class="hist-empty">'+t('histEmpty')+'</div>';
       return;
     }
     list.innerHTML = entries.map(e=>{
-      const d = new Date(e.updated_at);
-      const dateStr = d.toLocaleDateString('es-AR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      const d = new Date(e.updated_at||e.created_at||Date.now());
+      const dateStr = d.toLocaleDateString('en-US',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
       const key = encodeURIComponent(e.key || (e.company_name||'').toLowerCase().trim());
-      const domain = (e.domain||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
+      const domain = (e.domain||e.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
       const logoEl = domain
         ? `<div class="hist-ico hist-ico-man" style="padding:0;overflow:hidden"><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64" style="width:100%;height:100%;object-fit:contain;border-radius:var(--r1)" onerror="this.parentElement.innerHTML='🏢'"></div>`
         : `<div class="hist-ico hist-ico-man">🏢</div>`;
@@ -1794,8 +1796,9 @@ async function loadRecentBriefs(){
         <span class="hist-badge">${t('histOpen')}</span>
       </div>`;
     }).join('');
-  } catch(e){
-    list.innerHTML = '<div class="hist-empty">No se pudo cargar el historial</div>';
+  } catch(err){
+    console.error('[loadRecentBriefs] error:', err);
+    list.innerHTML = '<div class="hist-empty">'+t('histEmpty')+'</div>';
   }
 }
 

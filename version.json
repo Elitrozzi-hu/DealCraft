@@ -1,7 +1,12 @@
 {
-  "version": "1.2.80",
+  "version": "1.2.81",
   "date": "2026-03-20",
   "history": [
+    {
+      "version": "1.2.81",
+      "date": "2026-03-20",
+      "note": "Fix search history: broaden response field parsing, add debug logging, translate error message, fix domain lookup for logos"
+    },
     {
       "version": "1.2.80",
       "date": "2026-03-20",
