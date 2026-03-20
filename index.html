@@ -1051,7 +1051,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.78</span>
+  <span class="ver-badge">v1.2.79</span>
   <span class="ver-sep">·</span>
   <span class="ver-date">20 Mar 2026</span>
 </div>
@@ -4979,7 +4979,8 @@ async function generateDeck(){
     });
     if(!r.ok) throw new Error('HTTP '+r.status);
     const json = await r.json();
-    const url = json?.apps_script?.response?.deckUrl || json?.deckUrl;
+    console.log('[generateDeck] response:', JSON.stringify(json));
+    const url = json?.apps_script?.response?.deckUrl || json?.deckUrl || json?.deck_url || json?.url;
     if(url){
       if(descEl) descEl.textContent = 'Presentation ready — opening now';
       if(ctaEl)  ctaEl.textContent  = 'Open ↗';
@@ -4991,7 +4992,8 @@ async function generateDeck(){
       if(card){ card.style.pointerEvents=''; card.style.opacity='1'; card.onclick = generateDeck; }
     }
   } catch(e){
-    if(descEl) descEl.textContent = 'Error generating — try again';
+    console.error('[generateDeck] error:', e);
+    if(descEl) descEl.textContent = 'Error: '+e.message;
     if(ctaEl)  ctaEl.textContent  = 'Retry';
     if(card){ card.style.pointerEvents=''; card.style.opacity='1'; card.onclick = generateDeck; }
   }

@@ -1,7 +1,12 @@
 {
-  "version": "1.2.78",
+  "version": "1.2.79",
   "date": "2026-03-20",
   "history": [
+    {
+      "version": "1.2.79",
+      "date": "2026-03-20",
+      "note": "Add console logging to generateDeck to debug response structure, broaden deckUrl field lookup"
+    },
     {
       "version": "1.2.78",
       "date": "2026-03-20",
