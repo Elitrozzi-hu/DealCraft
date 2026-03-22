@@ -61,11 +61,21 @@ async function searchLushaStakeholders(lushaCompanyId) {
       }
     );
 
-    const employees = response.data?.data || response.data?.employees || response.data || [];
-    if (!Array.isArray(employees)) return [];
+    const raw = response.data;
+    console.log('[Lusha] Employees raw response keys:', JSON.stringify(Object.keys(raw || {})));
+    console.log('[Lusha] Employees sample:', JSON.stringify(Array.isArray(raw) ? raw[0] : (raw?.data?.[0] || raw?.employees?.[0] || 'no array found')));
+
+    const employees = raw?.data || raw?.employees || (Array.isArray(raw) ? raw : []);
+    if (!Array.isArray(employees)) {
+      console.warn('[Lusha] Employees response is not an array:', typeof employees);
+      return [];
+    }
+
+    console.log(`[Lusha] Total employees returned: ${employees.length}`);
 
     // Filter to relevant stakeholders only
     const relevant = employees.filter((e) => isRelevantTitle(e.jobTitle || e.job_title || e.title));
+    console.log(`[Lusha] Relevant stakeholders after filter: ${relevant.length}`);
 
     return relevant.slice(0, 8).map((e) => ({
       full_name: [e.firstName || e.first_name, e.lastName || e.last_name].filter(Boolean).join(' ') || e.fullName || e.name || null,
