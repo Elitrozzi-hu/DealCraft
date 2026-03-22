@@ -53,9 +53,9 @@ async function searchLushaStakeholders(lushaCompanyId) {
   if (!lushaCompanyId) return [];
   try {
     const response = await axios.get(
-      `https://api.lusha.com/v2/company/${lushaCompanyId}/employees`,
+      'https://api.lusha.com/v2/company/employees',
       {
-        params: { limit: 25 },
+        params: { lushaCompanyId: String(lushaCompanyId) },
         headers: { api_key: process.env.LUSHA_API_KEY },
         timeout: 10000,
       }
