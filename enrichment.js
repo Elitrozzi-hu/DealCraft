@@ -63,7 +63,9 @@ async function searchLushaStakeholders(lushaCompanyId) {
 
     const raw = response.data;
     console.log('[Lusha] Employees raw response keys:', JSON.stringify(Object.keys(raw || {})));
-    console.log('[Lusha] Employees sample:', JSON.stringify(Array.isArray(raw) ? raw[0] : (raw?.data?.[0] || raw?.employees?.[0] || 'no array found')));
+    console.log('[Lusha] Employees data type:', typeof raw?.data, Array.isArray(raw?.data));
+    console.log('[Lusha] Employees data value:', JSON.stringify(raw?.data).slice(0, 500));
+    console.log('[Lusha] Employees meta:', JSON.stringify(raw?.meta));
 
     const employees = raw?.data || raw?.employees || (Array.isArray(raw) ? raw : []);
     if (!Array.isArray(employees)) {
