@@ -49,34 +49,37 @@ async function enrichWithLusha(domain) {
   }
 }
 
-async function searchLushaStakeholders(lushaCompanyId) {
-  if (!lushaCompanyId) return [];
+async function searchLushaStakeholders(lushaCompanyId, domain) {
+  if (!lushaCompanyId && !domain) return [];
   try {
+    const params = {};
+    if (lushaCompanyId) params.lushaCompanyId = String(lushaCompanyId);
+    if (domain) params.domain = domain;
+
     const response = await axios.get(
-      'https://api.lusha.com/v2/company/employees',
+      'https://api.lusha.com/v2/contacts',
       {
-        params: { lushaCompanyId: String(lushaCompanyId) },
+        params,
         headers: { api_key: process.env.LUSHA_API_KEY },
         timeout: 10000,
       }
     );
 
     const raw = response.data;
-    console.log('[Lusha] Employees raw response keys:', JSON.stringify(Object.keys(raw || {})));
-    console.log('[Lusha] Employees data type:', typeof raw?.data, Array.isArray(raw?.data));
-    console.log('[Lusha] Employees data value:', JSON.stringify(raw?.data).slice(0, 500));
-    console.log('[Lusha] Employees meta:', JSON.stringify(raw?.meta));
+    console.log('[Lusha] Contacts response keys:', JSON.stringify(Object.keys(raw || {})));
+    console.log('[Lusha] Contacts data type:', typeof raw?.data, Array.isArray(raw?.data));
+    console.log('[Lusha] Contacts sample:', JSON.stringify(raw?.data?.[0] || raw?.[0] || 'empty').slice(0, 300));
 
-    const employees = raw?.data || raw?.employees || (Array.isArray(raw) ? raw : []);
+    const employees = raw?.data || raw?.contacts || raw?.results || (Array.isArray(raw) ? raw : []);
     if (!Array.isArray(employees)) {
-      console.warn('[Lusha] Employees response is not an array:', typeof employees);
+      console.warn('[Lusha] Contacts response is not an array:', typeof employees);
       return [];
     }
 
-    console.log(`[Lusha] Total employees returned: ${employees.length}`);
+    console.log(`[Lusha] Total contacts returned: ${employees.length}`);
 
     // Filter to relevant stakeholders only
-    const relevant = employees.filter((e) => isRelevantTitle(e.jobTitle || e.job_title || e.title));
+    const relevant = employees.filter((e) => isRelevantTitle(e.jobTitle || e.job_title || e.title || e.position));
     console.log(`[Lusha] Relevant stakeholders after filter: ${relevant.length}`);
 
     return relevant.slice(0, 8).map((e) => ({
@@ -170,8 +173,8 @@ async function enrichCompany(domain, companyName) {
 
   // If we got a Lusha company ID, fetch relevant stakeholders
   let stakeholders = [];
-  if (lushaData?.lusha_company_id) {
-    stakeholders = await searchLushaStakeholders(lushaData.lusha_company_id);
+  if (lushaData?.lusha_company_id || cleanDomain) {
+    stakeholders = await searchLushaStakeholders(lushaData?.lusha_company_id, cleanDomain);
     if (stakeholders.length) {
       console.log(`[Lusha] Found ${stakeholders.length} relevant stakeholders for ${cleanDomain}`);
     }
