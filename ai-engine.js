@@ -118,7 +118,7 @@ function buildBriefUserMessage(dealData, enrichData, historicalDeals) {
 
   if (enrichData?.stakeholders?.length) {
     sections.push('\n=== LUSHA STAKEHOLDERS — REAL PEOPLE AT THIS COMPANY (confidence: medium) ===');
-    sections.push('These are verified employees found at this company via Lusha. Use their names, titles, LinkedIn URLs, and contact details directly in the stakeholder_map. Do NOT invent contacts beyond this list.');
+    sections.push('These are verified employees found at this company via Lusha. Use their job_title directly. If full_name is null, set name to "Name not available — Lusha credit required" — do NOT invent a name. Do NOT invent contacts beyond this list.');
     sections.push(JSON.stringify(enrichData.stakeholders, null, 2));
   }
 
