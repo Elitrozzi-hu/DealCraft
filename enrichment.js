@@ -82,6 +82,7 @@ async function searchLushaStakeholders(lushaCompanyId, domain) {
     }
 
     console.log(`[Lusha] Total contacts from prospecting: ${contacts.length}`);
+    if (contacts[0]) console.log('[Lusha] First contact raw:', JSON.stringify(contacts[0]));
 
     // Filter to relevant stakeholders only
     const relevant = contacts.filter((e) => isRelevantTitle(e.jobTitle || e.job_title || e.title || e.position));
