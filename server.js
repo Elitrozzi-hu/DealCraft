@@ -826,6 +826,19 @@ app.get('/api/briefs/recent/:key', async (req, res) => {
   }
 });
 
+// Debug: Lusha prospecting search (costs 1 credit — use sparingly)
+app.get('/api/debug/lusha-people', async (req, res) => {
+  const domain = req.query.domain;
+  if (!domain) return res.status(400).json({ error: 'domain query param required' });
+  try {
+    const { searchLushaStakeholders } = require('./enrichment');
+    const result = await searchLushaStakeholders(null, domain);
+    res.json({ count: result.length, stakeholders: result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Debug: Lusha company lookup only (no employee credits consumed)
 app.get('/api/debug/lusha', async (req, res) => {
   const domain = req.query.domain;
