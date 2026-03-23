@@ -43,7 +43,7 @@ async function saveBrief({ company_name, domain, brief, enrichment }) {
         employee_count,
         brief,
         enrichment,
-      }, { timeout: 15000 });
+      }, { timeout: 30000 });
       console.log(`[Cache] Brief saved to Sheets for "${company_name}"`);
       return;
     } catch (err) {
@@ -70,7 +70,7 @@ async function saveBrief({ company_name, domain, brief, enrichment }) {
 async function getRecent() {
   if (APPS_SCRIPT_URL) {
     try {
-      const res = await axios.get(APPS_SCRIPT_URL, { timeout: 10000 });
+      const res = await axios.get(APPS_SCRIPT_URL, { timeout: 30000 });
       return res.data?.entries || [];
     } catch (err) {
       console.warn(`[Cache] Sheets read failed, falling back to file: ${err.message}`);
