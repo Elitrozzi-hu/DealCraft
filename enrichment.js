@@ -103,7 +103,7 @@ async function searchLushaStakeholders(lushaCompanyId, domain) {
     } else {
       console.warn(`[Lusha] Stakeholder search failed: ${err.message}`);
       console.warn(`[Lusha] Status: ${err.response?.status}, Body: ${JSON.stringify(err.response?.data)}`);
-      console.warn(`[Lusha] URL called: /v2/company/${lushaCompanyId}/employees`);
+      console.warn(`[Lusha] Endpoint: POST /prospecting/contact/search, domain: ${domain}`);
     }
     return [];
   }
