@@ -3277,15 +3277,40 @@ async function refreshBrief(){
   if(!current) return;
   const btn = document.getElementById('refresh-btn');
   if(btn){ btn.textContent='↻'; btn.style.opacity='.5'; btn.disabled=true; }
-  const payload = selectedDealId
+  const base = selectedDealId
     ? {deal_id: selectedDealId}
-    : {company_name: current.name, website: current.website||''};
+    : {deal_data: {company_name: current.name, website: current.website||''}};
+  const payload = {...base, force_refresh: true};
   try {
     const res = await fetch(API_BASE+'/api/brief', {
       method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
     });
     if(!res.ok) throw new Error('HTTP '+res.status);
-    const apiResponse = await res.json();
+
+    const contentType = res.headers.get('content-type') || '';
+    let apiResponse;
+    if(!contentType.includes('text/event-stream')){
+      apiResponse = await res.json();
+    } else {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      while(true){
+        const {done, value} = await reader.read();
+        if(done) break;
+        buffer += decoder.decode(value, {stream:true});
+        let boundary;
+        while((boundary = buffer.indexOf('\n\n')) !== -1){
+          const line = buffer.slice(0, boundary).trim();
+          buffer = buffer.slice(boundary + 2);
+          if(!line.startsWith('data: ')) continue;
+          let evt; try{ evt = JSON.parse(line.slice(6)); }catch(_){ continue; }
+          if(evt.type === 'done') apiResponse = evt;
+          if(evt.type === 'error') throw new Error(evt.message);
+        }
+      }
+    }
+    if(!apiResponse) throw new Error('Empty response');
     rawBrief = apiResponse;
     current = mapBriefToCompany(apiResponse);
     currentAnalyzedAt = apiResponse.analyzed_at || (apiResponse.brief&&apiResponse.brief.analyzed_at) || new Date().toISOString();
