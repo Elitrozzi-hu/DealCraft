@@ -2822,7 +2822,7 @@ function openCtxDrawer(type, roleFilter){
             '<div style="background:var(--bg);border-radius:var(--r1);padding:10px 12px">'+content+'</div>'+
           '</div>';
 
-        const personIdSafe = (s._personId||'').replace(/'/g,"\\'");
+        const personIdSafe = String(s._personId||'').replace(/'/g,"\\'");
         // Check localStorage cache for already-revealed contacts
         const cachedEmail = s._personId ? localStorage.getItem('reveal_'+s._personId+'_email') : null;
         const cachedPhone = s._personId ? localStorage.getItem('reveal_'+s._personId+'_phone') : null;
