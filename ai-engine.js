@@ -291,30 +291,45 @@ async function generateAEBrief(dealData, enrichData = {}, historicalDeals = []) 
 async function streamAEBrief(dealData, enrichData = {}, historicalDeals = [], onToken) {
   console.log(`[AI] Streaming Claude model: ${MODEL}`);
   const userMessage = buildBriefUserMessage(dealData, enrichData, historicalDeals);
-  let fullText = '';
 
-  const stream = anthropic.messages.stream({
-    model: MODEL,
-    max_tokens: 6000,
-    temperature: 0.4,
-    system: AE_BRIEF_SYSTEM_PROMPT,
-    messages: [{ role: 'user', content: userMessage }],
-  });
+  const MAX_RETRIES = 3;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    let fullText = '';
+    try {
+      const stream = anthropic.messages.stream({
+        model: MODEL,
+        max_tokens: 6000,
+        temperature: 0.4,
+        system: AE_BRIEF_SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: userMessage }],
+      });
 
-  stream.on('text', (text) => {
-    fullText += text;
-    if (onToken) onToken(text);
-  });
+      stream.on('text', (text) => {
+        fullText += text;
+        if (onToken) onToken(text);
+      });
 
-  await stream.finalMessage();
-  console.log(`[AI] Stream complete (${fullText.length} chars)`);
+      await stream.finalMessage();
+      console.log(`[AI] Stream complete (${fullText.length} chars)`);
 
-  const cleaned = stripJsonFences(fullText);
-  try {
-    return JSON.parse(cleaned);
-  } catch (e) {
-    console.error('[AI] JSON parse failed. Raw output:', fullText.slice(0, 500));
-    throw new Error(`AI returned invalid JSON: ${e.message}`);
+      const cleaned = stripJsonFences(fullText);
+      try {
+        return JSON.parse(cleaned);
+      } catch (e) {
+        console.error('[AI] JSON parse failed. Raw output:', fullText.slice(0, 500));
+        throw new Error(`AI returned invalid JSON: ${e.message}`);
+      }
+    } catch (err) {
+      const isOverloaded = err?.cause?.message?.includes('overloaded_error') ||
+        JSON.stringify(err).includes('overloaded_error');
+      if (isOverloaded && attempt < MAX_RETRIES) {
+        const delay = attempt * 3000;
+        console.warn(`[AI] Claude overloaded, retry ${attempt}/${MAX_RETRIES} in ${delay}ms`);
+        await new Promise(r => setTimeout(r, delay));
+      } else {
+        throw err;
+      }
+    }
   }
 }
 
