@@ -52,15 +52,11 @@ async function enrichWithLusha(domain) {
 async function searchLushaStakeholders(lushaCompanyId, domain) {
   if (!domain) return [];
   try {
-    const companyFilter = lushaCompanyId
-      ? { ids: [lushaCompanyId] }
-      : { domains: [domain] };
-
     const body = {
       pages: { page: 0, size: 50 },
       filters: {
         companies: {
-          include: companyFilter,
+          include: { domains: [domain] },
         },
       },
     };

@@ -292,7 +292,7 @@ async function streamAEBrief(dealData, enrichData = {}, historicalDeals = [], on
   console.log(`[AI] Streaming Claude model: ${MODEL}`);
   const userMessage = buildBriefUserMessage(dealData, enrichData, historicalDeals);
 
-  const MAX_RETRIES = 3;
+  const MAX_RETRIES = 5;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     let fullText = '';
     try {
@@ -323,7 +323,7 @@ async function streamAEBrief(dealData, enrichData = {}, historicalDeals = [], on
       const isOverloaded = err?.cause?.message?.includes('overloaded_error') ||
         JSON.stringify(err).includes('overloaded_error');
       if (isOverloaded && attempt < MAX_RETRIES) {
-        const delay = attempt * 3000;
+        const delay = attempt * 5000;
         console.warn(`[AI] Claude overloaded, retry ${attempt}/${MAX_RETRIES} in ${delay}ms`);
         await new Promise(r => setTimeout(r, delay));
       } else {
