@@ -206,7 +206,7 @@ CRITICAL — stakeholder_map.present: You will receive up to 5 real Lusha contac
         "type": "champion | decision_maker | influencer | blocker | unknown",
         "likely_priority": "string — one sentence",
         "engagement_status": "pending | contacted | engaged",
-        "linkedin_url": "string or null — copy exactly from Lusha stakeholders if available",
+        "has_linkedin": "boolean — copy from Lusha has_linkedin flag",
         "has_email": "boolean — copy from Lusha has_email flag",
         "has_phone": "boolean — copy from Lusha has_phone flag"
       }

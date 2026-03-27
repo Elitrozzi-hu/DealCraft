@@ -2044,7 +2044,7 @@ function mapBriefToCompany(apiResponse){
     _objections: s.key_objections||[],
     _redFlags: s.red_flags||[],
     _openingQuestions: s.opening_questions||[],
-    _linkedin: s.linkedin_url||null,
+    _linkedin: null,
     _email: s.email||null,
     _phone: s.phone||null,
     _city: s.city||null,
@@ -2052,7 +2052,7 @@ function mapBriefToCompany(apiResponse){
     _personId: matchLusha(s.name)?.person_id||null,
     _hasEmail: !!(s.email || matchLusha(s.name)?.has_email),
     _hasPhone: !!(s.phone || matchLusha(s.name)?.has_phone),
-    _hasLinkedin: !!(s.linkedin_url || matchLusha(s.name)?.has_linkedin),
+    _hasLinkedin: !!(s.has_linkedin || matchLusha(s.name)?.has_linkedin),
   }));
   const stakeholders = [...presentStks];
 
@@ -2898,8 +2898,9 @@ function openCtxDrawer(type, roleFilter){
 
         const personIdSafe = String(s._personId||'').replace(/'/g,"\\'");
         // Check localStorage cache for already-revealed contacts
-        const cachedEmail = s._personId ? localStorage.getItem('reveal_'+s._personId+'_email') : null;
-        const cachedPhone = s._personId ? localStorage.getItem('reveal_'+s._personId+'_phone') : null;
+        const cachedEmail   = s._personId ? localStorage.getItem('reveal_'+s._personId+'_email')   : null;
+        const cachedPhone   = s._personId ? localStorage.getItem('reveal_'+s._personId+'_phone')   : null;
+        const cachedLinkedin = s._personId ? localStorage.getItem('reveal_'+s._personId+'_linkedin') : null;
         const eyeBtn = (field, cid) => s._personId
           ? '<button onclick="event.stopPropagation();revealContact(\''+personIdSafe+'\',\''+field+'\',\''+cid+'\')" style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--r1);border:1px solid var(--br);background:#fff;cursor:pointer;color:var(--t2);flex-shrink:0"><i class="ti ti-eye" style="font-size:13px"></i></button>'
           : '';
@@ -2908,14 +2909,16 @@ function openCtxDrawer(type, roleFilter){
             '<div style="display:flex;align-items:center;gap:8px">'+labelNode+'</div>'+
             actionNode+
           '</div>';
+        const liIcon = '<div style="width:20px;height:20px;background:#0a66c2;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-brand-linkedin" style="font-size:12px;color:#fff"></i></div>';
         const contactItems =
-          (s._linkedin || s._hasLinkedin
-            ? contactRow('',
-                '<div style="width:20px;height:20px;background:#0a66c2;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-brand-linkedin" style="font-size:12px;color:#fff"></i></div>'+
-                '<span style="font-size:12px;font-weight:600;color:var(--t1)">LinkedIn</span>',
-                s._linkedin
-                  ? '<a href="'+s._linkedin+'" target="_blank" style="display:flex;align-items:center;color:var(--t2);text-decoration:none"><i class="ti ti-arrow-up-right" style="font-size:15px"></i></a>'
-                  : eyeBtn('linkedin','c-li-'+i))
+          (s._hasLinkedin
+            ? '<div id="c-li-'+i+'">' +
+                contactRow('',
+                  liIcon + '<span style="font-size:12px;font-weight:600;color:var(--t1)">LinkedIn</span>',
+                  cachedLinkedin
+                    ? '<a href="'+cachedLinkedin+'" target="_blank" style="display:flex;align-items:center;color:var(--t2);text-decoration:none"><i class="ti ti-arrow-up-right" style="font-size:15px"></i></a>'
+                    : eyeBtn('linkedin','c-li-'+i)) +
+              '</div>'
             : '')+
           (s._email || s._hasEmail
             ? '<div id="c-em-'+i+'">'+
@@ -4339,7 +4342,7 @@ function revealContact(personId, field, containerId){
   const cacheKey = 'reveal_'+personId+'_'+field;
   // Check cache first
   const cached = localStorage.getItem(cacheKey);
-  if(cached){ _applyReveal(containerId, cached); return; }
+  if(cached){ _applyReveal(containerId, field, cached); return; }
   const container = document.getElementById(containerId);
   if(!container) return;
   const btn = container.querySelector('button');
@@ -4351,23 +4354,34 @@ function revealContact(personId, field, containerId){
   })
   .then(r=>r.json())
   .then(data=>{
-    const val = field==='email'?data.email:data.phone;
+    // linkedin_url comes free with every reveal — cache it always
+    if(data.linkedin_url) localStorage.setItem('reveal_'+personId+'_linkedin', data.linkedin_url);
+    const val = field==='email' ? data.email : field==='phone' ? data.phone : data.linkedin_url;
     if(val){
       localStorage.setItem(cacheKey, val);
-      _applyReveal(containerId, val);
+      _applyReveal(containerId, field, val);
     } else {
       if(btn){ btn.innerHTML='<i class="ti ti-eye-off" style="font-size:13px"></i>'; btn.disabled=true; }
     }
   })
   .catch(()=>{ if(btn){ btn.innerHTML='<i class="ti ti-eye" style="font-size:13px"></i>'; btn.disabled=false; } });
 }
-function _applyReveal(containerId, val){
+function _applyReveal(containerId, field, val){
   const container = document.getElementById(containerId);
   if(!container) return;
-  const span = container.querySelector('.c-val');
-  if(span){ span.textContent=val; span.style.color='var(--t1)'; span.style.fontWeight='600'; }
-  const btn = container.querySelector('button');
-  if(btn) btn.remove();
+  if(field === 'linkedin'){
+    const btn = container.querySelector('button');
+    if(btn) btn.replaceWith(Object.assign(document.createElement('a'), {
+      href: val, target: '_blank',
+      innerHTML: '<i class="ti ti-arrow-up-right" style="font-size:15px"></i>',
+      style: 'display:flex;align-items:center;color:var(--t2);text-decoration:none'
+    }));
+  } else {
+    const span = container.querySelector('.c-val');
+    if(span){ span.textContent=val; span.style.color='var(--t1)'; span.style.fontWeight='600'; }
+    const btn = container.querySelector('button');
+    if(btn) btn.remove();
+  }
 }
 
 function updateStkRole(companyName, idx, val){
