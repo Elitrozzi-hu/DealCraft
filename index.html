@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Humand · B2B Intelligence</title>
+<link rel="icon" type="image/png" href="Favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   /* Brand — Humand */
-  --p:#5c6de0;--pd:#4757d4;--pl:#7f8fe8;--px:#eef0fd;--px2:#dde1fa;
+  --p:#496be3;--pd:#3851d8;--pl:#6f93eb;--px:#dee5fb;--px2:#c5d4f8;
   /* Layout & text — Neutral */
   --bg:#f5f6f8;--t1:#303036;--t2:#636271;--t3:#aaaaba;
   /* Borders */
@@ -24,16 +26,17 @@
   --s3:0px -2px 24px 0px rgba(103,103,121,0.50);
   /* Border radius — S/M/L */
   --r1:8px;--r2:8px;--r3:16px;--r4:16px;
-  /* Hugo input/button radius */
-  --ri:12px;--rb:10px
+  /* Border radius inputs/buttons — DS M token */
+  --ri:8px;--rb:8px
 }
-body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden}
+body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden;letter-spacing:0.2px}
 .scr{display:none;min-height:100vh;flex-direction:column}.scr.on{display:flex}
 
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:#fff;border-bottom:1px solid var(--br);position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:9px;font-weight:600;font-size:16px;letter-spacing:-.3px}
 .logo-i{width:30px;height:30px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600}
+.logo-img{height:24px;width:auto;object-fit:contain}
 .npill{background:var(--px);color:var(--p);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px}
 .nav-r{display:flex;align-items:center;gap:10px}
 .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pl));display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
@@ -299,9 +302,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .toast.on{transform:translateY(0);opacity:1}
 /* ════ WIZARD LAYOUT ════ */
 .co-strip{background:#fff;border-bottom:1px solid var(--br);padding:12px 40px;display:flex;align-items:center;gap:0;position:sticky;top:60px;z-index:90;flex-shrink:0}
-.cos-logo-wrap{flex-shrink:0;margin-right:12px;width:38px;height:38px}
-.cos-logo-img{width:38px;height:38px;border-radius:var(--r1);object-fit:contain;border:1px solid var(--br);background:#fff;padding:4px;box-sizing:border-box}
-.cos-logo{width:38px;height:38px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;flex-shrink:0}
+.cos-logo-wrap{flex-shrink:0;margin-right:14px;width:42px;height:42px}
+.cos-logo-img{width:42px;height:42px;border-radius:var(--r1);object-fit:contain;border:1px solid var(--br);background:#fff;padding:4px;box-sizing:border-box}
+.cos-logo{width:42px;height:42px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;flex-shrink:0;margin-right:14px}
 .cos-info{min-width:0;margin-right:20px}
 .cos-name{font-size:15px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:8px}
 .cos-meta{font-size:11px;color:var(--t2);margin-top:2px}
@@ -315,6 +318,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .cos-ae-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--pl));display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600;flex-shrink:0}
 .cos-ae-name{font-size:12px;font-weight:600;color:var(--t1);white-space:nowrap}
 .cos-ae-role{font-size:10px;color:var(--t2);white-space:nowrap}
+.cos-refresh{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:16px}
+.cos-refresh-ts{font-size:10px;color:var(--t2);white-space:nowrap}
+.cos-refresh-btn{font-size:11px;font-weight:600;color:var(--p);background:var(--px);border:none;border-radius:var(--r1);padding:4px 10px;cursor:pointer;white-space:nowrap;transition:background .12s}
+.cos-refresh-btn:hover{background:var(--pl)}
 .stepper-wrap{background:#fff;border-bottom:1px solid var(--br);display:flex;position:sticky;top:128px;z-index:89;flex-shrink:0}
 .stepper{display:flex;align-items:stretch;width:100%}
 /* Stage progress bar — non-navigable */
@@ -322,12 +329,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .stage-bar-l{display:flex;align-items:center;gap:16px;min-width:0;flex:1}
 .stage-dots{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .sdot{width:8px;height:8px;border-radius:50%;background:var(--br);transition:all .25s}
-.sdot.done{background:var(--p);opacity:.45}
+.sdot.done{background:var(--ok);opacity:1}
 .sdot.on{width:28px;border-radius:4px;background:var(--p)}
 .stage-bar-info{min-width:0}
 .stage-bar-num{font-size:10px;font-weight:600;color:var(--t2);letter-spacing:.5px;margin-bottom:1px}
 .stage-bar-name{font-size:14px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.stage-bar-goal{font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stage-bar-goal{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stage-bar-r{flex-shrink:0;position:relative}
 .stage-picker{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);box-shadow:var(--s2);min-width:230px;z-index:300;display:none;overflow:hidden}
 .stage-picker.on{display:block}
@@ -360,6 +367,17 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .sside-tab.on{color:var(--p);font-weight:600;border-bottom-color:var(--p)}
 .sside-panel{display:none;padding:20px 20px}
 .sside-panel.on{display:block}
+/* ════ COLLAPSIBLE ANALYSIS CARDS ════ */
+.wc-card{background:#fff;border:1px solid var(--br);border-radius:var(--r3);margin-bottom:12px;overflow:hidden;box-shadow:var(--s1)}
+.wc-header{display:flex;align-items:center;padding:12px 16px;cursor:pointer;user-select:none;gap:8px}
+.wc-icon{font-size:16px;color:var(--t3);flex-shrink:0;line-height:1;transition:color .2s}
+.wc-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--t2);flex:1}
+.wc-arrow{font-size:14px;color:var(--t3);transition:transform .2s;line-height:1;flex-shrink:0}
+.wc-card.open .wc-icon{color:var(--p)}
+.wc-card.open .wc-arrow{transform:rotate(90deg);color:var(--p)}
+.wc-card.open .wc-header{border-bottom:1px solid var(--bg)}
+.wc-body{display:none;padding:12px 16px}
+.wc-card.open .wc-body{display:block}
 /* ════ CONTEXT + ACTION PLAN LAYOUT ════ */
 /* AP: left 60%, grey background with internal padding */
 .ap-col{flex:3;min-width:0;background:var(--bg);padding:24px 32px 40px 40px}
@@ -430,25 +448,22 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .tk-step-title{font-size:13px;font-weight:600;color:var(--t1)}
 .tk-step-sub{font-size:11px;color:var(--t2);margin-top:2px}
 .tk-step-dur{font-size:11px;color:var(--t3);flex-shrink:0}
+.tk-step-chevron{font-size:12px;color:var(--t3);flex-shrink:0;margin-left:6px;transition:transform .18s;display:inline-block}
+.tk-step-body.on~.tk-step-head .tk-step-chevron,.tk-step.open .tk-step-chevron{transform:rotate(180deg)}
 .tk-step-body{padding:0 0 16px 36px;display:none}
 .tk-step-body.on{display:block}
+/* Toolkit sub-tabs */
+.tk-subtabs{display:flex;border-bottom:1.5px solid var(--br);margin-bottom:16px}
+.tk-subtab{font-size:12px;font-weight:600;color:var(--t2);padding:9px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;white-space:nowrap;transition:color .12s,border-color .12s}
+.tk-subtab:hover{color:var(--t1)}
+.tk-subtab.on{color:var(--p);border-bottom-color:var(--p)}
+.tk-subpanel{display:none}
+.tk-subpanel.on{display:block}
 /* Drawer content sections */
 .drw-section{margin-bottom:20px}
 .drw-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--br)}
-.anl-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:14px;cursor:pointer;user-select:none}
-.anl-card-title{font-size:12px;font-weight:600;color:var(--t1);display:flex;align-items:center}
-.anl-card-title-arrow{margin-left:auto;font-size:16px;color:var(--t2);transition:transform .2s;flex-shrink:0;line-height:1}
-.anl-card.expanded .anl-card-title{margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg)}
-.anl-card.expanded .anl-card-title-arrow{transform:rotate(90deg)}
-.anl-card-body{display:none}
-.anl-card.expanded .anl-card-body{display:block}
-.anl-section{margin-bottom:14px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;cursor:pointer;user-select:none}
-.anl-section-title{font-size:12px;font-weight:600;color:var(--t1);display:flex;align-items:center}
-.anl-section-title-arrow{margin-left:auto;font-size:16px;color:var(--t2);transition:transform .2s;flex-shrink:0;line-height:1}
-.anl-section.expanded .anl-section-title{margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bg)}
-.anl-section.expanded .anl-section-title-arrow{transform:rotate(90deg)}
-.anl-section-body{display:none;margin-top:0}
-.anl-section.expanded .anl-section-body{display:block}
+.anl-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:14px}
+.anl-card-title{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg)}
 .sig-plain{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bg)}
 .sig-plain:last-child{border-bottom:none}
 .sig-plain-ico{font-size:15px;flex-shrink:0}
@@ -870,6 +885,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .obj-nofit-item{font-size:12px;color:var(--t1);padding:5px 0;border-bottom:1px solid var(--br);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
 .obj-nofit-item:last-child{border-bottom:none}
 
+/* Search history */
+.hist-wrap{margin-top:32px;padding-top:24px;border-top:1.5px solid var(--br)}
+.hist-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:12px}
+.hist-list{display:flex;flex-direction:column;gap:6px}
+.hist-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);cursor:pointer;transition:border-color .15s}
+.hist-row:hover{border-color:var(--p)}
+.hist-ico{width:30px;height:30px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.hist-ico-hs{background:var(--px)}
+.hist-ico-man{background:var(--bg)}
+.hist-name{font-size:13px;font-weight:600;color:var(--t1);flex:1}
+.hist-meta{font-size:11px;color:var(--t3)}
+.hist-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--bg);color:var(--t2);flex-shrink:0}
+.hist-empty{font-size:13px;color:var(--t3);padding:16px 0;text-align:center}
+
 </style>
 </head>
 <body>
@@ -877,7 +906,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <!-- ══ SCREEN 1: SEARCH ══ -->
 <div class="scr on" id="s1">
   <nav>
-    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="logo"><img src="DealCraft.png" class="logo-img" alt="DealCraft" style="height:40px"></div>
     <div class="nav-r">
       <button class="btn b-g" style="font-size:12px" onclick="toast('Mis análisis (próximamente)')"><span data-i18n="myAnalyses">Mis análisis</span></button>
       <button class="lang-btn" id="lang-btn-s1" onclick="toggleLang()">🌐 EN</button>
@@ -905,7 +934,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
           <label class="search-label" data-i18n="searchLabel">Buscar deal en CRM</label>
           <div style="position:relative;margin-top:8px">
             <div class="search-row">
-              <input class="search-input" id="main-input" placeholder="Nombre de empresa o deal..." oninput="searchDeals(this.value)" autocomplete="off" />
+              <input class="search-input" id="main-input" data-i18n-ph="searchPlaceholder" placeholder="Nombre de empresa o deal..." oninput="searchDeals(this.value)" autocomplete="off" />
               <button class="btn b-p" id="analyze-btn" onclick="analyze()" disabled data-i18n="searchBtn">Analizar →</button>
             </div>
             <div class="deal-drop" id="deal-drop"></div>
@@ -914,6 +943,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
           <div class="search-divider" data-i18n="searchDivider">o abre un deal reciente</div>
           <div class="chips" id="recent-chips">
             <span class="chip" style="opacity:.45;cursor:default;pointer-events:none">Cargando deals...</span>
+            <span class="chip" style="border-color:var(--p);color:var(--p);background:var(--px)" onclick="loadDemo()">⚡ Demo</span>
           </div>
         </div>
 
@@ -939,15 +969,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
               <label class="mf-label" data-i18n="s1ManWeb">Sitio web</label>
               <input class="mf-input" id="man-web" data-i18n-ph="s1ManWebPh" placeholder="Ej. royalcaribbean.com" />
             </div>
-            <div class="mf-field">
-              <label class="mf-label" data-i18n="s1ManCtx">Contexto</label>
-              <textarea class="mf-textarea" id="man-ctx" data-i18n-ph="s1ManCtxPh" placeholder="Industria, tipo de empresa, contexto de la reunión..."></textarea>
-            </div>
             <button class="btn b-p" id="manual-btn" onclick="analyzeManual()" style="width:100%;padding:13px 16px" data-i18n="s1ManBtn">Generar brief →</button>
           </div>
         </div>
 
       </div>
+
+      <!-- ── Search history ── -->
+      <div class="hist-wrap" id="hist-wrap">
+        <div class="hist-title" data-i18n="histTitle">Búsquedas recientes</div>
+        <div class="hist-list" id="hist-list">
+          <div class="hist-empty" data-i18n="histEmpty">Aún no hay búsquedas recientes</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -955,7 +990,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <!-- ══ SCREEN 2: PROCESSING ══ -->
 <div class="scr" id="s2">
   <nav>
-    <div class="logo"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="logo"><img src="DealCraft.png" class="logo-img" alt="DealCraft" style="height:40px"></div>
     <div class="nav-r">
       <button class="lang-btn" id="lang-btn-s2" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
@@ -977,11 +1012,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 <!-- ══ SCREEN 3: RESULTS ══ -->
 <div class="scr" id="s3" style="flex-direction:column">
   <nav>
-    <div class="logo" style="cursor:pointer" onclick="goHome()"><div class="logo-i">H</div>Humand<span class="npill">B2B Intelligence</span></div>
+    <div class="logo" style="cursor:pointer" onclick="goHome()"><img src="DealCraft.png" class="logo-img" alt="DealCraft" style="height:40px"></div>
     <div class="nav-r">
-      <button class="btn b-g" onclick="copyBrief()">📋 <span data-i18n="copyBrief">Brief</span></button>
-      <button class="btn b-g" onclick="openDrawer('tech')">🔧 <span data-i18n="navTechStack">Tech Stack</span></button>
-      <button class="btn b-g" onclick="openDrawer('recursos')">📁 <span data-i18n="navResources">Recursos</span></button>
       <button class="lang-btn" id="lang-btn-s3" onclick="toggleLang()">🌐 EN</button>
       <div class="av">ET</div>
     </div>
@@ -1031,9 +1063,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 
 <div class="ver-footer">
   <span class="ver-dot"></span>
-  <span class="ver-badge">v1.2.27</span>
+  <span class="ver-badge">v1.2.81</span>
   <span class="ver-sep">·</span>
-  <span class="ver-date">19 Mar 2026</span>
+  <span class="ver-date">20 Mar 2026</span>
 </div>
 
 <!-- SLIDE MODAL -->
@@ -1601,10 +1633,13 @@ function getPROC(){return[
 // NAVIGATION
 // ═══════════════════════════════════════════
 let current;
+let rawBrief = null;
 // ─── API config ───────────────────────────────
 const API_BASE = 'https://dealcraft.onrender.com';
 let selectedDealId = null, selectedDealName = '', selectedDealStage = '';
+let currentAnalyzedAt = null;
 let dealSearchTimer = null;
+let cachedDeals = [];
 
 function show(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0)}
 function goHome(){
@@ -1627,61 +1662,79 @@ function swTab(id,el){
 // API HELPERS — health check + deal search
 // ═══════════════════════════════════════════
 async function checkHealth(){
-  try {
-    const r = await fetch(API_BASE+'/health', {signal: AbortSignal.timeout(4000)});
-    if(r.ok){
-      const warn = document.getElementById('api-warn');
-      if(warn) warn.classList.remove('on');
-      const btn = document.getElementById('analyze-btn');
-      if(btn && selectedDealId) btn.disabled = false;
-      loadRecentDeals();
-    } else { throw new Error('unhealthy'); }
-  } catch(e) {
-    const warn = document.getElementById('api-warn');
-    const msg = document.getElementById('api-warn-msg');
-    if(warn){ warn.classList.add('on'); }
-    if(msg){ msg.textContent = 'No se puede conectar con el servidor local (localhost:3001). Verificá que esté corriendo.'; }
+  const warn = document.getElementById('api-warn');
+  const msg  = document.getElementById('api-warn-msg');
+  // Try up to 2 times — Render cold starts can take 30-60s
+  for(let attempt = 0; attempt < 2; attempt++){
+    try {
+      if(msg && attempt > 0) msg.textContent = 'Despertando el servidor... un momento';
+      const r = await fetch(API_BASE+'/health', {signal: AbortSignal.timeout(attempt===0?5000:55000)});
+      if(r.ok){
+        if(warn) warn.classList.remove('on');
+        loadRecentDeals();
+        return;
+      }
+    } catch(e){ /* timeout or network error — retry */ }
   }
+  if(warn){ warn.classList.add('on'); }
+  if(msg){ msg.textContent = 'No se puede conectar con el servidor. Podés usar la entrada manual o cargar el demo.'; }
 }
 
 async function loadRecentDeals(){
   try {
-    const r = await fetch(API_BASE+'/api/deals?limit=5');
+    const r = await fetch(API_BASE+'/api/deals?limit=80');
     if(!r.ok) return;
     const data = await r.json();
     const deals = data.deals || data || [];
+    cachedDeals = deals;
     const chips = document.getElementById('recent-chips');
     if(!chips || !deals.length) return;
-    chips.innerHTML = deals.map(d=>
+    chips.innerHTML = deals.slice(0,5).map(d=>
       `<span class="chip" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">🏢 ${escHtml(d.display_name||d.company_name||'Deal')}</span>`
     ).join('');
   } catch(e){ /* silent */ }
 }
 
+function renderDrop(deals, drop){
+  if(!drop) return;
+  if(!deals.length){
+    drop.innerHTML = '<div class="ddrow-empty">No se encontraron deals</div>';
+  } else {
+    drop.innerHTML = deals.map(d=>
+      `<div class="ddrow" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">
+        <div><div class="ddrow-name">${escHtml(d.display_name||d.company_name||'Deal')}</div><div class="ddrow-co">${escHtml(d.deal_name||'')}${d.owner_name?' · '+escHtml(d.owner_name):''}</div></div>
+        <span class="ddrow-stage">${escHtml(d.display_stage||d.deal_stage||'Lead')}</span>
+      </div>`
+    ).join('');
+  }
+  drop.classList.add('on');
+}
+
 function searchDeals(val){
   clearTimeout(dealSearchTimer);
   const drop = document.getElementById('deal-drop');
-  if(!val || val.length < 2){ if(drop) drop.classList.remove('on'); return; }
-  dealSearchTimer = setTimeout(async ()=>{
-    try {
-      const r = await fetch(API_BASE+'/api/deals?search='+encodeURIComponent(val)+'&limit=8');
-      if(!r.ok) return;
-      const data = await r.json();
-      const deals = data.deals || data || [];
-      if(!drop) return;
-      if(!deals.length){
-        drop.innerHTML = '<div class="ddrow-empty">No se encontraron deals</div>';
-      } else {
-        drop.innerHTML = deals.map(d=>
-          `<div class="ddrow" onclick="selectDeal('${d.id}','${escHtml(d.display_name||d.company_name||d.deal_name||'')}','${d.display_stage||d.deal_stage||''}','${escHtml(d.company_name||'')}')">
-            <div><div class="ddrow-name">${escHtml(d.display_name||d.company_name||'Deal')}</div><div class="ddrow-co">${escHtml(d.deal_name||'')}${d.owner_name?' · '+escHtml(d.owner_name):''}</div></div>
-            <span class="ddrow-stage">${escHtml(d.display_stage||d.deal_stage||'Lead')}</span>
-          </div>`
-        ).join('');
-      }
-      drop.classList.add('on');
-    } catch(e){ /* backend down */ }
-  }, 280);
+  if(!val || val.length < 1){ if(drop) drop.classList.remove('on'); return; }
+
+  // Instant local filter from cache
+  const q = val.toLowerCase();
+  const local = cachedDeals.filter(d=>{
+    const name = (d.display_name||d.company_name||d.deal_name||'').toLowerCase();
+    return name.includes(q);
+  }).slice(0,8);
+  renderDrop(local, drop);
+
+  // Also hit the API for broader results (debounced)
+  if(val.length >= 2){
+    dealSearchTimer = setTimeout(async ()=>{
+      try {
+        const r = await fetch(API_BASE+'/api/deals?search='+encodeURIComponent(val)+'&limit=8');
+        if(!r.ok) return;
+        const data = await r.json();
+        const deals = data.deals || data || [];
+        renderDrop(deals, drop);
+      } catch(e){ /* backend down — local results already shown */ }
+    }, 300);
+  }
 }
 
 function selectDeal(id, name, stage, company){
@@ -1692,14 +1745,6 @@ function selectDeal(id, name, stage, company){
   if(inp){ inp.value = selectedDealName; inp.blur(); }
   const drop = document.getElementById('deal-drop');
   if(drop) drop.classList.remove('on');
-  const wrap = document.getElementById('deal-pill-wrap');
-  if(wrap) wrap.innerHTML =
-    `<div class="deal-pill">
-      <span class="deal-pill-ico">🏢</span>
-      <span class="deal-pill-name">${escHtml(selectedDealName)}</span>
-      <span class="deal-pill-stage">${escHtml(stage||'Lead')}</span>
-      <button class="deal-pill-x" onclick="clearSelectedDeal()" title="Cambiar deal">✕</button>
-    </div>`;
   const btn = document.getElementById('analyze-btn');
   if(btn) btn.disabled = false;
 }
@@ -1708,8 +1753,6 @@ function clearSelectedDeal(){
   selectedDealId = null; selectedDealName = ''; selectedDealStage = '';
   const inp = document.getElementById('main-input');
   if(inp) inp.value = '';
-  const wrap = document.getElementById('deal-pill-wrap');
-  if(wrap) wrap.innerHTML = '';
   const drop = document.getElementById('deal-drop');
   if(drop) drop.classList.remove('on');
   const btn = document.getElementById('analyze-btn');
@@ -1727,12 +1770,95 @@ function analyze(){
 function analyzeManual(){
   const name = (document.getElementById('man-name').value||'').trim();
   const web  = (document.getElementById('man-web').value||'').trim();
-  const ctx  = (document.getElementById('man-ctx').value||'').trim();
+  const ctx  = (document.getElementById('man-ctx')?.value||'').trim();
   if(!name){ toast('⚠️ Ingresá el nombre de la empresa'); return; }
   selectedDealId = null;
   selectedDealName = name;
   selectedDealStage = 'lead';
-  _runBrief({deal_data:{company_name:name, domain:web, context:ctx}}, name);
+  const payload = {deal_data:{company_name:name, domain:web, website:web}};
+  if(ctx) payload.additional_context = ctx;
+  _runBrief(payload, name);
+}
+
+async function loadRecentBriefs(){
+  const list = document.getElementById('hist-list');
+  if(!list) return;
+  try {
+    const r = await fetch(API_BASE+'/api/briefs/recent');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data = await r.json();
+    console.log('[loadRecentBriefs] response:', data);
+    const entries = data.entries || data.briefs || data.data || (Array.isArray(data) ? data : []);
+    if(!entries.length){
+      list.innerHTML = '<div class="hist-empty">'+t('histEmpty')+'</div>';
+      return;
+    }
+    list.innerHTML = entries.map(e=>{
+      const d = new Date(e.updated_at||e.created_at||Date.now());
+      const dateStr = d.toLocaleDateString('en-US',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+      const key = encodeURIComponent(e.key || (e.company_name||'').toLowerCase().trim());
+      const domain = (e.domain||e.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
+      const logoEl = domain
+        ? `<div class="hist-ico hist-ico-man" style="padding:0;overflow:hidden"><img src="https://www.google.com/s2/favicons?domain=${domain}&sz=64" style="width:100%;height:100%;object-fit:contain;border-radius:var(--r1)" onerror="this.parentElement.innerHTML='🏢'"></div>`
+        : `<div class="hist-ico hist-ico-man">🏢</div>`;
+      return `<div class="hist-row" onclick="openRecentBrief('${key}','${escHtml(e.company_name||'')}')">
+        ${logoEl}
+        <div class="hist-name">${escHtml(e.company_name||'—')}</div>
+        <div class="hist-meta">${escHtml(e.industry||'')}${e.industry&&e.employee_count?' · ':''}${escHtml(e.employee_count||'')} · ${dateStr}</div>
+        <span class="hist-badge">${t('histOpen')}</span>
+      </div>`;
+    }).join('');
+  } catch(err){
+    console.error('[loadRecentBriefs] error:', err);
+    list.innerHTML = '<div class="hist-empty">'+t('histEmpty')+'</div>';
+  }
+}
+
+async function openRecentBrief(key, name){
+  // Show loading screen with mascot
+  const titleEl = document.querySelector('#s2 .proc-title');
+  const targetEl = document.getElementById('proc-target');
+  const stepsEl  = document.getElementById('proc-steps');
+  const fillEl   = document.getElementById('prog-fill');
+  if(titleEl)  titleEl.textContent = t('loadingBrief');
+  if(targetEl) targetEl.textContent = name;
+  if(stepsEl)  stepsEl.innerHTML = '';
+  if(fillEl)   fillEl.style.width = '0%';
+  show('s2');
+
+  // Animate progress bar while fetching
+  let pct = 0;
+  const fillTimer = setInterval(()=>{
+    pct = Math.min(pct + 8, 85);
+    if(fillEl) fillEl.style.width = pct+'%';
+  }, 120);
+
+  try {
+    const [r] = await Promise.all([
+      fetch(API_BASE+'/api/briefs/recent/'+key),
+      new Promise(res=>setTimeout(res, 1500))  // minimum display time
+    ]);
+    clearInterval(fillTimer);
+    if(fillEl) fillEl.style.width = '100%';
+    if(!r.ok) throw new Error();
+    const data = await r.json();
+    rawBrief = data;
+    selectedDealName = name;
+    selectedDealId = null;
+    selectedDealStage = (data.brief&&data.brief.deal_strategy&&data.brief.deal_strategy.sales_stage)||'lead';
+    currentAnalyzedAt = data.updated_at || data.analyzed_at || (data.brief&&data.brief.analyzed_at) || null;
+    current = mapBriefToCompany(data);
+    const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
+    currentStage = stageMap[(selectedDealStage).toLowerCase()] || 'lead';
+    render();
+    show('s3');
+    // Restore s2 title for next real analysis
+    if(titleEl) titleEl.setAttribute('data-i18n','procTitle');
+  } catch(e){
+    clearInterval(fillTimer);
+    show('s1');
+    toast('❌ No se pudo cargar el brief');
+  }
 }
 
 async function _runBrief(payload, displayName){
@@ -1799,7 +1925,9 @@ async function _runBrief(payload, displayName){
   completeStep(3);
   document.getElementById('prog-fill').style.width='100%';
 
+  rawBrief = apiResponse;
   current = mapBriefToCompany(apiResponse);
+  currentAnalyzedAt = apiResponse.analyzed_at || (apiResponse.brief && apiResponse.brief.analyzed_at) || new Date().toISOString();
   const stageMap={lead:'lead',discovery:'discovery',champion:'champion',champion_identified:'champion',decision_maker:'dm',decision_maker_engaged:'dm',dm:'dm',procurement:'procure',procure:'procure'};
   const brief = apiResponse.brief || apiResponse;
   const sugStage = (brief.deal_strategy&&brief.deal_strategy.sales_stage) || 'lead';
@@ -1808,6 +1936,7 @@ async function _runBrief(payload, displayName){
   render();
   if(payload.deal_id) history.pushState(null,'','?deal='+encodeURIComponent(payload.deal_id));
   show('s3');
+  loadRecentBriefs();
 }
 
 // ═══════════════════════════════════════════
@@ -1857,6 +1986,12 @@ function mapBriefToCompany(apiResponse){
     _transcriptSignals: s.transcript_signals||[],
     _objections: s.key_objections||[],
     _redFlags: s.red_flags||[],
+    _openingQuestions: s.opening_questions||[],
+    _linkedin: s.linkedin_url||null,
+    _email: s.email||null,
+    _phone: s.phone||null,
+    _city: s.city||null,
+    _country: s.country||null,
   }));
   const missingStks = (stkMap.missing||[]).map(s=>({
     role: s.role||'Rol clave pendiente',
@@ -1876,7 +2011,16 @@ function mapBriefToCompany(apiResponse){
     const sc=a.score||0;
     signals.push({ico:sc>=0.8?'🔴':sc>=0.6?'🟡':'🟢',text:(a.title||a.name||'Área')+(a.rationale?': '+a.rationale:''),badge:Math.round(sc*100)+'%',cls:sc>=0.8?'sig-hot':sc>=0.6?'sig-wa':'sig-ok'});
   });
-  if(!signals.length) signals.push({ico:'🟢',text:'Brief generado con IA',badge:'IA',cls:'sig-ok'});
+  if(signals.length<3){
+    (brief.pain_hypotheses||[]).slice(0,4).forEach(p=>{
+      const conf=p.confidence||'medium';
+      const ico=conf==='high'?'🔴':conf==='medium'?'🟡':'🟢';
+      const cls=conf==='high'?'sig-hot':conf==='medium'?'sig-wa':'sig-ok';
+      const badge=conf==='high'?t('confHigh'):conf==='medium'?t('confMed'):t('confLow');
+      if(p.pain) signals.push({ico,text:p.pain,badge,cls});
+    });
+  }
+  if(!signals.length) signals.push({ico:'🟡',text:'Señales a validar en reunión inicial',badge:'Pendiente',cls:'sig-wa'});
 
   // Pain hypotheses — confidence is "high"|"medium"|"low" string
   const pains = brief.pain_hypotheses||[];
@@ -1900,8 +2044,9 @@ function mapBriefToCompany(apiResponse){
   // Headcount: snap.employee_count is a string like "1,200 employees"
   const hcStr = snap.employee_count || lusha.employee_count || '500+';
 
-  // Domain for favicon
-  const domain = lusha.domain || lusha.website || '';
+  // Domain for favicon — check all available sources
+  const domain = snap.domain || snap.website || lusha.domain || lusha.website ||
+    brief.company_domain || brief.domain || '';
 
   // Opener from first pain hypothesis validation question
   const opener = pains.length && pains[0].validation_question
@@ -1918,9 +2063,11 @@ function mapBriefToCompany(apiResponse){
   return {
     name, initials, color,
     industry: snap.industry||'B2B / Servicios',
-    country: lusha.location||lusha.country||'🌎 LatAm',
+    country: snap.hq_country||lusha.location||lusha.country||'🌎 LatAm',
     website: domain,
     employees: hcStr,
+    mrrLow: snap.mrr_low ?? null,
+    mrrHigh: snap.mrr_high ?? null,
     type: snap.workforce_type||'Mixed workforce',
     founded: '—',
     stage: strat.sales_stage||selectedDealStage||'Lead',
@@ -1960,6 +2107,13 @@ function mapBriefToCompany(apiResponse){
     // Raw data for new UI sections
     _dealVelocity: vel,
     _painHypotheses: pains,
+    _opportunities: brief.opportunities||[],
+    _mods: mods,
+    _snapTechStack: snap.tech_stack||[],
+    _dealMetrics: brief.deal_metrics||{},
+    _dealScore: brief.deal_score||{},
+    _actionChecklist: brief.action_checklist||[],
+    _coverageScore: (brief.stakeholder_map||{}).coverage_score,
     _historicalPatterns: hist,
     _preEmail:  emails.pre_meeting  || null,
     _postEmail: emails.post_meeting || null,
@@ -2159,12 +2313,16 @@ function quickFilterObj(id){
 function buildObjCard(inline){
   const commonObjs=OBJECTIONS.filter(o=>o.common);
   const inner=
-    '<input class="obj-search-inp" id="obj-search" placeholder="'+t('objSearchPlaceholder')+'" oninput="filterObjSearch(this.value)" />'+
-    '<div class="obj-commons-label">'+t('objCommonLabel')+'</div>'+
-    '<div class="obj-chips" id="obj-chips">'+
-      commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
+    '<div style="background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:12px">'+
+      '<input class="obj-search-inp" id="obj-search" placeholder="'+t('objSearchPlaceholder')+'" oninput="filterObjSearch(this.value)" style="margin-bottom:12px"/>'+
+      '<div class="obj-commons-label">'+t('objCommonLabel')+'</div>'+
+      '<div class="obj-chips" id="obj-chips" style="margin-bottom:0">'+
+        commonObjs.map(o=>'<span class="obj-chip" onclick="event.stopPropagation();quickFilterObj(\''+o.id+'\')">'+o.ico+' '+o.label+'</span>').join('')+
+      '</div>'+
     '</div>'+
-    '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
+    '<div style="background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;margin-bottom:12px">'+
+      '<div id="obj-list">'+OBJECTIONS.map(o=>objItemHTML(o)).join('')+'</div>'+
+    '</div>'+
     '<div class="obj-nofit">'+
       '<div class="obj-nofit-title">'+t('noFitTitle')+'</div>'+
       NOFIT_SIGNALS.map(s=>'<div class="obj-nofit-item"><span>'+s.ico+'</span><span>'+s.txt+'</span></div>').join('')+
@@ -2205,24 +2363,65 @@ function render(){
   renderNotes(c.name);
 }
 
+function parseHeadcount(str){
+  const s = (str||'').replace(/employees?/i,'').trim();
+  const parts = s.split(/[-–]/);
+  if(parts.length >= 2){
+    const lo = parseInt(parts[0].replace(/[^\d]/g,''))||0;
+    const hi = parseInt(parts[1].replace(/[^\d]/g,''))||0;
+    return {lo, hi: hi||lo, isRange: hi > 0};
+  }
+  const n = parseInt(s.replace(/[^\d]/g,''))||200;
+  return {lo: n, hi: n, isRange: false};
+}
+
 function renderCoStrip(c){
-  const headcount = parseInt((c.employees||'').replace(/[^\d]/g,'')) || 200;
+  const hc = parseHeadcount(c.employees);
+  const headcount = hc.hi || hc.lo || 200;
+  const hcDisplay = hc.isRange
+    ? hc.lo.toLocaleString('en-US') + ' - ' + hc.hi.toLocaleString('en-US')
+    : headcount.toLocaleString('en-US');
   const type = headcount > 2000
     ? {label:'Large Enterprise', bg:'var(--pul)', color:'var(--pu)'}
     : headcount > 500
     ? {label:'Enterprise', bg:'var(--px)', color:'var(--p)'}
     : {label:'SMB', bg:'var(--bg)', color:'var(--t2)'};
   const rate = headcount > 2000 ? 3.5 : headcount > 500 ? 4 : 5;
-  const amount = '$' + Math.round(headcount * rate * 12).toLocaleString('en-US');
+  let amount;
+  if(c.mrrLow != null && c.mrrHigh != null){
+    amount = c.mrrLow === c.mrrHigh
+      ? '$' + c.mrrLow.toLocaleString('en-US')
+      : '$' + c.mrrLow.toLocaleString('en-US') + ' - $' + c.mrrHigh.toLocaleString('en-US');
+  } else {
+    const amtLo = Math.round(hc.lo * rate);
+    const amtHi = Math.round(hc.hi * rate);
+    amount = hc.isRange
+      ? '$' + amtLo.toLocaleString('en-US') + ' - $' + amtHi.toLocaleString('en-US')
+      : '$' + amtHi.toLocaleString('en-US');
+  }
 
   const domain = (c.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'');
   const logoHtml = domain
     ? '<div class="cos-logo-wrap">'+
-        '<img class="cos-logo-img" src="https://www.google.com/s2/favicons?domain='+domain+'&sz=128" alt="" '+
-          'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+
-        '<div class="cos-logo" style="background:'+c.color+';display:none">'+c.initials+'</div>'+
+        '<img class="cos-logo-img" id="cos-logo-img" src="https://www.google.com/s2/favicons?domain='+domain+'&sz=128" alt="" '+
+          'onerror="this.style.display=\'none\';document.getElementById(\'cos-logo-fb\').style.display=\'flex\'">'+
+        '<div class="cos-logo" id="cos-logo-fb" style="background:'+c.color+';display:none">'+c.initials+'</div>'+
       '</div>'
     : '<div class="cos-logo" style="background:'+c.color+'">'+c.initials+'</div>';
+
+  // Deal Score
+  const ds = c._dealScore||{};
+  const dsScore  = ds.score  != null ? ds.score  : (c.score||'—');
+  const dsLabel  = ds.label  || c.scoreLabel || '—';
+  const dsStatus = (ds.status||'').toLowerCase();
+  const dsColor  = dsStatus==='strong'      ? 'var(--ok)'
+                 : dsStatus==='progressing' ? 'var(--p)'
+                 : dsStatus==='at_risk'     ? '#e65100'
+                 : 'var(--t2)';
+  const dsBg     = dsStatus==='strong'      ? 'var(--okl)'
+                 : dsStatus==='progressing' ? 'var(--px)'
+                 : dsStatus==='at_risk'     ? '#fff3e0'
+                 : 'var(--bg)';
 
   document.getElementById('co-strip').innerHTML =
     logoHtml+
@@ -2234,23 +2433,27 @@ function renderCoStrip(c){
     '</div>'+
     '<div class="cos-divider"></div>'+
     '<div class="cos-stat">'+
-      '<div class="cos-stat-val">'+amount+'</div>'+
-      '<div class="cos-stat-lbl">Amount / año</div>'+
+      '<div class="cos-stat-val" style="display:flex;align-items:center;gap:6px">'+
+        '<span style="font-size:18px;font-weight:700;color:'+dsColor+'">'+dsScore+'</span>'+
+        '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+dsBg+';color:'+dsColor+'">'+dsLabel+'</span>'+
+      '</div>'+
+      '<div class="cos-stat-lbl">Deal Score</div>'+
     '</div>'+
     '<div class="cos-stat">'+
-      '<div class="cos-stat-val">'+headcount.toLocaleString('en-US')+'</div>'+
+      '<div class="cos-stat-val">'+amount+'</div>'+
+      '<div class="cos-stat-lbl">MRR</div>'+
+    '</div>'+
+    '<div class="cos-stat">'+
+      '<div class="cos-stat-val">'+hcDisplay+'</div>'+
       '<div class="cos-stat-lbl">Headcount</div>'+
     '</div>'+
     '<div class="cos-stat">'+
       '<div class="cos-stat-val">'+c.industry+'</div>'+
       '<div class="cos-stat-lbl">Industry</div>'+
     '</div>'+
-    '<div class="cos-ae">'+
-      '<div class="cos-ae-av">ET</div>'+
-      '<div>'+
-        '<div class="cos-ae-name">Eli Trozzi</div>'+
-        '<div class="cos-ae-role">Account Executive</div>'+
-      '</div>'+
+    '<div class="cos-refresh" style="margin-left:auto">'+
+      '<div class="cos-refresh-ts">Actualizado: '+timeAgo(currentAnalyzedAt)+'</div>'+
+      '<button id="refresh-btn" class="cos-refresh-btn" onclick="refreshBrief()">↻ Refresh</button>'+
     '</div>';
 }
 
@@ -2304,12 +2507,19 @@ document.addEventListener('click', function(e){
 });
 
 // ═══════════════════════════════════════════
-// CONTEXT COLUMN (left 40%)
+// CONTEXT COLUMN (right — narrower)
 // ═══════════════════════════════════════════
 function renderContext(c){ c=_safe(c);
   const stks = getStakeholders(c);
   const present = stks.filter(s=>s.present).length;
   const activeTech = getActiveTech(c);
+  const stageId = currentStage;
+  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
+  const opener = getStagePitchOpener(c);
+  const questions = getStageQuestions(c);
+  const meetingSteps = getStageMeeting(c);
+  const actionsKey = 'dc_actions_'+compKey+'_'+stageId;
+  const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
 
   // Company card preview
   const companyCard =
@@ -2317,14 +2527,17 @@ function renderContext(c){ c=_safe(c);
       '<div class="ctx-card-head">'+
         '<span class="ctx-card-ico">🏢</span>'+
         '<span class="ctx-card-title">'+t('cardCompany')+'</span>'+
-        '<span class="ctx-card-badge">'+activeTech.length+' '+t('tools')+'</span>'+
+        '<span class="ctx-card-badge" style="color:'+(c._dealScore.status==='strong'?'var(--ok)':c._dealScore.status==='progressing'?'var(--p)':c._dealScore.status==='at_risk'?'#e65100':'var(--t2)')+'">'+((c._dealScore.score||'—')+' · '+(c._dealScore.label||'—'))+'</span>'+
         '<span class="ctx-card-arrow">→</span>'+
       '</div>'+
       '<div class="ctx-card-preview">'+
         '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevIndustry')+'</span><span class="ctx-prev-val">'+c.industry+'</span></div>'+
         '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevEmployees')+'</span><span class="ctx-prev-val">'+c.employees+'</span></div>'+
         '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevCountry')+'</span><span class="ctx-prev-val">'+c.country+'</span></div>'+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">Score</span><span class="ctx-prev-val" style="color:var(--p);font-weight:600">'+c.score+' — '+c.scoreLabel+'</span></div>'+
+        (c._snapTechStack&&c._snapTechStack.length?
+          '<div class="ctx-prev-item" style="align-items:flex-start"><span class="ctx-prev-lbl" style="margin-top:3px">Tech Stack</span><span style="display:flex;flex-wrap:wrap;gap:4px">'+c._snapTechStack.slice(0,5).map(t_=>
+            '<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600;color:var(--t1)">'+escHtml(t_)+'</span>'
+          ).join('')+'</span></div>' : '')+
       '</div>'+
     '</div>';
 
@@ -2341,7 +2554,7 @@ function renderContext(c){ c=_safe(c);
       '<div class="ctx-card-preview">'+
         stks.slice(0,3).map(s=>
           '<div class="ctx-prev-item">'+
-            '<span class="ctx-prev-lbl" style="color:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--t3)')+'">'+s.type+'</span>'+
+            '<span class="ctx-prev-lbl" style="color:'+(s.type==='champion'?'var(--ok)':(s.type==='dm'||s.type==='decision_maker')?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--t3)')+'">'+({'champion':'Champion','dm':'Decision Maker','decision_maker':'Decision Maker','influencer':'Influencer','blocker':'Blocker'}[s.type]||s.type)+'</span>'+
             '<span class="ctx-prev-val">'+s.role+'</span>'+
             (s.present?'<span style="color:var(--ok);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✓</span>':'<span style="color:var(--red);font-size:11px;font-weight:600;flex-shrink:0;margin-left:4px">✗</span>')+
           '</div>'
@@ -2350,19 +2563,79 @@ function renderContext(c){ c=_safe(c);
       '</div>'+
     '</div>';
 
-  // Analysis card preview
-  const analysisCard =
-    '<div class="ctx-card" onclick="openCtxDrawer(\'analysis\')">'+
-      '<div class="ctx-card-head">'+
-        '<span class="ctx-card-ico">🔍</span>'+
-        '<span class="ctx-card-title">'+t('cardAnalysis')+'</span>'+
-        '<span class="ctx-card-badge">'+c.signals.length+' '+t('prevSignals')+'</span>'+
-        '<span class="ctx-card-arrow">→</span>'+
+
+  // Action Plan tabs — dynamic checklist from brief.action_checklist[]
+  const checklistItems = [...(c._actionChecklist||[])];
+  if(typeof c._coverageScore==='number' && c._coverageScore<60){
+    checklistItems.push({title:'Map missing stakeholders',description:'Coverage below 60% — identify and engage missing decision makers before the meeting.'});
+  }
+  const completedCount = checklistItems.filter((_,i)=>!!savedActions['chk_'+i]).length;
+  const actionsHtml =
+    '<div style="margin-bottom:16px">'+
+      checklistItems.map((item,i)=>{
+        const checked = !!savedActions['chk_'+i];
+        return '<div class="action-item'+(checked?' done':'')+'" onclick="toggleAction(\''+actionsKey+'\',\'chk_'+i+'\')">'+
+          '<div class="action-cb">'+(checked?'✓':'')+'</div>'+
+          '<div><div class="action-label">'+escHtml(item.title||'')+'</div><div class="action-desc">'+escHtml(item.description||'')+'</div></div>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
+    '<div style="font-size:11px;color:var(--t3)">'+t('completedCounter').replace('{n}',completedCount).replace('{m}',checklistItems.length)+'</div>';
+
+  const materialsHtml =
+    '<div class="mat-cards">'+
+      '<div class="mat-card" onclick="openEmailDrawer(\'pre\')">'+
+        '<div class="mat-card-icon">✉️</div>'+
+        '<div class="mat-card-title">'+t('matPreTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matPreDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
-      '<div class="ctx-card-preview">'+
-        c.keyInsights.slice(0,2).map(i=>'<div class="ctx-prev-item"><span class="ctx-prev-val" style="min-width:0;white-space:normal;line-height:1.4">'+i+'</span></div>').join('')+
-        '<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+t('prevModule1')+'</span><span class="ctx-prev-val">'+c.primaryModule+'</span></div>'+
+      '<div class="mat-card" onclick="openEmailDrawer(\'post\')">'+
+        '<div class="mat-card-icon">📨</div>'+
+        '<div class="mat-card-title">'+t('matPostTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
       '</div>'+
+      '<div class="mat-card" id="deck-card" onclick="generateDeck()">'+
+        '<div class="mat-card-icon">📊</div>'+
+        '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
+        '<div class="mat-card-desc" id="deck-card-desc">'+t('matDeckDesc')+'</div>'+
+        '<div class="mat-card-cta" id="deck-card-cta">'+t('matOpen')+'</div>'+
+      '</div>'+
+      '<div class="mat-card" onclick="toast(t(\'comingSoonProp\'))">'+
+        '<div class="mat-card-icon">📄</div>'+
+        '<div class="mat-card-title">'+t('matPropTitle')+'</div>'+
+        '<div class="mat-card-desc">'+t('matPropDesc')+'</div>'+
+        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
+      '</div>'+
+    '</div>';
+
+  const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
+  const toolkitHtml = toolkitSteps.map((s,i)=>
+    '<div class="tk-step">'+
+      '<div class="tk-step-head" onclick="toggleTkStep(\'tks'+i+'\')">'+
+        '<div class="tk-step-num">'+s.num+'</div>'+
+        '<div class="tk-step-info">'+
+          '<div class="tk-step-title">'+s.title+'</div>'+
+          '<div class="tk-step-sub">'+s.sub+'</div>'+
+        '</div>'+
+        '<div class="tk-step-dur">'+s.dur+'</div>'+
+        '<span class="tk-step-chevron">▾</span>'+
+      '</div>'+
+      '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
+    '</div>'
+  ).join('');
+
+  const actionPlanCard =
+    '<div class="ap-card">'+
+      '<div class="ap-tabs">'+
+        '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">'+t('tabActions')+'</div>'+
+        '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">'+t('tabSalesMaterials')+'</div>'+
+        '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">'+t('tabMeetingToolkit')+'</div>'+
+      '</div>'+
+      '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
+      '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
+      '<div class="ap-panel" id="ap-toolkit">'+toolkitHtml+'</div>'+
     '</div>';
 
   const ctxHeader =
@@ -2371,27 +2644,12 @@ function renderContext(c){ c=_safe(c);
       '<div class="col-header-desc">'+t('ctxColDesc')+'</div>'+
     '</div>';
 
-  // Deal velocity header (only when real API data exists)
-  let velHtml = '';
-  const vel = c._dealVelocity;
-  const hist = c._historicalPatterns;
-  if(vel && Object.keys(vel).length){
-    const heat = vel.deal_heat||'';
-    const heatPill = heat==='hot'?'<span class="dv-pill dv-hot">🔥 '+t('heatHot')+'</span>':heat==='warm'?'<span class="dv-pill dv-warm">♨️ '+t('heatWarm')+'</span>':heat==='cold'?'<span class="dv-pill dv-cold">❄️ '+t('heatCold')+'</span>':'';
-    const engPill = vel.engagement_score!=null?'<span class="dv-pill dv-eng">Score '+vel.engagement_score+'</span>':'';
-    const mtgPill = vel.meeting_count!=null?'<span class="dv-pill dv-stat">'+vel.meeting_count+' '+t('meetings')+'</span>':'';
-    const tcPill  = vel.transcript_count!=null&&vel.transcript_count>0?'<span class="dv-pill dv-stat">'+vel.transcript_count+' '+t('transcripts')+'</span>':'';
-    const actPill = vel.days_since_last_activity!=null?'<span class="dv-pill dv-stat">'+vel.days_since_last_activity+' '+t('daysInactive')+'</span>':'';
-    const histBit = hist&&hist.win_rate_pct!=null&&hist.confidence!=='none'?'<span class="dv-pill dv-stat">'+t('winRate')+' '+hist.win_rate_pct+'%</span>':'';
-    const signalLine = vel.signal?'<div style="font-size:11px;color:var(--t2);margin-top:4px;line-height:1.4">'+escHtml(vel.signal)+'</div>':'';
-    velHtml = '<div class="dv-header">'+[heatPill,engPill,mtgPill,tcPill,actPill,histBit].filter(Boolean).join('')+'</div>'+signalLine+(signalLine?'<div style="margin-bottom:12px"></div>':'');
-  }
-
   const ctxCards =
     '<div style="display:flex;flex-direction:column;gap:12px">'+
-      companyCard + stakeholdersCard + analysisCard +
+      companyCard + stakeholdersCard +
     '</div>';
-  document.getElementById('ctx-col').innerHTML = ctxHeader + velHtml + ctxCards;
+  document.getElementById('ctx-col').innerHTML = ctxHeader + ctxCards +
+    '<div style="margin-top:12px">'+actionPlanCard+'</div>';
 }
 
 function openCtxDrawer(type){
@@ -2403,124 +2661,255 @@ function openCtxDrawer(type){
 
   if(type==='company'){
     title = '🏢 ' + c.name;
+    // Compute Deal section values (same logic as renderCoStrip)
+    const hc = parseHeadcount(c.employees);
+    const headcount = hc.hi || hc.lo || 200;
+    // White container helper
+    const wc = (content,mb='16px')=>'<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:'+mb+'">'+content+'</div>';
+    const secTitle = lbl=>'<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:12px">'+lbl+'</div>';
+    const dealRow = (l,v,highlight)=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bg)">'+
+      '<span style="font-size:12px;'+(highlight?'font-weight:600;':'')+'color:var(--t'+(highlight?'1':'2')+')">'+l+'</span>'+
+      '<span style="font-size:'+(highlight?'14':'13')+'px;font-weight:'+(highlight?'700':'600')+';color:'+(highlight?'var(--p)':'var(--t1)')+'">'+v+'</span>'+
+    '</div>';
+
+    // Tech stack: prefer brief.company_snapshot.tech_stack, fallback to lusha
+    const snapTech = c._snapTechStack||[];
+    const techChips = snapTech.length
+      ? snapTech
+      : activeTech.map(t=>t.name);
+
+    // Deal metrics from brief.deal_metrics
+    const dm = c._dealMetrics||{};
+    const dmUsers    = dm.users    != null ? Number(dm.users).toLocaleString('en-US')   : '—';
+    const dmPrice    = dm.unit_price != null ? 'USD '+dm.unit_price                     : '—';
+    const dmAmount   = dm.amount   != null ? 'USD '+Number(dm.amount).toLocaleString('en-US') : '—';
+
     html =
-      '<div class="drw-section">'+
-        '<div style="font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px">'+c.desc+'</div>'+
-        '<div class="drw-section-title">Key Metrics</div>'+
-        '<div class="drw-metric-grid">'+
-          c.mets.map(m=>'<div class="drw-metric"><div class="drw-metric-val">'+(m.v||'—')+'</div><div class="drw-metric-lbl">'+m.l+'</div></div>').join('')+
-        '</div>'+
-      '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Tech Stack ('+activeTech.length+' herramientas)</div>'+
-        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+
-          activeTech.map(t=>'<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t1)'+(t.status==='gap'?';color:var(--red);border-color:rgba(231,68,68,.4);background:var(--redl)':'')+'">'+t.name+'</span>').join('')+
-        '</div>'+
-        '<button class="btn b-s" style="font-size:12px" onclick="openDrawer(\'tech\')">🔧 Ver análisis completo y editar →</button>'+
-      '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Deal</div>'+
-        c.mets.slice(0,2).map(m=>'<div class="ctx-prev-item"><span class="ctx-prev-lbl">'+m.l+'</span><span style="font-size:13px;font-weight:600;color:var(--t1)">'+m.v+'</span></div>').join('')+
-      '</div>'+
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Señales de compra</div>'+
-        c.signals.map(s=>'<div class="sig-row"><span class="sig-row-ico">'+s.ico+'</span><span style="flex:1;font-size:12px">'+s.text+'</span><span class="sig-row-badge '+s.cls+'">'+s.badge+'</span></div>').join('')+
-      '</div>';
+      // a. Company summary
+      wc('<div style="font-size:13px;color:var(--t1);line-height:1.7">'+escHtml(c.desc)+'</div>')+
+      // b. Key Metrics 2x2
+      wc(
+        secTitle('Key Metrics')+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+          [
+            {l:'Region',    v: c.country   ||'—'},
+            {l:'Size',      v: c.employees ||'—'},
+            {l:'Industry',  v: c.industry  ||'—'},
+            {l:'Workforce', v: c.type      ||'—'},
+          ].map(m=>
+            '<div style="background:var(--bg);border-radius:var(--r1);padding:10px 12px">'+
+              '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">'+(m.v||'—')+'</div>'+
+              '<div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px">'+m.l+'</div>'+
+            '</div>'
+          ).join('')+
+        '</div>'
+      )+
+      // c. Tech Stack
+      wc(
+        secTitle('Tech Stack ('+techChips.length+')')+
+        (techChips.length
+          ? '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">'+
+              techChips.map(name=>'<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t1)">'+escHtml(name)+'</span>').join('')+
+            '</div>'
+          : '<div style="font-size:12px;color:var(--t2);margin-bottom:12px">'+t('noTools')+'</div>')+
+        '<button class="btn b-s" style="font-size:12px;width:100%" onclick="openDrawer(\'tech\')">'+t('editTechBtn')+'</button>'
+      )+
+      // d. Deal
+      wc(
+        secTitle('Deal')+
+        dealRow('Users', dmUsers)+
+        dealRow('Unit price / month', dmPrice)+
+        dealRow('Amount / month', dmAmount, true)
+      , '0');
   }
 
   if(type==='stakeholders'){
     title = '👥 Stakeholders';
-    const typeColor = t=>t==='champion'?'var(--ok)':t==='dm'?'var(--p)':t==='influencer'?'var(--wa)':'var(--t3)';
-    const statusLabel = s=>s.present?'<span class="stk-drw-status" style="background:var(--okl);color:var(--ok)">Confirmado</span>':'<span class="stk-drw-status" style="background:var(--bg);color:var(--t3)">Pendiente</span>';
+    const confirmed = stks.filter(s=>s.present).length;
+    const typeConfig = {
+      champion:       {label:'Champion',       bg:'var(--okl)',  color:'var(--ok)'},
+      dm:             {label:'Decision Maker', bg:'var(--px)',   color:'var(--p)'},
+      decision_maker: {label:'Decision Maker', bg:'var(--px)',   color:'var(--p)'},
+      influencer:     {label:'Influencer',     bg:'var(--wal)',  color:'var(--wa)'},
+      blocker:        {label:'Blocker',        bg:'var(--redl)', color:'var(--red)'},
+      unknown:        {label:'Unknown',        bg:'var(--bg)',   color:'var(--t2)'},
+    };
+    const engConfig = {
+      pending:   {label:t('engPending'),   bg:'var(--bg)',   color:'var(--t2)'},
+      contacted: {label:t('engContacted'), bg:'var(--px)',   color:'var(--p)'},
+      engaged:   {label:t('engEngaged'),   bg:'var(--okl)',  color:'var(--ok)'},
+      warm:      {label:'Warm',      bg:'#fff3e0',     color:'#e65100'},
+      cold:      {label:'Cold',      bg:'#e3f2fd',     color:'#1565c0'},
+    };
+    const pill = (label,bg,color)=>'<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:'+bg+';color:'+color+';white-space:nowrap">'+label+'</span>';
+    const miniSec = (title,content)=>'<div style="margin-top:10px"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t2);margin-bottom:5px">'+title+'</div>'+content+'</div>';
+
     html =
-      '<div style="margin-bottom:16px">'+
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'+
-          '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden">'+
-            '<div style="height:100%;width:'+Math.round(stks.filter(s=>s.present).length/stks.length*100)+'%;background:var(--ok);border-radius:3px"></div>'+
-          '</div>'+
-          '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+stks.filter(s=>s.present).length+'/'+stks.length+' confirmados</span>'+
+      // Progress bar
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">'+
+        '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden">'+
+          '<div style="height:100%;width:'+Math.round(confirmed/Math.max(stks.length,1)*100)+'%;background:var(--ok);border-radius:3px"></div>'+
         '</div>'+
-        stks.map((s,i)=>
-          '<div class="stk-drw-row">'+
-            '<div class="stk-drw-dot" style="background:'+typeColor(s.type)+'"></div>'+
-            '<div class="stk-drw-body">'+
-              '<div class="stk-drw-role">'+s.role+'</div>'+
-              '<div class="stk-drw-meta">'+s.type.charAt(0).toUpperCase()+s.type.slice(1)+(s.title?' · '+s.title:'')+'</div>'+
+        '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+confirmed+'/'+stks.length+' '+t('stkConfirmedCount')+'</span>'+
+      '</div>'+
+      // One card per stakeholder
+      stks.map((s,i)=>{
+        const tc = typeConfig[s.type]||typeConfig.unknown;
+        const ec = engConfig[s._engagementStatus]||engConfig.pending;
+        const displayName = s._name || s.role || 'Contacto';
+        const initials = displayName.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+        const avatarColors = ['#496BE3','#0891b2','#7c3aed','#059669','#d97706'];
+        const avatarBg = avatarColors[displayName.length % avatarColors.length];
+
+        // Section divider helper
+        const divider = '<div style="height:1px;background:var(--bg);margin:12px 0"></div>';
+        // Section label helper
+        const secLbl = (ico, lbl) => '<div style="display:flex;align-items:center;gap:5px;margin-bottom:8px">'+
+          '<span style="font-size:12px">'+ico+'</span>'+
+          '<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2)">'+lbl+'</span>'+
+        '</div>';
+
+        const contactRow = [
+          s._linkedin ? '<a href="'+s._linkedin+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--p);text-decoration:none;background:var(--px);padding:3px 8px;border-radius:20px">🔗 LinkedIn</a>' : null,
+          s._email    ? '<span style="font-size:11px;color:var(--t2)">✉️ '+escHtml(s._email)+'</span>' : null,
+          s._phone    ? '<span style="font-size:11px;color:var(--t2)">📞 '+escHtml(s._phone)+'</span>' : null,
+          (s._city||s._country) ? '<span style="font-size:11px;color:var(--t2)">📍 '+escHtml([s._city,s._country].filter(Boolean).join(', '))+'</span>' : null,
+        ].filter(Boolean);
+
+        return '<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:12px">'+
+
+          // ── Header row: avatar + name/role + pills
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">'+
+            '<div style="width:38px;height:38px;border-radius:50%;background:'+avatarBg+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;flex-shrink:0">'+initials+'</div>'+
+            '<div style="flex:1;min-width:0">'+
+              '<div style="font-size:14px;font-weight:600;color:var(--t1);line-height:1.3">'+escHtml(displayName)+'</div>'+
+              (s._name && s.role ? '<div style="font-size:11px;color:var(--t2);margin-top:2px">'+escHtml(s.role)+'</div>' : '')+
             '</div>'+
-            statusLabel(s)+
-            '<button class="q-row-btn" style="margin-left:6px" onclick="toggleStkPresent('+JSON.stringify(c.name)+','+i+');openCtxDrawer(\'stakeholders\')">'+( s.present?'Quitar':'Confirmar')+'</button>'+
-          '</div>'
-        ).join('')+
-      '</div>'+
-      '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol</div>'+
-      '<div class="role-filter" id="stk-role-filter">'+
-        '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
-        '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
-      '</div>'+
-      '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>'+
-      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">'+
+            '<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0">'+
+              pill(tc.label,tc.bg,tc.color)+
+              pill(ec.label,ec.bg,ec.color)+
+            '</div>'+
+          '</div>'+
+
+          // ── Confirm button + contact row
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">'+
+            '<button class="q-row-btn" style="flex-shrink:0" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+');openCtxDrawer(\'stakeholders\')">'+
+              (s.present ? t('stkConfirmed') : t('stkConfirmBtn'))+
+            '</button>'+
+            (contactRow.length ? '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end">'+contactRow.join('')+'</div>' : '')+
+          '</div>'+
+
+          // ── Priority + Pitch (two highlighted boxes)
+          (s._likelyPriority || s._pitchAngle ?
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+              (s._likelyPriority ?
+                '<div style="background:var(--bg);border-radius:var(--r1);padding:10px">'+
+                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:5px">'+t('stkPriority')+'</div>'+
+                  '<div style="font-size:11px;color:var(--t1);line-height:1.5">'+escHtml(s._likelyPriority)+'</div>'+
+                '</div>' : '<div></div>')+
+              (s._pitchAngle ?
+                '<div style="background:var(--px);border-radius:var(--r1);padding:10px">'+
+                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:5px">'+t('stkPitch')+'</div>'+
+                  '<div style="font-size:11px;color:var(--p);line-height:1.5;font-style:italic">"'+escHtml(s._pitchAngle)+'"</div>'+
+                '</div>' : '<div></div>')+
+            '</div>' : '')+
+
+          // ── Opening questions
+          (s._openingQuestions&&s._openingQuestions.length ?
+            divider+
+            secLbl('❓',t('stkOpeningQ'))+
+            s._openingQuestions.slice(0,3).map((q,qi)=>
+              '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
+                '<span style="font-size:10px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px">'+(qi+1)+'.</span>'+
+                '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(q)+'</span>'+
+              '</div>'
+            ).join('') : '')+
+
+          // ── Objections
+          (s._objections&&s._objections.length ?
+            divider+
+            secLbl('⚠️',t('stkObjLabel'))+
+            s._objections.slice(0,3).map(o=>
+              '<div style="margin-bottom:8px;background:var(--bg);border-radius:var(--r1);padding:8px 10px">'+
+                '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
+                (o.response ? '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding-left:8px;border-left:2px solid var(--p)">'+escHtml(o.response)+'</div>' : '')+
+              '</div>'
+            ).join('') : '')+
+
+          // ── Red flags
+          (s._redFlags&&s._redFlags.length ?
+            divider+
+            secLbl('🚩',t('stkRedFlags'))+
+            '<div style="background:#fff5f5;border-radius:var(--r1);padding:8px 10px">'+
+              s._redFlags.map(r=>
+                '<div style="display:flex;gap:6px;font-size:11px;color:var(--red);line-height:1.5;padding:3px 0">'+
+                  '<span style="flex-shrink:0">⚠️</span>'+
+                  '<span>'+escHtml(r)+'</span>'+
+                '</div>'
+              ).join('')+
+            '</div>' : '')+
+
+          // ── Transcript signals
+          (s._transcriptSignals&&s._transcriptSignals.length ?
+            divider+
+            secLbl('🎙️',t('stkTranscript'))+
+            s._transcriptSignals.map(r=>
+              '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--bg);font-style:italic">"'+escHtml(r)+'"</div>'
+            ).join('') : '')+
+
+        '</div>';
+      }).join('')+
+      '<div style="margin-top:4px">'+
         '<button class="btn b-s" onclick="openDrawer(\'stakeholders\')">✏️ Editar stakeholders</button>'+
       '</div>';
   }
 
   if(type==='analysis'){
     title = '🔍 Análisis';
-    const anlArrow = '<span class="anl-card-title-arrow">›</span>';
     html =
-      '<div class="anl-section" onclick="toggleAnlSection(this)">'+
-        '<div class="anl-section-title">Contexto<span class="anl-section-title-arrow">›</span></div>'+
-        '<div class="anl-section-body">'+
-          c.keyInsights.map(i=>'<div class="drw-bullet">'+i+'</div>').join('')+
-        '</div>'+
+      '<div class="drw-section">'+
+        '<div class="drw-section-title">'+t('anlContext')+'</div>'+
+        c.keyInsights.map(i=>'<div class="drw-bullet">'+i+'</div>').join('')+
       '</div>'+
-      '<div class="anl-card" onclick="toggleAnlCard(this)">'+
-        '<div class="anl-card-title">📦 Módulos de interés'+anlArrow+'</div>'+
-        '<div class="anl-card-body">'+
-          (function(){
-            function mc(name,why,badge,isPri){
-              const d=getModuleDetail(name);
-              const cleanName=name.replace(/^[\W_]+/,'').trim();
-              const vp=d?d.value_proposition:why;
-              const kms=d?d.key_messages.slice(0,2):[];
-              const pp=d?d.proof_points[0]:'';
-              return '<div class="mod-card'+(isPri?' pri':'')+'">'+
-                '<div class="mod-card-head">'+
-                  '<div class="mod-card-title">'+cleanName+'</div>'+
-                  (d?'<span class="mod-card-cat">'+d.category+'</span>':'')+
-                  '<span class="mod-row-badge" style="margin-left:4px">'+badge+'</span>'+
-                '</div>'+
-                '<div class="mod-card-body">'+
-                  '<div class="mod-card-vp">'+vp+'</div>'+
-                  kms.map(k=>'<div class="mod-card-km">'+k+'</div>').join('')+
-                  (pp?'<div class="mod-card-pp">📊 '+pp+'</div>':'')+
-                '</div>'+
-              '</div>';
-            }
-            return mc(c.primaryModule,c.primaryWhy,'Módulo 1',true)+
-              c.secondaryModules.map((m,i)=>mc(m.name,m.why,'Módulo '+(i+2),false)).join('');
-          })()+
-        '</div>'+
+      '<div class="anl-card">'+
+        '<div class="anl-card-title">📦 Módulos de interés</div>'+
+        (function(){
+          function mc(name,why,badge,isPri){
+            const d=getModuleDetail(name);
+            const cleanName=name.replace(/^[\W_]+/,'').trim();
+            const vp=d?d.value_proposition:why;
+            const kms=d?d.key_messages.slice(0,2):[];
+            const pp=d?d.proof_points[0]:'';
+            return '<div class="mod-card'+(isPri?' pri':'')+'">'+
+              '<div class="mod-card-head">'+
+                '<div class="mod-card-title">'+cleanName+'</div>'+
+                (d?'<span class="mod-card-cat">'+d.category+'</span>':'')+
+                '<span class="mod-row-badge" style="margin-left:4px">'+badge+'</span>'+
+              '</div>'+
+              '<div class="mod-card-body">'+
+                '<div class="mod-card-vp">'+vp+'</div>'+
+                kms.map(k=>'<div class="mod-card-km">'+k+'</div>').join('')+
+                (pp?'<div class="mod-card-pp">📊 '+pp+'</div>':'')+
+              '</div>'+
+            '</div>';
+          }
+          return mc(c.primaryModule,c.primaryWhy,'Módulo 1',true)+
+            c.secondaryModules.map((m,i)=>mc(m.name,m.why,'Módulo '+(i+2),false)).join('');
+        })()+
       '</div>'+
-      '<div class="anl-card" onclick="toggleAnlCard(this)">'+
-        '<div class="anl-card-title">⚠️ Riesgos del deal'+anlArrow+'</div>'+
-        '<div class="anl-card-body">'+
-          c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+
-        '</div>'+
+      '<div class="anl-card">'+
+        '<div class="anl-card-title">⚠️ '+t('anlRisks')+'</div>'+
+        c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">⚠️</span><span>'+r.txt+'</span></div>').join('')+
       '</div>'+
-      '<div class="anl-card" onclick="toggleAnlCard(this)">'+
-        '<div class="anl-card-title">✅ Señales de compra'+anlArrow+'</div>'+
-        '<div class="anl-card-body">'+
-          c.signals.map(s=>
-            '<div class="sig-plain">'+
-              '<span class="sig-plain-ico">'+s.ico+'</span>'+
-              '<span class="sig-plain-text">'+s.text+'</span>'+
-              '<span class="sig-row-badge '+s.cls+'">'+s.badge+'</span>'+
-            '</div>'
-          ).join('')+
-        '</div>'+
+      '<div class="anl-card">'+
+        '<div class="anl-card-title">✅ Señales de compra</div>'+
+        c.signals.map(s=>
+          '<div class="sig-plain">'+
+            '<span class="sig-plain-ico">'+s.ico+'</span>'+
+            '<span class="sig-plain-text">'+s.text+'</span>'+
+            '<span class="sig-row-badge '+s.cls+'">'+s.badge+'</span>'+
+          '</div>'
+        ).join('')+
       '</div>';
   }
 
@@ -2555,109 +2944,96 @@ function openEmailDrawer(type){
 }
 
 // ═══════════════════════════════════════════
-// ACTION PLAN COLUMN (right 60%)
+// ANALYSIS COLUMN (left — wider)
 // ═══════════════════════════════════════════
 function renderActionPlan(c){ c=_safe(c);
-  const stageId = currentStage;
-  const compKey = (c.name||'').toLowerCase().replace(/\s+/g,'_');
-  const opener = getStagePitchOpener(c);
-  const questions = getStageQuestions(c);
-  const meetingSteps = getStageMeeting(c);
-  const actionsKey = 'dc_actions_'+compKey+'_'+stageId;
-  const savedActions = JSON.parse(localStorage.getItem(actionsKey)||'{}');
-
-  // Pain hypotheses (from API brief)
-  const pains = c._painHypotheses || [];
-  const painHtml = pains.length ? '<div style="margin-bottom:16px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:8px">'+t('painHypTitle')+'</div>'+
-    pains.slice(0,4).map((p,i)=>{
-      const conf = p.confidence||'medium';
-      const confCls = conf==='high'?'pain-hi':conf==='medium'?'pain-med':'pain-low';
-      const confLabel = conf==='high'?t('confHigh'):conf==='medium'?t('confMed'):t('confLow');
-      // if_confirmed / if_not_confirmed are objects in real schema
-      const ic = p.if_confirmed||{};
-      const inc = p.if_not_confirmed||{};
-      const branchY = ic.push_opportunity ? '<div class="pain-branch pain-branch-y">✓ '+escHtml(ic.push_opportunity)+(ic.show_module?' → <strong>'+escHtml(ic.show_module)+'</strong>':'')+'</div>' : '';
-      const branchN = inc.fallback_question ? '<div class="pain-branch pain-branch-n">↩ '+escHtml(inc.fallback_question)+'</div>' : '';
-      return '<div class="pain-hyp" id="ph'+i+'" onclick="togglePainHyp('+i+')">'+
-        '<div class="pain-hyp-head">'+
-          '<span class="pain-hyp-conf '+confCls+'">'+confLabel+'</span>'+
-          '<span class="pain-hyp-text">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
-        '</div>'+
-        '<div class="pain-hyp-body">'+
-          (p.validation_question?'<div style="margin-bottom:8px;font-style:italic;color:var(--t1)">❓ «'+escHtml(p.validation_question)+'»</div>':'')+
-          branchY + branchN +
-        '</div>'+
-      '</div>';
-    }).join('')+
-  '</div>' : '';
-
-  // TAB 1: Actions checklist
-  const ACTION_ITEMS = getStageActions()[stageId] || getStageActions().discovery;
-  const completedCount = Object.values(savedActions).filter(Boolean).length;
-  const actionsHtml = painHtml +
-    '<a class="meet-action" href="https://meet.google.com" target="_blank" rel="noopener">'+
-      '<img class="meet-icon" src="https://cdn.simpleicons.org/googlemeet/00897B" alt="Google Meet">'+
-      '<div>'+
-        '<div class="meet-action-label">'+t('joinMeeting')+'</div>'+
-        '<div class="meet-action-desc">'+t('openMeet')+'</div>'+
+  const wc = (title, content, icon, defaultOpen) =>
+    '<div class="wc-card'+(defaultOpen?' open':'')+'" onclick="this.classList.toggle(\'open\')">'+
+      '<div class="wc-header">'+
+        (icon?'<i class="ti ti-'+icon+' wc-icon"></i>':'')+
+        '<span class="wc-label">'+title+'</span>'+
+        '<span class="wc-arrow">›</span>'+
       '</div>'+
-      '<span class="meet-action-cta">'+t('openBtn')+'</span>'+
-    '</a>'+
-    '<div style="margin-bottom:16px">'+
-      ACTION_ITEMS.map(a=>{
-        const checked = !!savedActions[a.id];
-        return '<div class="action-item'+(checked?' done':'')+'" onclick="toggleAction(\''+actionsKey+'\',\''+a.id+'\')">'+
-          '<div class="action-cb">'+(checked?'✓':'')+'</div>'+
-          '<div><div class="action-label">'+a.label+'</div><div class="action-desc">'+a.desc+'</div></div>'+
-        '</div>';
-      }).join('')+
-    '</div>'+
-    '<div style="font-size:11px;color:var(--t3)">'+t('completedCounter').replace('{n}',completedCount).replace('{m}',ACTION_ITEMS.length)+'</div>';
-
-  // TAB 2: Sales Materials
-  const materialsHtml =
-    '<div class="mat-cards">'+
-      '<div class="mat-card" onclick="openEmailDrawer(\'pre\')">'+
-        '<div class="mat-card-icon">✉️</div>'+
-        '<div class="mat-card-title">'+t('matPreTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matPreDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
-      '</div>'+
-      '<div class="mat-card" onclick="openEmailDrawer(\'post\')">'+
-        '<div class="mat-card-icon">📨</div>'+
-        '<div class="mat-card-title">'+t('matPostTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matPostDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matEdit')+'</div>'+
-      '</div>'+
-      '<div class="mat-card" onclick="toast(t(\'comingSoonDeck\'))">'+
-        '<div class="mat-card-icon">📊</div>'+
-        '<div class="mat-card-title">'+t('matDeckTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matDeckDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
-      '</div>'+
-      '<div class="mat-card" onclick="toast(t(\'comingSoonProp\'))">'+
-        '<div class="mat-card-icon">📄</div>'+
-        '<div class="mat-card-title">'+t('matPropTitle')+'</div>'+
-        '<div class="mat-card-desc">'+t('matPropDesc')+'</div>'+
-        '<div class="mat-card-cta">'+t('matOpen')+'</div>'+
-      '</div>'+
+      '<div class="wc-body">'+content+'</div>'+
     '</div>';
 
-  // TAB 3: Meeting Toolkit — stage-aware agenda steps
-  const toolkitSteps = buildToolkitSteps(c, stageId, questions, opener, meetingSteps);
-  const toolkitHtml = toolkitSteps.map((s,i)=>
-    '<div class="tk-step">'+
-      '<div class="tk-step-head" onclick="toggleTkStep(\'tks'+i+'\')">'+
-        '<div class="tk-step-num">'+s.num+'</div>'+
-        '<div class="tk-step-info">'+
-          '<div class="tk-step-title">'+s.title+'</div>'+
-          '<div class="tk-step-sub">'+s.sub+'</div>'+
-        '</div>'+
-        '<div class="tk-step-dur">'+s.dur+'</div>'+
-      '</div>'+
-      '<div class="tk-step-body" id="tks'+i+'">'+s.body+'</div>'+
-    '</div>'
-  ).join('');
+  const confBadge = conf => {
+    const map = {
+      high:   {bg:'var(--okl)',  color:'var(--ok)',  label: t('confHigh')},
+      medium: {bg:'var(--wal)',  color:'var(--wa)',  label: t('confMed')},
+      low:    {bg:'var(--bg)',   color:'var(--t2)',  label: t('confLow')},
+    };
+    const m = map[conf]||map.medium;
+    return '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+m.bg+';color:'+m.color+';flex-shrink:0;white-space:nowrap">'+m.label+'</span>';
+  };
+
+  // a. Context
+  const contextHtml = wc(t('anlContext'),
+    '<div style="font-size:13px;color:var(--t1);line-height:1.7">'+escHtml(c.desc)+'</div>',
+    'compass', true
+  );
+
+  // b. Pain Points
+  const pains = c._painHypotheses||[];
+  const painsHtml = wc('Pain Points',
+    pains.length
+      ? pains.map(p=>
+          '<div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bg)">'+
+            confBadge(p.confidence||'medium')+
+            '<span style="flex:1;font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(p.pain||p.hypothesis||p.validation_question||'')+'</span>'+
+          '</div>'
+        ).join('')
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoPains')+'</div>',
+    'alert-triangle'
+  );
+
+  // c. Opportunities
+  const opps = c._opportunities||[];
+  const oppsHtml = wc(t('anlOpportunities'),
+    opps.length
+      ? opps.map(o=>
+          '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
+            '<span style="color:var(--ok);font-weight:700;flex-shrink:0;margin-top:1px">✓</span>'+
+            '<span style="flex:1;font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(typeof o==='string'?o:o.title||o.description||JSON.stringify(o))+'</span>'+
+          '</div>'
+        ).join('')
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoOpps')+'</div>',
+    'trending-up'
+  );
+
+  // d. Modules
+  const mods = c._mods||[];
+  const modsHtml = wc(t('anlModules'),
+    mods.length
+      ? mods.map(m=>{
+          const isPri = m.priority==='primary';
+          return '<div style="background:'+(isPri?'var(--px)':'var(--bg)')+';border-radius:var(--r1);padding:10px 12px;margin-bottom:8px">'+
+            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">'+
+              '<span style="font-size:12px;font-weight:600;color:'+(isPri?'var(--p)':'var(--t1)')+'">'+escHtml(m.module_name||'Módulo')+'</span>'+
+              '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+(isPri?'var(--p)':'var(--br)')+';color:'+(isPri?'#fff':'var(--t2)')+'">'+
+                (isPri?t('modPrimary'):t('modSecondary'))+
+              '</span>'+
+            '</div>'+
+            (m.why_relevant?'<div style="font-size:11px;color:var(--t2);line-height:1.5">'+escHtml(m.why_relevant)+'</div>':'')+
+          '</div>';
+        }).join('')
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoModules')+'</div>',
+    'puzzle'
+  );
+
+  // e. Risks
+  const risks = c.dealRisks||[];
+  const risksHtml = wc(t('anlRisks'),
+    risks.length
+      ? risks.map(r=>
+          '<div style="display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
+            '<span style="flex-shrink:0">⚠️</span>'+
+            '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(r.txt||'')+'</span>'+
+          '</div>'
+        ).join('')
+      : '<div style="font-size:12px;color:var(--t2)">'+t('anlNoRisks')+'</div>',
+    'shield-exclamation'
+  );
 
   const apHeader =
     '<div class="col-header">'+
@@ -2665,15 +3041,8 @@ function renderActionPlan(c){ c=_safe(c);
       '<div class="col-header-desc">'+t('apColDesc')+'</div>'+
     '</div>';
   document.getElementById('ap-col').innerHTML = apHeader +
-    '<div class="ap-card">'+
-      '<div class="ap-tabs">'+
-        '<div class="ap-tab on" data-tab="actions" onclick="apTab(\'actions\')">'+t('tabActions')+'</div>'+
-        '<div class="ap-tab" data-tab="materials" onclick="apTab(\'materials\')">'+t('tabSalesMaterials')+'</div>'+
-        '<div class="ap-tab" data-tab="toolkit" onclick="apTab(\'toolkit\')">'+t('tabMeetingToolkit')+'</div>'+
-      '</div>'+
-      '<div class="ap-panel on" id="ap-actions">'+actionsHtml+'</div>'+
-      '<div class="ap-panel" id="ap-materials">'+materialsHtml+'</div>'+
-      '<div class="ap-panel" id="ap-toolkit">'+toolkitHtml+'</div>'+
+    '<div style="display:flex;flex-direction:column">'+
+      contextHtml + painsHtml + oppsHtml + modsHtml + risksHtml +
     '</div>';
 }
 
@@ -2682,21 +3051,64 @@ function apTab(id){
   document.querySelectorAll('.ap-panel').forEach(p=>p.classList.toggle('on',p.id==='ap-'+id));
 }
 
+function tkSubTab(id){
+  document.querySelectorAll('.tk-subtab').forEach(t=>t.classList.toggle('on',t.dataset.stk===id));
+  document.querySelectorAll('.tk-subpanel').forEach(p=>p.classList.toggle('on',p.id===id));
+}
+
 function toggleTkStep(id){
   const el = document.getElementById(id);
-  if(el) el.classList.toggle('on');
+  if(!el) return;
+  el.classList.toggle('on');
+  const step = el.closest('.tk-step');
+  if(step) step.classList.toggle('open', el.classList.contains('on'));
 }
 
 function toggleAction(key, actionId){
   const saved = JSON.parse(localStorage.getItem(key)||'{}');
   saved[actionId] = !saved[actionId];
   localStorage.setItem(key, JSON.stringify(saved));
-  renderActionPlan(_safe(current));
-  // restore tab
+  renderContext(_safe(current));
   apTab('actions');
 }
 
 function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function timeAgo(isoString){
+  if(!isoString) return '—';
+  const diff = Date.now() - new Date(isoString).getTime();
+  const m = Math.floor(diff / 60000);
+  const h = Math.floor(diff / 3600000);
+  const d = Math.floor(diff / 86400000);
+  if(m < 1) return 'justo ahora';
+  if(m < 60) return 'hace '+m+'m';
+  if(h < 24) return 'hace '+h+'h';
+  return 'hace '+d+'d';
+}
+
+async function refreshBrief(){
+  if(!current) return;
+  const btn = document.getElementById('refresh-btn');
+  if(btn){ btn.textContent='↻'; btn.style.opacity='.5'; btn.disabled=true; }
+  const payload = selectedDealId
+    ? {deal_id: selectedDealId}
+    : {company_name: current.name, website: current.website||''};
+  try {
+    const res = await fetch(API_BASE+'/api/brief', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const apiResponse = await res.json();
+    rawBrief = apiResponse;
+    current = mapBriefToCompany(apiResponse);
+    currentAnalyzedAt = apiResponse.analyzed_at || (apiResponse.brief&&apiResponse.brief.analyzed_at) || new Date().toISOString();
+    render();
+    toast('✅ Brief actualizado');
+  } catch(e){
+    toast('❌ Error al actualizar — intentá de nuevo');
+    if(btn){ btn.textContent='↻ Refresh'; btn.style.opacity=''; btn.disabled=false; }
+  }
+}
 
 function genPreMeetingEmail(c){
   // Use AI-generated email from brief if available
@@ -2754,18 +3166,38 @@ function buildToolkitSteps(c, stageId, questions, opener, meetingSteps){
     '<div class="stage-opener-box">"'+opener+'"</div>'+
     '<button class="btn b-s" style="font-size:12px;margin-top:8px" onclick="copyText('+JSON.stringify(opener)+')">📋 '+t('copyOpenerBtn')+'</button>';
 
+  const discQuestionsHtml = questions.length
+    ? questions.slice(0,5).map((q,i)=>
+        '<div class="q-row">'+
+          '<div class="q-row-num">'+(i+1)+'</div>'+
+          '<div class="q-row-body">'+
+            '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
+            '<div class="q-row-text">'+q.text+'</div>'+
+            '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</button></div>'+
+          '</div>'+
+        '</div>'
+      ).join('')
+    : '<div style="padding:8px 0;font-size:13px;color:var(--t2)">'+t('noQuestions')+'</div>';
+
+  const discRoleHtml =
+    '<div class="role-filter" id="stk-role-filter">'+
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">'+t('filterAll')+'</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>'+
+      '<div class="rpill" onclick="filterStkQ(\'exec\',this)">🏆 C-Suite</div>'+
+    '</div>'+
+    '<div id="stk-qlist">'+renderStkQuestions(c,'all')+'</div>';
+
   const questionsBody =
-    questions.slice(0,5).map((q,i)=>
-      '<div class="q-row">'+
-        '<div class="q-row-num">'+(i+1)+'</div>'+
-        '<div class="q-row-body">'+
-          '<span class="q-row-cat" '+q.catCls+'>'+q.cat+'</span>'+
-          '<div class="q-row-text">'+q.text+'</div>'+
-          '<div class="q-row-actions"><button class="q-row-btn" onclick="copyText('+JSON.stringify(q.text)+')">'+t('copyBtn')+'</button></div>'+
-        '</div>'+
-      '</div>'
-    ).join('')+
-    (stageId==='lead'?'<div style="margin-top:10px">'+buildObjCard(true)+'</div>':'');
+    '<div class="tk-subtabs">'+
+      '<div class="tk-subtab on" data-stk="tk-disc" onclick="tkSubTab(\'tk-disc\')">'+t('tkSubDisp')+'</div>'+
+      '<div class="tk-subtab" data-stk="tk-role" onclick="tkSubTab(\'tk-role\')">'+t('tkSubRole')+'</div>'+
+      '<div class="tk-subtab" data-stk="tk-obj" onclick="tkSubTab(\'tk-obj\')">'+t('tkSubObj')+'</div>'+
+    '</div>'+
+    '<div class="tk-subpanel on" id="tk-disc">'+discQuestionsHtml+'</div>'+
+    '<div class="tk-subpanel" id="tk-role">'+discRoleHtml+'</div>'+
+    '<div class="tk-subpanel" id="tk-obj">'+buildObjCard(true)+'</div>';
 
   const demoBody =
     '<div class="mod-row pri"><span class="mod-row-ico">📣</span>'+
@@ -3526,19 +3958,19 @@ function removeTechItem(idx){
 // ═══════════════════════════════════════════
 function buildStakeholdersDrawer(c){ c=_safe(c);
   const stks = getStakeholders(c);
-  const typeLabel={champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Bloqueador'};
+  const typeLabel={champion:'Champion',dm:'Decision Maker',decision_maker:'Decision Maker',influencer:'Influencer',blocker:'Blocker'};
   const missing = stks.filter(s=>!s.present);
 
   const editRows = stks.map((s,i)=>
     '<div class="stk-edit-row">'+
-      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+')" title="'+(s.present?'En reunión':'Faltante')+'">'+(s.present?'✓':'—')+'</button>'+
+      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+')" title="'+(s.present?t('inMeeting'):t('missing'))+'">'+(s.present?'✓':'—')+'</button>'+
       '<input class="stk-edit-inp" value="'+s.role.replace(/"/g,'&quot;')+'" onchange="updateStkRole(\''+c.name.replace(/'/g,"\\'")+'\','+i+',this.value)" placeholder="Rol / nombre">'+
     '</div>'
   ).join('');
 
   const grid = '<div class="stk-grid">'+
     stks.map(s=>'<div class="stk-card stk-'+s.type+'">'+
-      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?'✓ En reunión':'✗ Faltante')+'</span>'+
+      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?t('inMeeting'):t('missing'))+'</span>'+
       '<div class="stk-badge">'+typeLabel[s.type]+'</div>'+
       '<div class="stk-role">'+s.role+'</div>'+
       '<div class="stk-title">'+s.title+'</div>'+
@@ -3606,7 +4038,7 @@ function renderCovCard(c){ c=_safe(c);
   const barColor = pct>=75?'var(--ok)':pct>=50?'var(--wa)':'var(--red)';
   const editRows = stks.map((s,i)=>
     '<div class="stk-edit-row">' +
-      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\',' +i+')" title="'+(s.present?'En reunión':'Faltante')+'">'+(s.present?'✓':'—')+'</button>' +
+      '<button class="stk-pres-btn'+(s.present?' on':'')+'" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\',' +i+')" title="'+(s.present?t('inMeeting'):t('missing'))+'">'+(s.present?'✓':'—')+'</button>' +
       '<input class="stk-edit-inp" value="'+s.role.replace(/"/g,'&quot;')+'" onchange="updateStkRole(\''+c.name.replace(/'/g,"\\'")+'\','+i+',this.value)" placeholder="Rol / nombre">' +
     '</div>'
   ).join('');
@@ -3617,9 +4049,9 @@ function renderCovCard(c){ c=_safe(c);
     '<div class="cov-bar"><div class="cov-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div>' +
     '<div class="cov-roles" id="cov-roles-list">' +
     stks.map(s=>'<div class="cov-role">' +
-      '<span class="cov-dot" style="background:'+(s.type==='champion'?'var(--ok)':s.type==='dm'?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>' +
+      '<span class="cov-dot" style="background:'+(s.type==='champion'?'var(--ok)':(s.type==='dm'||s.type==='decision_maker')?'var(--p)':s.type==='influencer'?'var(--wa)':'var(--red)')+'"></span>' +
       '<span class="cov-rname">'+s.role+'</span>' +
-      (s.present?'<span class="cov-ok">✓ En reunión</span>':'<span class="cov-miss">✗ Faltante</span>') +
+      (s.present?'<span class="cov-ok">'+t('inMeeting')+'</span>':'<span class="cov-miss">'+t('missing')+'</span>') +
     '</div>').join('') +
     '</div>' +
     '<div class="stk-edit-rows" id="stk-edit-rows">' + editRows +
@@ -3675,7 +4107,7 @@ function addStkParticipant(companyName){
 }
 
 function renderStakeholders(c){ c=_safe(c);
-  const typeLabel={champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Bloqueador'};
+  const typeLabel={champion:'Champion',dm:'Decision Maker',decision_maker:'Decision Maker',influencer:'Influencer',blocker:'Blocker'};
   const missing = c.stakeholders.filter(s=>!s.present);
   const alerts = missing.length ? missing.map(s=>'<div class="stk-alert"><span>⚠️</span><span><strong>'+s.role+'</strong> no está en esta reunión — ' + (s.type==='dm'?'es el aprobador final del deal.':s.type==='influencer'?'su apoyo puede acelerar o frenar el proceso.':'puede bloquear el avance.') + ' Busca cómo involucrarlo en la próxima llamada.</span></div>').join('') : '<div style="background:var(--okl);border-radius:var(--r2);padding:11px 14px;font-size:13px;color:var(--ok);font-weight:600;margin-bottom:14px">✅ Todos los stakeholders clave están en la reunión. Buen coverage.</div>';
   
@@ -3683,7 +4115,7 @@ function renderStakeholders(c){ c=_safe(c);
     '<div style="font-size:12px;color:var(--t2);margin-bottom:14px;line-height:1.6">Basado en el perfil de <strong>'+c.name+'</strong>. Las personas marcadas como "Faltante" no están confirmadas en la reunión — son críticas para avanzar el deal.</div>' +
     '<div class="stk-grid">' +
     c.stakeholders.map(s=>'<div class="stk-card stk-'+s.type+'">' +
-      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?'✓ En reunión':'✗ Faltante')+'</span>' +
+      '<span class="stk-status '+(s.present?'stk-present':'stk-absent')+'">'+(s.present?t('inMeeting'):t('missing'))+'</span>' +
       '<div class="stk-badge">'+typeLabel[s.type]+'</div>' +
       '<div class="stk-role">'+s.role+'</div>' +
       '<div class="stk-title">'+s.title+'</div>' +
@@ -3691,9 +4123,9 @@ function renderStakeholders(c){ c=_safe(c);
     '</div>').join('') +
     '</div>' +
     (missing.length?'<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:10px">⚠️ Stakeholders faltantes</div>'+alerts:'') +
-    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">Preguntas por rol — elige el perfil de quien tienes en la llamada</div>' +
+    '<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-top:16px;margin-bottom:10px">'+t('stkRoleFilter')+'</div>' +
     '<div class="role-filter" id="stk-role-filter">' +
-      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">Todas</div>' +
+      '<div class="rpill on" onclick="filterStkQ(\'all\',this)">'+t('filterAll')+'</div>' +
       '<div class="rpill" onclick="filterStkQ(\'hr\',this)">👩‍💼 HR Leader</div>' +
       '<div class="rpill" onclick="filterStkQ(\'ops\',this)">⚙️ Ops Leader</div>' +
       '<div class="rpill" onclick="filterStkQ(\'it\',this)">💻 IT Leader</div>' +
@@ -3764,8 +4196,8 @@ function renderDealStrategy(c){ c=_safe(c);
     '<div style="background:var(--bg);border-radius:var(--r2);padding:13px 15px;margin-bottom:18px">' +
       guide.provide.map(p=>'<div style="font-size:12px;color:var(--t1);display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;line-height:1.5"><span style="color:var(--p);font-weight:600;flex-shrink:0">✓</span>'+p+'</div>').join('') +
     '</div>' +
-    '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">⚠️ Riesgos del deal — '+c.name+'</div>' +
-    '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
+    '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">⚠️ '+t('anlRisks')+' — '+c.name+'</div>' +
+    '<div class="risk-list">'+c.dealRisks.map(r=>'<div class="risk-item risk-'+r.lvl+'"><span class="ri-ico">⚠️</span><span>'+r.txt+'</span></div>').join('')+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">✅ Próximas acciones para avanzar el deal</div>' +
     '<div class="next-list">'+nextItems+'</div>' +
     '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:9px">🏆 Casos similares de Humand que puedes usar</div>' +
@@ -3805,7 +4237,7 @@ function copyBrief(){
 // ═══════════════════════════════════════════
 // LANGUAGE SYSTEM
 // ═══════════════════════════════════════════
-let lang = 'es';
+let lang = 'en';
 const T = {
   es: {
     // Screen 1
@@ -3820,15 +4252,15 @@ const T = {
     procProcessing:'Procesando...', procDone:'✓ Listo',
     proc1:'Consultando CRM', proc1sub:'Obteniendo deal, contactos y reuniones previas',
     proc2:'Enriqueciendo datos', proc2sub:'Señales de LinkedIn · Lusha · datos públicos',
-    proc3:'Analizando con IA', proc3sub:'Google AI generando brief personalizado...',
+    proc3:'Analizando con IA', proc3sub:'Generando un brief personalizado con IA',
     proc4:'Armando tu brief', proc4sub:'Contexto, estrategia y plan de acción listo',
     // Screen 3 — context column
-    ctxColTitle:'Context', ctxColDesc:'Información clave de la empresa, stakeholders y análisis del deal. Haz clic en cada card para ver el detalle completo.',
+    ctxColTitle:'Contexto y Acciones', ctxColDesc:'Información de la empresa, stakeholders y plan de acción para esta etapa del deal.',
     cardCompany:'Empresa', cardAnalysis:'Análisis',
     prevIndustry:'Industria', prevEmployees:'Empleados', prevCountry:'País',
     prevModule1:'Módulo 1', prevSignals:'señales', prevMore:'más',
-    // Screen 3 — action plan column
-    apColTitle:'Action Plan', apColDesc:'Acciones concretas, materiales de venta y toolkit para preparar y ejecutar la reunión con esta etapa del deal.',
+    // Screen 3 — analysis column
+    apColTitle:'Análisis', apColDesc:'Contexto de la empresa, pain points, oportunidades, módulos recomendados y riesgos del deal.',
     tabActions:'Acciones',
     joinMeeting:'Unirse a la reunión', openMeet:'Abrir Google Meet', openBtn:'Abrir ↗',
     completedCounter:'{n} de {m} completados',
@@ -3897,6 +4329,29 @@ const T = {
     s1ManNamePh:'Ej. Royal Caribbean', s1ManWebPh:'Ej. royalcaribbean.com',
     s1ManCtxPh:'Industria, tipo de empresa, contexto de la reunión...',
     s1ManBtn:'Generar brief →',
+    // Search screen
+    searchPlaceholder:'Nombre de empresa o deal...',
+    histTitle:'Búsquedas recientes', histEmpty:'Aún no hay búsquedas recientes', histOpen:'Abrir →',
+    loadingBrief:'Cargando brief...',
+    // Analysis panel sections
+    anlContext:'Contexto', anlOpportunities:'Oportunidades', anlModules:'Módulos recomendados',
+    anlRisks:'Riesgos del deal', anlNoPains:'Sin pain points detectados',
+    anlNoOpps:'Sin oportunidades mapeadas', anlNoModules:'Sin módulos asignados', anlNoRisks:'Sin riesgos detectados',
+    modPrimary:'Principal', modSecondary:'Secundario',
+    // Company drawer
+    noTools:'Sin herramientas registradas', editTechBtn:'🔧 Ver análisis completo y editar →',
+    // Stakeholders drawer
+    stkConfirmed:'✓ Confirmado — Quitar', stkConfirmBtn:'+ Confirmar asistencia',
+    stkPriority:'💡 Qué le importa', stkPitch:'💬 Cómo hablarle',
+    stkOpeningQ:'Preguntas de apertura', stkObjLabel:'Objeciones clave',
+    stkRedFlags:'Red flags', stkTranscript:'Del transcript',
+    stkConfirmedCount:'confirmados',
+    engPending:'Pendiente', engContacted:'Contactado', engEngaged:'Engaged',
+    // Toolkit subtabs
+    tkSubDisp:'Preguntas disparadoras', tkSubRole:'Preguntas por rol', tkSubObj:'Objeciones frecuentes',
+    noQuestions:'Sin preguntas disponibles.',
+    // Stakeholders drawer (legacy)
+    stkRoleFilter:'Preguntas por rol — elige el perfil de quien tienes en la llamada',
   },
   en: {
     // Screen 1
@@ -3911,15 +4366,15 @@ const T = {
     procProcessing:'Processing...', procDone:'✓ Done',
     proc1:'Consulting CRM', proc1sub:'Fetching deal, contacts and past meetings',
     proc2:'Enriching data', proc2sub:'LinkedIn signals · Lusha · public data',
-    proc3:'AI analysis', proc3sub:'Google AI generating your personalized brief...',
+    proc3:'AI analysis', proc3sub:'Generating your personalized brief with AI',
     proc4:'Building your brief', proc4sub:'Context, strategy and action plan ready',
     // Screen 3 — context column
-    ctxColTitle:'Context', ctxColDesc:'Key company information, stakeholders and deal analysis. Click each card to see full details.',
+    ctxColTitle:'Context & Actions', ctxColDesc:'Company info, stakeholders and action plan for this deal stage.',
     cardCompany:'Company', cardAnalysis:'Analysis',
     prevIndustry:'Industry', prevEmployees:'Employees', prevCountry:'Country',
     prevModule1:'Module 1', prevSignals:'signals', prevMore:'more',
-    // Screen 3 — action plan column
-    apColTitle:'Action Plan', apColDesc:'Concrete actions, sales materials and toolkit to prepare and execute the meeting at this deal stage.',
+    // Screen 3 — analysis column
+    apColTitle:'Analysis', apColDesc:'Company context, pain points, opportunities, recommended modules and deal risks.',
     tabActions:'Actions',
     joinMeeting:'Join the meeting', openMeet:'Open Google Meet', openBtn:'Open ↗',
     completedCounter:'{n} of {m} completed',
@@ -3988,6 +4443,29 @@ const T = {
     s1ManNamePh:'e.g. Royal Caribbean', s1ManWebPh:'e.g. royalcaribbean.com',
     s1ManCtxPh:'Industry, company type, meeting context...',
     s1ManBtn:'Generate brief →',
+    // Search screen
+    searchPlaceholder:'Company or deal name...',
+    histTitle:'Recent searches', histEmpty:'No recent searches yet', histOpen:'Open →',
+    loadingBrief:'Loading brief...',
+    // Analysis panel sections
+    anlContext:'Context', anlOpportunities:'Opportunities', anlModules:'Recommended modules',
+    anlRisks:'Deal risks', anlNoPains:'No pain points detected',
+    anlNoOpps:'No opportunities mapped', anlNoModules:'No modules assigned', anlNoRisks:'No risks detected',
+    modPrimary:'Primary', modSecondary:'Secondary',
+    // Company drawer
+    noTools:'No tools registered', editTechBtn:'🔧 View full analysis and edit →',
+    // Stakeholders drawer
+    stkConfirmed:'✓ Confirmed — Remove', stkConfirmBtn:'+ Confirm attendance',
+    stkPriority:'💡 What matters to them', stkPitch:'💬 How to talk to them',
+    stkOpeningQ:'Opening questions', stkObjLabel:'Key objections',
+    stkRedFlags:'Red flags', stkTranscript:'From transcript',
+    stkConfirmedCount:'confirmed',
+    engPending:'Pending', engContacted:'Contacted', engEngaged:'Engaged',
+    // Toolkit subtabs
+    tkSubDisp:'Trigger questions', tkSubRole:'Questions by role', tkSubObj:'Frequent objections',
+    noQuestions:'No questions available.',
+    // Stakeholders drawer (legacy)
+    stkRoleFilter:'Questions by role — choose the profile of who you have on the call',
   }
 };
 function t(key){ return (T[lang]||T.es)[key] || (T.es[key]) || key; }
@@ -4421,19 +4899,137 @@ function togglePainHyp(i){
   if(el) el.classList.toggle('open');
 }
 
-function toggleAnlCard(card){
-  card.classList.toggle('expanded');
-}
-
-function toggleAnlSection(el){
-  el.classList.toggle('expanded');
-}
-
 let SOLUTIONS_DATA = null;
 fetch('humand_solutions_map.json').then(r=>r.json()).then(d=>{SOLUTIONS_DATA=d;}).catch(()=>{});
 
+// ── Demo mode ─────────────────────────────
+function loadDemo(){
+  selectedDealId = 'demo';
+  selectedDealName = 'Globant';
+  selectedDealStage = 'discovery';
+  const DEMO_RESPONSE = {
+    brief: {
+      company_snapshot: {
+        name:'Globant', industry:'Technology / IT Services', employee_count:'27,000+ employees',
+        workforce_type:'Tech workforce — engineers, designers, QA', geographic_footprint:'Global · HQ Buenos Aires',
+        summary:'Globant es una empresa de tecnología global con operaciones en más de 30 países. Su equipo de HR gestiona procesos de onboarding, cultura y engagement para más de 27.000 colaboradores distribuidos.'
+      },
+      deal_strategy: {
+        sales_stage:'discovery',
+        key_risks:['Proceso de compra largo — múltiples aprobadores en IT y Finance','Ya tienen herramientas internas de HR Tech','Budget cycle Q3'],
+        next_actions:[
+          {action:'Confirmar reunión con VP People y CHRO', priority:'high', rationale:'Son los decision makers reales del deal'},
+          {action:'Preparar caso de uso sector tech con métricas de engagement', priority:'high', rationale:'Globant valora los datos y benchmarks de industria'},
+          {action:'Enviar one-pager sobre integración con Workday', priority:'medium', rationale:'IT va a preguntar por integraciones sí o sí'},
+        ]
+      },
+      pain_hypotheses:[
+        {pain:'Engagement caído post-pandemia — equipos distribuidos sin ritmo de comunicación interna clara', confidence:'high',
+         validation_question:'¿Cómo están midiendo hoy el engagement de los equipos remotos?',
+         if_confirmed:{push_opportunity:'Módulo de Comunicaciones + Surveys en tiempo real', show_module:'Communications Hub', highlight_impact:['Reduce churn en tech talent','Mejora NPS interno']},
+         if_not_confirmed:{fallback_question:'¿Tienen alguna herramienta de pulso de equipo que ya estén usando?', alternative_path:'Explorar dolor en onboarding masivo'}},
+        {pain:'Onboarding de nuevos ingenieros lento y manual — alta rotación en los primeros 90 días', confidence:'high',
+         validation_question:'¿Cuánto tarda en promedio el onboarding de un nuevo engineer hasta que es productivo?',
+         if_confirmed:{push_opportunity:'Onboarding digital con journeys automáticos', show_module:'Onboarding', highlight_impact:['Reducción del 40% en tiempo de onboarding','Menor rotación early stage']},
+         if_not_confirmed:{fallback_question:'¿Dónde ven más fricción en los primeros 3 meses de un nuevo ingreso?', alternative_path:'Validar si el dolor está más en la experiencia que en la velocidad'}},
+        {pain:'Dificultad para comunicar cultura y valores a escala global sin fragmentación por región', confidence:'medium',
+         validation_question:'¿Cómo aseguran que la cultura de Globant llegue igual a los equipos de Córdoba que a los de Nueva York?',
+         if_confirmed:{push_opportunity:'Content hub centralizado + segmentación por región', show_module:'Culture & Content', highlight_impact:['Coherencia de marca empleadora','Mayor alineación cultural']},
+         if_not_confirmed:{fallback_question:'¿Tienen algún programa de cultura activo hoy?', alternative_path:'Explorar dolor en reconocimiento y feedback'}},
+      ],
+      recommended_modules:[
+        {module_name:'📣 Communications Hub', why_relevant:'Globalización del equipo hace crítica la comunicación interna estructurada'},
+        {module_name:'🚀 Onboarding', why_relevant:'Alto volumen de ingresos mensuales — el onboarding manual no escala'},
+        {module_name:'❤️ Recognition & Culture', why_relevant:'Engagement y retención en tech workforce altamente competitivo'},
+      ],
+      stakeholder_map:{
+        present:[
+          {name:'Lucía Fernández', role:'VP People & Culture', type:'champion', likely_priority:'Mejorar engagement y reducir rotación de tech talent',
+           engagement_status:'warm', pitch_angle:'Posicioná Humand como la capa de experiencia que conecta todos sus procesos de HR',
+           opening_questions:['¿Cuál es el mayor dolor de comunicación interna hoy?','¿Cómo miden el engagement actualmente?','¿Qué herramientas de HR Tech ya tienen en el stack?'],
+           key_objections:[{objection:'Ya tenemos Workday',response:'Humand es la capa de experiencia encima de Workday — no lo reemplaza, lo potencia'},{objection:'Presupuesto comprometido este año',response:'Podemos arrancar con un piloto acotado a un país o BU para tener datos antes del ciclo Q1'}],
+           red_flags:['Satisfecha con herramientas actuales'],transcript_signals:['Mencionó dificultades con equipos remotos en la última reunión']},
+          {name:'Matías Rodríguez', role:'CHRO', type:'dm', likely_priority:'ROI en retención y productividad del engineering talent',
+           engagement_status:'cold', pitch_angle:'Framing ejecutivo: Humand como inversión que reduce el costo de rotación',
+           opening_questions:['¿Cuál es el KPI de people más importante para el año?','¿Cómo justifican inversiones en HR Tech al board?'],
+           key_objections:[{objection:'No es el momento',response:'Entiendo — ¿cuándo sería el mejor momento para revisitarlo? ¿Q3 cuando abre el budget?'}],
+           red_flags:['No mostró interés activo todavía'],transcript_signals:[]},
+        ],
+        missing:[{role:'IT Lead / CTO', why_important:'Aprobación técnica requerida para integraciones', recommended_action:'Pedir a Lucía que facilite intro con el equipo técnico'}]
+      },
+      deal_velocity:{deal_heat:'warm', engagement_score:72, meeting_count:2, transcript_count:1, days_since_last_activity:8,
+        signal:'Deal activo — tuvieron reunión hace 8 días, buen momentum. Próximo paso: discovery con CHRO.',
+        recommended_urgency:'medium'},
+      historical_patterns:{win_rate_pct:68, confidence:'medium', key_insight:'Deals en tech companies >20k empleados cierran en promedio en 90 días con 3 reuniones', watch_out:'Ciclos de aprobación largos en grandes enterprises — mantener momentum con quick wins'},
+      pre_meeting_emails:{
+        pre_meeting:{
+          subject:'Globant + Humand — Antes de nuestra reunión',
+          body:'Hola Lucía,\n\nAntes de que nos juntemos, quería compartirte un poco de contexto de por qué creo que esta conversación puede ser muy relevante para Globant.\n\nInvestigando la empresa, veo que el equipo de HR gestiona más de 27.000 colaboradores distribuidos en 30+ países — un desafío enorme de comunicación interna y engagement. Casos similares en el sector tech muestran que sin una capa de experiencia digital, la rotación early-stage y el engagement caído post-pandemia son los dolores más frecuentes.\n\nEn la reunión voy a presentar cómo Humand puede ayudar a resolver esto de forma concreta y medible.\n\n¡Nos vemos pronto!\n[Tu nombre] — Humand'
+        },
+        post_meeting:{
+          subject:'Globant + Humand — Próximos pasos',
+          body:'Hola Lucía,\n\nGracias por el tiempo de hoy. Fue muy valioso entender mejor el contexto de Globant.\n\nResumen de lo que conversamos:\n• Desafío principal: Engagement caído en equipos distribuidos post-pandemia\n• Módulo propuesto: Communications Hub + Onboarding digital\n• Próximo paso: Reunión con Matías (CHRO) para validar ROI y presupuesto\n\nTe adjunto el caso de uso de referencia que mencionamos. Quedo disponible para cualquier consulta.\n\n¡Saludos!\n[Tu nombre] — Humand'
+        }
+      },
+    },
+    enrichment:{ lusha:{ domain:'globant.com', location:'Buenos Aires, Argentina', employee_count:'27,000+' } }
+  };
+  current = mapBriefToCompany(DEMO_RESPONSE);
+  currentStage = 'discovery';
+  render();
+  show('s3');
+  toast('⚡ Modo demo cargado — datos de ejemplo');
+}
+
+// ── Deck generation ───────────────────────
+async function generateDeck(){
+  if(!rawBrief){ toast('Generate a brief first'); return; }
+  const card = document.getElementById('deck-card');
+  const descEl = document.getElementById('deck-card-desc');
+  const ctaEl  = document.getElementById('deck-card-cta');
+  if(card){ card.style.pointerEvents='none'; card.style.opacity='.7'; }
+  if(descEl) descEl.textContent = 'Generating presentation…';
+  if(ctaEl)  ctaEl.textContent  = '⏳';
+  try {
+    const r = await fetch(API_BASE+'/api/deck', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        brief: rawBrief.brief || rawBrief,
+        deal_data: {
+          company_name: selectedDealName,
+          hubspot_deal_id: selectedDealId || null,
+          logo_url: current?.website
+            ? 'https://www.google.com/s2/favicons?domain='+(current.website||'').replace(/^https?:\/\//,'').replace(/\/.*/,'')+'&sz=128'
+            : null
+        }
+      })
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const json = await r.json();
+    console.log('[generateDeck] response:', JSON.stringify(json));
+    const url = json?.apps_script?.response?.deckUrl || json?.deckUrl || json?.deck_url || json?.url;
+    if(url){
+      if(descEl) descEl.textContent = 'Presentation ready — opening now';
+      if(ctaEl)  ctaEl.textContent  = 'Open ↗';
+      if(card){ card.style.opacity='1'; card.onclick = ()=>window.open(url,'_blank'); }
+      window.open(url, '_blank');
+    } else {
+      if(descEl) descEl.textContent = 'No link received — try again';
+      if(ctaEl)  ctaEl.textContent  = 'Retry';
+      if(card){ card.style.pointerEvents=''; card.style.opacity='1'; card.onclick = generateDeck; }
+    }
+  } catch(e){
+    console.error('[generateDeck] error:', e);
+    if(descEl) descEl.textContent = 'Error: '+e.message;
+    if(ctaEl)  ctaEl.textContent  = 'Retry';
+    if(card){ card.style.pointerEvents=''; card.style.opacity='1'; card.onclick = generateDeck; }
+  }
+}
+
 // ── Init ──────────────────────────────────
 checkHealth();
+loadRecentBriefs();
 function getModuleDetail(name){
   if(!SOLUTIONS_DATA) return null;
   const norm=s=>s.toLowerCase().replace(/[^a-z0-9]/g,' ').replace(/\s+/g,' ').trim();
@@ -4443,6 +5039,9 @@ function getModuleDetail(name){
     return needle===mn||needle.includes(mn)||mn.includes(needle)||needle.split(' ').some(w=>w.length>3&&mn.includes(w));
   })||null;
 }
+
+// Apply default language on load
+document.addEventListener('DOMContentLoaded', applyLang);
 </script>
 </body>
 </html>
