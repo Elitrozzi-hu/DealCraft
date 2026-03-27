@@ -2028,8 +2028,8 @@ function mapBriefToCompany(apiResponse){
   }));
 
   // Detect real person names vs AI-invented role descriptions
-  // Stakeholders — only people verified in Lusha (AI may invent; matchLusha filters them out)
-  const presentStks = (stkMap.present||[]).filter(s=>matchLusha(s.name)).map(s=>({
+  // Stakeholders — AI selects top 10 from Lusha and classifies them
+  const presentStks = (stkMap.present||[]).map(s=>({
     role:  s.role||s.name||'Contacto',
     title: s.role||s.name||'',
     type:  s.type||'influencer',
