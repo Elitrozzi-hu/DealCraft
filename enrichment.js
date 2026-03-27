@@ -84,11 +84,10 @@ async function searchLushaStakeholders(lushaCompanyId, domain) {
     console.log(`[Lusha] Total contacts from prospecting: ${contacts.length}`);
     if (contacts[0]) console.log('[Lusha] First contact raw:', JSON.stringify(contacts[0]));
 
-    // Filter to relevant stakeholders only
-    const relevant = contacts.filter((e) => isRelevantTitle(e.jobTitle || e.job_title || e.title || e.position));
-    console.log(`[Lusha] Relevant stakeholders after filter: ${relevant.length}`);
+    // Pass all contacts to AI for it to select and classify top 10
+    console.log(`[Lusha] Returning all ${contacts.length} contacts for AI classification`);
 
-    return relevant.slice(0, 8).map((e) => ({
+    return contacts.slice(0, 50).map((e) => ({
       full_name: e.name || null,
       job_title: e.jobTitle || null,
       person_id: e.personId || null,

@@ -2027,8 +2027,9 @@ function mapBriefToCompany(apiResponse){
     cat: 'Tech Stack', color:'#6B6B8A', conf:70, status:'usa', tooltip:''
   }));
 
-  // Stakeholders — full rich schema
-  const presentStks = (stkMap.present||[]).map(s=>({
+  // Detect real person names vs AI-invented role descriptions
+  // Stakeholders — only people verified in Lusha (AI may invent; matchLusha filters them out)
+  const presentStks = (stkMap.present||[]).filter(s=>matchLusha(s.name)).map(s=>({
     role:  s.role||s.name||'Contacto',
     title: s.role||s.name||'',
     type:  s.type||'influencer',
@@ -2052,15 +2053,7 @@ function mapBriefToCompany(apiResponse){
     _hasPhone: !!(s.phone || matchLusha(s.name)?.has_phone),
     _hasLinkedin: !!(s.linkedin_url || matchLusha(s.name)?.has_linkedin),
   }));
-  const missingStks = (stkMap.missing||[]).map(s=>({
-    role: s.role||'Rol clave pendiente',
-    title: s.role||'',
-    type: 'dm', cares:[], present: false,
-    _whyImportant: s.why_important||'',
-    _recommendedAction: s.recommended_action||''
-  }));
-  const stakeholders = [...presentStks, ...missingStks];
-  if(!stakeholders.length) stakeholders.push({role:'HR / People',title:'Responsable de People',type:'champion',cares:[],present:true});
+  const stakeholders = [...presentStks];
 
   // Signals from deal heat + opportunity areas
   const signals = [];
@@ -2782,7 +2775,7 @@ function openCtxDrawer(type, roleFilter){
   }
 
   if(type==='stakeholders'){
-    const _roleLabels = {champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Blocker',unknown:'Unassigned'};
+    const _roleLabels = {champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Blocker',unknown:'Others'};
     title = (roleFilter ? _roleLabels[roleFilter]||'Stakeholders' : 'Stakeholders');
     const typeConfig = {
       champion:       {label:'Champion',       bg:'#e6fbe9', color:'#249637'},
@@ -2790,7 +2783,7 @@ function openCtxDrawer(type, roleFilter){
       decision_maker: {label:'Decision Maker', bg:'#dee5fb', color:'#2f3fc6'},
       influencer:     {label:'Influencer',     bg:'#fcf7ce', color:'#b1690e'},
       blocker:        {label:'Blocker',        bg:'#fde3e3', color:'#b22323'},
-      unknown:        {label:'Unassigned',     bg:'#eeeef1', color:'#79788a'},
+      unknown:        {label:'Others',     bg:'#eeeef1', color:'#79788a'},
     };
     const engConfig = {
       pending:   {label:t('engPending'),   bg:'#eeeef1', color:'#79788a'},
@@ -3132,7 +3125,7 @@ function renderActionPlan(c){ c=_safe(c);
         decision_maker: {label:'Decision Maker', strip:'#dee5fb', color:'#2f3fc6'},
         influencer:     {label:'Influencer',     strip:'#fcf7ce', color:'#b1690e'},
         blocker:        {label:'Blocker',        strip:'#fde3e3', color:'#b22323'},
-        unknown:        {label:'Unassigned',      strip:'#eeeef1', color:'#79788a'},
+        unknown:        {label:'Others',      strip:'#eeeef1', color:'#79788a'},
       };
       const _roles = ['champion','dm','influencer','blocker','unknown'];
       return _secTitle('Stakeholders'+(_stks.length?' ('+_stks.length+')':''))+

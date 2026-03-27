@@ -170,7 +170,7 @@ ${JSON.stringify(tier_4_weak, null, 2)}`);
 === OUTPUT INSTRUCTIONS ===
 Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max 3 pain_hypotheses, max 3 next_actions, max 2 opening_questions and max 2 key_objections per stakeholder, max 3 recommended_modules, max 2 missing stakeholders.
 
-CRITICAL — stakeholder_map.present: Only include real people confirmed in Lusha data, CRM contacts, or call transcripts. Do NOT invent, guess, or fabricate names or roles. If no real people are confirmed, return an empty array [].
+CRITICAL — stakeholder_map.present: You will receive up to 50 real Lusha contacts. Select the 10 most relevant for a Humand sale and classify each one. COPY the exact full_name from the Lusha data as the "name" field — do NOT invent, modify, or fabricate names. If a person is relevant but doesn't fit champion/dm/influencer/blocker, assign type "unknown". If no Lusha contacts provided, return an empty array [].
 
 {
   "company_snapshot": {
