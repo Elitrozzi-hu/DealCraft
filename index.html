@@ -3343,7 +3343,7 @@ function toggleAction(key, actionId){
   apTab('actions');
 }
 
-function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escHtml(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function timeAgo(isoString){
   if(!isoString) return '—';
