@@ -174,14 +174,16 @@ async function enrichCompany(domain, companyName) {
     ? domain.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '').toLowerCase()
     : null;
 
-  const [lushaData, scrapeData] = await Promise.all([
+  const [lushaData, scrapeData, stakeholders] = await Promise.all([
     cleanDomain ? enrichWithLusha(cleanDomain) : Promise.resolve(null),
     cleanDomain ? scrapeWebsite(cleanDomain) : Promise.resolve(null),
+    cleanDomain ? searchLushaStakeholders(null, cleanDomain).catch(() => []) : Promise.resolve([]),
   ]);
 
   return {
     lusha: lushaData,
     scrape: scrapeData,
+    stakeholders: stakeholders || [],
   };
 }
 

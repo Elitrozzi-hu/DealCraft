@@ -606,7 +606,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .drawer-close:hover{border-color:var(--p);color:var(--p)}
 .drawer-back{background:none;border:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--p);padding:0 4px 0 0;display:none;align-items:center;gap:5px;line-height:1;flex-shrink:0}
 .drawer-back:hover{opacity:.7}
-.drawer-body{flex:1;overflow-y:auto;padding:20px 22px}
+.drawer-body{flex:1;overflow-y:auto;padding:20px 22px;background:var(--bg)}
 /* Opener box */
 .stage-opener-box{font-size:14px;line-height:1.7;color:var(--t1);font-style:italic;background:var(--okl);border-left:3px solid var(--ok);border-radius:0 var(--r2) var(--r2) 0;padding:13px 15px;margin-bottom:10px}
 /* Cov card (side) */
@@ -999,7 +999,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
   <div class="body">
     <div class="proc-wrap">
       <div class="mascot-wrap">
-        <img class="mascot-img" src="mascot.gif" alt="Humand mascot">
+        <img class="mascot-img" src="mascot.gif" alt="Humand mascot" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="display:block">
+        <div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:72px">🤖</div>
       </div>
       <h2 class="proc-title" data-i18n="procTitle">Investigando empresa</h2>
       <p class="proc-url" id="proc-target"></p>
@@ -1890,40 +1891,85 @@ async function _runBrief(payload, displayName){
     document.getElementById('prog-fill').style.width=pct+'%';
   }
 
-  // Fire API request immediately
-  const briefPromise = fetch(API_BASE+'/api/brief', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
-  });
-
-  activateStep(0, 18);
-  await new Promise(r=>setTimeout(r, 1600));
-  completeStep(0);
-
-  activateStep(1, 38);
-  await new Promise(r=>setTimeout(r, 1800));
-  completeStep(1);
-
-  activateStep(2, 60);
+  // Kick off fake-step timer as fallback in case SSE events are slow/missing
+  const stepPcts = [18, 45, 68, 88];
+  let lastActivatedStep = -1;
+  const stepTimers = [];
+  const safeActivate = (i) => {
+    if(i <= lastActivatedStep) return;
+    for(let j=lastActivatedStep+1; j<i; j++) completeStep(j);
+    activateStep(i, stepPcts[i]);
+    lastActivatedStep = i;
+  };
+  // Fallback timers — get cancelled if SSE events arrive first
+  stepTimers.push(setTimeout(()=>safeActivate(0), 300));
+  stepTimers.push(setTimeout(()=>safeActivate(1), 2500));
+  stepTimers.push(setTimeout(()=>safeActivate(2), 5000));
+  stepTimers.push(setTimeout(()=>safeActivate(3), 7000));
+  const clearStepTimers = () => stepTimers.forEach(clearTimeout);
 
   let apiResponse;
   try {
-    const res = await briefPromise;
+    const res = await fetch(API_BASE+'/api/brief', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
     if(!res.ok) throw new Error('HTTP '+res.status);
-    apiResponse = await res.json();
+
+    const contentType = res.headers.get('content-type') || '';
+    if(!contentType.includes('text/event-stream')){
+      // Old server — returns plain JSON, no SSE
+      const data = await res.json();
+      clearStepTimers();
+      for(let j=0; j<4; j++) completeStep(j);
+      document.getElementById('prog-fill').style.width='100%';
+      apiResponse = data;
+    } else {
+      // New server — SSE stream
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while(true){
+        const {done, value} = await reader.read();
+        if(done) break;
+        buffer += decoder.decode(value, {stream:true});
+        let boundary;
+        while((boundary = buffer.indexOf('\n\n')) !== -1){
+          const line = buffer.slice(0, boundary).trim();
+          buffer = buffer.slice(boundary + 2);
+          if(!line.startsWith('data: ')) continue;
+          let evt;
+          try { evt = JSON.parse(line.slice(6)); } catch(_){ continue; }
+
+          if(evt.type === 'step'){
+            clearStepTimers();
+            safeActivate(evt.step);
+          } else if(evt.type === 'progress'){
+            const activeEl = document.querySelector('.pstep.act .ps-st');
+            if(activeEl) activeEl.textContent = '✦ ' + Math.round(evt.chars/100)/10 + 'k chars…';
+          } else if(evt.type === 'done'){
+            clearStepTimers();
+            apiResponse = evt;
+            for(let j=0; j<4; j++) completeStep(j);
+            document.getElementById('prog-fill').style.width='100%';
+            if(evt.from_cache) toast('⚡ Brief cargado desde caché');
+          } else if(evt.type === 'error'){
+            throw new Error(evt.message);
+          }
+        }
+      }
+    }
   } catch(err){
+    clearStepTimers();
     console.error('Brief API error:', err);
     show('s1');
     toast('❌ Error al generar el brief — intentá de nuevo en unos segundos');
     return;
   }
 
-  completeStep(2);
-  activateStep(3, 88);
-  await new Promise(r=>setTimeout(r, 500));
-  completeStep(3);
-  document.getElementById('prog-fill').style.width='100%';
+  if(!apiResponse) { clearStepTimers(); show('s1'); toast('❌ Respuesta vacía del servidor'); return; }
 
   rawBrief = apiResponse;
   current = mapBriefToCompany(apiResponse);
@@ -1946,6 +1992,13 @@ function mapBriefToCompany(apiResponse){
   // The API wraps the brief: { brief: {...}, enrichment: {...} }
   const brief  = apiResponse.brief || apiResponse;
   const lusha  = ((apiResponse.enrichment||{}).lusha) || {};
+  const lushaStakeholders = ((apiResponse.enrichment||{}).stakeholders) || [];
+  const matchPersonId = name => {
+    if(!name||!lushaStakeholders.length) return null;
+    const n = name.toLowerCase().trim();
+    const m = lushaStakeholders.find(ls => ls.full_name && ls.full_name.toLowerCase().trim()===n);
+    return m ? (m.person_id||null) : null;
+  };
 
   const snap   = brief.company_snapshot || {};
   const mods   = brief.recommended_modules || [];
@@ -1992,6 +2045,7 @@ function mapBriefToCompany(apiResponse){
     _phone: s.phone||null,
     _city: s.city||null,
     _country: s.country||null,
+    _personId: matchPersonId(s.name)||null,
   }));
   const missingStks = (stkMap.missing||[]).map(s=>({
     role: s.role||'Rol clave pendiente',
@@ -2644,11 +2698,7 @@ function renderContext(c){ c=_safe(c);
       '<div class="col-header-desc">'+t('ctxColDesc')+'</div>'+
     '</div>';
 
-  const ctxCards =
-    '<div style="display:flex;flex-direction:column;gap:12px">'+
-      stakeholdersCard +
-    '</div>';
-  document.getElementById('ctx-col').innerHTML = ctxHeader + ctxCards +
+  document.getElementById('ctx-col').innerHTML = ctxHeader +
     '<div style="margin-top:12px">'+actionPlanCard+'</div>';
 }
 
@@ -2728,138 +2778,172 @@ function openCtxDrawer(type, roleFilter){
 
   if(type==='stakeholders'){
     const _roleLabels = {champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Blocker',unknown:'Unassigned'};
-    title = '👥 '+(roleFilter ? _roleLabels[roleFilter]||'Stakeholders' : 'Stakeholders');
-    const confirmed = stks.filter(s=>s.present).length;
+    title = (roleFilter ? _roleLabels[roleFilter]||'Stakeholders' : 'Stakeholders');
     const typeConfig = {
-      champion:       {label:'Champion',       bg:'var(--okl)',  color:'var(--ok)'},
-      dm:             {label:'Decision Maker', bg:'var(--px)',   color:'var(--p)'},
-      decision_maker: {label:'Decision Maker', bg:'var(--px)',   color:'var(--p)'},
-      influencer:     {label:'Influencer',     bg:'var(--wal)',  color:'var(--wa)'},
-      blocker:        {label:'Blocker',        bg:'var(--redl)', color:'var(--red)'},
-      unknown:        {label:'Unknown',        bg:'var(--bg)',   color:'var(--t2)'},
+      champion:       {label:'Champion',       bg:'#e6fbe9', color:'#249637'},
+      dm:             {label:'Decision Maker', bg:'#dee5fb', color:'#2f3fc6'},
+      decision_maker: {label:'Decision Maker', bg:'#dee5fb', color:'#2f3fc6'},
+      influencer:     {label:'Influencer',     bg:'#fcf7ce', color:'#b1690e'},
+      blocker:        {label:'Blocker',        bg:'#fde3e3', color:'#b22323'},
+      unknown:        {label:'Unassigned',     bg:'#eeeef1', color:'#79788a'},
     };
     const engConfig = {
-      pending:   {label:t('engPending'),   bg:'var(--bg)',   color:'var(--t2)'},
-      contacted: {label:t('engContacted'), bg:'var(--px)',   color:'var(--p)'},
-      engaged:   {label:t('engEngaged'),   bg:'var(--okl)',  color:'var(--ok)'},
-      warm:      {label:'Warm',      bg:'#fff3e0',     color:'#e65100'},
-      cold:      {label:'Cold',      bg:'#e3f2fd',     color:'#1565c0'},
+      pending:   {label:t('engPending'),   bg:'#eeeef1', color:'#79788a'},
+      contacted: {label:t('engContacted'), bg:'#dee5fb', color:'#2f3fc6'},
+      engaged:   {label:t('engEngaged'),   bg:'#e6fbe9', color:'#249637'},
+      warm:      {label:'Warm',            bg:'#fcf7ce', color:'#b1690e'},
+      cold:      {label:'Cold',            bg:'#ecfafc', color:'#30a2c7'},
     };
-    const pill = (label,bg,color)=>'<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:'+bg+';color:'+color+';white-space:nowrap">'+label+'</span>';
+    const pill = (label,bg,color)=>'<span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:'+bg+';color:'+color+';white-space:nowrap">'+label+'</span>';
     const miniSec = (title,content)=>'<div style="margin-top:10px"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--t2);margin-bottom:5px">'+title+'</div>'+content+'</div>';
 
+    const maskEmail = e => { if(!e) return ''; const at=e.indexOf('@'); return at>0?'•••@'+e.slice(at+1):'•••'; };
+    const maskPhone = p => !p ? '' : p.slice(0, Math.min(7, p.length))+'•••••';
+
     html =
-      // Progress bar
-      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">'+
-        '<div style="flex:1;height:6px;background:var(--br);border-radius:3px;overflow:hidden">'+
-          '<div style="height:100%;width:'+Math.round(confirmed/Math.max(stks.length,1)*100)+'%;background:var(--ok);border-radius:3px"></div>'+
-        '</div>'+
-        '<span style="font-size:12px;font-weight:600;color:var(--ok)">'+confirmed+'/'+stks.length+' '+t('stkConfirmedCount')+'</span>'+
-      '</div>'+
-      // One card per stakeholder
       stks.map((s,i)=>{
         const tc = typeConfig[s.type]||typeConfig.unknown;
         const ec = engConfig[s._engagementStatus]||engConfig.pending;
         const displayName = s._name || s.role || 'Contacto';
         const initials = displayName.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
-        const avatarColors = ['#496BE3','#0891b2','#7c3aed','#059669','#d97706'];
+        const avatarColors = ['#496be3','#267b6c','#6330f7','#249637','#de920c'];
         const avatarBg = avatarColors[displayName.length % avatarColors.length];
 
-        // Section divider helper
-        const divider = '<div style="height:1px;background:var(--bg);margin:12px 0"></div>';
-        // Section label helper
-        const secLbl = (ico, lbl) => '<div style="display:flex;align-items:center;gap:5px;margin-bottom:8px">'+
-          '<span style="font-size:12px">'+ico+'</span>'+
-          '<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2)">'+lbl+'</span>'+
-        '</div>';
+        // Section block: label + content in a grey container
+        const sec = (ico, lbl, content) =>
+          '<div style="margin-bottom:8px">'+
+            '<div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">'+
+              '<i class="ti '+ico+'" style="font-size:13px;color:var(--t2)"></i>'+
+              '<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2)">'+lbl+'</span>'+
+            '</div>'+
+            '<div style="background:var(--bg);border-radius:var(--r1);padding:10px 12px">'+content+'</div>'+
+          '</div>';
 
-        const contactRow = [
-          s._linkedin ? '<a href="'+s._linkedin+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--p);text-decoration:none;background:var(--px);padding:3px 8px;border-radius:20px">🔗 LinkedIn</a>' : null,
-          s._email    ? '<span style="font-size:11px;color:var(--t2)">✉️ '+escHtml(s._email)+'</span>' : null,
-          s._phone    ? '<span style="font-size:11px;color:var(--t2)">📞 '+escHtml(s._phone)+'</span>' : null,
-          (s._city||s._country) ? '<span style="font-size:11px;color:var(--t2)">📍 '+escHtml([s._city,s._country].filter(Boolean).join(', '))+'</span>' : null,
-        ].filter(Boolean);
+        const personIdSafe = (s._personId||'').replace(/'/g,"\\'");
+        // Check localStorage cache for already-revealed contacts
+        const cachedEmail = s._personId ? localStorage.getItem('reveal_'+s._personId+'_email') : null;
+        const cachedPhone = s._personId ? localStorage.getItem('reveal_'+s._personId+'_phone') : null;
+        const eyeBtn = (field, cid) => s._personId
+          ? '<button onclick="event.stopPropagation();revealContact(\''+personIdSafe+'\',\''+field+'\',\''+cid+'\')" style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--r1);border:1px solid var(--br);background:#fff;cursor:pointer;color:var(--t2);flex-shrink:0"><i class="ti ti-eye" style="font-size:13px"></i></button>'
+          : '';
+        const contactRow = (ico, labelNode, actionNode) =>
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 8px;background:var(--bg);border-radius:var(--r1)">'+
+            '<div style="display:flex;align-items:center;gap:8px">'+labelNode+'</div>'+
+            actionNode+
+          '</div>';
+        const contactItems =
+          (s._linkedin
+            ? contactRow('',
+                '<div style="width:20px;height:20px;background:#0a66c2;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-brand-linkedin" style="font-size:12px;color:#fff"></i></div>'+
+                '<span style="font-size:12px;font-weight:600;color:var(--t1)">LinkedIn</span>',
+                '<a href="'+s._linkedin+'" target="_blank" style="display:flex;align-items:center;color:var(--t2);text-decoration:none"><i class="ti ti-arrow-up-right" style="font-size:15px"></i></a>')
+            : '')+
+          (s._email
+            ? '<div id="c-em-'+i+'">'+
+                contactRow('',
+                  '<i class="ti ti-mail" style="font-size:14px;color:var(--t2);flex-shrink:0"></i>'+
+                  '<span class="c-val" style="font-size:12px;color:var(--t2);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+
+                    escHtml(cachedEmail || maskEmail(s._email))+
+                  '</span>',
+                  (cachedEmail ? '' : eyeBtn('email','c-em-'+i)))+
+              '</div>'
+            : '')+
+          (s._phone
+            ? '<div id="c-ph-'+i+'">'+
+                contactRow('',
+                  '<i class="ti ti-phone" style="font-size:14px;color:var(--t2);flex-shrink:0"></i>'+
+                  '<span class="c-val" style="font-size:12px;color:var(--t2);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+
+                    escHtml(cachedPhone || maskPhone(s._phone))+
+                  '</span>',
+                  (cachedPhone ? '' : eyeBtn('phone','c-ph-'+i)))+
+              '</div>'
+            : '')+
+          ((s._city||s._country)
+            ? contactRow('',
+                '<i class="ti ti-map-pin" style="font-size:14px;color:var(--t2);flex-shrink:0"></i>'+
+                '<span style="font-size:12px;color:var(--t2)">'+escHtml([s._city,s._country].filter(Boolean).join(', '))+'</span>',
+                '')
+            : '');
+        const hasContacts = !!(s._linkedin||s._email||s._phone||(s._city||s._country));
 
-        return '<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:12px">'+
+        return '<div style="background:#fff;border:1px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:12px;box-shadow:-1px 4px 8px 0px rgba(233,233,244,1)">'+
 
-          // ── Header row: avatar + name/role + pills
-          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">'+
-            '<div style="width:38px;height:38px;border-radius:50%;background:'+avatarBg+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;flex-shrink:0">'+initials+'</div>'+
+          // ── Header: name/role + pill on left, contacts on right
+          '<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">'+
             '<div style="flex:1;min-width:0">'+
-              '<div style="font-size:14px;font-weight:600;color:var(--t1);line-height:1.3">'+escHtml(displayName)+'</div>'+
-              (s._name && s.role ? '<div style="font-size:11px;color:var(--t2);margin-top:2px">'+escHtml(s.role)+'</div>' : '')+
+              '<div style="font-size:17px;font-weight:700;color:var(--t1);line-height:1.3">'+escHtml(displayName)+'</div>'+
+              (s._name && s.role ? '<div style="font-size:13px;color:var(--t2);margin-top:4px">'+escHtml(s.role)+'</div>' : '')+
+              '<div style="margin-top:10px">'+pill(ec.label,ec.bg,ec.color)+'</div>'+
             '</div>'+
-            '<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0">'+
-              pill(tc.label,tc.bg,tc.color)+
-              pill(ec.label,ec.bg,ec.color)+
-            '</div>'+
+            (hasContacts
+              ? '<div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:5px">'+contactItems+'</div>'
+              : '')+
           '</div>'+
 
-          // ── Confirm button + contact row
-          '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">'+
+          // ── Confirm button
+          '<div style="margin-bottom:12px">'+
             '<button class="q-row-btn" style="flex-shrink:0" onclick="toggleStkPresent(\''+c.name.replace(/'/g,"\\'")+'\','+i+');openCtxDrawer(\'stakeholders\')">'+
               (s.present ? t('stkConfirmed') : t('stkConfirmBtn'))+
             '</button>'+
-            (contactRow.length ? '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end">'+contactRow.join('')+'</div>' : '')+
           '</div>'+
 
-          // ── Priority + Pitch (two highlighted boxes)
+          // ── Priority + Pitch
           (s._likelyPriority || s._pitchAngle ?
-            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'+
               (s._likelyPriority ?
-                '<div style="background:var(--bg);border-radius:var(--r1);padding:10px">'+
-                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:5px">'+t('stkPriority')+'</div>'+
-                  '<div style="font-size:11px;color:var(--t1);line-height:1.5">'+escHtml(s._likelyPriority)+'</div>'+
+                '<div style="background:#eeeef1;border-radius:var(--r1);padding:10px">'+
+                  '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:4px">'+t('stkPriority')+'</div>'+
+                  '<div style="font-size:12px;color:var(--t1);line-height:1.4;letter-spacing:.2px">'+escHtml(s._likelyPriority)+'</div>'+
                 '</div>' : '<div></div>')+
               (s._pitchAngle ?
-                '<div style="background:var(--px);border-radius:var(--r1);padding:10px">'+
-                  '<div style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:5px">'+t('stkPitch')+'</div>'+
-                  '<div style="font-size:11px;color:var(--p);line-height:1.5;font-style:italic">"'+escHtml(s._pitchAngle)+'"</div>'+
+                '<div style="background:#dee5fb;border-radius:var(--r1);padding:10px">'+
+                  '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:4px">'+t('stkPitch')+'</div>'+
+                  '<div style="font-size:12px;color:var(--p);line-height:1.4;letter-spacing:.2px;font-style:italic">"'+escHtml(s._pitchAngle)+'"</div>'+
                 '</div>' : '<div></div>')+
             '</div>' : '')+
 
           // ── Opening questions
           (s._openingQuestions&&s._openingQuestions.length ?
-            divider+
-            secLbl('❓',t('stkOpeningQ'))+
-            s._openingQuestions.slice(0,3).map((q,qi)=>
-              '<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg)">'+
-                '<span style="font-size:10px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px">'+(qi+1)+'.</span>'+
-                '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(q)+'</span>'+
-              '</div>'
-            ).join('') : '')+
+            sec('ti-question-mark',t('stkOpeningQ'),
+              s._openingQuestions.slice(0,3).map((q,qi)=>
+                '<div style="display:flex;gap:8px;padding:5px 0;'+(qi>0?'border-top:1px solid var(--br)':'')+'">'+
+                  '<span style="font-size:10px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px">'+(qi+1)+'.</span>'+
+                  '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(q)+'</span>'+
+                '</div>'
+              ).join('')
+            ) : '')+
 
           // ── Objections
           (s._objections&&s._objections.length ?
-            divider+
-            secLbl('⚠️',t('stkObjLabel'))+
-            s._objections.slice(0,3).map(o=>
-              '<div style="margin-bottom:8px;background:var(--bg);border-radius:var(--r1);padding:8px 10px">'+
-                '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
-                (o.response ? '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding-left:8px;border-left:2px solid var(--p)">'+escHtml(o.response)+'</div>' : '')+
-              '</div>'
-            ).join('') : '')+
+            sec('ti-alert-triangle',t('stkObjLabel'),
+              s._objections.slice(0,3).map((o,oi)=>
+                '<div style="'+(oi>0?'margin-top:8px;padding-top:8px;border-top:1px solid var(--br)':'')+'">'+
+                  '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
+                  (o.response ? '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding-left:8px;border-left:2px solid var(--p)">'+escHtml(o.response)+'</div>' : '')+
+                '</div>'
+              ).join('')
+            ) : '')+
 
           // ── Red flags
           (s._redFlags&&s._redFlags.length ?
-            divider+
-            secLbl('🚩',t('stkRedFlags'))+
-            '<div style="background:#fff5f5;border-radius:var(--r1);padding:8px 10px">'+
-              s._redFlags.map(r=>
-                '<div style="display:flex;gap:6px;font-size:11px;color:var(--red);line-height:1.5;padding:3px 0">'+
-                  '<span style="flex-shrink:0">⚠️</span>'+
-                  '<span>'+escHtml(r)+'</span>'+
-                '</div>'
-              ).join('')+
-            '</div>' : '')+
+            sec('ti-flag',t('stkRedFlags'),
+              '<div style="background:#fde3e3;border-radius:4px;padding:8px 10px">'+
+                s._redFlags.map(r=>
+                  '<div style="display:flex;gap:6px;align-items:flex-start;font-size:12px;color:#b22323;line-height:1.5;padding:3px 0">'+
+                    '<i class="ti ti-alert-circle" style="font-size:13px;flex-shrink:0;margin-top:1px"></i>'+
+                    '<span>'+escHtml(r)+'</span>'+
+                  '</div>'
+                ).join('')+
+              '</div>'
+            ) : '')+
 
           // ── Transcript signals
           (s._transcriptSignals&&s._transcriptSignals.length ?
-            divider+
-            secLbl('🎙️',t('stkTranscript'))+
-            s._transcriptSignals.map(r=>
-              '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--bg);font-style:italic">"'+escHtml(r)+'"</div>'
-            ).join('') : '')+
+            sec('ti-microphone',t('stkTranscript'),
+              s._transcriptSignals.map((r,ri)=>
+                '<div style="font-size:11px;color:var(--t2);line-height:1.5;'+(ri>0?'margin-top:6px;padding-top:6px;border-top:1px solid var(--br)':'')+'font-style:italic">"'+escHtml(r)+'"</div>'
+              ).join('')
+            ) : '')+
 
         '</div>';
       }).join('')+
@@ -4184,6 +4268,41 @@ function toggleStkPresent(companyName, idx){
   if(drawer && drawer.classList.contains('on')){
     document.getElementById('drawer-body').innerHTML = buildStakeholdersDrawer(current);
   }
+}
+
+function revealContact(personId, field, containerId){
+  const cacheKey = 'reveal_'+personId+'_'+field;
+  // Check cache first
+  const cached = localStorage.getItem(cacheKey);
+  if(cached){ _applyReveal(containerId, cached); return; }
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  const btn = container.querySelector('button');
+  if(btn){ btn.innerHTML='<i class="ti ti-loader" style="font-size:13px"></i>'; btn.disabled=true; }
+  fetch(API_BASE+'/api/stakeholder/reveal', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({person_id:personId, reveal_email:field==='email', reveal_phone:field==='phone'})
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    const val = field==='email'?data.email:data.phone;
+    if(val){
+      localStorage.setItem(cacheKey, val);
+      _applyReveal(containerId, val);
+    } else {
+      if(btn){ btn.innerHTML='<i class="ti ti-eye-off" style="font-size:13px"></i>'; btn.disabled=true; }
+    }
+  })
+  .catch(()=>{ if(btn){ btn.innerHTML='<i class="ti ti-eye" style="font-size:13px"></i>'; btn.disabled=false; } });
+}
+function _applyReveal(containerId, val){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  const span = container.querySelector('.c-val');
+  if(span){ span.textContent=val; span.style.color='var(--t1)'; span.style.fontWeight='600'; }
+  const btn = container.querySelector('button');
+  if(btn) btn.remove();
 }
 
 function updateStkRole(companyName, idx, val){

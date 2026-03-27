@@ -288,6 +288,36 @@ async function generateAEBrief(dealData, enrichData = {}, historicalDeals = []) 
   }
 }
 
+async function streamAEBrief(dealData, enrichData = {}, historicalDeals = [], onToken) {
+  console.log(`[AI] Streaming Claude model: ${MODEL}`);
+  const userMessage = buildBriefUserMessage(dealData, enrichData, historicalDeals);
+  let fullText = '';
+
+  const stream = anthropic.messages.stream({
+    model: MODEL,
+    max_tokens: 6000,
+    temperature: 0.4,
+    system: AE_BRIEF_SYSTEM_PROMPT,
+    messages: [{ role: 'user', content: userMessage }],
+  });
+
+  stream.on('text', (text) => {
+    fullText += text;
+    if (onToken) onToken(text);
+  });
+
+  await stream.finalMessage();
+  console.log(`[AI] Stream complete (${fullText.length} chars)`);
+
+  const cleaned = stripJsonFences(fullText);
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    console.error('[AI] JSON parse failed. Raw output:', fullText.slice(0, 500));
+    throw new Error(`AI returned invalid JSON: ${e.message}`);
+  }
+}
+
 async function generateDeckContent(brief, dealData = {}) {
   if (!deckPromptTemplate) {
     throw new Error('humand_sales_deck_prompt_EN.txt not found');
@@ -315,4 +345,4 @@ Return ONLY the JSON object for the deck variables. No markdown, no explanation.
   }
 }
 
-module.exports = { generateAEBrief, generateDeckContent };
+module.exports = { generateAEBrief, streamAEBrief, generateDeckContent };

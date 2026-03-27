@@ -4,7 +4,7 @@ const cors = require('cors');
 const supabase = require('./supabase');
 const { enrichCompany } = require('./enrichment');
 const { buildStakeholderProfiles } = require('./stakeholder-intel');
-const { generateAEBrief, generateDeckContent } = require('./ai-engine');
+const { generateAEBrief, streamAEBrief, generateDeckContent } = require('./ai-engine');
 const { writeToSheet, triggerAppsScript } = require('./sheets');
 const { saveBrief, getRecent, getByKey } = require('./brief-cache');
 
@@ -658,33 +658,82 @@ async function buildDealContext(dealId, extraDealData = {}) {
   return dealData;
 }
 
-// Generate AE Brief
+// Generate AE Brief (SSE streaming)
 app.post('/api/brief', async (req, res) => {
+  // Set up SSE
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  const send = (type, data = {}) => {
+    res.write(`data: ${JSON.stringify({ type, ...data })}\n\n`);
+  };
+  const fail = (message) => {
+    send('error', { message });
+    res.end();
+  };
+
   try {
-    const { deal_id, deal_data, additional_context } = req.body;
+    const { deal_id, deal_data, additional_context, force_refresh } = req.body;
 
     if (!deal_id && !deal_data?.company_name && !deal_data?.company) {
-      return res.status(400).json({ error: 'deal_id or deal_data with company info required' });
+      return fail('deal_id or deal_data with company info required');
     }
 
+    // ── Step 0: build deal context ──────────────────────────────────────────
+    send('step', { step: 0 });
     const dealData = await buildDealContext(deal_id, deal_data || {});
-
     if (additional_context) dealData.additional_context = additional_context;
 
-    // Enrich with Lusha + scraping
     const domain = extractDomain(dealData);
-    const enrichData = await enrichCompany(domain, dealData.company?.name || dealData.company_name);
+    const companyKey = (dealData.company?.name || dealData.company_name || '').toLowerCase().trim();
 
-    // Determine industry for similar deals search
-    const industry =
-      dealData.company?.industry ||
-      dealData.industry ||
-      enrichData?.lusha?.industry;
+    // ── Cache check (skip if force_refresh) ─────────────────────────────────
+    if (!force_refresh && companyKey) {
+      const cached = await getByKey(companyKey).catch(() => null);
+      if (cached?.brief) {
+        const ageMs = Date.now() - new Date(cached.updated_at || 0).getTime();
+        const TTL_MS = 6 * 60 * 60 * 1000; // 6 hours
+        if (ageMs < TTL_MS) {
+          console.log(`[Cache] Hit for "${companyKey}" (${Math.round(ageMs / 60000)}m old)`);
+          send('done', { brief: cached.brief, enrichment: cached.enrichment, analyzed_at: cached.updated_at, from_cache: true });
+          return res.end();
+        }
+      }
+    }
 
+    // ── Steps 1+2: enrich (Lusha company + stakeholders + scrape) in parallel ─
+    send('step', { step: 1 });
+    const [enrichData, similarDealsResult] = await Promise.all([
+      enrichCompany(domain, dealData.company?.name || dealData.company_name),
+      (async () => {
+        const industry = dealData.company?.industry || dealData.industry;
+        const employeeCount = dealData.company?.number_of_employees;
+        return findSimilarDeals(industry, dealData.id, employeeCount);
+      })(),
+    ]);
+
+    // Use Lusha industry/employee count as fallback now that enrichment is done
+    const industry = dealData.company?.industry || dealData.industry || enrichData?.lusha?.industry;
     const employeeCount = dealData.company?.number_of_employees || enrichData?.lusha?.employee_count;
-    const { tiers } = await findSimilarDeals(industry, dealData.id, employeeCount);
+    // Re-run findSimilarDeals with enriched data if we didn't have industry before
+    const { tiers } = (industry && !dealData.company?.industry && !dealData.industry)
+      ? await findSimilarDeals(industry, dealData.id, employeeCount)
+      : similarDealsResult;
 
-    const brief = await generateAEBrief(dealData, enrichData, { tiers });
+    send('step', { step: 2 });
+
+    // ── Step 3: AI generation (streaming) ───────────────────────────────────
+    send('step', { step: 3 });
+    let tokenCount = 0;
+    const brief = await streamAEBrief(dealData, enrichData, { tiers }, (token) => {
+      tokenCount += token.length;
+      // Send progress every ~500 chars so the frontend can show activity
+      if (tokenCount % 500 < token.length) {
+        send('progress', { chars: tokenCount });
+      }
+    });
 
     // Inject deal_velocity server-side — no need for the AI to regenerate it
     if (dealData.deal_velocity) {
@@ -799,10 +848,11 @@ app.post('/api/brief', async (req, res) => {
     const analyzedAt = new Date().toISOString();
     saveBrief({ company_name: companyName, domain: domain || enrichData?.lusha?.website || null, brief, enrichment: enrichData });
 
-    res.json({ brief, enrichment: enrichData, analyzed_at: analyzedAt });
+    send('done', { brief, enrichment: enrichData, analyzed_at: analyzedAt });
+    res.end();
   } catch (err) {
     console.error('[/api/brief]', err);
-    res.status(500).json({ error: err.message });
+    fail(err.message);
   }
 });
 
