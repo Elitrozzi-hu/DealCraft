@@ -2652,9 +2652,12 @@ function renderContext(c){ c=_safe(c);
     '<div style="margin-top:12px">'+actionPlanCard+'</div>';
 }
 
-function openCtxDrawer(type){
+function openCtxDrawer(type, roleFilter){
   const c = _safe(current);
-  const stks = getStakeholders(c);
+  const allStks = getStakeholders(c);
+  const stks = (roleFilter && type==='stakeholders')
+    ? allStks.filter(s=> s.type===roleFilter || (roleFilter==='dm' && s.type==='decision_maker'))
+    : allStks;
   const activeTech = getActiveTech(c);
   let title = '', html = '';
   _setDrawerBack(null);
@@ -2724,7 +2727,8 @@ function openCtxDrawer(type){
   }
 
   if(type==='stakeholders'){
-    title = '👥 Stakeholders';
+    const _roleLabels = {champion:'Champion',dm:'Decision Maker',influencer:'Influencer',blocker:'Blocker',unknown:'Unassigned'};
+    title = '👥 '+(roleFilter ? _roleLabels[roleFilter]||'Stakeholders' : 'Stakeholders');
     const confirmed = stks.filter(s=>s.present).length;
     const typeConfig = {
       champion:       {label:'Champion',       bg:'var(--okl)',  color:'var(--ok)'},
@@ -3020,7 +3024,55 @@ function renderActionPlan(c){ c=_safe(c);
           }).join('')+
         '</div>'
       : '<div style="font-size:12px;color:var(--t2);margin-bottom:10px">'+t('noTools')+'</div>')+
-    '',
+    _divider+
+    // Stakeholders by role
+    (()=>{
+      const _stks = getStakeholders(c);
+      const _avatarColors = ['#496BE3','#0891b2','#7c3aed','#059669','#d97706'];
+      const _avatar = s => {
+        const name = s._name||s.role||'?';
+        const initials = name.split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);
+        const bg = _avatarColors[name.length % _avatarColors.length];
+        return '<div style="width:28px;height:28px;border-radius:50%;background:'+bg+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;flex-shrink:0">'+initials+'</div>';
+      };
+      const _roleConf = {
+        champion:       {label:'Champion',       strip:'#e6fbe9', color:'#249637'},
+        dm:             {label:'Decision Maker', strip:'#dee5fb', color:'#2f3fc6'},
+        decision_maker: {label:'Decision Maker', strip:'#dee5fb', color:'#2f3fc6'},
+        influencer:     {label:'Influencer',     strip:'#fcf7ce', color:'#b1690e'},
+        blocker:        {label:'Blocker',        strip:'#fde3e3', color:'#b22323'},
+        unknown:        {label:'Unassigned',      strip:'#eeeef1', color:'#79788a'},
+      };
+      const _roles = ['champion','dm','influencer','blocker','unknown'];
+      return _secTitle('Stakeholders'+(_stks.length?' ('+_stks.length+')':''))+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">'+
+          _roles.map(role=>{
+            const fullRow = role === 'unknown';
+            const rc = _roleConf[role]||_roleConf.unknown;
+            const people = _stks.filter(s=>(s.type===role||(role==='dm'&&s.type==='decision_maker')));
+            if(role==='unknown' && !people.length) return '';
+            return '<div onclick="event.stopPropagation();openCtxDrawer(\'stakeholders\',\''+role+'\')" style="'+(fullRow?'grid-column:1/-1;':'')+'background:#fff;border:1px solid var(--br);border-left:3px solid '+rc.color+';border-radius:var(--r1);padding:10px;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'">'+
+              '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:'+rc.color+';margin-bottom:8px">'+rc.label+'</div>'+
+              (people.length
+                ? '<div style="display:flex;flex-direction:column;gap:6px">'+
+                  people.map(s=>{
+                    const contacts = [
+                      s._linkedin ? '<i class="ti ti-brand-linkedin" style="font-size:13px;color:var(--t3)"></i>' : null,
+                      s._phone    ? '<i class="ti ti-phone" style="font-size:13px;color:var(--t3)"></i>' : null,
+                      s._email    ? '<i class="ti ti-mail" style="font-size:13px;color:var(--t3)"></i>' : null,
+                    ].filter(Boolean);
+                    return '<div style="background:var(--bg);border-radius:var(--r1);padding:8px">'+
+                      '<div style="font-size:12px;font-weight:600;color:var(--t1);line-height:1.3">'+escHtml(s._name||s.role)+'</div>'+
+                      (s._name?'<div style="font-size:11px;color:var(--t2);margin-bottom:'+(contacts.length?'4':'0')+'px">'+escHtml(s.role)+'</div>':'')+
+                      (contacts.length?'<div style="display:flex;gap:6px;align-items:center">'+contacts.join('')+'</div>':'')+
+                    '</div>';
+                  }).join('')+
+                  '</div>'
+                : '<span style="font-size:11px;color:var(--t3)">Sin confirmar</span>')+
+            '</div>';
+          }).join('')+
+        '</div>';
+    })(),
     'compass', true
   );
 
@@ -5000,12 +5052,14 @@ function loadDemo(){
            engagement_status:'warm', pitch_angle:'Posicioná Humand como la capa de experiencia que conecta todos sus procesos de HR',
            opening_questions:['¿Cuál es el mayor dolor de comunicación interna hoy?','¿Cómo miden el engagement actualmente?','¿Qué herramientas de HR Tech ya tienen en el stack?'],
            key_objections:[{objection:'Ya tenemos Workday',response:'Humand es la capa de experiencia encima de Workday — no lo reemplaza, lo potencia'},{objection:'Presupuesto comprometido este año',response:'Podemos arrancar con un piloto acotado a un país o BU para tener datos antes del ciclo Q1'}],
-           red_flags:['Satisfecha con herramientas actuales'],transcript_signals:['Mencionó dificultades con equipos remotos en la última reunión']},
+           red_flags:['Satisfecha con herramientas actuales'],transcript_signals:['Mencionó dificultades con equipos remotos en la última reunión'],
+           linkedin_url:'https://linkedin.com/in/luciafernandez', email:'l.fernandez@globant.com', phone:'+54 11 4567 8901'},
           {name:'Matías Rodríguez', role:'CHRO', type:'dm', likely_priority:'ROI en retención y productividad del engineering talent',
            engagement_status:'cold', pitch_angle:'Framing ejecutivo: Humand como inversión que reduce el costo de rotación',
            opening_questions:['¿Cuál es el KPI de people más importante para el año?','¿Cómo justifican inversiones en HR Tech al board?'],
            key_objections:[{objection:'No es el momento',response:'Entiendo — ¿cuándo sería el mejor momento para revisitarlo? ¿Q3 cuando abre el budget?'}],
-           red_flags:['No mostró interés activo todavía'],transcript_signals:[]},
+           red_flags:['No mostró interés activo todavía'],transcript_signals:[],
+           linkedin_url:'https://linkedin.com/in/matiasrodriguez', email:'m.rodriguez@globant.com'},
         ],
         missing:[{role:'IT Lead / CTO', why_important:'Aprobación técnica requerida para integraciones', recommended_action:'Pedir a Lucía que facilite intro con el equipo técnico'}]
       },
@@ -5028,6 +5082,7 @@ function loadDemo(){
     enrichment:{ lusha:{ domain:'globant.com', location:'Buenos Aires, Argentina', employee_count:'27,000+' } }
   };
   current = mapBriefToCompany(DEMO_RESPONSE);
+  localStorage.removeItem(stkKey('Globant'));
   currentStage = 'discovery';
   render();
   show('s3');

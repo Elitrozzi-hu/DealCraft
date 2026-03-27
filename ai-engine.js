@@ -170,6 +170,8 @@ ${JSON.stringify(tier_4_weak, null, 2)}`);
 === OUTPUT INSTRUCTIONS ===
 Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max 3 pain_hypotheses, max 3 next_actions, max 2 opening_questions and max 2 key_objections per stakeholder, max 3 recommended_modules, max 2 missing stakeholders.
 
+CRITICAL — stakeholder_map.present: Only include real people confirmed in Lusha data, CRM contacts, or call transcripts. Do NOT invent, guess, or fabricate names or roles. If no real people are confirmed, return an empty array [].
+
 {
   "company_snapshot": {
     "name": "string",
@@ -198,7 +200,7 @@ Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max
   "stakeholder_map": {
     "present": [
       {
-        "name": "string or null",
+        "name": "string — real name only, from Lusha or CRM data",
         "role": "string",
         "type": "champion | decision_maker | influencer | blocker | unknown",
         "likely_priority": "string",
