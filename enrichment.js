@@ -52,11 +52,15 @@ async function enrichWithLusha(domain) {
 async function searchLushaStakeholders(lushaCompanyId, domain) {
   if (!domain) return [];
   try {
+    const companyFilter = lushaCompanyId
+      ? { ids: [lushaCompanyId] }
+      : { domains: [domain] };
+
     const body = {
       pages: { page: 0, size: 50 },
       filters: {
         companies: {
-          include: { domains: [domain] },
+          include: companyFilter,
         },
       },
     };
@@ -173,11 +177,18 @@ async function enrichCompany(domain, companyName) {
     ? domain.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '').toLowerCase()
     : null;
 
-  const [lushaData, scrapeData, stakeholders] = await Promise.all([
+  // Company lookup + scrape in parallel
+  const [lushaData, scrapeData] = await Promise.all([
     cleanDomain ? enrichWithLusha(cleanDomain) : Promise.resolve(null),
     cleanDomain ? scrapeWebsite(cleanDomain) : Promise.resolve(null),
-    cleanDomain ? searchLushaStakeholders(null, cleanDomain).catch(() => []) : Promise.resolve([]),
   ]);
+
+  // Stakeholder search sequentially after company lookup — avoids Lusha rate limits
+  // Use lushaCompanyId if we got it, otherwise fall back to domain
+  const lushaCompanyId = lushaData?.lusha_company_id || null;
+  const stakeholders = cleanDomain
+    ? await searchLushaStakeholders(lushaCompanyId, cleanDomain).catch(() => [])
+    : [];
 
   return {
     lusha: lushaData,
