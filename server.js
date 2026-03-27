@@ -4,7 +4,7 @@ const cors = require('cors');
 const supabase = require('./supabase');
 const { enrichCompany } = require('./enrichment');
 const { buildStakeholderProfiles } = require('./stakeholder-intel');
-const { generateAEBrief, streamAEBrief, generateDeckContent } = require('./ai-engine');
+const { generateAEBrief, streamAEBrief, generateDeckContent, generateStakeholderDetail, generateEmails } = require('./ai-engine');
 const { writeToSheet, triggerAppsScript } = require('./sheets');
 const { saveBrief, getRecent, getByKey } = require('./brief-cache');
 
@@ -853,6 +853,32 @@ app.post('/api/brief', async (req, res) => {
   } catch (err) {
     console.error('[/api/brief]', err);
     fail(err.message);
+  }
+});
+
+// On-demand stakeholder detail
+app.post('/api/brief/stakeholder', async (req, res) => {
+  try {
+    const { stakeholder, company_context } = req.body;
+    if (!stakeholder?.name) return res.status(400).json({ error: 'stakeholder.name required' });
+    const detail = await generateStakeholderDetail(stakeholder, company_context || {});
+    res.json(detail);
+  } catch (err) {
+    console.error('[/api/brief/stakeholder]', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// On-demand email generation
+app.post('/api/brief/emails', async (req, res) => {
+  try {
+    const { brief, deal_data } = req.body;
+    if (!brief) return res.status(400).json({ error: 'brief required' });
+    const emails = await generateEmails(brief, deal_data || {});
+    res.json(emails);
+  } catch (err) {
+    console.error('[/api/brief/emails]', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 

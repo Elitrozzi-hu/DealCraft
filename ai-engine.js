@@ -168,9 +168,9 @@ ${JSON.stringify(tier_4_weak, null, 2)}`);
 
   sections.push(`
 === OUTPUT INSTRUCTIONS ===
-Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max 3 pain_hypotheses, max 3 next_actions, max 2 opening_questions and max 2 key_objections per stakeholder, max 3 recommended_modules, max 2 missing stakeholders.
+Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max 3 pain_hypotheses, max 3 next_actions, max 3 recommended_modules, max 2 missing stakeholders.
 
-CRITICAL — stakeholder_map.present: You will receive up to 50 real Lusha contacts. Select the 10 most relevant for a Humand sale and classify each one. COPY the exact full_name from the Lusha data as the "name" field — do NOT invent, modify, or fabricate names. If a person is relevant but doesn't fit champion/dm/influencer/blocker, assign type "unknown". If no Lusha contacts provided, return an empty array [].
+CRITICAL — stakeholder_map.present: You will receive up to 5 real Lusha contacts. Include ALL of them, classified by relevance. COPY the exact full_name from the Lusha data as the "name" field — do NOT invent, modify, or fabricate names. If a person doesn't fit champion/dm/influencer/blocker, assign type "unknown". If no Lusha contacts provided, return an empty array [].
 
 {
   "company_snapshot": {
@@ -203,18 +203,11 @@ CRITICAL — stakeholder_map.present: You will receive up to 50 real Lusha conta
         "name": "string — real name only, from Lusha or CRM data",
         "role": "string",
         "type": "champion | decision_maker | influencer | blocker | unknown",
-        "likely_priority": "string",
+        "likely_priority": "string — one sentence",
         "engagement_status": "pending | contacted | engaged",
         "linkedin_url": "string or null — copy exactly from Lusha stakeholders if available",
-        "email": "string or null — copy exactly from Lusha stakeholders if available",
-        "phone": "string or null — copy exactly from Lusha stakeholders if available",
-        "city": "string or null — copy exactly from Lusha stakeholders if available",
-        "country": "string or null — copy exactly from Lusha stakeholders if available",
-        "pitch_angle": "string",
-        "opening_questions": ["string", "string"],
-        "key_objections": [{ "objection": "string", "response": "string" }],
-        "red_flags": ["string"],
-        "transcript_signals": ["string — quote from transcript attributed to this person, or empty array"]
+        "has_email": "boolean — copy from Lusha has_email flag",
+        "has_phone": "boolean — copy from Lusha has_phone flag"
       }
     ],
     "missing": [{ "role": "string", "why_important": "string", "recommended_action": "string" }],
@@ -238,11 +231,7 @@ CRITICAL — stakeholder_map.present: You will receive up to 50 real Lusha conta
     "key_insight": "one sentence",
     "watch_out": "one sentence"
   },
-  "opportunities": ["string — concrete sales opportunity to push, derived from confirmed pain hypotheses. Max 4 bullets."],
-  "pre_meeting_emails": {
-    "pre_meeting": { "subject": "string", "body": "string" },
-    "post_meeting": { "subject": "string", "body": "string with [PLACEHOLDERS]" }
-  }
+  "opportunities": ["string — concrete sales opportunity to push, derived from confirmed pain hypotheses. Max 4 bullets."]
 }`);
 
   return sections.join('\n');
@@ -360,4 +349,63 @@ Return ONLY the JSON object for the deck variables. No markdown, no explanation.
   }
 }
 
-module.exports = { generateAEBrief, streamAEBrief, generateDeckContent };
+async function generateStakeholderDetail(stakeholder, companyContext) {
+  const prompt = `You are a sales intelligence engine for Humand. Generate a detailed profile for ONE stakeholder to help an Account Executive prepare for a meeting.
+
+COMPANY CONTEXT:
+${JSON.stringify(companyContext, null, 2)}
+
+STAKEHOLDER:
+name: ${stakeholder.name}
+role: ${stakeholder.role}
+type: ${stakeholder.type}
+likely_priority: ${stakeholder.likely_priority || ''}
+
+Return ONLY valid JSON, no markdown:
+{
+  "pitch_angle": "string — one sentence on how to position Humand for this person",
+  "opening_questions": ["string", "string"],
+  "key_objections": [{ "objection": "string", "response": "string" }, { "objection": "string", "response": "string" }],
+  "red_flags": ["string"],
+  "transcript_signals": []
+}`;
+
+  const raw = await callClaude(prompt, '');
+  const cleaned = stripJsonFences(raw);
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    throw new Error(`Stakeholder detail parse failed: ${e.message}`);
+  }
+}
+
+async function generateEmails(brief, dealData) {
+  const prompt = `You are a sales email writer for Humand. Write two short, personalized emails based on the deal brief below.
+
+BRIEF SUMMARY:
+- Company: ${brief.company_snapshot?.name}
+- Industry: ${brief.company_snapshot?.industry}
+- Top pain: ${brief.pain_hypotheses?.[0]?.pain || 'N/A'}
+- Top module: ${brief.recommended_modules?.[0]?.module_name || 'N/A'}
+- Sales stage: ${brief.deal_strategy?.sales_stage || 'lead'}
+- Key stakeholder: ${brief.stakeholder_map?.present?.[0]?.name || ''} (${brief.stakeholder_map?.present?.[0]?.role || ''})
+
+DEAL DATA:
+${JSON.stringify({ company_name: dealData.company_name || dealData.company?.name, industry: dealData.industry || dealData.company?.industry }, null, 2)}
+
+Return ONLY valid JSON, no markdown:
+{
+  "pre_meeting": { "subject": "string", "body": "string — 3-4 short paragraphs, conversational, no fluff" },
+  "post_meeting": { "subject": "string", "body": "string with [PLACEHOLDERS] for specific details" }
+}`;
+
+  const raw = await callClaude(prompt, '');
+  const cleaned = stripJsonFences(raw);
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    throw new Error(`Emails parse failed: ${e.message}`);
+  }
+}
+
+module.exports = { generateAEBrief, streamAEBrief, generateDeckContent, generateStakeholderDetail, generateEmails };

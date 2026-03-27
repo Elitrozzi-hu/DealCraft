@@ -87,7 +87,7 @@ async function searchLushaStakeholders(lushaCompanyId, domain) {
     // Pass all contacts to AI for it to select and classify top 10
     console.log(`[Lusha] Returning all ${contacts.length} contacts for AI classification`);
 
-    return contacts.slice(0, 50).map((e) => ({
+    return contacts.slice(0, 5).map((e) => ({
       full_name: e.name || null,
       job_title: e.jobTitle || null,
       person_id: e.personId || null,

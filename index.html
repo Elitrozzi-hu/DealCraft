@@ -2701,6 +2701,84 @@ function renderContext(c){ c=_safe(c);
     '<div style="margin-top:12px">'+actionPlanCard+'</div>';
 }
 
+function buildStkDetailSection(s, i){
+  const sec = (ico, lbl, content) =>
+    '<div style="margin-bottom:8px">'+
+      '<div style="display:flex;align-items:center;gap:5px;margin-bottom:6px">'+
+        '<i class="ti '+ico+'" style="font-size:13px;color:var(--t2)"></i>'+
+        '<span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2)">'+lbl+'</span>'+
+      '</div>'+
+      '<div style="background:var(--bg);border-radius:var(--r1);padding:10px 12px">'+content+'</div>'+
+    '</div>';
+
+  if(s._pitchAngle || (s._openingQuestions&&s._openingQuestions.length)){
+    return (s._pitchAngle ?
+      '<div style="background:#dee5fb;border-radius:var(--r1);padding:10px;margin-bottom:10px">'+
+        '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:4px">'+t('stkPitch')+'</div>'+
+        '<div style="font-size:12px;color:var(--p);line-height:1.4;font-style:italic">"'+escHtml(s._pitchAngle)+'"</div>'+
+      '</div>' : '')+
+    (s._openingQuestions&&s._openingQuestions.length ?
+      sec('ti-question-mark',t('stkOpeningQ'),
+        s._openingQuestions.slice(0,3).map((q,qi)=>
+          '<div style="display:flex;gap:8px;padding:5px 0;'+(qi>0?'border-top:1px solid var(--br)':'')+'">'+
+            '<span style="font-size:10px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px">'+(qi+1)+'.</span>'+
+            '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(q)+'</span>'+
+          '</div>').join('')) : '')+
+    (s._objections&&s._objections.length ?
+      sec('ti-alert-triangle',t('stkObjLabel'),
+        s._objections.slice(0,2).map((o,oi)=>
+          '<div style="'+(oi>0?'margin-top:8px;padding-top:8px;border-top:1px solid var(--br)':'')+'">'+
+            '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
+            (o.response?'<div style="font-size:11px;color:var(--t2);line-height:1.5;padding-left:8px;border-left:2px solid var(--p)">'+escHtml(o.response)+'</div>':'')+
+          '</div>').join('')) : '')+
+    (s._redFlags&&s._redFlags.length ?
+      sec('ti-flag',t('stkRedFlags'),
+        '<div style="background:#fde3e3;border-radius:4px;padding:8px 10px">'+
+          s._redFlags.map(r=>'<div style="display:flex;gap:6px;align-items:flex-start;font-size:12px;color:#b22323;line-height:1.5;padding:3px 0"><i class="ti ti-alert-circle" style="font-size:13px;flex-shrink:0;margin-top:1px"></i><span>'+escHtml(r)+'</span></div>').join('')+
+        '</div>') : '');
+  }
+
+  return '<button id="stk-detail-btn-'+i+'" class="btn b-s" style="width:100%;font-size:12px;margin-top:2px" onclick="loadStkDetail('+i+')">'+
+    '⚡ Generar análisis de este stakeholder'+
+  '</button>';
+}
+
+async function loadStkDetail(i){
+  const c = _safe(current);
+  const stks = getStakeholders(c);
+  const s = stks[i];
+  if(!s) return;
+
+  const container = document.getElementById('stk-detail-'+i);
+  if(!container) return;
+  container.innerHTML = '<div style="display:flex;align-items:center;gap:8px;padding:10px 0;color:var(--t2);font-size:12px"><i class="ti ti-loader" style="font-size:16px;animation:spin .8s linear infinite"></i> Analizando...</div>';
+
+  try {
+    const r = await fetch(API_BASE+'/api/brief/stakeholder', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        stakeholder: { name: s._name, role: s.role||s.title, type: s.type, likely_priority: s._likelyPriority },
+        company_context: { name: c.name, industry: c.industry, employee_count: c.employees, workforce_type: c.type }
+      })
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const detail = await r.json();
+
+    // Merge into the stakeholder object so it persists while drawer is open
+    s._pitchAngle = detail.pitch_angle || '';
+    s._openingQuestions = detail.opening_questions || [];
+    s._objections = detail.key_objections || [];
+    s._redFlags = detail.red_flags || [];
+    s._transcriptSignals = detail.transcript_signals || [];
+
+    container.innerHTML = buildStkDetailSection(s, i);
+  } catch(err) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--red)">Error al generar análisis — intentá de nuevo</div>'+
+      '<button class="btn b-s" style="font-size:12px;margin-top:6px" onclick="loadStkDetail('+i+')">Reintentar</button>';
+  }
+}
+
 function openCtxDrawer(type, roleFilter){
   const c = _safe(current);
   const allStks = getStakeholders(c);
@@ -2888,63 +2966,17 @@ function openCtxDrawer(type, roleFilter){
             '</button>'+
           '</div>'+
 
-          // ── Priority + Pitch
-          (s._likelyPriority || s._pitchAngle ?
-            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'+
-              (s._likelyPriority ?
-                '<div style="background:#eeeef1;border-radius:var(--r1);padding:10px">'+
-                  '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:4px">'+t('stkPriority')+'</div>'+
-                  '<div style="font-size:12px;color:var(--t1);line-height:1.4;letter-spacing:.2px">'+escHtml(s._likelyPriority)+'</div>'+
-                '</div>' : '<div></div>')+
-              (s._pitchAngle ?
-                '<div style="background:#dee5fb;border-radius:var(--r1);padding:10px">'+
-                  '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--p);margin-bottom:4px">'+t('stkPitch')+'</div>'+
-                  '<div style="font-size:12px;color:var(--p);line-height:1.4;letter-spacing:.2px;font-style:italic">"'+escHtml(s._pitchAngle)+'"</div>'+
-                '</div>' : '<div></div>')+
+          // ── Priority
+          (s._likelyPriority ?
+            '<div style="background:#eeeef1;border-radius:var(--r1);padding:10px;margin-bottom:10px">'+
+              '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:4px">'+t('stkPriority')+'</div>'+
+              '<div style="font-size:12px;color:var(--t1);line-height:1.4">'+escHtml(s._likelyPriority)+'</div>'+
             '</div>' : '')+
 
-          // ── Opening questions
-          (s._openingQuestions&&s._openingQuestions.length ?
-            sec('ti-question-mark',t('stkOpeningQ'),
-              s._openingQuestions.slice(0,3).map((q,qi)=>
-                '<div style="display:flex;gap:8px;padding:5px 0;'+(qi>0?'border-top:1px solid var(--br)':'')+'">'+
-                  '<span style="font-size:10px;font-weight:700;color:var(--p);flex-shrink:0;margin-top:2px">'+(qi+1)+'.</span>'+
-                  '<span style="font-size:12px;color:var(--t1);line-height:1.5">'+escHtml(q)+'</span>'+
-                '</div>'
-              ).join('')
-            ) : '')+
-
-          // ── Objections
-          (s._objections&&s._objections.length ?
-            sec('ti-alert-triangle',t('stkObjLabel'),
-              s._objections.slice(0,3).map((o,oi)=>
-                '<div style="'+(oi>0?'margin-top:8px;padding-top:8px;border-top:1px solid var(--br)':'')+'">'+
-                  '<div style="font-size:12px;font-weight:600;color:var(--t1);margin-bottom:4px">'+escHtml(o.objection||o)+'</div>'+
-                  (o.response ? '<div style="font-size:11px;color:var(--t2);line-height:1.5;padding-left:8px;border-left:2px solid var(--p)">'+escHtml(o.response)+'</div>' : '')+
-                '</div>'
-              ).join('')
-            ) : '')+
-
-          // ── Red flags
-          (s._redFlags&&s._redFlags.length ?
-            sec('ti-flag',t('stkRedFlags'),
-              '<div style="background:#fde3e3;border-radius:4px;padding:8px 10px">'+
-                s._redFlags.map(r=>
-                  '<div style="display:flex;gap:6px;align-items:flex-start;font-size:12px;color:#b22323;line-height:1.5;padding:3px 0">'+
-                    '<i class="ti ti-alert-circle" style="font-size:13px;flex-shrink:0;margin-top:1px"></i>'+
-                    '<span>'+escHtml(r)+'</span>'+
-                  '</div>'
-                ).join('')+
-              '</div>'
-            ) : '')+
-
-          // ── Transcript signals
-          (s._transcriptSignals&&s._transcriptSignals.length ?
-            sec('ti-microphone',t('stkTranscript'),
-              s._transcriptSignals.map((r,ri)=>
-                '<div style="font-size:11px;color:var(--t2);line-height:1.5;'+(ri>0?'margin-top:6px;padding-top:6px;border-top:1px solid var(--br)':'')+'font-style:italic">"'+escHtml(r)+'"</div>'
-              ).join('')
-            ) : '')+
+          // ── On-demand detail section (pitch, questions, objections, flags)
+          '<div id="stk-detail-'+i+'">'+
+            buildStkDetailSection(s, i)+
+          '</div>'+
 
         '</div>';
       }).join('')+
@@ -3008,28 +3040,76 @@ function openCtxDrawer(type, roleFilter){
   document.getElementById('drawer-overlay').classList.add('on');
 }
 
-function openEmailDrawer(type){
+function _renderEmailDrawer(type, text){
+  const c = _safe(current);
+  const isPost = type==='post';
+  const key = 'email_edit_'+(c.name||'').toLowerCase().replace(/\s+/g,'_')+'_'+type;
+  const drwBody = document.getElementById('drawer-body');
+  if(!drwBody) return;
+  drwBody.innerHTML =
+    '<div style="display:flex;gap:8px;margin-bottom:12px">'+
+      '<button class="btn b-p" style="font-size:12px" onclick="(function(){const ta=document.getElementById(\'email-ta\');navigator.clipboard&&navigator.clipboard.writeText(ta.value);toast(\'📋 Copiado al portapapeles\')})()">📋 Copiar</button>'+
+      '<button class="btn b-g" style="font-size:12px" onclick="(function(){const ta=document.getElementById(\'email-ta\');localStorage.setItem('+JSON.stringify(key)+',ta.value);toast(\'✓ Guardado\')})()">Guardar</button>'+
+      '<button class="btn b-g" style="font-size:12px" onclick="(function(){localStorage.removeItem('+JSON.stringify(key)+');openEmailDrawer(\''+type+'\');toast(\'Regenerando...\')})()">↺ Regenerar</button>'+
+    '</div>'+
+    '<textarea id="email-ta" style="width:100%;height:420px;border:1.5px solid var(--br);border-radius:var(--r2);padding:14px;font-size:13px;font-family:inherit;color:var(--t1);line-height:1.7;resize:vertical;outline:none;box-sizing:border-box">'+escHtml(text)+'</textarea>';
+}
+
+async function openEmailDrawer(type){
   const c = _safe(current);
   const isPost = type==='post';
   const title = isPost ? '📨 Post-meeting Email' : '✉️ Pre-meeting Email';
-  const generated = isPost ? genPostMeetingEmail(c) : genPreMeetingEmail(c);
   const key = 'email_edit_'+(c.name||'').toLowerCase().replace(/\s+/g,'_')+'_'+type;
-  const saved = localStorage.getItem(key) || generated;
+
   const drw = document.getElementById('detail-drawer');
   const drwTitle = document.getElementById('drawer-title');
   const drwBody = document.getElementById('drawer-body');
   if(!drw||!drwTitle||!drwBody) return;
   drwTitle.textContent = title;
-  drwBody.innerHTML =
-    '<div style="display:flex;gap:8px;margin-bottom:12px">'+
-      '<button class="btn b-p" style="font-size:12px" onclick="(function(){const ta=document.getElementById(\'email-ta\');navigator.clipboard&&navigator.clipboard.writeText(ta.value);toast(\'📋 Copiado al portapapeles\')})()">📋 Copiar</button>'+
-      '<button class="btn b-g" style="font-size:12px" onclick="(function(){const ta=document.getElementById(\'email-ta\');localStorage.setItem('+JSON.stringify(key)+',ta.value);toast(\'✓ Guardado\')})()">Guardar</button>'+
-      '<button class="btn b-g" style="font-size:12px" onclick="(function(){document.getElementById(\'email-ta\').value='+JSON.stringify(generated)+';localStorage.removeItem('+JSON.stringify(key)+');toast(\'Restaurado\')})()">↺ Restaurar</button>'+
-    '</div>'+
-    '<textarea id="email-ta" style="width:100%;height:420px;border:1.5px solid var(--br);border-radius:var(--r2);padding:14px;font-size:13px;font-family:inherit;color:var(--t1);line-height:1.7;resize:vertical;outline:none;box-sizing:border-box">'+escHtml(saved)+'</textarea>';
   drw.classList.add('on');
   document.getElementById('drawer-overlay').classList.add('on');
   document.body.style.overflow='hidden';
+
+  // Check localStorage cache first
+  const cached = localStorage.getItem(key);
+  if(cached){ _renderEmailDrawer(type, cached); return; }
+
+  // Check if we already have AI emails on the brief object
+  const existing = isPost ? c._postEmail : c._preEmail;
+  if(existing && existing.body){
+    const text = (existing.subject?'Asunto: '+existing.subject+'\n\n':'')+existing.body;
+    _renderEmailDrawer(type, text);
+    return;
+  }
+
+  // No cache — show spinner and fetch
+  drwBody.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;gap:12px;color:var(--t2)">'+
+    '<i class="ti ti-loader" style="font-size:28px;animation:spin .8s linear infinite"></i>'+
+    '<span style="font-size:13px">Generando email personalizado...</span>'+
+  '</div>';
+
+  try {
+    const r = await fetch(API_BASE+'/api/brief/emails', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        brief: rawBrief?.brief || rawBrief,
+        deal_data: { company_name: c.name, industry: c.industry }
+      })
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const emails = await r.json();
+
+    // Cache on the current object for both tabs
+    if(current){ current._preEmail = emails.pre_meeting||null; current._postEmail = emails.post_meeting||null; }
+
+    const em = isPost ? emails.post_meeting : emails.pre_meeting;
+    const text = em ? ((em.subject?'Asunto: '+em.subject+'\n\n':'')+em.body) : 'No se pudo generar el email.';
+    _renderEmailDrawer(type, text);
+  } catch(err){
+    drwBody.innerHTML = '<div style="font-size:13px;color:var(--red);padding:20px 0">Error al generar email — intentá de nuevo.</div>'+
+      '<button class="btn b-s" style="font-size:12px" onclick="openEmailDrawer(\''+type+'\')">Reintentar</button>';
+  }
 }
 
 // ═══════════════════════════════════════════
