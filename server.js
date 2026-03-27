@@ -826,6 +826,23 @@ app.get('/api/briefs/recent/:key', async (req, res) => {
   }
 });
 
+// Reveal Lusha contact details on demand (costs credits)
+// Body: { person_id, reveal_email, reveal_phone }
+app.post('/api/stakeholder/reveal', async (req, res) => {
+  const { person_id, reveal_email = false, reveal_phone = false } = req.body || {};
+  if (!person_id) return res.status(400).json({ error: 'person_id required' });
+  try {
+    const { revealLushaContact } = require('./enrichment');
+    const result = await revealLushaContact(person_id, {
+      revealEmail: reveal_email,
+      revealPhone: reveal_phone,
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Debug: Lusha prospecting search (costs 1 credit — use sparingly)
 app.get('/api/debug/lusha-people', async (req, res) => {
   const domain = req.query.domain;

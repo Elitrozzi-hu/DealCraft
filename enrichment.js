@@ -89,13 +89,15 @@ async function searchLushaStakeholders(lushaCompanyId, domain) {
     console.log(`[Lusha] Relevant stakeholders after filter: ${relevant.length}`);
 
     return relevant.slice(0, 8).map((e) => ({
-      full_name: [e.firstName, e.lastName].filter(Boolean).join(' ') || e.fullName || null,
-      job_title: e.jobTitle || e.title || e.position || null,
-      linkedin_url: e.linkedinUrl || e.linkedin_url || null,
-      email: e.email || e.emails?.[0] || null,
-      phone: e.phone || e.phones?.[0]?.number || e.phones?.[0] || null,
-      city: e.location?.city || e.city || null,
-      country: e.location?.country || e.country || null,
+      full_name: e.name || null,
+      job_title: e.jobTitle || null,
+      person_id: e.personId || null,
+      contact_id: e.contactId || null,
+      company_name: e.companyName || null,
+      // Availability flags — actual values require /api/stakeholder/reveal
+      has_linkedin: e.hasSocialLink || false,
+      has_email: e.hasEmails || false,
+      has_phone: e.hasPhones || false,
     }));
   } catch (err) {
     if (err.response?.status === 429) {
@@ -193,4 +195,30 @@ async function enrichCompany(domain, companyName) {
   };
 }
 
-module.exports = { enrichCompany, enrichWithLusha, searchLushaStakeholders, scrapeWebsite };
+async function revealLushaContact(personId, { revealEmail = false, revealPhone = false } = {}) {
+  if (!personId) return { error: 'No personId provided' };
+  try {
+    const params = { personId };
+    if (revealEmail) params.revealEmails = true;
+    if (revealPhone) params.revealPhones = true;
+
+    const response = await axios.get('https://api.lusha.com/v2/person', {
+      params,
+      headers: { api_key: process.env.LUSHA_API_KEY },
+      timeout: 10000,
+    });
+
+    const d = response.data?.data || response.data;
+    return {
+      linkedin_url: d.linkedinUrl || d.social?.linkedin?.url || null,
+      email: revealEmail ? (d.email || d.emails?.[0]?.email || null) : undefined,
+      phone: revealPhone ? (d.phone || d.phones?.[0]?.number || d.phones?.[0] || null) : undefined,
+    };
+  } catch (err) {
+    console.warn(`[Lusha] Reveal failed for personId ${personId}: ${err.message}`);
+    console.warn(`[Lusha] Status: ${err.response?.status}, Body: ${JSON.stringify(err.response?.data)}`);
+    return { error: err.message };
+  }
+}
+
+module.exports = { enrichCompany, enrichWithLusha, searchLushaStakeholders, revealLushaContact, scrapeWebsite };
