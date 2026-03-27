@@ -1936,8 +1936,8 @@ async function _runBrief(payload, displayName){
 
       while(true){
         const {done, value} = await reader.read();
-        if(done) break;
-        buffer += decoder.decode(value, {stream:true});
+        if(value) buffer += decoder.decode(value, {stream: !done});
+        const shouldBreak = done;
         let boundary;
         while((boundary = buffer.indexOf('\n\n')) !== -1){
           const line = buffer.slice(0, boundary).trim();
@@ -1962,6 +1962,7 @@ async function _runBrief(payload, displayName){
             throw new Error(evt.message);
           }
         }
+        if(shouldBreak) break;
       }
     }
   } catch(err){
