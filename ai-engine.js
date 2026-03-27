@@ -6,6 +6,7 @@ const path = require('path');
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const MODEL = 'claude-sonnet-4-6';
+const MODEL_FALLBACK = 'claude-haiku-4-5-20251001';
 
 // Load knowledge base files
 let solutionsMap = {};
@@ -283,10 +284,11 @@ async function streamAEBrief(dealData, enrichData = {}, historicalDeals = [], on
 
   const MAX_RETRIES = 5;
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    const model = attempt >= MAX_RETRIES ? MODEL_FALLBACK : MODEL;
     let fullText = '';
     try {
       const stream = anthropic.messages.stream({
-        model: MODEL,
+        model,
         max_tokens: 6000,
         temperature: 0.4,
         system: AE_BRIEF_SYSTEM_PROMPT,
@@ -313,7 +315,8 @@ async function streamAEBrief(dealData, enrichData = {}, historicalDeals = [], on
         JSON.stringify(err).includes('overloaded_error');
       if (isOverloaded && attempt < MAX_RETRIES) {
         const delay = attempt * 5000;
-        console.warn(`[AI] Claude overloaded, retry ${attempt}/${MAX_RETRIES} in ${delay}ms`);
+        const nextModel = attempt + 1 >= MAX_RETRIES ? MODEL_FALLBACK : MODEL;
+      console.warn(`[AI] Claude overloaded, retry ${attempt}/${MAX_RETRIES} in ${delay}ms (next: ${nextModel})`);
         await new Promise(r => setTimeout(r, delay));
       } else {
         throw err;
