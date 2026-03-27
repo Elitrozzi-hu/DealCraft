@@ -71,7 +71,9 @@ async function getRecent() {
   if (APPS_SCRIPT_URL) {
     try {
       const res = await axios.get(APPS_SCRIPT_URL, { timeout: 30000 });
-      return res.data?.entries || [];
+      const entries = res.data?.entries || [];
+      console.log(`[Cache] getRecent: ${entries.length} entries from Sheets (keys: ${JSON.stringify(Object.keys(res.data||{}))})`);
+      return entries;
     } catch (err) {
       console.warn(`[Cache] Sheets read failed, falling back to file: ${err.message}`);
     }
