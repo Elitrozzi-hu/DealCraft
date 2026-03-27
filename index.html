@@ -1996,11 +1996,10 @@ function mapBriefToCompany(apiResponse){
   const brief  = apiResponse.brief || apiResponse;
   const lusha  = ((apiResponse.enrichment||{}).lusha) || {};
   const lushaStakeholders = ((apiResponse.enrichment||{}).stakeholders) || [];
-  const matchPersonId = name => {
+  const matchLusha = name => {
     if(!name||!lushaStakeholders.length) return null;
     const n = name.toLowerCase().trim();
-    const m = lushaStakeholders.find(ls => ls.full_name && ls.full_name.toLowerCase().trim()===n);
-    return m ? (m.person_id||null) : null;
+    return lushaStakeholders.find(ls => ls.full_name && ls.full_name.toLowerCase().trim()===n) || null;
   };
 
   const snap   = brief.company_snapshot || {};
@@ -2048,7 +2047,10 @@ function mapBriefToCompany(apiResponse){
     _phone: s.phone||null,
     _city: s.city||null,
     _country: s.country||null,
-    _personId: matchPersonId(s.name)||null,
+    _personId: matchLusha(s.name)?.person_id||null,
+    _hasEmail: !!(s.email || matchLusha(s.name)?.has_email),
+    _hasPhone: !!(s.phone || matchLusha(s.name)?.has_phone),
+    _hasLinkedin: !!(s.linkedin_url || matchLusha(s.name)?.has_linkedin),
   }));
   const missingStks = (stkMap.missing||[]).map(s=>({
     role: s.role||'Rol clave pendiente',
@@ -2835,28 +2837,30 @@ function openCtxDrawer(type, roleFilter){
             actionNode+
           '</div>';
         const contactItems =
-          (s._linkedin
+          (s._linkedin || s._hasLinkedin
             ? contactRow('',
                 '<div style="width:20px;height:20px;background:#0a66c2;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-brand-linkedin" style="font-size:12px;color:#fff"></i></div>'+
                 '<span style="font-size:12px;font-weight:600;color:var(--t1)">LinkedIn</span>',
-                '<a href="'+s._linkedin+'" target="_blank" style="display:flex;align-items:center;color:var(--t2);text-decoration:none"><i class="ti ti-arrow-up-right" style="font-size:15px"></i></a>')
+                s._linkedin
+                  ? '<a href="'+s._linkedin+'" target="_blank" style="display:flex;align-items:center;color:var(--t2);text-decoration:none"><i class="ti ti-arrow-up-right" style="font-size:15px"></i></a>'
+                  : eyeBtn('linkedin','c-li-'+i))
             : '')+
-          (s._email
+          (s._email || s._hasEmail
             ? '<div id="c-em-'+i+'">'+
                 contactRow('',
                   '<i class="ti ti-mail" style="font-size:14px;color:var(--t2);flex-shrink:0"></i>'+
                   '<span class="c-val" style="font-size:12px;color:var(--t2);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+
-                    escHtml(cachedEmail || maskEmail(s._email))+
+                    escHtml(cachedEmail || (s._email ? maskEmail(s._email) : '•••@···'))+
                   '</span>',
                   (cachedEmail ? '' : eyeBtn('email','c-em-'+i)))+
               '</div>'
             : '')+
-          (s._phone
+          (s._phone || s._hasPhone
             ? '<div id="c-ph-'+i+'">'+
                 contactRow('',
                   '<i class="ti ti-phone" style="font-size:14px;color:var(--t2);flex-shrink:0"></i>'+
                   '<span class="c-val" style="font-size:12px;color:var(--t2);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+
-                    escHtml(cachedPhone || maskPhone(s._phone))+
+                    escHtml(cachedPhone || (s._phone ? maskPhone(s._phone) : '•••••••••'))+
                   '</span>',
                   (cachedPhone ? '' : eyeBtn('phone','c-ph-'+i)))+
               '</div>'
