@@ -175,7 +175,7 @@ Return ONLY a valid JSON object. No markdown. No explanation. Strict limits: max
     "name": "string",
     "industry": "string",
     "employee_count": "string",
-    "workforce_type": "Frontline/Deskless | Mixed | Office-based",
+    "workforce_type": "Classify as one of: 'Desk-based' (mostly office/remote knowledge workers), 'Deskless' (mostly frontline — manufacturing, retail, logistics, healthcare, field), or 'Mixed' (significant portion of both). Pick based on industry and operational context.",
     "geographic_footprint": "string",
     "hq_country": "string — short country or region name, e.g. 'Argentina', 'Mexico', 'Brazil', 'LatAm', 'USA'",
     "operational_structure": "string",
