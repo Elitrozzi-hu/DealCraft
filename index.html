@@ -321,7 +321,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 .cos-refresh{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;padding-left:16px}
 .cos-refresh-ts{font-size:10px;color:var(--t2);white-space:nowrap}
 .cos-refresh-btn{font-size:11px;font-weight:600;color:var(--p);background:var(--px);border:none;border-radius:var(--r1);padding:4px 10px;cursor:pointer;white-space:nowrap;transition:background .12s}
-.cos-refresh-btn:hover{background:var(--pl)}
+.cos-refresh-btn:hover:not(:disabled){background:var(--pl)}
+.cos-refresh-btn.loading{color:var(--t2);cursor:default}
+.cos-refresh-btn.loading .spin{display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .stepper-wrap{background:#fff;border-bottom:1px solid var(--br);display:flex;position:sticky;top:128px;z-index:89;flex-shrink:0}
 .stepper{display:flex;align-items:stretch;width:100%}
 /* Stage progress bar — non-navigable */
@@ -3273,53 +3276,12 @@ function timeAgo(isoString){
   return 'hace '+d+'d';
 }
 
-async function refreshBrief(){
+function refreshBrief(){
   if(!current) return;
-  const btn = document.getElementById('refresh-btn');
-  if(btn){ btn.textContent='↻'; btn.style.opacity='.5'; btn.disabled=true; }
   const base = selectedDealId
     ? {deal_id: selectedDealId}
     : {deal_data: {company_name: current.name, website: current.website||''}};
-  const payload = {...base, force_refresh: true};
-  try {
-    const res = await fetch(API_BASE+'/api/brief', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
-    });
-    if(!res.ok) throw new Error('HTTP '+res.status);
-
-    const contentType = res.headers.get('content-type') || '';
-    let apiResponse;
-    if(!contentType.includes('text/event-stream')){
-      apiResponse = await res.json();
-    } else {
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-      while(true){
-        const {done, value} = await reader.read();
-        if(done) break;
-        buffer += decoder.decode(value, {stream:true});
-        let boundary;
-        while((boundary = buffer.indexOf('\n\n')) !== -1){
-          const line = buffer.slice(0, boundary).trim();
-          buffer = buffer.slice(boundary + 2);
-          if(!line.startsWith('data: ')) continue;
-          let evt; try{ evt = JSON.parse(line.slice(6)); }catch(_){ continue; }
-          if(evt.type === 'done') apiResponse = evt;
-          if(evt.type === 'error') throw new Error(evt.message);
-        }
-      }
-    }
-    if(!apiResponse) throw new Error('Empty response');
-    rawBrief = apiResponse;
-    current = mapBriefToCompany(apiResponse);
-    currentAnalyzedAt = apiResponse.analyzed_at || (apiResponse.brief&&apiResponse.brief.analyzed_at) || new Date().toISOString();
-    render();
-    toast('✅ Brief actualizado');
-  } catch(e){
-    toast('❌ Error al actualizar — intentá de nuevo');
-    if(btn){ btn.textContent='↻ Refresh'; btn.style.opacity=''; btn.disabled=false; }
-  }
+  _runBrief({...base, force_refresh: true}, current.name);
 }
 
 function genPreMeetingEmail(c){
