@@ -2646,7 +2646,7 @@ function renderContext(c){ c=_safe(c);
 
   const ctxCards =
     '<div style="display:flex;flex-direction:column;gap:12px">'+
-      companyCard + stakeholdersCard +
+      stakeholdersCard +
     '</div>';
   document.getElementById('ctx-col').innerHTML = ctxHeader + ctxCards +
     '<div style="margin-top:12px">'+actionPlanCard+'</div>';
@@ -2967,9 +2967,57 @@ function renderActionPlan(c){ c=_safe(c);
     return '<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:'+m.bg+';color:'+m.color+';flex-shrink:0;white-space:nowrap">'+m.label+'</span>';
   };
 
-  // a. Context
+  // a. Context (includes company metrics, tech stack, deal)
+  const _activeTech = getActiveTech(c);
+  const _snapTech = c._snapTechStack||[];
+  const _techChips = _snapTech.length ? _snapTech : _activeTech.map(tt=>tt.name);
+  const _dm = c._dealMetrics||{};
+  const _dmUsers  = _dm.users     != null ? Number(_dm.users).toLocaleString('en-US') : '—';
+  const _dmPrice  = _dm.unit_price != null ? 'USD '+_dm.unit_price : '—';
+  const _dmAmount = _dm.amount    != null ? 'USD '+Number(_dm.amount).toLocaleString('en-US') : '—';
+
+  const _secTitle = lbl=>'<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px">'+lbl+'</div>';
+  const _divider = '<div style="border-top:1px solid var(--bg);margin:14px 0"></div>';
+  const _dealRow = (l,v,hi)=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bg)">'+
+    '<span style="font-size:12px;color:var(--t2)">'+l+'</span>'+
+    '<span style="font-size:'+(hi?'14':'13')+'px;font-weight:'+(hi?'700':'600')+';color:'+(hi?'var(--p)':'var(--t1)')+'">'+v+'</span>'+
+  '</div>';
+
   const contextHtml = wc(t('anlContext'),
-    '<div style="font-size:13px;color:var(--t1);line-height:1.7">'+escHtml(c.desc)+'</div>',
+    // Description
+    '<div style="font-size:13px;color:var(--t1);line-height:1.7">'+escHtml(c.desc)+'</div>'+
+    _divider+
+    // Key Metrics 2x2
+    _secTitle('Key Metrics')+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">'+
+      [
+        {l:'Region',    v:c.country  ||'—', ico:'ti-map-pin'},
+        {l:'Size',      v:c.employees||'—', ico:'ti-chart-bar'},
+        {l:'Industry',  v:c.industry ||'—', ico:'ti-building-factory-2'},
+        {l:'Workforce', v:c.type     ||'—', ico:'ti-users'},
+      ].map(m=>
+        '<div style="background:var(--bg);border-radius:var(--r1);padding:10px 12px">'+
+          '<i class="ti '+m.ico+'" style="font-size:14px;color:var(--p);margin-bottom:5px;display:block"></i>'+
+          '<div style="font-size:13px;font-weight:600;color:var(--t1);margin-bottom:3px">'+(m.v||'—')+'</div>'+
+          '<div style="font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.4px">'+m.l+'</div>'+
+        '</div>'
+      ).join('')+
+    '</div>'+
+    _divider+
+    // Tech Stack
+    _secTitle('Tech Stack'+(_techChips.length?' ('+_techChips.length+')':''))+
+    (_techChips.length
+      ? '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">'+
+          _techChips.map(n=>'<span style="background:var(--bg);border:1px solid var(--br);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t1)">'+escHtml(n)+'</span>').join('')+
+        '</div>'
+      : '<div style="font-size:12px;color:var(--t2);margin-bottom:10px">'+t('noTools')+'</div>')+
+    '<button class="btn b-s" style="font-size:12px;width:100%" onclick="event.stopPropagation();openDrawer(\'tech\')">'+t('editTechBtn')+'</button>'+
+    _divider+
+    // Deal
+    _secTitle('Deal')+
+    _dealRow('Users', _dmUsers)+
+    _dealRow('Unit price / month', _dmPrice)+
+    _dealRow('Amount / month', _dmAmount, true),
     'compass', true
   );
 
