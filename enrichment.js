@@ -53,7 +53,7 @@ async function searchLushaStakeholders(lushaCompanyId, domain) {
   if (!domain) return [];
   try {
     const body = {
-      pages: { page: 0, size: 25 },
+      pages: { page: 0, size: 50 },
       filters: {
         companies: {
           include: { domains: [domain] },
@@ -179,19 +179,9 @@ async function enrichCompany(domain, companyName) {
     cleanDomain ? scrapeWebsite(cleanDomain) : Promise.resolve(null),
   ]);
 
-  // If we got a Lusha company ID, fetch relevant stakeholders
-  let stakeholders = [];
-  if (lushaData?.lusha_company_id || cleanDomain) {
-    stakeholders = await searchLushaStakeholders(lushaData?.lusha_company_id, cleanDomain);
-    if (stakeholders.length) {
-      console.log(`[Lusha] Found ${stakeholders.length} relevant stakeholders for ${cleanDomain}`);
-    }
-  }
-
   return {
     lusha: lushaData,
     scrape: scrapeData,
-    stakeholders: stakeholders.length ? stakeholders : null,
   };
 }
 

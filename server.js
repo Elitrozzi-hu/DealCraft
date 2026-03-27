@@ -826,6 +826,19 @@ app.get('/api/briefs/recent/:key', async (req, res) => {
   }
 });
 
+// Lazy-load stakeholders for a domain (1 Lusha credit, called on tab click)
+app.get('/api/stakeholders', async (req, res) => {
+  const { domain } = req.query;
+  if (!domain) return res.status(400).json({ error: 'domain query param required' });
+  try {
+    const { searchLushaStakeholders } = require('./enrichment');
+    const stakeholders = await searchLushaStakeholders(null, domain);
+    res.json({ domain, count: stakeholders.length, stakeholders });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Reveal Lusha contact details on demand (costs credits)
 // Body: { person_id, reveal_email, reveal_phone }
 app.post('/api/stakeholder/reveal', async (req, res) => {
