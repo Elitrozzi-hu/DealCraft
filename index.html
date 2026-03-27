@@ -435,8 +435,20 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px
 /* Drawer content sections */
 .drw-section{margin-bottom:20px}
 .drw-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--t2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--br)}
-.anl-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:14px}
-.anl-card-title{font-size:12px;font-weight:600;color:var(--t1);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg)}
+.anl-card{background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;margin-bottom:14px;cursor:pointer;user-select:none}
+.anl-card-title{font-size:12px;font-weight:600;color:var(--t1);display:flex;align-items:center}
+.anl-card-title-arrow{margin-left:auto;font-size:16px;color:var(--t2);transition:transform .2s;flex-shrink:0;line-height:1}
+.anl-card.expanded .anl-card-title{margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg)}
+.anl-card.expanded .anl-card-title-arrow{transform:rotate(90deg)}
+.anl-card-body{display:none}
+.anl-card.expanded .anl-card-body{display:block}
+.anl-section{margin-bottom:14px;background:#fff;border:1.5px solid var(--br);border-radius:var(--r2);padding:16px;cursor:pointer;user-select:none}
+.anl-section-title{font-size:12px;font-weight:600;color:var(--t1);display:flex;align-items:center}
+.anl-section-title-arrow{margin-left:auto;font-size:16px;color:var(--t2);transition:transform .2s;flex-shrink:0;line-height:1}
+.anl-section.expanded .anl-section-title{margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--bg)}
+.anl-section.expanded .anl-section-title-arrow{transform:rotate(90deg)}
+.anl-section-body{display:none;margin-top:0}
+.anl-section.expanded .anl-section-body{display:block}
 .sig-plain{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bg)}
 .sig-plain:last-child{border-bottom:none}
 .sig-plain-ico{font-size:15px;flex-shrink:0}
@@ -2456,50 +2468,59 @@ function openCtxDrawer(type){
 
   if(type==='analysis'){
     title = '🔍 Análisis';
+    const anlArrow = '<span class="anl-card-title-arrow">›</span>';
     html =
-      '<div class="drw-section">'+
-        '<div class="drw-section-title">Contexto</div>'+
-        c.keyInsights.map(i=>'<div class="drw-bullet">'+i+'</div>').join('')+
+      '<div class="anl-section" onclick="toggleAnlSection(this)">'+
+        '<div class="anl-section-title">Contexto<span class="anl-section-title-arrow">›</span></div>'+
+        '<div class="anl-section-body">'+
+          c.keyInsights.map(i=>'<div class="drw-bullet">'+i+'</div>').join('')+
+        '</div>'+
       '</div>'+
-      '<div class="anl-card">'+
-        '<div class="anl-card-title">📦 Módulos de interés</div>'+
-        (function(){
-          function mc(name,why,badge,isPri){
-            const d=getModuleDetail(name);
-            const cleanName=name.replace(/^[\W_]+/,'').trim();
-            const vp=d?d.value_proposition:why;
-            const kms=d?d.key_messages.slice(0,2):[];
-            const pp=d?d.proof_points[0]:'';
-            return '<div class="mod-card'+(isPri?' pri':'')+'">'+
-              '<div class="mod-card-head">'+
-                '<div class="mod-card-title">'+cleanName+'</div>'+
-                (d?'<span class="mod-card-cat">'+d.category+'</span>':'')+
-                '<span class="mod-row-badge" style="margin-left:4px">'+badge+'</span>'+
-              '</div>'+
-              '<div class="mod-card-body">'+
-                '<div class="mod-card-vp">'+vp+'</div>'+
-                kms.map(k=>'<div class="mod-card-km">'+k+'</div>').join('')+
-                (pp?'<div class="mod-card-pp">📊 '+pp+'</div>':'')+
-              '</div>'+
-            '</div>';
-          }
-          return mc(c.primaryModule,c.primaryWhy,'Módulo 1',true)+
-            c.secondaryModules.map((m,i)=>mc(m.name,m.why,'Módulo '+(i+2),false)).join('');
-        })()+
+      '<div class="anl-card" onclick="toggleAnlCard(this)">'+
+        '<div class="anl-card-title">📦 Módulos de interés'+anlArrow+'</div>'+
+        '<div class="anl-card-body">'+
+          (function(){
+            function mc(name,why,badge,isPri){
+              const d=getModuleDetail(name);
+              const cleanName=name.replace(/^[\W_]+/,'').trim();
+              const vp=d?d.value_proposition:why;
+              const kms=d?d.key_messages.slice(0,2):[];
+              const pp=d?d.proof_points[0]:'';
+              return '<div class="mod-card'+(isPri?' pri':'')+'">'+
+                '<div class="mod-card-head">'+
+                  '<div class="mod-card-title">'+cleanName+'</div>'+
+                  (d?'<span class="mod-card-cat">'+d.category+'</span>':'')+
+                  '<span class="mod-row-badge" style="margin-left:4px">'+badge+'</span>'+
+                '</div>'+
+                '<div class="mod-card-body">'+
+                  '<div class="mod-card-vp">'+vp+'</div>'+
+                  kms.map(k=>'<div class="mod-card-km">'+k+'</div>').join('')+
+                  (pp?'<div class="mod-card-pp">📊 '+pp+'</div>':'')+
+                '</div>'+
+              '</div>';
+            }
+            return mc(c.primaryModule,c.primaryWhy,'Módulo 1',true)+
+              c.secondaryModules.map((m,i)=>mc(m.name,m.why,'Módulo '+(i+2),false)).join('');
+          })()+
+        '</div>'+
       '</div>'+
-      '<div class="anl-card">'+
-        '<div class="anl-card-title">⚠️ Riesgos del deal</div>'+
-        c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+
+      '<div class="anl-card" onclick="toggleAnlCard(this)">'+
+        '<div class="anl-card-title">⚠️ Riesgos del deal'+anlArrow+'</div>'+
+        '<div class="anl-card-body">'+
+          c.dealRisks.map(r=>'<div class="risk-row2 '+r.lvl+'"><span style="font-size:14px;flex-shrink:0;margin-top:1px">'+(r.lvl==='crit'?'⚠️':'⚡')+'</span><span>'+r.txt+'</span></div>').join('')+
+        '</div>'+
       '</div>'+
-      '<div class="anl-card">'+
-        '<div class="anl-card-title">✅ Señales de compra</div>'+
-        c.signals.map(s=>
-          '<div class="sig-plain">'+
-            '<span class="sig-plain-ico">'+s.ico+'</span>'+
-            '<span class="sig-plain-text">'+s.text+'</span>'+
-            '<span class="sig-row-badge '+s.cls+'">'+s.badge+'</span>'+
-          '</div>'
-        ).join('')+
+      '<div class="anl-card" onclick="toggleAnlCard(this)">'+
+        '<div class="anl-card-title">✅ Señales de compra'+anlArrow+'</div>'+
+        '<div class="anl-card-body">'+
+          c.signals.map(s=>
+            '<div class="sig-plain">'+
+              '<span class="sig-plain-ico">'+s.ico+'</span>'+
+              '<span class="sig-plain-text">'+s.text+'</span>'+
+              '<span class="sig-row-badge '+s.cls+'">'+s.badge+'</span>'+
+            '</div>'
+          ).join('')+
+        '</div>'+
       '</div>';
   }
 
@@ -4398,6 +4419,14 @@ function toast(m){
 function togglePainHyp(i){
   const el=document.getElementById('ph'+i);
   if(el) el.classList.toggle('open');
+}
+
+function toggleAnlCard(card){
+  card.classList.toggle('expanded');
+}
+
+function toggleAnlSection(el){
+  el.classList.toggle('expanded');
 }
 
 let SOLUTIONS_DATA = null;
