@@ -1,0 +1,335 @@
+// Typed mock fixtures ported from the PoC's hardcoded data. Clearly `MOCK_`-
+// prefixed so the UI renders before the BFF endpoints are real. These seed the
+// client state and back the stub route handlers. See PLAN Task 3.
+
+import type {
+  Comparable,
+  Deal,
+  DealSearchRequest,
+  Pain,
+  RecentDeal,
+  SearchExample,
+  Stakeholder,
+} from "@/types";
+import { SOLUTION_GRAPH } from "@/lib/constants";
+
+export const MOCK_INITIAL_QUERY: DealSearchRequest = {
+  name: "Distribuidora Patagonia",
+  website: "distpatagonia.com",
+  email: "m.gomez@distpatagonia.com",
+};
+
+export const MOCK_DEAL: Deal = {
+  entity: {
+    resolved: "Distribuidora Patagonia S.A. — división Operaciones (AR)",
+    confidence: 0.86,
+    candidates: [
+      {
+        name: "Distribuidora Patagonia S.A. (holding) — AR",
+        note: "matriz, incluye retail",
+      },
+      {
+        name: "Patagonia Logística (subsidiaria) — CL",
+        note: "razón social distinta",
+      },
+    ],
+  },
+  stage: "champion",
+  region: "Argentina (AR)",
+  firmographics: {
+    summary: {
+      value:
+        "Distribución de alimentos y bebidas a retail. 2 plantas + 5 centros de distribución, flota propia. Workforce mayormente deskless (choferes, depósito, repositores) en operaciones rotativas.",
+      prov: {
+        source: "Web + Clearbit",
+        sourceType: "enriquecido",
+        confidence: 0.82,
+        status: "inferred",
+      },
+    },
+    industry: {
+      value: "Consumo masivo · Distribución / Logística",
+      prov: {
+        source: "HubSpot",
+        sourceType: "declarado",
+        confidence: 0.95,
+        status: "validated",
+      },
+    },
+    headcount: 485,
+    headcountProv: {
+      source: "HubSpot vs Lusha",
+      sourceType: "conflicto",
+      confidence: 0.6,
+      status: "inferred",
+    },
+    deskless: {
+      value: "≈82% deskless",
+      detail:
+        "Choferes, depósito y repositores sin email corporativo. ~18% de oficina.",
+      prov: {
+        source: "LinkedIn + heurística",
+        sourceType: "inferido",
+        confidence: 0.78,
+        status: "inferred",
+      },
+    },
+    tech: [
+      { t: "SharePoint (intranet)", kind: "desplazar" },
+      { t: "WhatsApp (grupos)", kind: "desplazar" },
+      { t: "BambooHR", kind: "integrar" },
+      { t: "SAP", kind: "integrar" },
+      { t: "Microsoft Teams", kind: "coexistir" },
+      { t: "Salesforce", kind: "coexistir" },
+    ],
+    techProv: {
+      source: "BuiltWith + call",
+      sourceType: "mixto",
+      confidence: 0.7,
+      status: "inferred",
+    },
+  },
+  hubspot: {
+    dealStage: "Champion identified",
+    lastActivity: "2026-06-17 · call de discovery (37 min)",
+    notes:
+      "Diego confirmó dolor de comunicación con choferes. Mariana quiere medir alcance. Falta involucrar a CFO.",
+  },
+};
+
+export const MOCK_STAKEHOLDERS: Stakeholder[] = [
+  {
+    id: "sh1",
+    name: "Diego Ferrer",
+    title: "Gerente de RRHH",
+    role: "Champion",
+    conf: 0.8,
+    source: "call",
+    evidence:
+      "Pidió la demo, respondió 3 emails, articuló el dolor en discovery.",
+    validated: true,
+  },
+  {
+    id: "sh2",
+    name: "Mariana Gómez",
+    title: "CHRO",
+    role: "Decision Maker",
+    conf: 0.65,
+    source: "firmographic",
+    evidence:
+      "Nueva, con mandato de modernizar. Mencionada por Diego, aún sin contacto directo.",
+    validated: false,
+  },
+  {
+    id: "sh3",
+    name: "Laura Quiroga",
+    title: "Gerente de Operaciones",
+    role: "Influencer",
+    conf: 0.55,
+    source: "firmographic",
+    evidence:
+      "Dueña de la adopción de choferes; riesgo si no ve valor operativo.",
+    validated: false,
+  },
+  {
+    id: "sh4",
+    name: "Roberto Salas",
+    title: "CFO",
+    role: "Economic Buyer",
+    conf: 0.5,
+    source: "firmographic",
+    evidence: "Aprueba presupuesto. Sin engagement — gap crítico.",
+    validated: false,
+  },
+];
+
+export const MOCK_PAINS: Pain[] = [
+  {
+    id: "p1",
+    label: "Comunicación fragmentada con el frontline",
+    taxonomy: "Comunicación interna",
+    source: "call",
+    conf: 0.88,
+    evidence:
+      "«No tenemos forma de saber si un comunicado llegó a los choferes» — Diego, 17/06",
+    module: SOLUTION_GRAPH["Comunicación interna"],
+    validated: true,
+  },
+  {
+    id: "p2",
+    label: "Onboarding lento de operarios en los nuevos CDs",
+    taxonomy: "Onboarding / Capacitación",
+    source: "firmographic",
+    conf: 0.66,
+    evidence:
+      "Inferido del spike de hiring + apertura de 2 CDs. Sin confirmar en call.",
+    module: SOLUTION_GRAPH["Onboarding / Capacitación"],
+    validated: false,
+  },
+  {
+    id: "p3",
+    label: "Sin canal para clima/feedback del deskless",
+    taxonomy: "Clima / Engagement",
+    source: "firmographic",
+    conf: 0.6,
+    evidence: "Inferido del mandato de la CHRO. Hipótesis.",
+    module: SOLUTION_GRAPH["Clima / Engagement"],
+    validated: false,
+  },
+  {
+    id: "p4",
+    label: "Procesos de RRHH en papel (recibos, vacaciones)",
+    taxonomy: "Autogestión / Documentos",
+    source: "firmographic",
+    conf: 0.52,
+    evidence: "Inferido del HRIS legacy. Baja evidencia.",
+    module: SOLUTION_GRAPH["Autogestión / Documentos"],
+    validated: false,
+  },
+];
+
+export const MOCK_RECENT_DEALS: RecentDeal[] = [
+  {
+    name: "Distribuidora Patagonia S.A.",
+    industry: "Distribución alimentos",
+    deskless: 82,
+    headcount: 485,
+    stageKey: "champion",
+    score: 68,
+    updated: "hace 2 días",
+  },
+  {
+    name: "Distribuidora Cuyo",
+    industry: "Distribución alimentos",
+    deskless: 78,
+    headcount: 520,
+    stageKey: "procurement",
+    score: 81,
+    updated: "hace 1 semana",
+  },
+  {
+    name: "TransAndes Logística",
+    industry: "Logística / transporte",
+    deskless: 88,
+    headcount: 610,
+    stageKey: "md",
+    score: 74,
+    updated: "hace 3 días",
+  },
+  {
+    name: "Retail Sur",
+    industry: "Retail · supermercados",
+    deskless: 74,
+    headcount: 430,
+    stageKey: "discovery",
+    score: 52,
+    updated: "hace 5 días",
+  },
+  {
+    name: "Café del Norte",
+    industry: "Retail · cafeterías",
+    deskless: 70,
+    headcount: 260,
+    stageKey: "discovery",
+    score: 48,
+    updated: "ayer",
+  },
+  {
+    name: "Bebidas Norte",
+    industry: "Distribución bebidas",
+    deskless: 80,
+    headcount: 390,
+    stageKey: "lead",
+    score: 39,
+    updated: "hace 2 semanas",
+  },
+];
+
+export const MOCK_SEARCH_EXAMPLES: SearchExample[] = [
+  {
+    name: "Distribuidora Patagonia",
+    website: "distpatagonia.com",
+    email: "m.gomez@distpatagonia.com",
+    tag: "alta data",
+  },
+  {
+    name: "Café del Norte (cadena)",
+    website: "cafedelnorte.com",
+    email: "rrhh@cafedelnorte.com",
+    tag: "retail",
+  },
+  { name: "LogiSur (startup)", website: "logisur.io", email: "", tag: "cold start" },
+];
+
+export const MOCK_SEARCH_STEPS: string[] = [
+  "Resolviendo entidad…",
+  "Enriqueciendo firmografía…",
+  "Estimando % deskless…",
+  "Consultando HubSpot…",
+  "Buscando señales…",
+  "Compilando procedencia…",
+];
+
+/** Reference firmographics for the comparables similarity calc. */
+export const MOCK_COMP_REFERENCE: { deskless: number; size: number } = {
+  deskless: 82,
+  size: 485,
+};
+
+export const MOCK_COMPARABLES: Comparable[] = [
+  {
+    co: "Distribuidora Cuyo",
+    industry: "Distribución alimentos",
+    deskless: 78,
+    size: 520,
+    wedge: "Comunicación",
+    cycle: 41,
+    result: "won",
+    mrr: 2100,
+  },
+  {
+    co: "TransAndes Logística",
+    industry: "Logística / transporte",
+    deskless: 88,
+    size: 610,
+    wedge: "Comunicación",
+    cycle: 63,
+    result: "won",
+    mrr: 2600,
+  },
+  {
+    co: "Retail Sur",
+    industry: "Retail · supermercados",
+    deskless: 74,
+    size: 430,
+    wedge: "Comunicación",
+    cycle: 52,
+    result: "won",
+    mrr: 1850,
+  },
+  {
+    co: "Frigorífico del Plata",
+    industry: "Manufactura alimentos",
+    deskless: 91,
+    size: 740,
+    wedge: "Encuestas",
+    cycle: 88,
+    result: "lost",
+    mrr: 0,
+    reason: "Perdido por precio (Beekeeper)",
+  },
+  {
+    co: "Bebidas Norte",
+    industry: "Distribución bebidas",
+    deskless: 80,
+    size: 390,
+    wedge: "Comunicación",
+    cycle: 120,
+    result: "lost",
+    mrr: 0,
+    reason: "Sin champion económico · presupuesto frozen",
+  },
+];
+
+/** Default headcount used by the PoC's header/MRR estimate. */
+export const MOCK_DEFAULT_HEADCOUNT = 485;

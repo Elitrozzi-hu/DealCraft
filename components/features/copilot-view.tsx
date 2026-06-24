@@ -1,0 +1,214 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import type {
+  Deal,
+  DealMeta,
+  DeckRequest,
+  MaterialsRequest,
+  Pain,
+  StageKey,
+  Stakeholder,
+} from "@/types";
+import { segmentOf } from "@/lib/constants";
+import { Card } from "@/components/ui";
+import { useIsNarrow } from "@/hooks/use-is-narrow";
+import { useDealState } from "@/hooks/use-deal-state";
+import { useMaterials } from "@/hooks/use-materials";
+import {
+  AnalysisPanel,
+  DealHeader,
+} from "@/components/features/deal-analysis";
+import { MaterialsPanel } from "@/components/features/materials";
+
+/** Firmographics overridden when a deal is opened from history. */
+export interface ActiveMeta {
+  industry: string;
+  headcount: number;
+  deskless: string;
+  region: string;
+  website: string;
+}
+
+export interface CopilotViewProps {
+  deal: Deal;
+  stakeholders: Stakeholder[];
+  pains: Pain[];
+  stage: StageKey;
+  resolvedName: string;
+  coldStart: boolean;
+  /** Present when opened from the recent-deals history. */
+  activeMeta: ActiveMeta | null;
+  website: string;
+  /** Back to the input screen (triggered by the DealCraft wordmark). */
+  onBack: () => void;
+}
+
+export function CopilotView({
+  deal,
+  stakeholders,
+  pains,
+  stage,
+  resolvedName,
+  coldStart,
+  activeMeta,
+  website,
+  onBack,
+}: CopilotViewProps) {
+  const narrow = useIsNarrow();
+  // History opens from `activeMeta`; a fresh analysis uses the enriched
+  // firmographics carried on `deal`.
+  const headcount = activeMeta ? activeMeta.headcount : deal.firmographics.headcount;
+  const ds = useDealState({ stakeholders, pains, stage, headcount });
+  const materials = useMaterials();
+
+  // Pricing toggle was removed from the UI — materials always include pricing.
+  const includePricing = true;
+
+  const meta: DealMeta = {
+    name: resolvedName.split(" — ")[0],
+    industry: activeMeta?.industry ?? deal.firmographics.industry.value,
+    region: activeMeta?.region ?? deal.region,
+    deskless: activeMeta?.deskless ?? deal.firmographics.deskless.value,
+    headcount,
+    segment: segmentOf(headcount),
+    website: activeMeta?.website ?? website,
+    // Only flag a conflict when the data source reports one — Classidy returns a
+    // single headcount value, so this is normally false.
+    headcountConflict:
+      !activeMeta &&
+      !ds.headcountValidated &&
+      deal.firmographics.headcountProv.sourceType
+        .toLowerCase()
+        .includes("conflicto"),
+  };
+
+  // Regenerate materials when the gated inputs change (validated pains, pricing,
+  // confirmed MRR). Idle/loading/error/success surface in MaterialsPanel.
+  const { generate } = materials;
+  const painsKey = ds.pains
+    .map((p) => `${p.id}:${p.validated ? 1 : 0}:${p.module ?? ""}`)
+    .join("|");
+  const stakeholdersKey = ds.stakeholders
+    .map((s) => `${s.id}:${s.role}`)
+    .join("|");
+  const mrr = ds.possiblyMRR;
+  const mrrConfirmed = ds.mrrConfirmed;
+
+  useEffect(() => {
+    const req: MaterialsRequest = {
+      companyName: resolvedName,
+      pains: ds.pains,
+      stakeholders: ds.stakeholders,
+      includePricing,
+      mrr,
+      mrrConfirmed,
+    };
+    void generate(req);
+    // ds.pains/ds.stakeholders captured via stable key strings below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    generate,
+    resolvedName,
+    includePricing,
+    mrr,
+    mrrConfirmed,
+    painsKey,
+    stakeholdersKey,
+  ]);
+
+  // Deck `{{…}}` tokens — pre-filled from the deal, then user-editable in the
+  // Presentación preview (DeckConfigForm). Initialized once per deal session.
+  // TODO (PLAN Task 9): refine the deal→deck mapping (plan A/B tiers).
+  const [deckConfig, setDeckConfig] = useState<DeckRequest>(() => ({
+    clientName: meta.name,
+    date: new Date().toISOString().slice(0, 10),
+    logo: "",
+    users: meta.headcount,
+    mrr,
+    mrr_disc: Math.round(mrr * 0.85),
+    users_a: meta.headcount,
+    mrr_a: mrr,
+    mrr_disc_a: Math.round(mrr * 0.9),
+    users_b: meta.headcount,
+    mrr_b: mrr,
+    mrr_disc_b: Math.round(mrr * 0.8),
+  }));
+
+  const retryMaterials = () =>
+    void generate({
+      companyName: resolvedName,
+      pains: ds.pains,
+      stakeholders: ds.stakeholders,
+      includePricing,
+      mrr,
+      mrrConfirmed,
+    });
+
+  return (
+    <div className="min-h-screen">
+      <DealHeader
+        meta={meta}
+        possiblyMRR={ds.possiblyMRR}
+        mrrConfirmed={ds.mrrConfirmed}
+        onBack={onBack}
+      />
+
+      <div className="mx-auto w-full max-w-[1760px] px-4 pb-16 pt-4 sm:px-6 md:pb-20 md:pt-5 lg:px-10">
+        <div
+          className={`grid items-start gap-5 lg:gap-8 ${narrow ? "grid-cols-1" : "grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]"}`}
+        >
+          {/* LEFT: Analysis */}
+          <div>
+            <div className="mb-3">
+              <div className="text-lg font-extrabold">Análisis</div>
+              <div className="text-[12.5px] text-cold">
+                Contexto, stakeholders, dolores, módulos y riesgos del deal.
+              </div>
+            </div>
+            <AnalysisPanel
+              deal={deal}
+              meta={meta}
+              coldStart={coldStart}
+              possiblyMRR={ds.possiblyMRR}
+              mrrConfirmed={ds.mrrConfirmed}
+              onConfirmMRR={ds.confirmMRR}
+              onEditMRR={ds.editMRR}
+              onValidateHeadcount={ds.validateHeadcount}
+              stakeholders={ds.stakeholders}
+              onValidateStakeholder={ds.validateStakeholder}
+              onAddStakeholder={ds.addStakeholder}
+              onUpdateStakeholder={ds.updateStakeholder}
+              onRemoveStakeholder={ds.removeStakeholder}
+              pains={ds.pains}
+              onValidatePain={ds.validatePain}
+              onAddPain={ds.addPain}
+              onRemovePain={ds.removePain}
+            />
+          </div>
+
+          {/* RIGHT: Materials */}
+          <div className="grid content-start gap-4">
+            <div>
+              <div className="text-lg font-extrabold">Materiales</div>
+              <div className="text-[12.5px] text-cold">
+                Materiales de venta para esta etapa, con gating de procedencia.
+              </div>
+            </div>
+            <Card pad="md">
+              <MaterialsPanel
+                materials={materials.materials}
+                status={materials.status}
+                error={materials.error}
+                includePricing={includePricing}
+                deckConfig={deckConfig}
+                onDeckConfigChange={setDeckConfig}
+                onRetry={retryMaterials}
+              />
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

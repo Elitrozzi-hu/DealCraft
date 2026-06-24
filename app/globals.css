@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* DealCraft palette — ported from the PoC `C` object into Tailwind v4 theme
+   tokens. Each token generates the usual utilities (bg-*, text-*, border-*),
+   e.g. `bg-panel`, `text-ink`, `border-line`, `text-violet`. */
+@theme {
+  --color-ink: #0f1b3d; /* brand navy — strong text / headings */
+  --color-violet: #2c5af6; /* brand blue (Humand) */
+  --color-violet-soft: #e9effe;
+  --color-validated: #0fa371;
+  --color-validated-soft: #e3f6ef;
+  --color-inferred: #c2780a;
+  --color-inferred-soft: #fbf1e0;
+  --color-cold: #5c6680;
+  --color-cold-soft: #edf1f8;
+  --color-risk: #dd3a52;
+  --color-risk-soft: #fcebee;
+  --color-line: #e4e9f3;
+  --color-bg: #f4f7fc;
+  --color-panel: #ffffff;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-geist-sans), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
 }
