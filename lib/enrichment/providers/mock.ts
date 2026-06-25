@@ -29,7 +29,6 @@ export const mockEnrichmentProvider: EnrichmentProvider = {
           prov: prov("inferred"),
         },
         region: { value: "LATAM", prov: prov("validated") },
-        industry: { value: "Software", prov: prov("validated") },
         workforcePercentage: { value: 60, prov: prov("inferred") },
         headcount: { value: 1200, prov: prov("inferred") },
         techStack: {

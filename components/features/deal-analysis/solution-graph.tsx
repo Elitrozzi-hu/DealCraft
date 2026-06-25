@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Pain, PainDraft } from "@/types";
 import { TAXONOMIES, resolveModule } from "@/lib/constants";
-import { Button, Input } from "@/components/ui";
+import { Button, EmptyState, Input, SourceLinkIcon } from "@/components/ui";
 
 export interface SolutionGraphProps {
   pains: Pain[];
@@ -17,6 +17,25 @@ const selectCls =
   "rounded-lg border border-line bg-panel px-2.5 py-[7px] text-[13px] text-ink outline-none focus-visible:ring-2 focus-visible:ring-violet/50";
 
 const emptyDraft: PainDraft = { label: "", taxonomy: TAXONOMIES[0], evidence: "" };
+
+// Section glyph for the empty state — a pain/signal spark.
+function PainGlyph() {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 2 3 14h7l-1 8 9-12h-7l1-8Z" />
+    </svg>
+  );
+}
 
 export function SolutionGraph({
   pains,
@@ -35,6 +54,21 @@ export function SolutionGraph({
     setAdding(false);
     setD(emptyDraft);
   };
+
+  if (pains.length === 0 && !adding) {
+    return (
+      <EmptyState
+        icon={<PainGlyph />}
+        title="Sin dolores mapeados"
+        hint="Todavía no identificamos puntos de dolor para recorrer el solution graph. Agregá uno y lo mapeamos a un módulo de Humand."
+        action={
+          <Button small onClick={() => setAdding(true)}>
+            ＋ agregar dolor
+          </Button>
+        }
+      />
+    );
+  }
 
   return (
     <div>
@@ -70,12 +104,26 @@ export function SolutionGraph({
                 </div>
                 <div className="text-[13px] font-bold">{p.label}</div>
                 <div className="mt-1.5 flex items-center justify-between">
-                  <span
-                    className={`text-[10.5px] font-semibold ${p.validated ? "text-validated" : "text-inferred"}`}
-                  >
-                    {p.validated
-                      ? "✓ validado"
-                      : `inferido ${Math.round(p.conf * 100)}%`}
+                  <span className="flex items-center gap-1.5">
+                    <span
+                      className={`text-[10.5px] font-semibold ${p.validated ? "text-validated" : "text-inferred"}`}
+                    >
+                      {p.validated
+                        ? "✓ validado"
+                        : `inferido ${Math.round(p.conf * 100)}%`}
+                    </span>
+                    {p.sourceUrl && (
+                      <a
+                        href={p.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Abrir fuente"
+                        aria-label="Abrir fuente"
+                        className="text-cold transition-colors hover:text-violet"
+                      >
+                        <SourceLinkIcon className="shrink-0" />
+                      </a>
+                    )}
                   </span>
                   <div className="flex gap-1.5">
                     {!p.validated && (

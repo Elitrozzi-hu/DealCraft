@@ -24,6 +24,8 @@ export interface Pain {
   /** Resolved Humand module, or `null` when the taxonomy has no catalogue entry. */
   module: string | null;
   validated: boolean;
+  /** Source page backing this pain, when one exists (else it was inferred). */
+  sourceUrl?: string;
 }
 
 /** Draft payload for adding a pain from the UI. */

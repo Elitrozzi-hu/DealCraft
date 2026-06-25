@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import type { DealSearchRequest, LeadCandidate, RecentDeal } from "@/types";
+import type {
+  DealSearchRequest,
+  LeadCandidate,
+  LeadDeal,
+  RecentDeal,
+} from "@/types";
 import {
   Button,
   Card,
@@ -27,6 +32,117 @@ export interface InputScreenProps {
   initialQuery?: DealSearchRequest;
 }
 
+/** Format a HubSpot deal amount as currency, or "—" when absent. */
+function formatAmount(amount: number | null): string {
+  return amount != null ? `USD ${amount.toLocaleString("en-US")}` : "—";
+}
+
+interface CandidateCardProps {
+  candidate: LeadCandidate;
+  /** Proceed with this contact and (optionally) the chosen deal. */
+  onPick: (candidate: LeadCandidate, deal?: LeadDeal) => void;
+}
+
+/**
+ * A single contact candidate with its associated deals. With 0 or 1 deal the
+ * whole card is one click (proceeds with no deal, or auto-selects the single
+ * deal). With several deals the AE must pick one — each deal is its own button
+ * and the card itself is a non-interactive container (no silent pick).
+ */
+function CandidateCard({ candidate: c, onPick }: CandidateCardProps) {
+  const single = c.deals.length === 1;
+  const multiple = c.deals.length > 1;
+
+  const context = (
+    <>
+      <div className="flex items-start justify-between gap-2.5">
+        <div className="text-[14px] font-bold">
+          {c.fullName ?? c.jobTitle ?? c.contactEmail ?? "Contacto"}
+        </div>
+        {c.lifecycleStage && <Chip tone="violet">{c.lifecycleStage}</Chip>}
+      </div>
+      <div className="text-[12.5px] text-cold">
+        {c.companyName ?? "—"}
+        {c.companyDomain ? ` · ${c.companyDomain}` : ""}
+      </div>
+      <div className="text-[12px] text-cold">
+        {[c.jobTitle, c.contactEmail].filter(Boolean).join(" · ") ||
+          "Sin contacto"}
+      </div>
+      {(c.country || c.state || c.region || c.scoringTier) && (
+        <div className="flex items-center justify-between gap-2 text-[11px] text-cold">
+          <span>
+            {[c.country, c.state ?? c.region].filter(Boolean).join(" · ") || "—"}
+          </span>
+          {c.scoringTier && (
+            <span className="rounded bg-violet-soft px-1.5 py-0.5 font-semibold text-violet">
+              {c.scoringTier}
+              {c.predictiveScore ? ` · ${c.predictiveScore}` : ""}
+            </span>
+          )}
+        </div>
+      )}
+    </>
+  );
+
+  // 0 or 1 deal → single click on the whole card.
+  if (!multiple) {
+    const deal = single ? c.deals[0] : undefined;
+    return (
+      <button
+        type="button"
+        onClick={() => onPick(c, deal)}
+        className="flex flex-col gap-2 rounded-2xl border border-line bg-panel p-3.5 text-left transition-colors hover:border-violet"
+      >
+        {context}
+        {single ? (
+          <div className="rounded-xl border border-line bg-bg px-2.5 py-2 text-[12px]">
+            <div className="font-semibold">
+              {c.deals[0].name ?? "Deal sin nombre"}
+            </div>
+            <div className="mt-0.5 text-cold">
+              {(c.deals[0].stageLabel ?? "—") +
+                " · " +
+                formatAmount(c.deals[0].amount)}
+            </div>
+          </div>
+        ) : (
+          <div className="text-[11px] text-cold">
+            Sin deals asociados — continuar sin deal
+          </div>
+        )}
+      </button>
+    );
+  }
+
+  // Several deals → the AE picks one.
+  return (
+    <div className="flex flex-col gap-2 rounded-2xl border border-line bg-panel p-3.5 text-left">
+      {context}
+      <div className="text-[11px] font-semibold uppercase tracking-wide text-cold">
+        Elegí un deal
+      </div>
+      <div className="flex flex-col gap-1.5">
+        {c.deals.map((d) => (
+          <button
+            key={d.id}
+            type="button"
+            onClick={() => onPick(c, d)}
+            className="flex flex-col gap-0.5 rounded-xl border border-line bg-bg px-2.5 py-2 text-left transition-colors hover:border-violet"
+          >
+            <span className="text-[12.5px] font-semibold">
+              {d.name ?? "Deal sin nombre"}
+            </span>
+            <span className="text-[11.5px] text-cold">
+              {(d.stageLabel ?? "—") + " · " + formatAmount(d.amount)}
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function InputScreen({
   onSearch,
   onOpenHistory,
@@ -44,10 +160,11 @@ export function InputScreen({
     void lead.search({ email: trimmedEmail });
   };
 
-  // Selecting a candidate seeds the existing deal-search flow with the lead's
-  // resolved identifiers, falling back to the typed email when a field is null.
-  // The CRM fields are forwarded to feed the Classidy webhook + deal-stage mapping.
-  const selectCandidate = (c: LeadCandidate) => {
+  // Selecting a candidate (and one of its deals) seeds the existing deal-search
+  // flow with the lead's resolved identifiers, falling back to the typed email
+  // when a field is null. The CRM fields feed the Classidy webhook + deal-stage
+  // mapping; the chosen deal carries its stage/amount/industry snapshot through.
+  const selectCandidate = (c: LeadCandidate, deal?: LeadDeal) => {
     onSearch({
       name: c.companyName?.trim() || c.fullName?.trim() || trimmedEmail,
       website: c.companyDomain?.trim() || undefined,
@@ -57,6 +174,7 @@ export function InputScreen({
       companyDomain: c.companyDomain?.trim() || undefined,
       contactEmail: c.contactEmail?.trim() || trimmedEmail,
       lifecycleStage: c.lifecycleStage?.trim() || undefined,
+      deal,
     });
   };
 
@@ -132,50 +250,16 @@ export function InputScreen({
             {lead.status === "success" && lead.candidates.length > 0 && (
               <Card
                 title="Leads encontrados"
-                sub="Elegí el lead correcto para iniciar el análisis."
+                sub="Elegí el deal correcto para iniciar el análisis."
                 accent="violet"
               >
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
                   {lead.candidates.map((c) => (
-                    <button
+                    <CandidateCard
                       key={c.id}
-                      type="button"
-                      onClick={() => selectCandidate(c)}
-                      className="flex flex-col gap-2 rounded-2xl border border-line bg-panel p-3.5 text-left transition-colors hover:border-violet"
-                    >
-                      <div className="flex items-start justify-between gap-2.5">
-                        <div className="text-[14px] font-bold">
-                          {c.fullName ?? c.jobTitle ?? c.contactEmail ?? "Contacto"}
-                        </div>
-                        {c.lifecycleStage && (
-                          <Chip tone="violet">{c.lifecycleStage}</Chip>
-                        )}
-                      </div>
-                      <div className="text-[12.5px] text-cold">
-                        {c.companyName ?? "—"}
-                        {c.companyDomain ? ` · ${c.companyDomain}` : ""}
-                      </div>
-                      <div className="text-[12px] text-cold">
-                        {[c.jobTitle, c.contactEmail]
-                          .filter(Boolean)
-                          .join(" · ") || "Sin contacto"}
-                      </div>
-                      {(c.country || c.state || c.region || c.scoringTier) && (
-                        <div className="flex items-center justify-between gap-2 text-[11px] text-cold">
-                          <span>
-                            {[c.country, c.state ?? c.region]
-                              .filter(Boolean)
-                              .join(" · ") || "—"}
-                          </span>
-                          {c.scoringTier && (
-                            <span className="rounded bg-violet-soft px-1.5 py-0.5 font-semibold text-violet">
-                              {c.scoringTier}
-                              {c.predictiveScore ? ` · ${c.predictiveScore}` : ""}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </button>
+                      candidate={c}
+                      onPick={selectCandidate}
+                    />
                   ))}
                 </div>
               </Card>

@@ -56,6 +56,13 @@ export const MOCK_DEAL: Deal = {
         status: "validated",
       },
     },
+    regionProv: {
+      source: "LinkedIn",
+      sourceType: "declarado",
+      confidence: 0.9,
+      status: "validated",
+      url: "https://www.linkedin.com/company/patagonia-distribucion",
+    },
     headcount: 485,
     headcountProv: {
       source: "HubSpot vs Lusha",
@@ -91,6 +98,7 @@ export const MOCK_DEAL: Deal = {
   },
   hubspot: {
     dealStage: "Champion identified",
+    amount: 28800,
     lastActivity: "2026-06-17 · call de discovery (37 min)",
     notes:
       "Diego confirmó dolor de comunicación con choferes. Mariana quiere medir alcance. Falta involucrar a CFO.",
@@ -330,6 +338,3 @@ export const MOCK_COMPARABLES: Comparable[] = [
     reason: "Sin champion económico · presupuesto frozen",
   },
 ];
-
-/** Default headcount used by the PoC's header/MRR estimate. */
-export const MOCK_DEFAULT_HEADCOUNT = 485;

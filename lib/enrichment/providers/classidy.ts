@@ -68,9 +68,7 @@ const cassidyRawSchema = z
     "Region Information": z
       .object({ Region: z.string().nullish(), "Provenance Metadata": rawProvSchema })
       .nullish(),
-    "Industry Data": z
-      .object({ Industry: z.string().nullish(), "Provenance Metadata": rawProvSchema })
-      .nullish(),
+    // `Industry Data` is intentionally not read — industry comes from the HubSpot deal.
     "Workforce Percentage": z
       .object({
         "Workforce Percentage": z.number().nullish(),
@@ -207,7 +205,6 @@ function toTechItems(arr: unknown[] | null | undefined): NormalizedEnrichment["t
 function normalize(raw: CassidyRaw): NormalizedEnrichment {
   const summary = raw["Company Summary"];
   const region = raw["Region Information"];
-  const industry = raw["Industry Data"];
   const workforce = raw["Workforce Percentage"];
   const headcount = raw["Company Headcount"];
 
@@ -221,10 +218,6 @@ function normalize(raw: CassidyRaw): NormalizedEnrichment {
     region: {
       value: region?.Region ?? "—",
       prov: region ? toProv(region["Provenance Metadata"]) : coldProv("Cassidy"),
-    },
-    industry: {
-      value: industry?.Industry ?? "—",
-      prov: industry ? toProv(industry["Provenance Metadata"]) : coldProv("Cassidy"),
     },
     workforcePercentage:
       workforce && typeof workforce["Workforce Percentage"] === "number"

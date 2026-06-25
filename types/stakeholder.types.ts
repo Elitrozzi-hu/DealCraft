@@ -23,6 +23,9 @@ export interface Stakeholder {
   /** Public LinkedIn profile URL, when the enrichment source provided one. The
    *  source link for a firmographically-identified person. */
   linkedinUrl?: string;
+  /** Source page this person was found on (e.g. the company LinkedIn page), used
+   *  as the link when there's no personal `linkedinUrl`. Absent when inferred. */
+  sourceUrl?: string;
 }
 
 /** Draft payload for adding/editing a stakeholder from the UI. */

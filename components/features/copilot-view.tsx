@@ -59,7 +59,7 @@ export function CopilotView({
   // History opens from `activeMeta`; a fresh analysis uses the enriched
   // firmographics carried on `deal`.
   const headcount = activeMeta ? activeMeta.headcount : deal.firmographics.headcount;
-  const ds = useDealState({ stakeholders, pains, stage, headcount });
+  const ds = useDealState({ stakeholders, pains, stage });
   const materials = useMaterials();
 
   // Pricing toggle was removed from the UI — materials always include pricing.
@@ -83,8 +83,8 @@ export function CopilotView({
         .includes("conflicto"),
   };
 
-  // Regenerate materials when the gated inputs change (validated pains, pricing,
-  // confirmed MRR). Idle/loading/error/success surface in MaterialsPanel.
+  // Regenerate materials when the gated inputs change (validated pains, pricing).
+  // Idle/loading/error/success surface in MaterialsPanel.
   const { generate } = materials;
   const painsKey = ds.pains
     .map((p) => `${p.id}:${p.validated ? 1 : 0}:${p.module ?? ""}`)
@@ -92,8 +92,10 @@ export function CopilotView({
   const stakeholdersKey = ds.stakeholders
     .map((s) => `${s.id}:${s.role}`)
     .join("|");
-  const mrr = ds.possiblyMRR;
-  const mrrConfirmed = ds.mrrConfirmed;
+  // Pricing is the HubSpot deal amount (the only figure we carry from the CRM);
+  // "confirmed" when HubSpot actually has an amount, absent → 0.
+  const mrr = deal.hubspot.amount ?? 0;
+  const mrrConfirmed = deal.hubspot.amount != null;
 
   useEffect(() => {
     const req: MaterialsRequest = {
@@ -149,8 +151,8 @@ export function CopilotView({
     <div className="min-h-screen">
       <DealHeader
         meta={meta}
-        possiblyMRR={ds.possiblyMRR}
-        mrrConfirmed={ds.mrrConfirmed}
+        dealStage={deal.hubspot.dealStage}
+        amount={deal.hubspot.amount}
         onBack={onBack}
       />
 
@@ -170,10 +172,6 @@ export function CopilotView({
               deal={deal}
               meta={meta}
               coldStart={coldStart}
-              possiblyMRR={ds.possiblyMRR}
-              mrrConfirmed={ds.mrrConfirmed}
-              onConfirmMRR={ds.confirmMRR}
-              onEditMRR={ds.editMRR}
               onValidateHeadcount={ds.validateHeadcount}
               stakeholders={ds.stakeholders}
               onValidateStakeholder={ds.validateStakeholder}

@@ -22,6 +22,15 @@ const MOCK_CANDIDATES: LeadCandidate[] = [
     pipeline: "contacts-lifecycle-pipeline",
     scoringTier: "tier_1",
     predictiveScore: "0.82",
+    deals: [
+      {
+        id: "mock-deal-1",
+        name: "Acme Corp — Humand rollout",
+        stageLabel: "Final Negotiation",
+        amount: 24000,
+        industry: "Software",
+      },
+    ],
   },
   {
     id: "mock-lead-2",
@@ -38,6 +47,7 @@ const MOCK_CANDIDATES: LeadCandidate[] = [
     pipeline: "contacts-lifecycle-pipeline",
     scoringTier: "tier_3",
     predictiveScore: "0.41",
+    deals: [],
   },
   {
     id: "mock-lead-3",
@@ -54,6 +64,7 @@ const MOCK_CANDIDATES: LeadCandidate[] = [
     pipeline: "contacts-lifecycle-pipeline",
     scoringTier: "tier_4",
     predictiveScore: "0.12",
+    deals: [],
   },
 ];
 

@@ -2,8 +2,14 @@ import "server-only";
 
 import { z } from "zod";
 
-import { generate } from "@/lib/llm/generate";
-import { getOpenRouterProvider } from "@/lib/llm/registry";
+import { generate, type GenerationUsage } from "@/lib/llm/generate";
+import {
+  llmResearchOutputSchema,
+  type LlmResearchOutput,
+  type LlmProvenance,
+} from "@/lib/llm/generations/company-research/structured-output";
+import { renderResearchPrompt } from "@/lib/llm/generations/company-research/prompt";
+import { createLogger } from "@/lib/server/logger";
 import type {
   EnrichmentInput,
   EnrichmentProvider,
@@ -16,28 +22,31 @@ import {
   type NormalizedProvenance,
 } from "@/lib/enrichment/result-schema";
 
-// Enrichment via the LLM's own web-search server tool. This is the ONLY module
-// that knows OpenRouter's web-search contract (param names + tool placement);
-// everything else talks to `generate` and the `EnrichmentProvider` interface.
+// Enrichment via a SINGLE OpenRouter call: the `web` plugin runs live search while
+// `llmResearchOutputSchema` (structured output) shapes the reply. This is the ONLY
+// module that knows the plugin is how web search is enabled here; everything else
+// talks to `generate` and the `EnrichmentProvider` interface.
 //
-// Flow (schema XOR tools — two calls + a normalize):
-//   1. free-text `generate` with the `openrouter:web_search` server tool → live findings
-//   2. structured `generate({ schema: extractionSchema })` → plain facts
-//   3. `normalize` → the shared `NormalizedEnrichment` shape (provenance computed
-//      here, NEVER self-reported by the model) so it flows through `mapEnrichmentToDeal`.
+// Flow:
+//   1. one `generate({ schema, providerOptions: { openrouter: { plugins: [web] } } })`
+//      → the model researches and returns the rich, per-field provenanced shape.
+//   2. `normalize` → the shared `NormalizedEnrichment` shape, clamping/coercing at
+//      the boundary so it flows through `mapEnrichmentToDeal`.
+//   3. `enrichmentResultSchema.parse` is the final contract guard.
+//
+// NOTE on provenance: unlike most providers, confidence here is the model's own
+// per-field self-report (governed by the prompt's confidence rubric), mirroring how
+// `classidy` passes vendor-reported confidence through. It is clamped to [0,1] in
+// `fromLlmProv`; see the plan's "Constraints & Decisions" for the rationale.
+
+const log = createLogger("llm-websearch");
 
 // --- Per-request search-steering options ----------------------------------
-// Validated before use. Providers that don't support a knob ignore it.
+// Validated before use. Only knobs the OpenRouter `web` plugin actually supports.
 export const optionsSchema = z.object({
-  /** Cap on search results pulled in. */
+  /** Cap on search results pulled in (plugin: `max_results`). */
   maxResults: z.number().int().positive().optional(),
-  /** Breadth of retrieved context per result. */
-  searchContextSize: z.enum(["low", "medium", "high"]).optional(),
-  /** Restrict the search to these domains (server tool: `allowed_domains`). */
-  includeDomains: z.array(z.string()).optional(),
-  /** Exclude these domains (server tool: `excluded_domains`). */
-  excludeDomains: z.array(z.string()).optional(),
-  /** Custom prompt that steers how results are folded into the answer. */
+  /** Custom prompt that steers how results are folded in (plugin: `search_prompt`). */
   searchPrompt: z.string().optional(),
   /** Override the research query (defaults to a prompt built from `input`). */
   query: z.string().optional(),
@@ -45,113 +54,142 @@ export const optionsSchema = z.object({
 
 export type WebSearchOptions = z.infer<typeof optionsSchema>;
 
-/**
- * Translate our provider-agnostic options into OpenRouter's `openrouter:web_search`
- * server-tool params. The args flow through the tool factory and are snake-cased
- * onto the API tool descriptor at request time. Note the current server-tool
- * names: `allowed_domains` / `excluded_domains` (NOT the deprecated plugin's
- * `include_domains`). The only place that encodes this vendor contract.
- */
-function mapToOpenRouter(o: WebSearchOptions): Record<string, unknown> {
-  const mapped: Record<string, unknown> = {};
-  if (o.maxResults !== undefined) mapped.max_results = o.maxResults;
-  if (o.searchContextSize !== undefined)
-    mapped.search_context_size = o.searchContextSize;
-  if (o.includeDomains !== undefined) mapped.allowed_domains = o.includeDomains;
-  if (o.excludeDomains !== undefined) mapped.excluded_domains = o.excludeDomains;
-  if (o.searchPrompt !== undefined) mapped.search_prompt = o.searchPrompt;
-  return mapped;
-}
-
-// --- LLM extraction shape --------------------------------------------------
-// The plain facts we ask the model to pull from its findings. NO confidence or
-// provenance here — those are computed in `normalize`, never trusted from the
-// model (per the "confidence is computed" rule). All fields optional/nullable so
-// partial enrichment is valid.
-const extractionSchema = z.object({
-  company: z
-    .object({
-      industry: z.string().nullish(),
-      region: z.string().nullish(),
-      headcount: z.number().nullish(),
-      /** Share of the workforce that is deskless/frontline, 0–100 if known. */
-      desklessPercentage: z.number().nullish(),
-      summary: z.string().nullish(),
-      techStack: z.array(z.string()).nullish(),
-    })
-    .nullish(),
-  stakeholders: z
-    .array(
-      z.object({
-        name: z.string().nullish(),
-        title: z.string().nullish(),
-        role: z.string().nullish(),
-        email: z.string().nullish(),
-        linkedinUrl: z.string().nullish(),
-      }),
-    )
-    .nullish(),
-  pains: z.array(z.string()).nullish(),
-  sources: z.array(z.string()).nullish(),
-});
-
-type Extraction = z.infer<typeof extractionSchema>;
-
-// Web-search data is researched, not declared — always "inferred", never
-// "validated". Confidence is a flat inferred prior; presence is what varies.
-const WEB_SOURCE = "Web search";
-function webProv(): NormalizedProvenance {
-  return { source: WEB_SOURCE, sourceType: "inferido", confidence: 0.6, status: "inferred" };
-}
-
 const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n));
 
-/** Wrap a researched string in inferred provenance, or fall back to a cold "—". */
-function inferredString(value: string | null | undefined) {
-  return value && value.trim()
-    ? { value, prov: webProv() }
-    : { value: "—", prov: coldProv(WEB_SOURCE) };
+/** If `s` is a usable http(s) URL, return its canonical href + a tidy label
+ *  (the www-stripped hostname); otherwise null. The prompt allows `source` to be
+ *  "URL or source name", so this tells the two apart without trusting the model. */
+function asSourceUrl(s: string | null): { href: string; label: string } | null {
+  if (!s) return null;
+  try {
+    const u = new URL(s);
+    if (u.protocol !== "http:" && u.protocol !== "https:") return null;
+    return { href: u.href, label: u.hostname.replace(/^www\./, "") };
+  } catch {
+    return null;
+  }
 }
 
-/** Map the model's plain extraction into the shared normalized shape. */
-function normalize(extracted: Extraction): NormalizedEnrichment {
-  const company = extracted.company ?? {};
-  const techItems = (company.techStack ?? [])
-    .filter((t) => typeof t === "string" && t.trim())
-    .map((name) => ({ name, kind: "coexistir" as const }));
+/** Default research query when the caller doesn't override it. */
+function buildQuery(input: EnrichmentInput): string {
+  const parts: string[] = [];
+  if (input.companyName) parts.push(input.companyName);
+  if (input.domain) parts.push(input.domain);
+  return parts.length
+    ? `${parts.join(" ")} company enrichment profile`
+    : "company enrichment profile";
+}
 
+// `status` is now the single inference signal (the model no longer self-reports a
+// separate `sourceType`); derive a human-readable type label from it for the badge.
+const SOURCE_TYPE_BY_STATUS: Record<LlmProvenance["status"], string> = {
+  validated: "declarado",
+  inferred: "inferido",
+  cold: "sin dato",
+};
+
+// Stakeholders carry a leaner shape (just `sourceUrl` + `status`, no self-reported
+// confidence); compute confidence from status instead, per the "confidence is
+// computed, not LLM-self-reported" convention.
+const CONFIDENCE_BY_STATUS: Record<LlmProvenance["status"], number> = {
+  validated: 0.9,
+  inferred: 0.5,
+  cold: 0.2,
+};
+
+/** Build the normalized provenance for a stakeholder from its lean self-report.
+ *  A link is surfaced only for a validated person citing a real page. */
+function stakeholderProv(
+  sourceUrl: string | null,
+  status: LlmProvenance["status"],
+): NormalizedProvenance {
+  const link = status === "validated" ? asSourceUrl(sourceUrl) : null;
   return {
-    summary: inferredString(company.summary),
-    region: inferredString(company.region),
-    industry: inferredString(company.industry),
+    source: link?.label ?? "Web research",
+    sourceType: SOURCE_TYPE_BY_STATUS[status],
+    confidence: CONFIDENCE_BY_STATUS[status],
+    status,
+    ...(link ? { url: link.href } : {}),
+  };
+}
+
+/** Map the model's self-reported provenance into our normalized shape, with
+ *  honest defaults and confidence clamped to [0,1] (the sent schema no longer
+ *  bounds it). */
+function fromLlmProv(p: LlmProvenance): NormalizedProvenance {
+  // Surface a clickable source link ONLY for non-inferred fields that cite a real
+  // URL. An inferred/cold field is a benchmark/estimate with no page to open, so it
+  // stays a plain badge (matches the "link only when the source is not inferido"
+  // rule and the never-fabricate-a-destination policy). Prefer the explicit
+  // `sourceUrl`; fall back to `source` when the model put a URL there instead.
+  const link =
+    p.status === "validated"
+      ? (asSourceUrl(p.sourceUrl) ?? asSourceUrl(p.source))
+      : null;
+  // If `source` itself is a URL, show a tidy hostname rather than the raw link.
+  const sourceLabel = asSourceUrl(p.source)?.label ?? p.source ?? "Web research";
+  return {
+    source: sourceLabel,
+    sourceType: SOURCE_TYPE_BY_STATUS[p.status],
+    confidence: clamp(p.confidence, 0, 1),
+    status: p.status,
+    ...(link ? { url: link.href } : {}),
+  };
+}
+
+/** Map the model's rich research output into the shared normalized shape. */
+function normalize(out: LlmResearchOutput): NormalizedEnrichment {
+  const WEB = "Web research";
+  return {
+    summary: out.summary.value?.trim()
+      ? { value: out.summary.value, prov: fromLlmProv(out.summary.provenance) }
+      : { value: "—", prov: coldProv(WEB) },
+    region: out.region.value?.trim()
+      ? { value: out.region.value, prov: fromLlmProv(out.region.provenance) }
+      : { value: "—", prov: coldProv(WEB) },
     workforcePercentage:
-      typeof company.desklessPercentage === "number"
-        ? { value: clamp(company.desklessPercentage, 0, 100), prov: webProv() }
+      typeof out.workforcePercentage.value === "number"
+        ? {
+            value: clamp(out.workforcePercentage.value, 0, 100),
+            prov: fromLlmProv(out.workforcePercentage.provenance),
+          }
         : null,
     headcount:
-      typeof company.headcount === "number"
-        ? { value: Math.max(0, Math.round(company.headcount)), prov: webProv() }
+      typeof out.headcount.value === "number"
+        ? {
+            value: Math.max(0, Math.round(out.headcount.value)),
+            prov: fromLlmProv(out.headcount.provenance),
+          }
         : null,
     techStack: {
-      items: techItems,
-      prov: techItems.length ? webProv() : coldProv(WEB_SOURCE),
+      items: out.techStack
+        .filter((t) => t.tool.trim())
+        .map((t) => ({
+          name: t.tool,
+          kind: t.relationshipWithHumand,
+          prov: fromLlmProv(t.provenance),
+        })),
+      prov: out.techStack.length
+        ? fromLlmProv(out.techStack[0].provenance)
+        : coldProv(WEB),
     },
-    stakeholders: (extracted.stakeholders ?? [])
-      .filter((s) => typeof s.name === "string" && s.name.trim())
+    stakeholders: out.stakeholders
+      // Keep anyone the model could place on the buying committee: rule #1 of the
+      // prompt makes it null an unverifiable NAME, so a real CFO with no confirmed
+      // name still arrives as { name: null, title: "CFO", decisionRole: ... }.
+      // Dropping those (old `s.name?.trim()` filter) hid stakeholders the research
+      // genuinely found; keep them when any identifying field is present.
+      .filter((s) => s.name?.trim() || s.title?.trim() || s.decisionRole?.trim())
       .map((s) => ({
-        name: s.name as string,
+        name: s.name?.trim() ?? "",
         title: s.title ?? "",
-        decisionRole: s.role ?? null,
+        decisionRole: s.decisionRole ?? null,
         email: s.email ?? null,
-        linkedinUrl:
-          s.linkedinUrl && /^https?:\/\//i.test(s.linkedinUrl)
-            ? s.linkedinUrl
-            : null,
-        prov: webProv(),
+        prov: stakeholderProv(s.sourceUrl, s.status),
       })),
-    painPoints: (extracted.pains ?? [])
-      .filter((p) => typeof p === "string" && p.trim())
-      .map((label) => ({ label, prov: webProv() })),
+    painPoints: out.painPoints
+      .filter((p) => p.painPoint.trim())
+      .map((p) => ({ label: p.painPoint, prov: fromLlmProv(p.provenance) })),
   };
 }
 
@@ -162,35 +200,99 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
     rawOptions?: WebSearchOptions,
   ): Promise<EnrichmentResult> {
     const options = optionsSchema.parse(rawOptions ?? {});
+    const name = input.companyName ?? "";
+    const domain = input.domain ?? (input.email?.split("@")[1] ?? "");
 
-    // 1) Live web search (tools path — no schema).
-    const openrouter = getOpenRouterProvider();
-    const webSearch = openrouter.tools.webSearch(
-      mapToOpenRouter(options) as Parameters<
-        typeof openrouter.tools.webSearch
-      >[0],
-    );
-    const findings = await generate({
-      provider: "openrouter",
-      tools: { web_search: webSearch },
-      prompt:
-        options.query ?? `Research this contact: ${JSON.stringify(input)}`,
+    // `engine: "exa"` forces OpenRouter's server-side search (model-agnostic)
+    // instead of "auto", which would only browse on models with native search.
+    // Default to 8 results (vs OpenRouter's default 5) for richer grounding.
+    const plugin: Record<string, unknown> = {
+      id: "web",
+      engine: "exa",
+      max_results: options.maxResults ?? 8,
+    };
+    if (options.searchPrompt) plugin.search_prompt = options.searchPrompt;
+
+    const query = options.query ?? buildQuery(input);
+
+    log.info("enrich started", { company: name, domain });
+    const t0 = Date.now();
+
+    let usage: GenerationUsage | undefined;
+    let extracted: LlmResearchOutput;
+    try {
+      extracted = await generate({
+        provider: "openrouter",
+        schema: llmResearchOutputSchema,
+        system: renderResearchPrompt(name, domain),
+        prompt: query,
+        // `usage: { include: true }` turns on OpenRouter usage accounting so the
+        // response carries the USD cost (surfaced as `costUsd` via onUsage).
+        providerOptions: {
+          openrouter: { plugins: [plugin], usage: { include: true } },
+        },
+        onUsage: (u) => {
+          usage = u;
+        },
+        // Dump the COMPLETE response (raw OpenRouter JSON, citations, cost,
+        // parsed object) for inspection. Only emitted at debug level (dev, or
+        // LOG_LEVEL=debug); pre-serialized since the logger takes scalars only.
+        // The replacer guards the SDK result's self-references (OpenRouter
+        // mirrors the parsed body onto `response.body`); Dates use their toJSON.
+        onResponse: (raw) => {
+          const seen = new WeakSet<object>();
+          const json = JSON.stringify(raw, (_key, v) => {
+            if (typeof v === "object" && v !== null) {
+              if (seen.has(v)) return "[Circular]";
+              seen.add(v);
+            }
+            return v;
+          });
+          log.debug("raw response", { response: json });
+        },
+      });
+    } catch (err) {
+      log.error("generate failed", {
+        errorMessage: err instanceof Error ? err.message : String(err),
+      });
+      throw err;
+    }
+
+    log.debug("extraction done", {
+      stakeholders: extracted.stakeholders.length,
+      painPoints: extracted.painPoints.length,
+      techItems: extracted.techStack.length,
     });
 
-    // 2) Extract plain facts (schema path — no tools).
-    const extracted = await generate({
-      provider: "openrouter",
-      schema: extractionSchema,
-      prompt: `Extract the following enrichment facts into the required JSON shape. Use null for anything unknown; do not invent data.\n\n${findings}`,
-    });
+    let data: NormalizedEnrichment;
+    try {
+      data = normalize(extracted);
+    } catch (err) {
+      log.error("normalize failed", {
+        errorMessage: err instanceof Error ? err.message : String(err),
+      });
+      throw err;
+    }
 
-    // 3) Normalize to the shared provenanced shape (provenance computed here).
-    const data = normalize(extracted);
+    log.info("enrich complete", {
+      durationMs: Date.now() - t0,
+      model: usage?.model,
+      inputTokens: usage?.inputTokens,
+      outputTokens: usage?.outputTokens,
+      totalTokens: usage?.totalTokens,
+      costUsd: usage?.costUsd != null ? Number(usage.costUsd.toFixed(4)) : undefined,
+      // 0 citations ⇒ web search didn't return sources (the "all inferred" smell).
+      citations: usage?.citations,
+    });
+    // Source URLs aren't PII; log a sample at debug for spot-checking grounding.
+    if (usage?.citationUrls?.length) {
+      log.debug("citations", { urls: usage.citationUrls.slice(0, 5).join(", ") });
+    }
 
     return {
       provider: "llm-websearch",
       data: enrichmentResultSchema.parse(data) as Record<string, unknown>,
-      raw: findings,
+      raw: extracted, // researched payload, kept for debugging/provenance
     };
   },
 };

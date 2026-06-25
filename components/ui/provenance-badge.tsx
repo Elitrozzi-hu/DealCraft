@@ -2,6 +2,9 @@ import type { ReactNode } from "react";
 
 import type { ProvenanceStatus } from "@/types";
 
+import { SourceLinkIcon } from "./source-link-icon";
+import { STATUS_META, StatusDot } from "./status-dot";
+
 export interface ProvenanceBadgeProps {
   source: string;
   sourceType: string;
@@ -13,27 +16,6 @@ export interface ProvenanceBadgeProps {
   /** Hide the source name (used in tight layouts). */
   compact?: boolean;
 }
-
-const meta: Record<
-  ProvenanceStatus,
-  { dot: string; word: string; cls: string }
-> = {
-  validated: {
-    dot: "●",
-    word: "validado",
-    cls: "bg-validated-soft text-validated border-validated/20",
-  },
-  inferred: {
-    dot: "◐",
-    word: "inferido",
-    cls: "bg-inferred-soft text-inferred border-inferred/20",
-  },
-  cold: {
-    dot: "○",
-    word: "cold start",
-    cls: "bg-cold-soft text-cold border-cold/20",
-  },
-};
 
 // --- Source icons ----------------------------------------------------------
 // A small inline glyph that hints at WHERE a datum came from (distinct from the
@@ -83,6 +65,7 @@ function SourceIcon() {
   );
 }
 
+
 function pickIcon(source: string): ReactNode {
   const s = source.toLowerCase();
   if (s.includes("linkedin")) return <LinkedInIcon />;
@@ -101,17 +84,17 @@ export function ProvenanceBadge({
   url,
   compact,
 }: ProvenanceBadgeProps) {
-  const m = meta[status];
+  const m = STATUS_META[status];
   const pct = Math.round(confidence * 100);
   const title = `${m.word} · ${source} (${sourceType}) · confianza ${pct}%${
     url ? ` · ${url}` : ""
   }`;
-  const cls = `inline-flex max-w-full items-center gap-1.5 whitespace-nowrap rounded-full border px-[7px] py-[3px] text-[10.5px] font-semibold leading-none ${m.cls}`;
+  const cls = `inline-flex max-w-full items-center gap-1.5 whitespace-nowrap rounded-full border px-[7px] py-[3px] text-[10.5px] font-semibold leading-none ${m.badge}`;
 
   const inner = (
     <>
       {pickIcon(source)}
-      <span className="text-[8px]">{m.dot}</span>
+      <StatusDot status={status} size={9} />
       {!compact && (
         <>
           {source}
@@ -119,7 +102,9 @@ export function ProvenanceBadge({
         </>
       )}
       {pct}%
-      {url && <span className="opacity-60">↗</span>}
+      {url && (
+        <SourceLinkIcon className="ml-0.5 shrink-0 opacity-70 transition-opacity group-hover:opacity-100" />
+      )}
     </>
   );
 
@@ -130,7 +115,7 @@ export function ProvenanceBadge({
         target="_blank"
         rel="noopener noreferrer"
         title={title}
-        className={`${cls} cursor-pointer transition-colors hover:underline`}
+        className={`${cls} group cursor-pointer transition-colors hover:underline`}
       >
         {inner}
       </a>

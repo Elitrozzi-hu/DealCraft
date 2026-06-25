@@ -11,7 +11,13 @@ import type {
   StakeholderDraft,
   TechKind,
 } from "@/types";
-import { Button, Card, Input, ProvenanceBadge } from "@/components/ui";
+import {
+  Card,
+  EmptyState,
+  ProvenanceBadge,
+  ProvenanceLegend,
+  SourceLinkIcon,
+} from "@/components/ui";
 import { CompsBlock } from "./comps-block";
 import { SolutionGraph } from "./solution-graph";
 import { StakeholdersBlock } from "./stakeholders-block";
@@ -20,10 +26,6 @@ export interface AnalysisPanelProps {
   deal: Deal;
   meta: DealMeta;
   coldStart: boolean;
-  possiblyMRR: number;
-  mrrConfirmed: boolean;
-  onConfirmMRR: () => void;
-  onEditMRR: (value: number) => void;
   onValidateHeadcount: () => void;
   stakeholders: Stakeholder[];
   onValidateStakeholder: (id: string) => void;
@@ -45,6 +47,27 @@ const techBorderLeft: Record<TechKind, string> = {
   integrar: "border-l-validated",
   coexistir: "border-l-cold",
 };
+
+// Section glyph for the empty tech-stack state — stacked layers.
+function StackGlyph() {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 2 2 7l10 5 10-5-10-5Z" />
+      <path d="M2 12l10 5 10-5M2 17l10 5 10-5" />
+    </svg>
+  );
+}
+
 
 function Section({
   title,
@@ -108,10 +131,6 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
     deal,
     meta,
     coldStart,
-    possiblyMRR,
-    mrrConfirmed,
-    onConfirmMRR,
-    onEditMRR,
     onValidateHeadcount,
     stakeholders,
     onValidateStakeholder,
@@ -126,19 +145,6 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
 
   const f = deal.firmographics;
   const [sub, setSub] = useState<SubTab>("empresa");
-  const [editingMRR, setEditingMRR] = useState(false);
-  const [mrrDraft, setMrrDraft] = useState("");
-
-  const openEditMRR = () => {
-    setMrrDraft(String(possiblyMRR));
-    setEditingMRR(true);
-  };
-  const saveMRR = () => {
-    const v = Number(mrrDraft);
-    if (!Number.isFinite(v) || v < 0) return;
-    onEditMRR(v);
-    setEditingMRR(false);
-  };
   const subTabs: [SubTab, string][] = [
     ["empresa", "Empresa"],
     ["solucion", "Solución"],
@@ -179,20 +185,28 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         ))}
       </div>
       <div className="-mt-1.5 text-xs text-cold">{subSub}</div>
+      <ProvenanceLegend className="rounded-xl border border-line bg-panel px-3 py-2" />
 
       {sub === "empresa" && (
         <>
           <Section title="Contexto">
-            <p className="m-0 mb-3.5 mt-0.5 text-[13px] leading-relaxed text-ink">
+            <p className="m-0 mt-0.5 text-[13px] leading-relaxed text-ink">
               {f.summary.value}
             </p>
+            <div className="mb-3.5 mt-2">
+              <ProvenanceBadge {...f.summary.prov} />
+            </div>
             <div className={`${kLabelCls} mb-2`}>Key metrics</div>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2.5">
-              <KMetric label="Región" v={meta.region} />
+              <KMetric label="Región" v={meta.region} prov={f.regionProv} />
               <KMetric label="Industria" v={meta.industry} prov={f.industry.prov} />
               <KMetric label="Workforce" v={meta.deskless} highlight prov={f.deskless.prov} />
               {!meta.headcountConflict ? (
-                <KMetric label="Headcount" v={`${meta.headcount} empleados`} />
+                <KMetric
+                  label="Headcount"
+                  v={`${meta.headcount} empleados`}
+                  prov={f.headcountProv}
+                />
               ) : (
                 <div className="rounded-xl border border-inferred/30 bg-inferred-soft p-2.5">
                   <div className={kLabelCls}>Headcount · conflicto</div>
@@ -210,17 +224,37 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             <div className={`${kLabelCls} mb-2 mt-4`}>
               Tech stack ({f.tech.length})
             </div>
-            <div className="flex flex-wrap gap-[7px]">
-              {f.tech.map((t) => (
-                <span
-                  key={t.t}
-                  title={t.kind}
-                  className={`rounded-md border border-line border-l-[3px] bg-panel px-2.5 py-1 text-xs font-semibold text-ink ${techBorderLeft[t.kind]}`}
-                >
-                  {t.t}
-                </span>
-              ))}
-            </div>
+            {f.tech.length === 0 ? (
+              <EmptyState
+                icon={<StackGlyph />}
+                title="Sin tecnología detectada"
+                hint="No encontramos herramientas de RR.HH., nómina o comunicación interna con evidencia de uso. Aparecerán acá al detectarse."
+              />
+            ) : (
+              <div className="flex flex-wrap gap-[7px]">
+                {f.tech.map((t) => {
+                  const chipCls = `inline-flex items-center gap-1 rounded-md border border-line border-l-[3px] bg-panel px-2.5 py-1 text-xs font-semibold text-ink ${techBorderLeft[t.kind]}`;
+                  const url = t.prov?.status !== "inferred" ? t.prov?.url : undefined;
+                  return url ? (
+                    <a
+                      key={t.t}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${t.kind} · ${t.prov?.source ?? "fuente"}`}
+                      className={`${chipCls} transition-colors hover:border-violet/40 hover:text-violet`}
+                    >
+                      {t.t}
+                      <SourceLinkIcon />
+                    </a>
+                  ) : (
+                    <span key={t.t} title={t.kind} className={chipCls}>
+                      {t.t}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
           </Section>
 
           <Section title="Stakeholders">
@@ -248,87 +282,6 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
               onAdd={onAddPain}
               onRemove={onRemovePain}
             />
-          </Section>
-
-          <Section
-            title={mrrConfirmed ? "MRR confirmado" : "Posible MRR"}
-            sub="Valor del deal estimado por headcount × precio. Se confirma cuando el decisor está involucrado."
-          >
-            <div className="flex flex-wrap items-start justify-between gap-2.5">
-              <div>
-                {editingMRR ? (
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[15px] font-bold text-cold">USD</span>
-                    <Input
-                      id="mrr-edit"
-                      compact
-                      type="number"
-                      min={0}
-                      className="w-28"
-                      value={mrrDraft}
-                      onChange={(e) => setMrrDraft(e.target.value)}
-                    />
-                    <span className="text-xs text-cold">/ mes</span>
-                    <Button small primary onClick={saveMRR}>
-                      Guardar
-                    </Button>
-                    <Button small onClick={() => setEditingMRR(false)}>
-                      Cancelar
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-baseline gap-1.5">
-                    <span
-                      className={`text-[26px] font-extrabold ${mrrConfirmed ? "text-validated" : "text-inferred"}`}
-                    >
-                      USD {possiblyMRR}
-                    </span>
-                    <span className="text-xs text-cold">/ mes</span>
-                    {!mrrConfirmed && (
-                      <span className="rounded-md bg-inferred-soft px-1.5 py-0.5 text-[10.5px] font-bold text-inferred">
-                        estimado
-                      </span>
-                    )}
-                    {!mrrConfirmed && (
-                      <button
-                        type="button"
-                        onClick={openEditMRR}
-                        aria-label="Editar MRR"
-                        title="Editar MRR"
-                        className="ml-0.5 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center self-center rounded-full border border-line bg-panel text-cold transition-all hover:border-violet/40 hover:bg-violet-soft hover:text-violet hover:shadow-[0_1px_4px_rgba(44,90,246,0.18)] focus:outline-none focus-visible:ring-2 focus-visible:ring-violet/50 active:scale-95"
-                      >
-                        <svg
-                          viewBox="0 0 24 24"
-                          className="h-[15px] w-[15px]"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden
-                        >
-                          <path d="M12 20h9" />
-                          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="max-w-[180px] text-right">
-                {mrrConfirmed ? (
-                  <span className="text-xs font-bold text-validated">
-                    ✓ Cifra cerrada
-                    <br />
-                    elegible en el proposal
-                  </span>
-                ) : (
-                  <Button small primary onClick={onConfirmMRR}>
-                    Confirmar MRR
-                  </Button>
-                )}
-              </div>
-            </div>
           </Section>
         </>
       )}

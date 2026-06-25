@@ -10,7 +10,6 @@ export interface StageBarProps {
   stakeholders: Stakeholder[];
   pains: Pain[];
   scores: Score;
-  mrrConfirmed: boolean;
   onMove: () => void;
   onSelectStage: (stage: StageKey) => void;
 }
@@ -66,7 +65,6 @@ export function StageBar({
   stakeholders,
   pains,
   scores,
-  mrrConfirmed,
   onMove,
   onSelectStage,
 }: StageBarProps) {
@@ -109,18 +107,12 @@ export function StageBar({
       ],
     },
     md: {
-      goal: "Alinear el ROI y confirmar el MRR.",
-      items: [
-        ["Decisor involucrado", dmEngaged],
-        ["MRR confirmado", mrrConfirmed],
-      ],
+      goal: "Alinear el ROI.",
+      items: [["Decisor involucrado", dmEngaged]],
     },
     procurement: {
       goal: "Confirmar pricing y cerrar.",
-      items: [
-        ["MRR confirmado", mrrConfirmed],
-        ["Propuesta enviada", false],
-      ],
+      items: [["Propuesta enviada", false]],
     },
   };
   const plan = plans[stage];

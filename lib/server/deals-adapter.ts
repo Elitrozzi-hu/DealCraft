@@ -15,10 +15,14 @@ import { mapEnrichmentToDeal } from "./enrichment-to-deal";
  * `req.enrichmentProvider` (plug-and-play from the client), falling back to the
  * `ENRICHMENT_PROVIDER` env default. Errors propagate to the route handler,
  * which surfaces them on the analysis error screen.
+ *
+ * Returns the resolved provider name alongside the result so the route can log
+ * which provider actually ran (not just the per-request hint, which is empty
+ * when the `ENRICHMENT_PROVIDER` env default is used).
  */
 export async function enrichDeal(
   req: DealSearchRequest,
-): Promise<DealSearchResult> {
+): Promise<{ provider: string; result: DealSearchResult }> {
   const input: EnrichmentInput = {
     email: req.contactEmail ?? req.email,
     domain: req.companyDomain ?? req.website,
@@ -26,9 +30,11 @@ export async function enrichDeal(
     companyName: req.companyName ?? req.name,
   };
 
-  const result = await getEnrichmentProvider(req.enrichmentProvider).enrich(input);
-  return mapEnrichmentToDeal(result.data, {
+  const enrichment = await getEnrichmentProvider(req.enrichmentProvider).enrich(input);
+  const result = mapEnrichmentToDeal(enrichment.data, {
     resolvedName: req.companyName ?? req.name,
     stage: lifecycleStageToStageKey(req.lifecycleStage),
+    deal: req.deal,
   });
+  return { provider: enrichment.provider, result };
 }

@@ -9,6 +9,19 @@ export interface LeadSearchRequest {
 }
 
 /**
+ * A deal associated with a CRM contact, resolved at search time. The stage
+ * *label* (not the numeric HubSpot stage id) is resolved at read time; vendor
+ * fields are normalized to typed-or-null so the UI never sees a raw id.
+ */
+export interface LeadDeal {
+  id: string;
+  name: string | null; // dealname
+  stageLabel: string | null; // dealstage → resolved label (never the id)
+  amount: number | null; // amount
+  industry: string | null; // industria_hu
+}
+
+/**
  * A single CRM contact candidate; vendor fields normalized to string-or-null.
  * Carries the curated HubSpot Contacts property set kept per search.
  */
@@ -31,6 +44,8 @@ export interface LeadCandidate {
   pipeline: string | null; // hs_pipeline
   scoringTier: string | null; // hs_predictivescoringtier
   predictiveScore: string | null; // hs_predictivecontactscore_v2
+  // Associated deals, resolved at search time (empty when the contact has none).
+  deals: LeadDeal[];
 }
 
 export interface LeadSearchResult {

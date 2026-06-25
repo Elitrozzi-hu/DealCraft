@@ -102,16 +102,7 @@ export const ROLES: Role[] = [
   "Blocker",
 ];
 
-// ---------------- pricing & segmentation defaults ----------------
-/** Unit price per employee (USD) used for the MRR estimate. */
-export const UNIT_PRICE = 4.5;
-/** Volume discount factor applied to the MRR estimate. */
-export const VOLUME_FACTOR = 0.85;
-
+// ---------------- segmentation defaults ----------------
 /** Derive a market segment from a headcount. */
 export const segmentOf = (headcount: number): Segment =>
   headcount >= 1000 ? "Enterprise" : headcount >= 200 ? "Mid-Market" : "SMB";
-
-/** Estimated possible MRR from a headcount (headcount × unit price × discount). */
-export const estimateMRR = (headcount: number): number =>
-  Math.round(headcount * UNIT_PRICE * VOLUME_FACTOR);

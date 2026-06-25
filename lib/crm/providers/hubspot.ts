@@ -5,6 +5,7 @@ import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts
 import type { SimplePublicObject } from "@hubspot/api-client/lib/codegen/crm/contacts/models/SimplePublicObject";
 
 import { getHubspotAccessToken } from "@/lib/crm/providers/hubspot-auth";
+import { fetchDealsForContacts } from "@/lib/crm/providers/hubspot-deals";
 import type { CrmProvider, LeadSearchInput } from "@/lib/crm/types";
 import type { LeadCandidate, LeadSearchResult } from "@/types";
 
@@ -75,6 +76,8 @@ function toCandidate(result: SimplePublicObject): LeadCandidate {
     pipeline: prop(p, "hs_pipeline"),
     scoringTier: prop(p, "hs_predictivescoringtier"),
     predictiveScore: prop(p, "hs_predictivecontactscore_v2"),
+    // Populated in a second pass (see `attachDeals`); empty until then.
+    deals: [],
   };
 }
 
@@ -114,10 +117,24 @@ export const hubspotCrmProvider: CrmProvider = {
       throw new Error(`HubSpot search failed: ${detail}`);
     }
 
+    const candidates = response.results.map(toCandidate);
+
+    // Second pass: attach each contact's associated deals in one batched lookup
+    // (read-only). A deal-side failure surfaces as a vendor error (→ 502) rather
+    // than silently dropping the deals.
+    if (candidates.length) {
+      const dealsByContact = await fetchDealsForContacts(
+        candidates.map((c) => c.id),
+      );
+      for (const candidate of candidates) {
+        candidate.deals = dealsByContact.get(candidate.id) ?? [];
+      }
+    }
+
     return {
       provider: "hubspot",
       total: response.total,
-      candidates: response.results.map(toCandidate),
+      candidates,
     };
   },
 };

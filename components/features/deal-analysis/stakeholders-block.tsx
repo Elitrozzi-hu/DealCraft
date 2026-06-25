@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Role, Stakeholder, StakeholderDraft } from "@/types";
 import { ROLES } from "@/lib/constants";
-import { Button, Input, ProvenanceBadge } from "@/components/ui";
+import { Button, EmptyState, Input, ProvenanceBadge } from "@/components/ui";
 
 export interface StakeholdersBlockProps {
   stakeholders: Stakeholder[];
@@ -41,6 +41,52 @@ const roleChipCls: Record<RoleToken, string> = {
 
 const selectCls =
   "rounded-lg border border-line bg-panel px-2.5 py-[7px] text-[13px] text-ink outline-none focus-visible:ring-2 focus-visible:ring-violet/50";
+
+// Small chain-link icon for the "open source" action button. Inherits text color.
+function LinkIcon() {
+  return (
+    <svg
+      width={12}
+      height={12}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className="shrink-0"
+    >
+      <path d="M9 12a3 3 0 0 0 4.24 0l3-3a3 3 0 0 0-4.24-4.24l-1 1" />
+      <path d="M15 12a3 3 0 0 0-4.24 0l-3 3a3 3 0 0 0 4.24 4.24l1-1" />
+    </svg>
+  );
+}
+
+// Section glyph for the empty state — a small buying-committee silhouette.
+function PeopleGlyph() {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M16 19v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="3.2" />
+      <path d="M22 19v-2a4 4 0 0 0-3-3.87M16 3.6a4 4 0 0 1 0 6.8" />
+    </svg>
+  );
+}
+
+// Anchor styled to match a small default Button (Button itself is <button>-only).
+const linkBtnCls =
+  "inline-flex items-center justify-center gap-1.5 rounded-full border border-line bg-panel px-3 py-[5px] text-xs font-semibold text-ink transition-colors hover:border-violet/40 hover:text-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-violet/50";
 
 const emptyDraft: StakeholderDraft = {
   name: "",
@@ -119,6 +165,21 @@ export function StakeholdersBlock({
     </div>
   );
 
+  if (stakeholders.length === 0 && editId !== "new") {
+    return (
+      <EmptyState
+        icon={<PeopleGlyph />}
+        title="Sin stakeholders todavía"
+        hint="El research no encontró decisores verificables para este deal. Agregá uno a mano o reintentá el enrichment."
+        action={
+          <Button small onClick={startAdd}>
+            ＋ agregar stakeholder
+          </Button>
+        }
+      />
+    );
+  }
+
   return (
     <div>
       <div className="mb-1 flex justify-end">
@@ -132,6 +193,8 @@ export function StakeholdersBlock({
         {stakeholders.map((s) => {
           if (editId === s.id) return <div key={s.id}>{form}</div>;
           const token = roleToken[s.role];
+          // Personal profile if we have it, else the page the person was found on.
+          const sourceLink = s.linkedinUrl ?? s.sourceUrl;
           return (
             <div
               key={s.id}
@@ -187,9 +250,23 @@ export function StakeholdersBlock({
                   <Button small onClick={() => startEdit(s)}>
                     editar
                   </Button>
-                  <Button small onClick={() => onRemove(s.id)}>
-                    ✕
-                  </Button>
+                  {sourceLink ? (
+                    // Has a real source URL → swap delete for an open-source link.
+                    <a
+                      href={sourceLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`Abrir fuente de ${s.name}`}
+                      aria-label={`Abrir fuente de ${s.name}`}
+                      className={linkBtnCls}
+                    >
+                      <LinkIcon />
+                    </a>
+                  ) : (
+                    <Button small onClick={() => onRemove(s.id)}>
+                      ✕
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

@@ -18,6 +18,10 @@ export const provenanceSchema = z.object({
   sourceType: z.string(),
   confidence: z.number().min(0).max(1),
   status: z.enum(["validated", "inferred", "cold"]),
+  /** Resolvable source URL when one genuinely exists (the UI turns the badge into
+   *  a link to it). Optional — only populated for non-inferred fields a provider
+   *  could trace back to a real page; never fabricated. */
+  url: z.string().optional(),
 });
 
 export type NormalizedProvenance = z.infer<typeof provenanceSchema>;
@@ -29,7 +33,7 @@ const provenanced = <T extends z.ZodTypeAny>(value: T) =>
 export const enrichmentResultSchema = z.object({
   summary: provenanced(z.string()),
   region: provenanced(z.string()),
-  industry: provenanced(z.string()),
+  // `industry` is sourced from the HubSpot deal (`industria_hu`), not enrichment.
   workforcePercentage: provenanced(z.number().min(0).max(100)).nullish(),
   headcount: provenanced(z.number().int().min(0)).nullish(),
   techStack: z.object({
@@ -37,6 +41,9 @@ export const enrichmentResultSchema = z.object({
       z.object({
         name: z.string(),
         kind: z.enum(TECH_KINDS),
+        // Per-tool provenance (each tool can come from a different page). Optional
+        // so providers that only have a stack-level source still validate.
+        prov: provenanceSchema.optional(),
       }),
     ),
     prov: provenanceSchema,

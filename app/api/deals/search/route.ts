@@ -36,11 +36,15 @@ export async function POST(request: Request) {
     .event("deals/search.request")
     .set("method", "POST")
     .set("path", "/api/deals/search")
+    // Per-request hint; overwritten with the resolved provider on success.
     .set("provider", body.enrichmentProvider ?? "default");
   const t0 = Date.now();
   try {
-    const result = await enrichDeal(body);
-    ev.set("status", 200).set("durationMs", Date.now() - t0).emit();
+    const { provider, result } = await enrichDeal(body);
+    ev.set("provider", provider)
+      .set("status", 200)
+      .set("durationMs", Date.now() - t0)
+      .emit();
     return Response.json(result);
   } catch (err) {
     const { status, error } = mapEnrichError(err);

@@ -3,7 +3,9 @@ import "server-only";
 import type {
   Deal,
   DealSearchResult,
+  LeadDeal,
   Pain,
+  ProvenancedValue,
   Role,
   StageKey,
   Stakeholder,
@@ -43,7 +45,9 @@ function toRole(decisionRole: string | null | undefined): Role {
 function toStakeholders(data: NormalizedEnrichment): Stakeholder[] {
   return data.stakeholders.map((s, i) => ({
     id: `cl-sh-${i}`,
-    name: s.name,
+    // The research can place a role without a verifiable name (it nulls names it
+    // can't confirm). Show the gap honestly instead of hiding the stakeholder.
+    name: s.name.trim() || "Por identificar",
     title: s.title,
     role: toRole(s.decisionRole),
     conf: s.prov.confidence,
@@ -53,6 +57,7 @@ function toStakeholders(data: NormalizedEnrichment): Stakeholder[] {
       : `Identificado por ${s.prov.source} (${s.prov.sourceType}).`,
     validated: s.prov.status === "validated",
     linkedinUrl: s.linkedinUrl ?? undefined,
+    sourceUrl: s.prov.url,
   }));
 }
 
@@ -68,23 +73,45 @@ function toPains(data: NormalizedEnrichment): Pain[] {
     evidence: `${p.prov.source} · ${p.prov.sourceType}`,
     module: null,
     validated: p.prov.status === "validated",
+    sourceUrl: p.prov.url,
   }));
 }
 
 function toTech(data: NormalizedEnrichment): TechItem[] {
-  return data.techStack.items.map((t) => ({ t: t.name, kind: t.kind }));
+  return data.techStack.items.map((t) => ({ t: t.name, kind: t.kind, prov: t.prov }));
+}
+
+/**
+ * Industry is now sourced from the HubSpot deal (`industria_hu`), not enrichment.
+ * A present value is the AE's declared CRM fact → `HubSpot · declarado · validated`
+ * (confidence 1); an absent value degrades to an honest cold provenance.
+ */
+function toIndustry(deal: LeadDeal | undefined): ProvenancedValue {
+  return deal?.industry
+    ? {
+        value: deal.industry,
+        prov: {
+          source: "HubSpot",
+          sourceType: "declarado",
+          confidence: 1,
+          status: "validated",
+        },
+      }
+    : { value: "—", prov: coldProv("HubSpot") };
 }
 
 /**
  * Map a validated normalized enrichment payload to a `DealSearchResult`.
  * @param raw the provider's `EnrichmentResult.data` (re-validated here so a
  *   misconfigured provider fails loudly instead of rendering garbage).
- * @param ctx the resolved company name + the deal stage (mapped upstream from
- *   the HubSpot lead's `lifecycleStage`).
+ * @param ctx the resolved company name, the deal stage (mapped upstream from
+ *   the HubSpot lead's `lifecycleStage`), and the chosen HubSpot deal (when the
+ *   analysis was started from a contact with deals) — the source of industry,
+ *   amount, and the deal-stage label.
  */
 export function mapEnrichmentToDeal(
   raw: unknown,
-  ctx: { resolvedName: string; stage: StageKey },
+  ctx: { resolvedName: string; stage: StageKey; deal?: LeadDeal },
 ): DealSearchResult {
   const data = enrichmentResultSchema.parse(raw);
 
@@ -106,14 +133,22 @@ export function mapEnrichmentToDeal(
     region: data.region.value,
     firmographics: {
       summary: data.summary,
-      industry: data.industry,
+      // Industry comes from the chosen HubSpot deal now, not enrichment.
+      industry: toIndustry(ctx.deal),
+      regionProv: data.region.prov,
       headcount: data.headcount?.value ?? 0,
       headcountProv: data.headcount?.prov ?? coldProv("Enrichment"),
       deskless,
       tech: toTech(data),
       techProv: data.techStack.prov,
     },
-    hubspot: { dealStage: "", lastActivity: "", notes: "" },
+    hubspot: {
+      // Stage label + amount from the chosen deal; "" / null when there is none.
+      dealStage: ctx.deal?.stageLabel ?? "",
+      amount: ctx.deal?.amount ?? null,
+      lastActivity: "",
+      notes: "",
+    },
   };
 
   return {

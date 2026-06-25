@@ -3,8 +3,10 @@ import { Metric } from "@/components/ui";
 
 export interface DealHeaderProps {
   meta: DealMeta;
-  possiblyMRR: number;
-  mrrConfirmed: boolean;
+  /** Resolved HubSpot deal-stage label (never the numeric id); "" → "—". */
+  dealStage: string;
+  /** HubSpot deal amount; null → "—". */
+  amount: number | null;
   /** Back to the input screen to start a new analysis. */
   onBack: () => void;
 }
@@ -20,8 +22,8 @@ const initials = (n: string): string =>
 
 export function DealHeader({
   meta,
-  possiblyMRR,
-  mrrConfirmed,
+  dealStage,
+  amount,
   onBack,
 }: DealHeaderProps) {
   return (
@@ -67,17 +69,15 @@ export function DealHeader({
           </div>
         </div>
 
-        {/* metrics — horizontal scroll on mobile */}
+        {/* metrics — stage + amount straight from HubSpot; scroll on mobile */}
         <div className="flex items-stretch overflow-x-auto md:flex-wrap md:overflow-x-visible">
-          <Metric label="MRR" last>
-            <span
-              className={`text-[17px] font-extrabold ${mrrConfirmed ? "text-validated" : "text-inferred"}`}
-            >
-              USD {possiblyMRR}
+          <Metric label="Etapa">
+            <span className="text-[17px] font-extrabold">{dealStage || "—"}</span>
+          </Metric>
+          <Metric label="Monto" last>
+            <span className="text-[17px] font-extrabold">
+              {amount != null ? `USD ${amount.toLocaleString("en-US")}` : "—"}
             </span>
-            {!mrrConfirmed && (
-              <span className="text-[10px] font-bold text-inferred">est.</span>
-            )}
           </Metric>
         </div>
       </div>
