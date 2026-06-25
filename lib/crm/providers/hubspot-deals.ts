@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getHubspotAccessToken } from "@/lib/crm/providers/hubspot-auth";
-import type { LeadDeal } from "@/types";
+import type { HubSpotSuccessCase, LeadDeal } from "@/types";
 
 // HubSpot **Deal** lookup — isolated from the Contacts search contract in
 // `hubspot.ts`. Resolves the deals associated with a set of contacts and their
@@ -33,6 +33,11 @@ const DEAL_PROPERTIES = [
   "dealstage",
   "amount",
   "industria_hu",
+  "segment_v2",
+  "pain_detected",
+  "integraciones",
+  "integration_modules",
+  "modulos_que_les_interesan",
 ] as const;
 
 /** Stay well under the route's request budget (mirrors `hubspot-auth.ts`). */
@@ -222,6 +227,11 @@ export async function fetchDealsForContacts(
       stageLabel: stageId ? (pipelines.labels.get(stageId) ?? null) : null,
       amount: toAmount(p.amount),
       industry: toText(p.industria_hu),
+      segment: toText(p.segment_v2),
+      painDetected: toText(p.pain_detected),
+      integraciones: toText(p.integraciones),
+      integrationModules: toText(p.integration_modules),
+      modulosDeInteres: toText(p.modulos_que_les_interesan),
     };
   };
 
@@ -230,4 +240,75 @@ export async function fetchDealsForContacts(
     result.set(contactId, dealIds.filter((id) => !isBdrDeal(id)).map(toLeadDeal));
   }
   return result;
+}
+
+// --- HubSpot deal search response shape (private to this file) ---------------
+
+interface DealsSearchResponse {
+  results?: Array<{
+    id?: string;
+    properties?: Record<string, string | null>;
+  }>;
+}
+
+// HubSpot stage ids for Won and Success Red List outcomes.
+const COMPARABLE_STAGE_IDS = ["143507540", "56458167"] as const;
+
+/**
+ * Fetch the 10 most-recent Won / Red-List deals that match the given industry
+ * and segment. Called once per analysis request; returns `[]` when neither
+ * industry nor segment is provided, or when the HubSpot search returns nothing.
+ */
+export async function fetchSuccessCases(input: {
+  industry: string | null;
+  segment: string | null;
+}): Promise<HubSpotSuccessCase[]> {
+  const { industry, segment } = input;
+
+  const token = await getHubspotAccessToken();
+
+  // Fetch stage labels independently — no shared pipeline map from lead-search.
+  const pipelines = await fetchPipelineInfo(token);
+
+  // Build filter list — skip a filter when its value is absent.
+  type Filter = { propertyName: string; operator: string; value?: string; values?: string[] };
+  const filters: Filter[] = [
+    {
+      propertyName: "dealstage",
+      operator: "IN",
+      values: [...COMPARABLE_STAGE_IDS],
+    },
+  ];
+  if (industry) {
+    filters.push({ propertyName: "industria_hu", operator: "EQ", value: industry });
+  }
+  if (segment) {
+    filters.push({ propertyName: "segment_v2", operator: "EQ", value: segment });
+  }
+
+  const body = {
+    filterGroups: [{ filters }],
+    sorts: [{ propertyName: "closedate", direction: "DESCENDING" }],
+    properties: ["dealname", "dealstage", "amount", "industria_hu", "segment_v2"],
+    limit: 10,
+  };
+
+  const data = await hubspotFetch<DealsSearchResponse>(
+    token,
+    "/crm/v3/objects/deals/search",
+    { method: "POST", body: JSON.stringify(body) },
+  );
+
+  return (data.results ?? []).map((row) => {
+    const p = row.properties ?? {};
+    const stageId = toText(p.dealstage);
+    return {
+      id: row.id ?? "",
+      name: toText(p.dealname) ?? "—",
+      industry: toText(p.industria_hu),
+      segment: toText(p.segment_v2),
+      stageLabel: stageId ? (pipelines.labels.get(stageId) ?? null) : null,
+      amount: toAmount(p.amount),
+    };
+  });
 }

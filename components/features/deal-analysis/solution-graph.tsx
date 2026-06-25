@@ -112,6 +112,9 @@ export function SolutionGraph({
                         ? "✓ validado"
                         : `inferido ${Math.round(p.conf * 100)}%`}
                     </span>
+                    {p.evidence && (
+                      <span className="text-[10px] text-cold">{p.evidence}</span>
+                    )}
                     {p.sourceUrl && (
                       <a
                         href={p.sourceUrl}

@@ -1,8 +1,8 @@
-import type { Comparable } from "@/types";
-import { MOCK_COMPARABLES, MOCK_COMP_REFERENCE } from "@/lib/fixtures";
+import type { SuccessCase, HubSpotSuccessCase } from "@/types";
+import { MOCK_SUCCESS_CASES, MOCK_COMP_REFERENCE } from "@/lib/fixtures";
 import { ProvenanceBadge } from "@/components/ui";
 
-const similarity = (c: Comparable): number => {
+const similarity = (c: SuccessCase): number => {
   const ind = 1;
   const dk = 1 - Math.min(1, Math.abs(c.deskless - MOCK_COMP_REFERENCE.deskless) / 40);
   const sz = 1 - Math.min(1, Math.abs(c.size - MOCK_COMP_REFERENCE.size) / 400);
@@ -10,11 +10,65 @@ const similarity = (c: Comparable): number => {
 };
 
 export interface CompsBlockProps {
-  comparables?: Comparable[];
+  successCases?: SuccessCase[];
+  /** When provided, renders real HubSpot data instead of the mock path. */
+  hubspotSuccessCases?: HubSpotSuccessCase[];
 }
 
-export function CompsBlock({ comparables = MOCK_COMPARABLES }: CompsBlockProps) {
-  const ranked = comparables
+export function CompsBlock({
+  successCases = MOCK_SUCCESS_CASES,
+  hubspotSuccessCases,
+}: CompsBlockProps) {
+  // Real HubSpot data path
+  if (hubspotSuccessCases !== undefined) {
+    if (hubspotSuccessCases.length === 0) {
+      return (
+        <div className="py-4 text-center text-[13px] text-cold">
+          No hay casos de éxito en HubSpot para este segmento e industria
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className="mb-2 flex justify-between">
+          <span className="text-[11.5px] text-cold">
+            Deals ganados y Red List · misma industria y segmento
+          </span>
+          <ProvenanceBadge
+            source="HubSpot"
+            sourceType="declarado"
+            confidence={1}
+            status="validated"
+          />
+        </div>
+        {hubspotSuccessCases.map((c) => {
+          const isWon = c.stageLabel?.toLowerCase().includes("won") ||
+            c.stageLabel?.toLowerCase().includes("ganado");
+          return (
+            <div key={c.id} className="border-t border-line py-2.5">
+              <div className="flex items-center justify-between gap-2">
+                <b className="min-w-0 truncate text-[13px]">{c.name}</b>
+                <span
+                  className={`whitespace-nowrap rounded-md px-2 py-0.5 text-[10.5px] font-extrabold ${isWon ? "bg-validated-soft text-validated" : "bg-risk-soft text-risk"}`}
+                >
+                  {c.stageLabel ?? "—"}
+                </span>
+              </div>
+              <div className="mt-0.5 text-[11px] text-cold">
+                {[c.industry, c.segment, c.amount != null ? `USD ${c.amount}` : null]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // Mock fallback path (used when hubspotSuccessCases is not provided)
+  const ranked = successCases
     .map((c) => ({ ...c, s: similarity(c) }))
     .sort((a, b) => b.s - a.s);
   const wins = ranked.filter((c) => c.result === "won");

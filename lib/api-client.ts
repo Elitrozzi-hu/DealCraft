@@ -12,6 +12,8 @@ import type {
   LeadSearchResult,
   MaterialsRequest,
   MaterialsResult,
+  SignalsRequest,
+  SignalsResult,
 } from "@/types";
 
 /** Thrown on any non-2xx API response. */
@@ -65,6 +67,10 @@ export function searchLeads(req: LeadSearchRequest): Promise<LeadSearchResult> {
 
 export function generateMaterials(req: MaterialsRequest): Promise<MaterialsResult> {
   return postJson<MaterialsRequest, MaterialsResult>("/api/materials", req);
+}
+
+export function searchSignals(req: SignalsRequest): Promise<SignalsResult> {
+  return postJson<SignalsRequest, SignalsResult>("/api/signals", req);
 }
 
 /** Generates a `.pptx` and returns it as a Blob for the browser to download. */

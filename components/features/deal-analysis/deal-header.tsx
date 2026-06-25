@@ -69,7 +69,7 @@ export function DealHeader({
           </div>
         </div>
 
-        {/* metrics — stage + amount straight from HubSpot; scroll on mobile */}
+        {/* metrics — stage + amount + tier straight from HubSpot; scroll on mobile */}
         <div className="flex items-stretch overflow-x-auto md:flex-wrap md:overflow-x-visible">
           <Metric label="Etapa">
             <span className="text-[17px] font-extrabold">{dealStage || "—"}</span>

@@ -3,7 +3,7 @@
 // client state and back the stub route handlers. See PLAN Task 3.
 
 import type {
-  Comparable,
+  SuccessCase,
   Deal,
   DealSearchRequest,
   Pain,
@@ -102,6 +102,8 @@ export const MOCK_DEAL: Deal = {
     lastActivity: "2026-06-17 · call de discovery (37 min)",
     notes:
       "Diego confirmó dolor de comunicación con choferes. Mariana quiere medir alcance. Falta involucrar a CFO.",
+    segment: null,
+    integraciones: null,
   },
 };
 
@@ -278,13 +280,13 @@ export const MOCK_SEARCH_STEPS: string[] = [
   "Compilando procedencia…",
 ];
 
-/** Reference firmographics for the comparables similarity calc. */
+/** Reference firmographics for the success cases similarity calc. */
 export const MOCK_COMP_REFERENCE: { deskless: number; size: number } = {
   deskless: 82,
   size: 485,
 };
 
-export const MOCK_COMPARABLES: Comparable[] = [
+export const MOCK_SUCCESS_CASES: SuccessCase[] = [
   {
     co: "Distribuidora Cuyo",
     industry: "Distribución alimentos",

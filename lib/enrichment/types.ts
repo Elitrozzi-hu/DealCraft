@@ -21,6 +21,9 @@ export interface EnrichmentResult {
   data: Record<string, unknown>;
   /** Raw vendor response, kept for debugging/provenance. */
   raw?: unknown;
+  /** Provider-specific metadata (cost, latency, token usage, etc.) not part of
+   *  the normalized data. Consumers (e.g. benchmark scripts) may read this. */
+  meta?: Record<string, unknown>;
 }
 
 /** Strategy interface implemented by every enrichment provider. */

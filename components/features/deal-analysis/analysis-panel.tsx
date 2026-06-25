@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import type {
   Deal,
   DealMeta,
+  HubSpotSuccessCase,
   Pain,
   PainDraft,
   Provenance,
@@ -16,10 +17,11 @@ import {
   EmptyState,
   ProvenanceBadge,
   ProvenanceLegend,
-  SourceLinkIcon,
+  SourceLinkButton,
 } from "@/components/ui";
 import { CompsBlock } from "./comps-block";
-import { SolutionGraph } from "./solution-graph";
+import { PainsBlock } from "./pains-block";
+import { SignalsBlock } from "./signals-block";
 import { StakeholdersBlock } from "./stakeholders-block";
 
 export interface AnalysisPanelProps {
@@ -36,9 +38,10 @@ export interface AnalysisPanelProps {
   onValidatePain: (id: string) => void;
   onAddPain: (draft: PainDraft) => void;
   onRemovePain: (id: string) => void;
+  successCases: HubSpotSuccessCase[];
 }
 
-type SubTab = "empresa" | "solucion" | "intel";
+type SubTab = "empresa" | "dolores" | "intel" | "signals";
 
 const kLabelCls = "text-[10px] font-bold uppercase tracking-wide text-cold";
 
@@ -99,18 +102,30 @@ function KMetric({
   v,
   prov,
   highlight,
+  tooltip,
 }: {
   label: string;
   v: string;
   prov?: Provenance;
   highlight?: boolean;
+  tooltip?: string;
 }) {
   return (
     <div
       className={`min-w-0 rounded-xl border p-2.5 ${highlight ? "border-violet/30 bg-violet-soft" : "border-line bg-panel"}`}
     >
-      <div className={`${kLabelCls} ${highlight ? "text-violet" : ""}`}>
+      <div className={`flex items-center gap-1 ${kLabelCls} ${highlight ? "text-violet" : ""}`}>
         {label}
+        {tooltip && (
+          <span className="group/tip relative cursor-help" aria-label={tooltip}>
+            <svg width={11} height={11} viewBox="0 0 16 16" fill="currentColor" aria-hidden className="opacity-50 group-hover/tip:opacity-100">
+              <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 1.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11ZM8 5a.75.75 0 1 0 0 1.5A.75.75 0 0 0 8 5Zm-.75 2.75a.75.75 0 0 1 1.5 0v3a.75.75 0 0 1-1.5 0v-3Z"/>
+            </svg>
+            <span className="pointer-events-none invisible absolute bottom-full left-1/2 z-50 mb-1.5 w-48 -translate-x-1/2 rounded-lg border border-line bg-panel px-2.5 py-1.5 text-[11px] leading-snug text-ink opacity-0 shadow-md transition-opacity group-hover/tip:visible group-hover/tip:opacity-100">
+              {tooltip}
+            </span>
+          </span>
+        )}
       </div>
       <div
         className={`mt-0.5 break-words text-[13.5px] font-bold leading-tight ${highlight ? "text-violet" : "text-ink"}`}
@@ -141,21 +156,27 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
     onValidatePain,
     onAddPain,
     onRemovePain,
+    successCases,
   } = props;
 
   const f = deal.firmographics;
   const [sub, setSub] = useState<SubTab>("empresa");
+  const [signalCount, setSignalCount] = useState<number | null>(null);
+
   const subTabs: [SubTab, string][] = [
     ["empresa", "Empresa"],
-    ["solucion", "Solución"],
-    ["intel", "Comparables"],
+    ["dolores", "Dolores"],
+    ["intel", "Casos de éxito"],
+    ["signals", signalCount !== null ? `Signals · ${signalCount}` : "Signals"],
   ];
   const subSub =
     sub === "empresa"
       ? "Contexto y stakeholders del deal."
-      : sub === "solucion"
-        ? "Del dolor al módulo, recorriendo el solution graph."
-        : "Precedentes comparables del deal.";
+      : sub === "dolores"
+        ? "Puntos de dolor identificados para este deal."
+        : sub === "intel"
+          ? "Clientes similares que ya usan Humand."
+          : "Signals recientes de la empresa — liderazgo, expansión, financiamiento.";
 
   return (
     <div className="grid gap-3">
@@ -201,6 +222,19 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
               <KMetric label="Región" v={meta.region} prov={f.regionProv} />
               <KMetric label="Industria" v={meta.industry} prov={f.industry.prov} />
               <KMetric label="Workforce" v={meta.deskless} highlight prov={f.deskless.prov} />
+              {deal.hubspot.integraciones && (
+                <KMetric
+                  label="Sistemas integrados"
+                  v={deal.hubspot.integraciones}
+                  tooltip="Sistemas de terceros con los que Humand se ha integrado en esta cuenta"
+                  prov={{
+                    source: "HubSpot",
+                    sourceType: "declarado",
+                    confidence: 1,
+                    status: "validated",
+                  }}
+                />
+              )}
               {!meta.headcountConflict ? (
                 <KMetric
                   label="Headcount"
@@ -235,21 +269,15 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
                 {f.tech.map((t) => {
                   const chipCls = `inline-flex items-center gap-1 rounded-md border border-line border-l-[3px] bg-panel px-2.5 py-1 text-xs font-semibold text-ink ${techBorderLeft[t.kind]}`;
                   const url = t.prov?.status !== "inferred" ? t.prov?.url : undefined;
-                  return url ? (
-                    <a
-                      key={t.t}
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={`${t.kind} · ${t.prov?.source ?? "fuente"}`}
-                      className={`${chipCls} transition-colors hover:border-violet/40 hover:text-violet`}
-                    >
-                      {t.t}
-                      <SourceLinkIcon />
-                    </a>
-                  ) : (
-                    <span key={t.t} title={t.kind} className={chipCls}>
-                      {t.t}
+                  return (
+                    <span key={t.t} className="inline-flex items-center gap-1">
+                      <span title={t.kind} className={chipCls}>{t.t}</span>
+                      {url && (
+                        <SourceLinkButton
+                          href={url}
+                          title={`${t.kind} · ${t.prov?.source ?? "fuente"}`}
+                        />
+                      )}
                     </span>
                   );
                 })}
@@ -269,26 +297,30 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         </>
       )}
 
-      {sub === "solucion" && (
-        <>
-          <Section
-            title="Dolores → Solución"
-            sub="Cada dolor se mapea a un módulo de Humand recorriendo el solution graph."
-          >
-            <SolutionGraph
-              pains={pains}
-              dominantId={null}
-              onValidate={onValidatePain}
-              onAdd={onAddPain}
-              onRemove={onRemovePain}
-            />
-          </Section>
-        </>
+      {sub === "dolores" && (
+        <Section title="Dolores">
+          <PainsBlock
+            pains={pains}
+            onValidate={onValidatePain}
+            onAdd={onAddPain}
+            onRemove={onRemovePain}
+          />
+        </Section>
       )}
 
       {sub === "intel" && (
-        <Section title="Casos comparables">
-          <CompsBlock />
+        <Section title="Casos de éxito">
+          <CompsBlock hubspotSuccessCases={successCases} />
+        </Section>
+      )}
+
+      {sub === "signals" && (
+        <Section title="Signals">
+          <SignalsBlock
+            company={deal.entity.resolved}
+            domain={meta.website}
+            onCountChange={setSignalCount}
+          />
         </Section>
       )}
     </div>

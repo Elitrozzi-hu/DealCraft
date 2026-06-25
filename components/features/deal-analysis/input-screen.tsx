@@ -69,17 +69,9 @@ function CandidateCard({ candidate: c, onPick }: CandidateCardProps) {
         {[c.jobTitle, c.contactEmail].filter(Boolean).join(" · ") ||
           "Sin contacto"}
       </div>
-      {(c.country || c.state || c.region || c.scoringTier) && (
-        <div className="flex items-center justify-between gap-2 text-[11px] text-cold">
-          <span>
-            {[c.country, c.state ?? c.region].filter(Boolean).join(" · ") || "—"}
-          </span>
-          {c.scoringTier && (
-            <span className="rounded bg-violet-soft px-1.5 py-0.5 font-semibold text-violet">
-              {c.scoringTier}
-              {c.predictiveScore ? ` · ${c.predictiveScore}` : ""}
-            </span>
-          )}
+      {(c.country || c.state || c.region) && (
+        <div className="text-[11px] text-cold">
+          {[c.country, c.state ?? c.region].filter(Boolean).join(" · ")}
         </div>
       )}
     </>

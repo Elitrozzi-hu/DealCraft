@@ -4,6 +4,7 @@ import type { DealSearchRequest, DealSearchResult } from "@/types";
 import type { EnrichmentInput } from "@/lib/enrichment/types";
 import { lifecycleStageToStageKey } from "@/lib/constants";
 import { getEnrichmentProvider } from "@/lib/enrichment/registry";
+import { getCrmProvider } from "@/lib/crm/registry";
 import { mapEnrichmentToDeal } from "./enrichment-to-deal";
 
 /**
@@ -22,7 +23,7 @@ import { mapEnrichmentToDeal } from "./enrichment-to-deal";
  */
 export async function enrichDeal(
   req: DealSearchRequest,
-): Promise<{ provider: string; result: DealSearchResult }> {
+): Promise<{ provider: string; result: DealSearchResult; meta?: Record<string, unknown> }> {
   const input: EnrichmentInput = {
     email: req.contactEmail ?? req.email,
     domain: req.companyDomain ?? req.website,
@@ -36,5 +37,14 @@ export async function enrichDeal(
     stage: lifecycleStageToStageKey(req.lifecycleStage),
     deal: req.deal,
   });
-  return { provider: enrichment.provider, result };
+
+  const industry = result.deal.firmographics.industry.value === "—"
+    ? null
+    : result.deal.firmographics.industry.value;
+  const segment = result.deal.hubspot.segment;
+  result.successCases = await (getCrmProvider().searchSuccessCases?.({ industry, segment }) ?? Promise.resolve([]));
+
+  const meta: Record<string, unknown> = { ...enrichment.meta };
+  if (req.benchmark) meta.raw = enrichment.raw;
+  return { provider: enrichment.provider, result, meta: Object.keys(meta).length ? meta : undefined };
 }

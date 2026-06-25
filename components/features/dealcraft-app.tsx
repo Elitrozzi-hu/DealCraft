@@ -4,6 +4,7 @@ import { useState } from "react";
 import type {
   Deal,
   DealSearchRequest,
+  HubSpotSuccessCase,
   Pain,
   RecentDeal,
   StageKey,
@@ -31,6 +32,7 @@ interface CopilotSession {
   coldStart: boolean;
   activeMeta: ActiveMeta | null;
   website: string;
+  successCases: HubSpotSuccessCase[];
 }
 
 const historyToActiveMeta = (h: RecentDeal): ActiveMeta => ({
@@ -62,6 +64,7 @@ export function DealCraftApp() {
       coldStart: result.coldStart,
       activeMeta: null,
       website: q.website ?? "",
+      successCases: result.successCases ?? [],
     });
     setSessionKey((k) => k + 1);
     setView("copilot");
@@ -77,6 +80,7 @@ export function DealCraftApp() {
       coldStart: false,
       activeMeta: historyToActiveMeta(h),
       website: historyToActiveMeta(h).website,
+      successCases: [],
     });
     setSessionKey((k) => k + 1);
     setView("copilot");
@@ -144,6 +148,7 @@ export function DealCraftApp() {
       coldStart={session.coldStart}
       activeMeta={session.activeMeta}
       website={session.website}
+      successCases={session.successCases}
       onBack={onNewSearch}
     />
   );

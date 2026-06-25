@@ -273,7 +273,7 @@ export const classidyProvider: EnrichmentProvider = {
       throw new Error("CLASSIDY_WEBHOOK_URL is not set.");
     }
 
-    const t0 = Date.now();
+
     const res = await fetch(CLASSIDY_WEBHOOK_URL, {
       method: "POST",
       headers: {
@@ -283,26 +283,15 @@ export const classidyProvider: EnrichmentProvider = {
       body: JSON.stringify(toRequestBody(input)),
       signal: AbortSignal.timeout(290_000),
     });
-    log.debug("workflow response", {
-      status: res.status,
-      ok: res.ok,
-      durationMs: Date.now() - t0,
-    });
-
     if (!res.ok) {
       throw new Error(`Classidy workflow failed: ${res.status}`);
     }
 
     const raw: unknown = await res.json();
-    // Raw + normalized payloads carry contact PII (names, emails). They ride on
-    // `log.debug`, which sits below the prod default level — so they're dropped
-    // before serialization in prod, surfacing only under LOG_LEVEL=debug.
-    log.debug("raw response", { raw: JSON.stringify(raw) });
     let data: NormalizedEnrichment;
     try {
       data = normalize(cassidyRawSchema.parse(unwrapEnvelope(raw)));
     } catch (err) {
-      // Keys only — no PII — so this is safe at error level.
       log.error("parse/normalize failed", {
         topLevelKeys:
           raw && typeof raw === "object"
@@ -311,7 +300,6 @@ export const classidyProvider: EnrichmentProvider = {
       });
       throw err;
     }
-    log.debug("normalized data", { data: JSON.stringify(data) });
     return {
       provider: "classidy",
       data: data as unknown as Record<string, unknown>,

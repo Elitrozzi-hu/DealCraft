@@ -5,8 +5,10 @@ import type {
   Deal,
   DealMeta,
   DeckRequest,
+  HubSpotSuccessCase,
   MaterialsRequest,
   Pain,
+  Segment,
   StageKey,
   Stakeholder,
 } from "@/types";
@@ -40,6 +42,7 @@ export interface CopilotViewProps {
   /** Present when opened from the recent-deals history. */
   activeMeta: ActiveMeta | null;
   website: string;
+  successCases: HubSpotSuccessCase[];
   /** Back to the input screen (triggered by the DealCraft wordmark). */
   onBack: () => void;
 }
@@ -53,6 +56,7 @@ export function CopilotView({
   coldStart,
   activeMeta,
   website,
+  successCases,
   onBack,
 }: CopilotViewProps) {
   const narrow = useIsNarrow();
@@ -65,13 +69,19 @@ export function CopilotView({
   // Pricing toggle was removed from the UI — materials always include pricing.
   const includePricing = true;
 
+  const VALID_SEGMENTS: Segment[] = ["Enterprise", "Mid-Market", "SMB"];
+  const hubSegment = deal.hubspot.segment;
+  const segment: Segment = VALID_SEGMENTS.includes(hubSegment as Segment)
+    ? (hubSegment as Segment)
+    : segmentOf(headcount);
+
   const meta: DealMeta = {
     name: resolvedName.split(" — ")[0],
     industry: activeMeta?.industry ?? deal.firmographics.industry.value,
     region: activeMeta?.region ?? deal.region,
     deskless: activeMeta?.deskless ?? deal.firmographics.deskless.value,
     headcount,
-    segment: segmentOf(headcount),
+    segment,
     website: activeMeta?.website ?? website,
     // Only flag a conflict when the data source reports one — Classidy returns a
     // single headcount value, so this is normally false.
@@ -182,6 +192,7 @@ export function CopilotView({
               onValidatePain={ds.validatePain}
               onAddPain={ds.addPain}
               onRemovePain={ds.removePain}
+              successCases={successCases}
             />
           </div>
 

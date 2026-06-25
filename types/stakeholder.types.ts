@@ -8,7 +8,7 @@ export type Role =
   | "Blocker";
 
 /** Where a stakeholder/pain datum came from. */
-export type EvidenceSource = "call" | "firmographic" | "manual";
+export type EvidenceSource = "call" | "firmographic" | "manual" | "crm";
 
 export interface Stakeholder {
   id: string;

@@ -28,6 +28,6 @@ export {
   type StatusDotProps,
   STATUS_META,
 } from "./status-dot";
-export { SourceLinkIcon } from "./source-link-icon";
+export { SourceLinkIcon, SourceLinkButton, sourceLinkBtnCls } from "./source-link-icon";
 export { Spinner, type SpinnerProps } from "./spinner";
 export { Wordmark, type WordmarkProps } from "./wordmark";

@@ -18,6 +18,7 @@ export const LLM_PROVIDER = process.env.LLM_PROVIDER;
 export const ENRICHMENT_PROVIDER = process.env.ENRICHMENT_PROVIDER;
 export const CLASSIDY_WEBHOOK_URL = process.env.CLASSIDY_WEBHOOK_URL;
 export const CLASSIDY_API_KEY = process.env.CLASSIDY_API_KEY;
+export const LUSHA_API_KEY = process.env.LUSHA_API_KEY;
 
 // --- CRM (pre-existing seam) ---
 export const CRM_PROVIDER = process.env.CRM_PROVIDER;

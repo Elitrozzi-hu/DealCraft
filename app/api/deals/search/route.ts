@@ -40,12 +40,12 @@ export async function POST(request: Request) {
     .set("provider", body.enrichmentProvider ?? "default");
   const t0 = Date.now();
   try {
-    const { provider, result } = await enrichDeal(body);
+    const { provider, result, meta } = await enrichDeal(body);
     ev.set("provider", provider)
       .set("status", 200)
       .set("durationMs", Date.now() - t0)
       .emit();
-    return Response.json(result);
+    return Response.json(meta ? { ...result, _meta: meta } : result);
   } catch (err) {
     const { status, error } = mapEnrichError(err);
     ev.set("status", status).set("durationMs", Date.now() - t0);
@@ -75,5 +75,6 @@ function mapEnrichError(err: unknown): { status: number; error: string } {
       return { status: 502, error: err.message };
     }
   }
-  return { status: 500, error: "Enrichment failed" };
+  const message = err instanceof Error ? err.message : String(err);
+  return { status: 500, error: `Enrichment failed: ${message}` };
 }

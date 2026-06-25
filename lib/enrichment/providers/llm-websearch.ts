@@ -234,22 +234,6 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
         onUsage: (u) => {
           usage = u;
         },
-        // Dump the COMPLETE response (raw OpenRouter JSON, citations, cost,
-        // parsed object) for inspection. Only emitted at debug level (dev, or
-        // LOG_LEVEL=debug); pre-serialized since the logger takes scalars only.
-        // The replacer guards the SDK result's self-references (OpenRouter
-        // mirrors the parsed body onto `response.body`); Dates use their toJSON.
-        onResponse: (raw) => {
-          const seen = new WeakSet<object>();
-          const json = JSON.stringify(raw, (_key, v) => {
-            if (typeof v === "object" && v !== null) {
-              if (seen.has(v)) return "[Circular]";
-              seen.add(v);
-            }
-            return v;
-          });
-          log.debug("raw response", { response: json });
-        },
       });
     } catch (err) {
       log.error("generate failed", {
@@ -292,7 +276,13 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
     return {
       provider: "llm-websearch",
       data: enrichmentResultSchema.parse(data) as Record<string, unknown>,
-      raw: extracted, // researched payload, kept for debugging/provenance
+      raw: extracted,
+      meta: {
+        costUsd: usage?.costUsd ?? null,
+        inputTokens: usage?.inputTokens ?? null,
+        outputTokens: usage?.outputTokens ?? null,
+        durationMs: Date.now() - t0,
+      },
     };
   },
 };

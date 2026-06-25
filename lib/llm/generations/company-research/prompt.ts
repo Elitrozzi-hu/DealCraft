@@ -60,7 +60,11 @@ If a source is inaccessible or returns nothing, note it and move on. Do not gues
 
 # FIELDS TO RESEARCH
 - summary: Company overview, core products/services, and value proposition (2–4 sentences).
-- region: HQ location and main regions of operation.
+- region: MUST be 1–3 words maximum — the HQ country, city, or "City, Country" pair only.
+  NEVER write sentences, descriptions, or lists of offices/countries.
+  Examples of CORRECT values: "Argentina", "Buenos Aires", "São Paulo, Brazil", "Mexico City".
+  Examples of WRONG values (do not do this): "Headquartered in Buenos Aires, Argentina, with operations in…", "Argentina and Spain".
+  If the HQ spans a metro area, just use the city name.
 - headcount: Total employees as a single integer (use the midpoint if only a range exists).
   Cross-check LinkedIn, Crunchbase, and the website; note discrepancies.
 - workforcePercentage: Estimated % of deskless / frontline / operational workers (0–100).

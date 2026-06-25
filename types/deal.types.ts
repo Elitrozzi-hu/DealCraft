@@ -6,6 +6,7 @@ import type { StageKey } from "./stage.types";
 import type { Stakeholder } from "./stakeholder.types";
 import type { Pain } from "./pain.types";
 import type { LeadDeal } from "./lead.types";
+import type { HubSpotSuccessCase } from "./success-case.types";
 
 export interface EntityCandidate {
   name: string;
@@ -56,6 +57,10 @@ export interface HubspotSnapshot {
   amount: number | null;
   lastActivity: string;
   notes: string;
+  /** Segment from HubSpot `segment_v2`; null when absent. Overrides computed segment in UI. */
+  segment: string | null;
+  /** Third-party systems the client has integrated (`integraciones`); null when absent. */
+  integraciones: string | null;
 }
 
 export interface Deal {
@@ -103,6 +108,9 @@ export interface DealSearchRequest {
    *  from the client): `classidy` | `llm-websearch` | `mock`. Omit to use the
    *  `ENRICHMENT_PROVIDER` env default. Unknown key → 400. */
   enrichmentProvider?: string;
+  /** When true, the response includes the provider's raw API responses under
+   *  `_meta.raw`. Intended for benchmark scripts only — not for production UI. */
+  benchmark?: boolean;
 }
 
 export interface DealSearchResult {
@@ -111,4 +119,5 @@ export interface DealSearchResult {
   deal: Deal;
   stakeholders: Stakeholder[];
   pains: Pain[];
+  successCases: HubSpotSuccessCase[];
 }
