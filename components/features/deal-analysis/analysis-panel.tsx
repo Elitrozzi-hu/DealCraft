@@ -15,6 +15,7 @@ import type {
 import {
   Card,
   EmptyState,
+  LinkButton,
   ProvenanceBadge,
   ProvenanceLegend,
   SourceLinkButton,
@@ -133,8 +134,11 @@ function KMetric({
         {v}
       </div>
       {prov && (
-        <div className="mt-2">
-          <ProvenanceBadge {...prov} compact />
+        <div className="mt-2 flex items-center gap-1.5">
+          <ProvenanceBadge {...prov} compact url={undefined} />
+          {prov.url && (
+            <SourceLinkButton href={prov.url} title={`Abrir fuente · ${prov.source}`} />
+          )}
         </div>
       )}
     </div>
@@ -164,9 +168,14 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   const [signalCount, setSignalCount] = useState<number | null>(null);
 
   const subTabs: [SubTab, string][] = [
-    ["empresa", "Empresa"],
-    ["dolores", "Dolores"],
-    ["intel", "Casos de éxito"],
+    ["empresa", `Empresa · ${stakeholders.length}`],
+    ["dolores", `Dolores · ${pains.length}`],
+    [
+      "intel",
+      successCases.length > 0
+        ? `Casos de éxito · ${successCases.length}`
+        : "Casos de éxito",
+    ],
     ["signals", signalCount !== null ? `Signals · ${signalCount}` : "Signals"],
   ];
   const subSub =
@@ -181,12 +190,27 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   return (
     <div className="grid gap-3">
       {coldStart && (
-        <div className="flex items-start gap-2.5 rounded-xl border border-cold/30 bg-cold-soft px-3.5 py-3">
-          <span aria-hidden>○</span>
-          <div className="text-[12.5px]">
+        <div className="flex items-start gap-2.5 rounded-xl border border-inferred/30 bg-inferred-soft px-3.5 py-3">
+          <svg
+            width={15}
+            height={15}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mt-px flex-shrink-0 text-inferred"
+            aria-hidden
+          >
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          <div className="text-[12.5px] text-inferred">
             <b>Cold start.</b>{" "}
-            <span className="text-cold">
-              Todo inferido, baja confianza. No fabricamos data: marcamos qué
+            <span className="opacity-80">
+              Todo inferido, baja confianza. No fabricamos data — marcamos qué
               validar.
             </span>
           </div>
@@ -199,7 +223,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             key={k}
             type="button"
             onClick={() => setSub(k)}
-            className={`flex-1 rounded-lg px-1.5 py-2.5 text-[13px] font-bold ${sub === k ? "bg-violet text-white" : "text-cold"}`}
+            className={`flex-1 rounded-lg px-1.5 py-2.5 text-[12.5px] font-bold transition-colors ${sub === k ? "bg-violet text-white shadow-sm" : "text-cold hover:bg-cold-soft hover:text-ink"}`}
           >
             {l}
           </button>
@@ -214,8 +238,11 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             <p className="m-0 mt-0.5 text-[13px] leading-relaxed text-ink">
               {f.summary.value}
             </p>
-            <div className="mb-3.5 mt-2">
-              <ProvenanceBadge {...f.summary.prov} />
+            <div className="mb-3.5 mt-2 flex items-center gap-1.5">
+              <ProvenanceBadge {...f.summary.prov} url={undefined} />
+              {f.summary.prov.url && (
+                <SourceLinkButton href={f.summary.prov.url} title={`Abrir fuente · ${f.summary.prov.source}`} />
+              )}
             </div>
             <div className={`${kLabelCls} mb-2`}>Key metrics</div>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2.5">
@@ -245,13 +272,11 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
                 <div className="rounded-xl border border-inferred/30 bg-inferred-soft p-2.5">
                   <div className={kLabelCls}>Headcount · conflicto</div>
                   <div className="mt-0.5 text-[13px] font-bold">450 vs 520</div>
-                  <button
-                    type="button"
-                    onClick={onValidateHeadcount}
-                    className="mt-1 text-[11.5px] font-bold text-violet"
-                  >
-                    resolver → 485
-                  </button>
+                  <div className="mt-1">
+                    <LinkButton onClick={onValidateHeadcount}>
+                      resolver → 485
+                    </LinkButton>
+                  </div>
                 </div>
               )}
             </div>

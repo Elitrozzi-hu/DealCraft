@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Pain, PainDraft } from "@/types";
 import { TAXONOMIES, resolveModule } from "@/lib/constants";
-import { Button, EmptyState, Input, SourceLinkIcon } from "@/components/ui";
+import { Button, EmptyState, Input, LinkAnchor, SourceLinkIcon } from "@/components/ui";
 
 export interface SolutionGraphProps {
   pains: Pain[];
@@ -116,16 +116,16 @@ export function SolutionGraph({
                       <span className="text-[10px] text-cold">{p.evidence}</span>
                     )}
                     {p.sourceUrl && (
-                      <a
+                      <LinkAnchor
                         href={p.sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         title="Abrir fuente"
                         aria-label="Abrir fuente"
-                        className="text-cold transition-colors hover:text-violet"
+                        tone="cold"
                       >
                         <SourceLinkIcon className="shrink-0" />
-                      </a>
+                      </LinkAnchor>
                     )}
                   </span>
                   <div className="flex gap-1.5">

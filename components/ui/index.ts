@@ -1,5 +1,12 @@
 // Barrel of UI primitives — presentational, reusable building blocks.
 export { Accordion, type AccordionProps } from "./accordion";
+export {
+  LinkButton,
+  LinkAnchor,
+  linkTextCls,
+  linkTextColdCls,
+  type LinkButtonTone,
+} from "./link-button";
 export { Button, type ButtonProps } from "./button";
 export {
   Card,

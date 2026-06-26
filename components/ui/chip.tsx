@@ -8,11 +8,11 @@ export interface ChipProps {
 }
 
 const toneCls: Record<ChipTone, string> = {
-  cold: "text-cold border-cold/30",
-  violet: "text-violet border-violet/30",
-  validated: "text-validated border-validated/30",
-  inferred: "text-inferred border-inferred/30",
-  risk: "text-risk border-risk/30",
+  cold: "text-cold border-cold/20 bg-cold-soft",
+  violet: "text-violet border-violet/20 bg-violet-soft",
+  validated: "text-validated border-validated/20 bg-validated-soft",
+  inferred: "text-inferred border-inferred/20 bg-inferred-soft",
+  risk: "text-risk border-risk/20 bg-risk-soft",
 };
 
 /** Small bordered label (ports the PoC inline `chip` helper). */

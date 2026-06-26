@@ -227,7 +227,6 @@ export function StakeholdersBlock({
                     editar
                   </Button>
                   {sourceLink ? (
-                    // Has a real source URL → swap delete for an open-source link.
                     <SourceLinkButton href={sourceLink} title={`Abrir fuente de ${s.name}`} />
                   ) : (
                     <Button small onClick={() => onRemove(s.id)}>

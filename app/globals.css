@@ -17,6 +17,7 @@
   --color-risk-soft: #fcebee;
   --color-line: #e4e9f3;
   --color-bg: #f4f7fc;
+  --color-surface: #edf1f9; /* inset / nested areas */
   --color-panel: #ffffff;
 
   --font-sans: var(--font-geist-sans), "Inter", system-ui, sans-serif;
@@ -27,4 +28,6 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

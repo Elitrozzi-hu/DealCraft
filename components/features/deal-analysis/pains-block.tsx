@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Pain, PainDraft } from "@/types";
 import { TAXONOMIES } from "@/lib/constants";
-import { Button, EmptyState, Input, SourceLinkIcon } from "@/components/ui";
+import { Button, EmptyState, Input, LinkAnchor, SourceLinkIcon } from "@/components/ui";
 
 export interface PainsBlockProps {
   pains: Pain[];
@@ -103,16 +103,16 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
                   <span className="truncate text-[10px] text-cold">{p.evidence}</span>
                 )}
                 {p.sourceUrl && (
-                  <a
+                  <LinkAnchor
                     href={p.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Abrir fuente"
                     aria-label="Abrir fuente"
-                    className="text-cold transition-colors hover:text-violet"
+                    tone="cold"
                   >
                     <SourceLinkIcon className="shrink-0" />
-                  </a>
+                  </LinkAnchor>
                 )}
               </span>
               <div className="flex shrink-0 gap-1.5">

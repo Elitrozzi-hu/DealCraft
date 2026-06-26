@@ -29,7 +29,7 @@ const accentCls: Record<CardAccent, string> = {
 export function Card({ title, sub, right, accent, pad = "lg", children }: CardProps) {
   return (
     <div
-      className={`rounded-2xl border border-line bg-panel shadow-[0_2px_8px_rgba(15,27,61,0.05)] ${padCls[pad]} ${accent ? accentCls[accent] : ""}`}
+      className={`rounded-2xl border border-line bg-panel shadow-[0_1px_3px_rgba(15,27,61,0.07),0_4px_16px_rgba(15,27,61,0.05)] ${padCls[pad]} ${accent ? accentCls[accent] : ""}`}
     >
       {(title || right) && (
         <div

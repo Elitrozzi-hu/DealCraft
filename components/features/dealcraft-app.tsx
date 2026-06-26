@@ -107,7 +107,7 @@ export function DealCraftApp() {
       return (
         <div className="grid min-h-screen place-items-center p-6">
           <div className="w-[520px] max-w-full">
-            <div className="mb-[22px] grid place-items-center">
+            <div className="mb-8 flex justify-center">
               <Wordmark big />
             </div>
             <Card title="No se pudo completar la búsqueda" accent="risk">
@@ -115,7 +115,7 @@ export function DealCraftApp() {
                 {search.error ?? "Error de búsqueda."}
               </p>
               <Button primary onClick={onNewSearch}>
-                Volver
+                Volver al inicio
               </Button>
             </Card>
           </div>

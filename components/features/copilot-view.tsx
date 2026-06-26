@@ -173,9 +173,11 @@ export function CopilotView({
           {/* LEFT: Analysis */}
           <div>
             <div className="mb-3">
-              <div className="text-lg font-extrabold">Análisis</div>
-              <div className="text-[12.5px] text-cold">
-                Contexto, stakeholders, dolores, módulos y riesgos del deal.
+              <div className="text-[17px] font-extrabold tracking-tight">
+                Análisis del deal
+              </div>
+              <div className="text-[13px] text-cold">
+                Contexto, stakeholders, dolores y señales del mercado.
               </div>
             </div>
             <AnalysisPanel
@@ -199,9 +201,12 @@ export function CopilotView({
           {/* RIGHT: Materials */}
           <div className="grid content-start gap-4">
             <div>
-              <div className="text-lg font-extrabold">Materiales</div>
-              <div className="text-[12.5px] text-cold">
-                Materiales de venta para esta etapa, con gating de procedencia.
+              <div className="text-[17px] font-extrabold tracking-tight">
+                Materiales de venta
+              </div>
+              <div className="text-[13px] text-cold">
+                Personalizados para este deal. Revisá y descargá antes de la
+                reunión.
               </div>
             </div>
             <Card pad="md">

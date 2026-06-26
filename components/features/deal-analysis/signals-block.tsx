@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Button, Chip, SourceLinkIcon, StatusDot } from "@/components/ui";
+import { Button, Chip, LinkAnchor, LinkButton, SourceLinkIcon, StatusDot } from "@/components/ui";
 import { searchSignals } from "@/lib/api-client";
 import type { SignalItem, SignalType } from "@/types";
 
@@ -135,15 +135,10 @@ function SignalCard({ signal }: { signal: SignalItem }) {
         {signal.summary}
       </p>
 
-      <a
-        href={signal.source_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 text-[11px] font-semibold text-violet transition-opacity hover:opacity-75"
-      >
+      <LinkAnchor href={signal.source_url} target="_blank" rel="noopener noreferrer" tone="cold">
         {getHostname(signal.source_url)}
-        <SourceLinkIcon />
-      </a>
+        <SourceLinkIcon className="shrink-0" />
+      </LinkAnchor>
     </div>
   );
 }
@@ -281,13 +276,11 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
           <SignalCard key={`${signal.type}-${i}`} signal={signal} />
         ))}
       </div>
-      <button
-        type="button"
-        onClick={handleResearch}
-        className="mt-3 text-[11px] font-semibold text-cold transition-colors hover:text-violet"
-      >
-        Reinvestigar →
-      </button>
+      <div className="mt-3">
+        <LinkButton tone="cold" onClick={handleResearch}>
+          Reinvestigar →
+        </LinkButton>
+      </div>
     </div>
   );
 }

@@ -16,10 +16,10 @@ const base =
 
 const variant = {
   primary:
-    "border border-violet bg-violet text-white disabled:border-line disabled:bg-[#eee] disabled:text-[#999]",
-  ok: "border border-validated bg-validated-soft text-validated disabled:bg-[#eee] disabled:text-[#999]",
+    "border border-violet bg-violet text-white hover:bg-[#1f49e5] hover:border-[#1f49e5] disabled:border-line disabled:bg-[#eee] disabled:text-[#999]",
+  ok: "border border-validated/40 bg-validated-soft text-validated hover:bg-validated/10 disabled:bg-[#eee] disabled:text-[#999]",
   default:
-    "border border-line bg-panel text-ink disabled:bg-[#eee] disabled:text-[#999]",
+    "border border-line bg-panel text-ink hover:bg-cold-soft hover:border-cold/30 disabled:bg-[#eee] disabled:text-[#999]",
 } as const;
 
 export function Button({ children, primary, small, tone, ...rest }: ButtonProps) {

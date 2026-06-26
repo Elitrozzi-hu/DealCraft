@@ -123,7 +123,7 @@ export function StageBar({
     <div className="sticky top-0 z-20 border-b border-line bg-panel shadow-[0_1px_3px_rgba(28,24,48,0.05)]">
       <div className="mx-auto flex max-w-[1340px] flex-wrap items-center justify-between gap-3.5 px-4 py-3 md:px-[22px]">
         <div className="flex items-center gap-3.5">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             {STAGES.map((s, i) => (
               <button
                 key={s.key}
@@ -131,19 +131,19 @@ export function StageBar({
                 title={s.label}
                 aria-label={s.label}
                 onClick={() => onSelectStage(s.key)}
-                className={`h-[11px] rounded-full transition-all ${i === si ? "w-[26px]" : "w-[11px]"} ${i < si ? "bg-validated" : i === si ? "bg-violet" : "bg-cold-soft"}`}
+                className={`h-[13px] rounded-full transition-all ${i === si ? "w-[32px]" : "w-[13px]"} ${i < si ? "bg-validated" : i === si ? "bg-violet" : "bg-cold-soft"}`}
               />
             ))}
           </div>
           <div>
             <div className="text-[10.5px] font-bold uppercase tracking-wide text-cold">
-              Etapa {si + 1} de 5
+              Etapa {si + 1} de {STAGES.length}
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[15px] font-extrabold">{so.label}</span>
+              <span className="text-[16px] font-extrabold">{so.label}</span>
               <StageTooltip goal={plan.goal} items={plan.items} />
             </div>
-            <div className="text-xs text-cold">{so.sub}</div>
+            <div className="text-[12px] text-cold">{so.sub}</div>
           </div>
         </div>
         <div className="text-left md:text-right">
