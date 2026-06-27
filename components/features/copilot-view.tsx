@@ -5,7 +5,7 @@ import type {
   Deal,
   DealMeta,
   DeckRequest,
-  HubSpotSuccessCase,
+  PublishedSuccessCase,
   MaterialsRequest,
   Pain,
   Segment,
@@ -42,7 +42,7 @@ export interface CopilotViewProps {
   /** Present when opened from the recent-deals history. */
   activeMeta: ActiveMeta | null;
   website: string;
-  successCases: HubSpotSuccessCase[];
+  successCases: PublishedSuccessCase[];
   /** Back to the input screen (triggered by the DealCraft wordmark). */
   onBack: () => void;
 }

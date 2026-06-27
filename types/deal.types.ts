@@ -6,7 +6,7 @@ import type { StageKey } from "./stage.types";
 import type { Stakeholder } from "./stakeholder.types";
 import type { Pain } from "./pain.types";
 import type { LeadDeal } from "./lead.types";
-import type { HubSpotSuccessCase } from "./success-case.types";
+import type { PublishedSuccessCase } from "./success-case.types";
 
 export interface EntityCandidate {
   name: string;
@@ -119,5 +119,5 @@ export interface DealSearchResult {
   deal: Deal;
   stakeholders: Stakeholder[];
   pains: Pain[];
-  successCases: HubSpotSuccessCase[];
+  successCases: PublishedSuccessCase[];
 }

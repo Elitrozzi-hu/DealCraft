@@ -1,25 +1,30 @@
-// Success cases (intel) — won/lost lookalike deals shown as evidence.
-
-export type CompOutcome = "won" | "lost";
-
-export interface SuccessCase {
-  co: string;
-  industry: string;
-  deskless: number;
-  size: number;
-  wedge: string;
-  cycle: number;
-  result: CompOutcome;
-  mrr: number;
-  reason?: string;
+export interface Metric {
+  value: string;
+  label: string;
 }
 
-/** A real success case sourced from HubSpot (Won or Red List stage). */
-export interface HubSpotSuccessCase {
+/** A published Humand customer case study, sourced from data/success-cases.json. */
+export interface PublishedSuccessCase {
   id: string;
-  name: string;
-  industry: string | null;
-  segment: string | null;
-  stageLabel: string | null;
-  amount: number | null;
+  slug: string;
+  company: string;
+  country: string;
+  industry: string;
+  industry_en: string;
+  users: number | null;
+  link_web: string | null;
+  link_youtube: string | null;
+  link_video: null;
+  link_doc: string | null;
+  tagline: string | null;
+  description: string | null;
+  pains: string[];
+  solution_narrative: string | null;
+  modules: string[];
+  metrics: Metric[];
+  quote: string | null;
+  quote_author: string | null;
+  quote_author_role: string | null;
+  company_description: string | null;
+  synced_at: string;
 }

@@ -5,9 +5,9 @@ import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts
 import type { SimplePublicObject } from "@hubspot/api-client/lib/codegen/crm/contacts/models/SimplePublicObject";
 
 import { getHubspotAccessToken } from "@/lib/crm/providers/hubspot-auth";
-import { fetchSuccessCases, fetchDealsForContacts } from "@/lib/crm/providers/hubspot-deals";
+import { fetchDealsForContacts } from "@/lib/crm/providers/hubspot-deals";
 import type { CrmProvider, LeadSearchInput } from "@/lib/crm/types";
-import type { HubSpotSuccessCase, LeadCandidate, LeadSearchResult } from "@/types";
+import type { LeadCandidate, LeadSearchResult } from "@/types";
 
 // HubSpot CRM provider. Resolves the meeting's lead by searching the **Contacts**
 // object by exact email (decision: "siempre buscamos por su email"; pivoted from
@@ -136,12 +136,5 @@ export const hubspotCrmProvider: CrmProvider = {
       total: response.total,
       candidates,
     };
-  },
-
-  async searchSuccessCases(input: {
-    industry: string | null;
-    segment: string | null;
-  }): Promise<HubSpotSuccessCase[]> {
-    return fetchSuccessCases(input);
   },
 };

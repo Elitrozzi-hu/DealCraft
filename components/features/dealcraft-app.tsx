@@ -4,7 +4,7 @@ import { useState } from "react";
 import type {
   Deal,
   DealSearchRequest,
-  HubSpotSuccessCase,
+  PublishedSuccessCase,
   Pain,
   RecentDeal,
   StageKey,
@@ -32,7 +32,7 @@ interface CopilotSession {
   coldStart: boolean;
   activeMeta: ActiveMeta | null;
   website: string;
-  successCases: HubSpotSuccessCase[];
+  successCases: PublishedSuccessCase[];
 }
 
 const historyToActiveMeta = (h: RecentDeal): ActiveMeta => ({

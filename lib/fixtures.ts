@@ -3,7 +3,6 @@
 // client state and back the stub route handlers. See PLAN Task 3.
 
 import type {
-  SuccessCase,
   Deal,
   DealSearchRequest,
   Pain,
@@ -280,63 +279,3 @@ export const MOCK_SEARCH_STEPS: string[] = [
   "Compilando procedencia…",
 ];
 
-/** Reference firmographics for the success cases similarity calc. */
-export const MOCK_COMP_REFERENCE: { deskless: number; size: number } = {
-  deskless: 82,
-  size: 485,
-};
-
-export const MOCK_SUCCESS_CASES: SuccessCase[] = [
-  {
-    co: "Distribuidora Cuyo",
-    industry: "Distribución alimentos",
-    deskless: 78,
-    size: 520,
-    wedge: "Comunicación",
-    cycle: 41,
-    result: "won",
-    mrr: 2100,
-  },
-  {
-    co: "TransAndes Logística",
-    industry: "Logística / transporte",
-    deskless: 88,
-    size: 610,
-    wedge: "Comunicación",
-    cycle: 63,
-    result: "won",
-    mrr: 2600,
-  },
-  {
-    co: "Retail Sur",
-    industry: "Retail · supermercados",
-    deskless: 74,
-    size: 430,
-    wedge: "Comunicación",
-    cycle: 52,
-    result: "won",
-    mrr: 1850,
-  },
-  {
-    co: "Frigorífico del Plata",
-    industry: "Manufactura alimentos",
-    deskless: 91,
-    size: 740,
-    wedge: "Encuestas",
-    cycle: 88,
-    result: "lost",
-    mrr: 0,
-    reason: "Perdido por precio (Beekeeper)",
-  },
-  {
-    co: "Bebidas Norte",
-    industry: "Distribución bebidas",
-    deskless: 80,
-    size: 390,
-    wedge: "Comunicación",
-    cycle: 120,
-    result: "lost",
-    mrr: 0,
-    reason: "Sin champion económico · presupuesto frozen",
-  },
-];

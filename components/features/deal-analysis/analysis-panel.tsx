@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import type {
   Deal,
   DealMeta,
-  HubSpotSuccessCase,
+  PublishedSuccessCase,
   Pain,
   PainDraft,
   Provenance,
@@ -39,7 +39,7 @@ export interface AnalysisPanelProps {
   onValidatePain: (id: string) => void;
   onAddPain: (draft: PainDraft) => void;
   onRemovePain: (id: string) => void;
-  successCases: HubSpotSuccessCase[];
+  successCases: PublishedSuccessCase[];
 }
 
 type SubTab = "empresa" | "dolores" | "intel" | "signals";
@@ -335,7 +335,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
 
       {sub === "intel" && (
         <Section title="Casos de éxito">
-          <CompsBlock hubspotSuccessCases={successCases} />
+          <CompsBlock successCases={successCases} />
         </Section>
       )}
 

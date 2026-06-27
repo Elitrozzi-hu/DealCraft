@@ -4,8 +4,8 @@ import type { DealSearchRequest, DealSearchResult } from "@/types";
 import type { EnrichmentInput } from "@/lib/enrichment/types";
 import { lifecycleStageToStageKey } from "@/lib/constants";
 import { getEnrichmentProvider } from "@/lib/enrichment/registry";
-import { getCrmProvider } from "@/lib/crm/registry";
 import { mapEnrichmentToDeal } from "./enrichment-to-deal";
+import { getSuccessCasesByIndustry } from "./success-cases-reader";
 
 /**
  * Resolve + enrich a deal.
@@ -41,8 +41,7 @@ export async function enrichDeal(
   const industry = result.deal.firmographics.industry.value === "—"
     ? null
     : result.deal.firmographics.industry.value;
-  const segment = result.deal.hubspot.segment;
-  result.successCases = await (getCrmProvider().searchSuccessCases?.({ industry, segment }) ?? Promise.resolve([]));
+  result.successCases = getSuccessCasesByIndustry(industry);
 
   const meta: Record<string, unknown> = { ...enrichment.meta };
   if (req.benchmark) meta.raw = enrichment.raw;
