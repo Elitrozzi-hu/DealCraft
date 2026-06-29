@@ -41,9 +41,9 @@ function CollapsedPreview({ c }: { c: PublishedSuccessCase }) {
 
   return (
     <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1">
-      {c.metrics.map((m, i) => (
+      {c.metrics.map((m) => (
         <span
-          key={i}
+          key={`${m.label}-${m.value}`}
           className="rounded border border-validated/20 bg-validated-soft/60 px-1.5 py-px text-[9.5px] font-bold text-validated"
         >
           {m.value}
@@ -90,7 +90,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
             )}
           </div>
           <p className="mt-0.5 text-[10px] text-cold/80">
-            {[c.industry, c.country].filter(Boolean).join(" · ")}
+            {[c.industry, c.country.join(", ")].filter(Boolean).join(" · ")}
           </p>
           {!open && <CollapsedPreview c={c} />}
         </div>
@@ -108,8 +108,8 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
                 Dolores
               </p>
               <ul className="space-y-1">
-                {c.pains.map((p, i) => (
-                  <li key={i} className="flex gap-2 text-[11px] leading-snug text-ink/70">
+                {c.pains.map((p) => (
+                  <li key={p} className="flex gap-2 text-[11px] leading-snug text-ink/70">
                     <span className="mt-px shrink-0 font-medium text-cold/50">–</span>
                     <span>{p}</span>
                   </li>
@@ -125,9 +125,9 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
                 Módulos de Humand implementados
               </p>
               <div className="flex flex-wrap gap-1">
-                {c.modules.map((m, i) => (
+                {c.modules.map((m) => (
                   <span
-                    key={i}
+                    key={m}
                     className="rounded-md border border-violet/20 bg-panel px-2 py-0.5 text-[10px] font-medium text-violet"
                   >
                     {m}
@@ -144,8 +144,8 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
                 Tras implementar Humand
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {c.metrics.map((m, i) => (
-                  <div key={i} className="rounded-lg border border-validated/15 bg-validated-soft/40 px-2.5 py-1.5 max-w-[8rem]">
+                {c.metrics.map((m) => (
+                  <div key={`${m.label}-${m.value}`} className="rounded-lg border border-validated/15 bg-validated-soft/40 px-2.5 py-1.5 max-w-[8rem]">
                     <p className="text-[13px] font-bold tabular-nums leading-none text-validated">
                       {m.value}
                     </p>

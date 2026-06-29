@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { ModelMessage } from "ai";
 
 import { generate } from "@/lib/llm/generate";
 import type { LlmProvider } from "@/lib/llm/registry";
@@ -55,7 +54,7 @@ export async function POST(request: Request) {
     const text = await generate({
       provider: provider as LlmProvider | undefined,
       model,
-      messages: messages as ModelMessage[],
+      messages,
     });
     ev.set("status", 200).set("durationMs", Date.now() - t0).emit();
     return Response.json({ text });
@@ -72,7 +71,7 @@ export async function POST(request: Request) {
  *  rate-limit → 429, everything else → 500. */
 function mapLlmError(err: unknown): { status: number; error: string } {
   if (err instanceof Error && err.message.includes("Unknown LLM provider")) {
-    return { status: 400, error: err.message };
+    return { status: 400, error: "Requested LLM provider is not available" };
   }
   if (
     err &&

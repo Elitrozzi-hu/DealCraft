@@ -1,6 +1,6 @@
-import { ZodError } from "zod";
+import { z, ZodError } from "zod";
 
-import type { DealSearchRequest } from "@/types";
+import type { LeadDeal } from "@/types";
 import { enrichDeal } from "@/lib/server/deals-adapter";
 import { createLogger } from "@/lib/server/logger";
 
@@ -10,11 +10,19 @@ export const maxDuration = 300;
 
 const log = createLogger("deals/search");
 
-function isSearchRequest(b: unknown): b is DealSearchRequest {
-  if (!b || typeof b !== "object") return false;
-  const r = b as Record<string, unknown>;
-  return typeof r.name === "string" && r.name.trim().length > 0;
-}
+const bodySchema = z.object({
+  name: z.string().trim().min(1, "`name` is required"),
+  website: z.string().optional(),
+  email: z.string().optional(),
+  jobTitle: z.string().optional(),
+  companyName: z.string().optional(),
+  companyDomain: z.string().optional(),
+  contactEmail: z.string().optional(),
+  lifecycleStage: z.string().optional(),
+  deal: z.custom<LeadDeal>().optional(),
+  enrichmentProvider: z.string().optional(),
+  benchmark: z.boolean().optional(),
+});
 
 /**
  * POST /api/deals/search
@@ -29,18 +37,23 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
-  if (!isSearchRequest(body)) {
-    return Response.json({ error: "`name` is required" }, { status: 400 });
+  const parsed = bodySchema.safeParse(body);
+  if (!parsed.success) {
+    return Response.json(
+      { error: "Invalid request body", issues: parsed.error.issues },
+      { status: 400 },
+    );
   }
+  const req = parsed.data;
   const ev = log
     .event("deals/search.request")
     .set("method", "POST")
     .set("path", "/api/deals/search")
     // Per-request hint; overwritten with the resolved provider on success.
-    .set("provider", body.enrichmentProvider ?? "default");
+    .set("provider", req.enrichmentProvider ?? "default");
   const t0 = Date.now();
   try {
-    const { provider, result, meta } = await enrichDeal(body);
+    const { provider, result, meta } = await enrichDeal(req);
     ev.set("provider", provider)
       .set("status", 200)
       .set("durationMs", Date.now() - t0)
@@ -75,6 +88,5 @@ function mapEnrichError(err: unknown): { status: number; error: string } {
       return { status: 502, error: err.message };
     }
   }
-  const message = err instanceof Error ? err.message : String(err);
-  return { status: 500, error: `Enrichment failed: ${message}` };
+  return { status: 500, error: "Enrichment failed" };
 }

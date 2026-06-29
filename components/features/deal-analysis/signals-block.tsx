@@ -272,8 +272,8 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
         </span>
       </div>
       <div className="flex flex-col gap-2">
-        {sorted.map((signal, i) => (
-          <SignalCard key={`${signal.type}-${i}`} signal={signal} />
+        {sorted.map((signal) => (
+          <SignalCard key={`${signal.type}-${signal.headline}`} signal={signal} />
         ))}
       </div>
       <div className="mt-3">

@@ -28,6 +28,7 @@ export function useDealSearch(): DealSearchHook {
   const [error, setError] = useState<string | null>(null);
   const [step, setStep] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const latestId = useRef(0);
 
   const stopTimer = useCallback(() => {
     if (timer.current) {
@@ -38,22 +39,25 @@ export function useDealSearch(): DealSearchHook {
 
   const search = useCallback(
     async (req: DealSearchRequest): Promise<DealSearchResult | null> => {
+      const id = ++latestId.current;
       stopTimer();
       setStatus("loading");
       setError(null);
       setResult(null);
       setStep(0);
       timer.current = setInterval(() => {
-        setStep((s) => (s < steps.length ? s + 1 : s));
+        setStep((s) => (s < steps.length - 1 ? s + 1 : s));
       }, STEP_MS);
       try {
         const res = await searchDeal(req);
+        if (id !== latestId.current) return res;
         stopTimer();
         setStep(steps.length);
         setResult(res);
         setStatus("success");
         return res;
       } catch (e) {
+        if (id !== latestId.current) return null;
         stopTimer();
         setError(e instanceof Error ? e.message : "Error de búsqueda");
         setStatus("error");
@@ -64,6 +68,7 @@ export function useDealSearch(): DealSearchHook {
   );
 
   const reset = useCallback(() => {
+    latestId.current++;
     stopTimer();
     setStatus("idle");
     setResult(null);

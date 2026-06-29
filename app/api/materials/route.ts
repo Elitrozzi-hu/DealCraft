@@ -1,21 +1,19 @@
-import type { MaterialsRequest } from "@/types";
+import { z } from "zod";
+
+import type { Pain, Stakeholder } from "@/types";
 import { generateMaterials } from "@/lib/server/materials-adapter";
 import { createLogger } from "@/lib/server/logger";
 
 const log = createLogger("materials");
 
-function isMaterialsRequest(b: unknown): b is MaterialsRequest {
-  if (!b || typeof b !== "object") return false;
-  const r = b as Record<string, unknown>;
-  return (
-    typeof r.companyName === "string" &&
-    Array.isArray(r.pains) &&
-    Array.isArray(r.stakeholders) &&
-    typeof r.includePricing === "boolean" &&
-    typeof r.mrr === "number" &&
-    typeof r.mrrConfirmed === "boolean"
-  );
-}
+const bodySchema = z.object({
+  companyName: z.string().min(1, "`companyName` is required"),
+  pains: z.array(z.custom<Pain>()),
+  stakeholders: z.array(z.custom<Stakeholder>()),
+  includePricing: z.boolean(),
+  mrr: z.number(),
+  mrrConfirmed: z.boolean(),
+});
 
 /**
  * POST /api/materials
@@ -29,12 +27,10 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
-  if (!isMaterialsRequest(body)) {
+  const parsed = bodySchema.safeParse(body);
+  if (!parsed.success) {
     return Response.json(
-      {
-        error:
-          "`companyName`, `pains`, `stakeholders`, `includePricing`, `mrr`, `mrrConfirmed` are required",
-      },
+      { error: "Invalid request body", issues: parsed.error.issues },
       { status: 400 },
     );
   }
@@ -44,7 +40,7 @@ export async function POST(request: Request) {
     .set("path", "/api/materials");
   const t0 = Date.now();
   try {
-    const result = await generateMaterials(body);
+    const result = await generateMaterials(parsed.data);
     ev.set("status", 200).set("durationMs", Date.now() - t0).emit();
     return Response.json(result);
   } catch (err) {

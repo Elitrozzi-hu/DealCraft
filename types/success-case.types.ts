@@ -8,9 +8,9 @@ export interface PublishedSuccessCase {
   id: string;
   slug: string;
   company: string;
-  country: string;
+  country: string[];
   industry: string;
-  industry_en: string;
+  industry_en: string | null;
   users: number | null;
   link_web: string | null;
   link_youtube: string | null;

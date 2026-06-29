@@ -205,6 +205,8 @@ type LushaContact = z.infer<typeof contactResultSchema>;
 
 // ─── Fetch helper ─────────────────────────────────────────────────────────────
 
+const LUSHA_TIMEOUT_MS = 20_000;
+
 async function lushaPost(path: string, body: unknown, apiKey: string): Promise<unknown> {
   const res = await fetch(`${LUSHA_BASE_URL}${path}`, {
     method: "POST",
@@ -213,12 +215,17 @@ async function lushaPost(path: string, body: unknown, apiKey: string): Promise<u
       "x-api-key": apiKey,
     },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(LUSHA_TIMEOUT_MS),
   });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`Lusha API error: ${res.status} — ${text}`);
   }
-  return res.json();
+  try {
+    return await res.json();
+  } catch {
+    throw new Error("Lusha API returned a non-JSON response");
+  }
 }
 
 // ─── Step 1: Company search ───────────────────────────────────────────────────
@@ -567,7 +574,7 @@ export const lushaProvider: EnrichmentProvider = {
 
     return {
       provider: "lusha",
-      data: normalized as unknown as Record<string, unknown>,
+      data: normalized,
       raw: { search: searchRaw, enrich: enrichRaw, contacts: contactRaw },
       meta: { cost },
     };

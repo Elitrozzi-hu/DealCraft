@@ -77,7 +77,7 @@ export function MaterialPreview({
       <div>
         {material.blocks.map((block, i) => (
           <Block
-            key={`${block.type}-${i}`}
+            key={`${block.type}-${"text" in block ? block.text : i}`}
             block={block}
             includePricing={includePricing}
           />

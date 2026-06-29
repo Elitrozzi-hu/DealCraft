@@ -4,6 +4,7 @@ import { useState } from "react";
 import type {
   Deal,
   DealSearchRequest,
+  DealSearchResult,
   PublishedSuccessCase,
   Pain,
   RecentDeal,
@@ -49,12 +50,23 @@ export function DealCraftApp() {
   const [session, setSession] = useState<CopilotSession | null>(null);
   const [sessionKey, setSessionKey] = useState(0);
   const search = useDealSearch();
+  const [pending, setPending] = useState<{
+    result: DealSearchResult;
+    website: string;
+  } | null>(null);
 
   const onSearch = async (q: DealSearchRequest) => {
     setQuery(q);
+    setPending(null);
     setView("searching");
     const result = await search.search(q);
     if (!result) return; // error → searching view renders the error state
+    setPending({ result, website: q.website ?? "" });
+  };
+
+  const onAnalysisReady = () => {
+    if (!pending) return;
+    const { result, website } = pending;
     setSession({
       deal: result.deal,
       stakeholders: result.stakeholders,
@@ -63,10 +75,11 @@ export function DealCraftApp() {
       resolvedName: result.resolvedName,
       coldStart: result.coldStart,
       activeMeta: null,
-      website: q.website ?? "",
+      website,
       successCases: result.successCases ?? [],
     });
     setSessionKey((k) => k + 1);
+    setPending(null);
     setView("copilot");
   };
 
@@ -123,7 +136,12 @@ export function DealCraftApp() {
       );
     }
     return (
-      <SearchingScreen query={query} steps={search.steps} step={search.step} />
+      <SearchingScreen
+        query={query}
+        steps={search.steps}
+        step={search.step}
+        onComplete={onAnalysisReady}
+      />
     );
   }
 

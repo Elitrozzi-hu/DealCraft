@@ -3,6 +3,8 @@ import "server-only";
 import { z } from "zod";
 
 import { generate, type GenerationUsage } from "@/lib/llm/generate";
+import type { LlmProvider } from "@/lib/llm/registry";
+import { ENRICHMENT_LLM_PROVIDER } from "@/lib/server/env";
 import {
   llmResearchOutputSchema,
   type LlmResearchOutput,
@@ -15,6 +17,7 @@ import type {
   EnrichmentProvider,
   EnrichmentResult,
 } from "@/lib/enrichment/types";
+import { clamp } from "@/lib/enrichment/clamp";
 import {
   coldProv,
   enrichmentResultSchema,
@@ -54,7 +57,6 @@ export const optionsSchema = z.object({
 
 export type WebSearchOptions = z.infer<typeof optionsSchema>;
 
-const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n));
 
 /** If `s` is a usable http(s) URL, return its canonical href + a tidy label
  *  (the www-stripped hostname); otherwise null. The prompt allows `source` to be
@@ -222,7 +224,8 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
     let extracted: LlmResearchOutput;
     try {
       extracted = await generate({
-        provider: "openrouter",
+        // Validated at runtime by the LLM registry (unknown key → throws).
+        provider: (ENRICHMENT_LLM_PROVIDER ?? "openrouter") as LlmProvider,
         schema: llmResearchOutputSchema,
         system: renderResearchPrompt(name, domain),
         prompt: query,
@@ -275,7 +278,7 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
 
     return {
       provider: "llm-websearch",
-      data: enrichmentResultSchema.parse(data) as Record<string, unknown>,
+      data: enrichmentResultSchema.parse(data),
       raw: extracted,
       meta: {
         costUsd: usage?.costUsd ?? null,

@@ -2,6 +2,8 @@ import "server-only";
 
 import { z } from "zod";
 
+import { unwrapEnvelope } from "@/lib/cassidy-envelope";
+import { clamp } from "@/lib/enrichment/clamp";
 import { CLASSIDY_API_KEY, CLASSIDY_WEBHOOK_URL } from "@/lib/server/env";
 import { createLogger } from "@/lib/server/logger";
 import type { TechKind } from "@/types";
@@ -107,54 +109,9 @@ const cassidyRawSchema = z
 type CassidyRaw = z.infer<typeof cassidyRawSchema>;
 type RawProv = z.infer<typeof rawProvSchema>;
 
-// --- Workflow envelope -----------------------------------------------------
-// Cassidy does not return the enrichment object at the top level. It wraps it in
-// a workflow-run envelope: the data is a JSON string — usually inside a ```json
-// code fence — at `workflowRun.actionResults[].output`. We unwrap to the bare
-// data object before parsing; if the response is already unwrapped (no
-// envelope), we pass it through unchanged.
-const envelopeSchema = z
-  .object({
-    workflowRun: z
-      .object({
-        actionResults: z
-          .array(
-            z.object({
-              name: z.string().nullish(),
-              output: z.string().nullish(),
-            }),
-          )
-          .nullish(),
-      })
-      .nullish(),
-  })
-  .nullish();
-
-/** Strip a leading/trailing ```json … ``` (or plain ```) code fence. */
-function stripCodeFence(s: string): string {
-  const trimmed = s.trim();
-  const fenced = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```$/);
-  return fenced ? fenced[1] : trimmed;
-}
-
-/** Unwrap Cassidy's workflow envelope to the bare enrichment data object. */
-function unwrapEnvelope(raw: unknown): unknown {
-  const env = envelopeSchema.safeParse(raw);
-  const actionResults = env.success ? env.data?.workflowRun?.actionResults : null;
-  if (!actionResults?.length) return raw;
-  const action =
-    actionResults.find((a) => typeof a.output === "string" && a.output.trim()) ??
-    actionResults[0];
-  const output = action?.output;
-  if (typeof output !== "string" || !output.trim()) return raw;
-  try {
-    return JSON.parse(stripCodeFence(output));
-  } catch {
-    return raw;
-  }
-}
-
-const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n));
+// The Cassidy workflow-envelope unwrap (`workflowRun.actionResults[].output`,
+// a JSON string sometimes wrapped in a ```json fence) lives in the shared
+// `lib/cassidy-envelope.ts` so the success-case sync can reuse it.
 
 /** Map Cassidy's `Provenance Metadata` to our normalized provenance, with
  *  honest defaults when a field is missing. */
@@ -302,7 +259,7 @@ export const classidyProvider: EnrichmentProvider = {
     }
     return {
       provider: "classidy",
-      data: data as unknown as Record<string, unknown>,
+      data,
       raw,
     };
   },

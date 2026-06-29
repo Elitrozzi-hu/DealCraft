@@ -22,6 +22,46 @@
 
   --font-sans: var(--font-geist-sans), "Inter", system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --animate-spine-flow: spine-flow 1.5s ease-in-out infinite;
+  --animate-success-pop: success-pop 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes spine-flow {
+  0% {
+    transform: translateY(-110%);
+  }
+  100% {
+    transform: translateY(210%);
+  }
+}
+
+@keyframes success-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  65% {
+    transform: scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 body {

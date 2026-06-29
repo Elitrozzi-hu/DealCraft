@@ -258,6 +258,7 @@ export function InputScreen({
             <input
               id="email"
               type="email"
+              aria-label="Email del lead"
               value={email}
               placeholder="nombre@empresa.com"
               onChange={(e) => setEmail(e.target.value)}

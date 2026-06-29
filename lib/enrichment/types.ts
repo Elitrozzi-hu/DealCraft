@@ -2,6 +2,8 @@
 // types and the registry — never on a concrete provider. Every provider
 // normalizes its vendor-specific response into one `EnrichmentResult` shape.
 
+import type { NormalizedEnrichment } from "./result-schema";
+
 /** What we know about a contact to enrich: any one of these is enough. */
 export interface EnrichmentInput {
   email?: string;
@@ -17,8 +19,8 @@ export interface EnrichmentInput {
 export interface EnrichmentResult {
   /** Which provider produced this result. */
   provider: string;
-  /** Normalized, structured enrichment data (see each provider's schema). */
-  data: Record<string, unknown>;
+  /** Normalized, structured enrichment data (the `enrichmentResultSchema` shape). */
+  data: NormalizedEnrichment;
   /** Raw vendor response, kept for debugging/provenance. */
   raw?: unknown;
   /** Provider-specific metadata (cost, latency, token usage, etc.) not part of

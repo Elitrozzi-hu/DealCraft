@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type {
   AsyncStatus,
   LeadCandidate,
@@ -24,18 +24,22 @@ export function useLeadSearch(): LeadSearchHook {
   const [status, setStatus] = useState<AsyncStatus>("idle");
   const [candidates, setCandidates] = useState<LeadCandidate[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const latestId = useRef(0);
 
   const search = useCallback(
     async (req: LeadSearchRequest): Promise<LeadSearchResult | null> => {
+      const id = ++latestId.current;
       setStatus("loading");
       setError(null);
       setCandidates([]);
       try {
         const res = await searchLeads(req);
+        if (id !== latestId.current) return res;
         setCandidates(res.candidates);
         setStatus("success");
         return res;
       } catch (e) {
+        if (id !== latestId.current) return null;
         setError(e instanceof Error ? e.message : "Error de búsqueda");
         setStatus("error");
         return null;
@@ -45,6 +49,7 @@ export function useLeadSearch(): LeadSearchHook {
   );
 
   const reset = useCallback(() => {
+    latestId.current++;
     setStatus("idle");
     setCandidates([]);
     setError(null);

@@ -118,11 +118,11 @@ function KMetric({
       <div className={`flex items-center gap-1 ${kLabelCls} ${highlight ? "text-violet" : ""}`}>
         {label}
         {tooltip && (
-          <span className="group/tip relative cursor-help" aria-label={tooltip}>
-            <svg width={11} height={11} viewBox="0 0 16 16" fill="currentColor" aria-hidden className="opacity-50 group-hover/tip:opacity-100">
+          <span tabIndex={0} role="note" className="group/tip relative cursor-help rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-violet/50" aria-label={tooltip}>
+            <svg width={11} height={11} viewBox="0 0 16 16" fill="currentColor" aria-hidden className="opacity-50 group-hover/tip:opacity-100 group-focus-within/tip:opacity-100">
               <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 1.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11ZM8 5a.75.75 0 1 0 0 1.5A.75.75 0 0 0 8 5Zm-.75 2.75a.75.75 0 0 1 1.5 0v3a.75.75 0 0 1-1.5 0v-3Z"/>
             </svg>
-            <span className="pointer-events-none invisible absolute bottom-full left-1/2 z-50 mb-1.5 w-48 -translate-x-1/2 rounded-lg border border-line bg-panel px-2.5 py-1.5 text-[11px] leading-snug text-ink opacity-0 shadow-md transition-opacity group-hover/tip:visible group-hover/tip:opacity-100">
+            <span className="pointer-events-none invisible absolute bottom-full left-1/2 z-50 mb-1.5 w-48 -translate-x-1/2 rounded-lg border border-line bg-panel px-2.5 py-1.5 text-[11px] leading-snug text-ink opacity-0 shadow-md transition-opacity group-hover/tip:visible group-hover/tip:opacity-100 group-focus-within/tip:visible group-focus-within/tip:opacity-100">
               {tooltip}
             </span>
           </span>
@@ -217,11 +217,13 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         </div>
       )}
 
-      <div className="flex gap-1 rounded-xl border border-line bg-panel p-1">
+      <div role="tablist" className="flex gap-1 rounded-xl border border-line bg-panel p-1">
         {subTabs.map(([k, l]) => (
           <button
             key={k}
             type="button"
+            role="tab"
+            aria-selected={sub === k}
             onClick={() => setSub(k)}
             className={`flex-1 rounded-lg px-1.5 py-2.5 text-[12.5px] font-bold transition-colors ${sub === k ? "bg-violet text-white shadow-sm" : "text-cold hover:bg-cold-soft hover:text-ink"}`}
           >
