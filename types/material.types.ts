@@ -3,7 +3,7 @@
 import type { Pain } from "./pain.types";
 import type { Stakeholder } from "./stakeholder.types";
 
-export type MaterialKey = "pres" | "prop" | "pre" | "post" | "play";
+export type MaterialKey = "pres" | "prop" | "pre" | "post";
 
 export type MaterialTagTone = "ok" | "inferred" | "info" | "cold";
 

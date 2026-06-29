@@ -12,6 +12,8 @@ import type {
   LeadSearchResult,
   MaterialsRequest,
   MaterialsResult,
+  PreCallBriefRequest,
+  PreCallBriefResult,
   SignalsRequest,
   SignalsResult,
 } from "@/types";
@@ -33,6 +35,7 @@ const TIMEOUT_MS = {
   signals: 130_000,
   leadsSearch: 70_000,
   materials: 70_000,
+  preCallBrief: 70_000,
   generatePpt: 60_000,
 } as const;
 
@@ -109,6 +112,17 @@ export function generateMaterials(req: MaterialsRequest): Promise<MaterialsResul
 
 export function searchSignals(req: SignalsRequest): Promise<SignalsResult> {
   return postJson<SignalsRequest, SignalsResult>("/api/signals", req, TIMEOUT_MS.signals);
+}
+
+/** Generates the on-demand internal pre-call brief for a deal. */
+export function generatePreCallBrief(
+  req: PreCallBriefRequest,
+): Promise<PreCallBriefResult> {
+  return postJson<PreCallBriefRequest, PreCallBriefResult>(
+    "/api/pre-call-brief",
+    req,
+    TIMEOUT_MS.preCallBrief,
+  );
 }
 
 /** Generates a `.pptx` and returns it as a Blob for the browser to download. */

@@ -30,7 +30,6 @@ export async function generateMaterials(
   ];
   const champ = stakeholders.find((s) => s.role === "Champion");
   const champName = champ?.name?.split(" ")[0] ?? "el champion";
-  const opener = `${company} tiene ~485 empleados con ≈82% de workforce deskless, en un sector donde la experiencia del frontline impacta directo en la operación. Clientes similares redujeron rotación y tiempo de HR Ops +40%. ¿Tiene sentido explorar cómo se vería para ustedes?`;
 
   const presentation: MaterialBlock[] = [
     {
@@ -99,34 +98,6 @@ export async function generateMaterials(
     { type: "item", text: "· Fijar fecha tentativa de propuesta" },
   ];
 
-  const playbook: MaterialBlock[] = [
-    { type: "heading", text: `Playbook de venta — ${company}` },
-    { type: "paragraph", text: "Guía interna para el AE. No client-facing." },
-    { type: "subheading", text: "Opener (mensaje de apertura)" },
-    { type: "paragraph", text: `“${opener}”` },
-    { type: "subheading", text: "Preguntas de discovery" },
-    {
-      type: "item",
-      text: "· ¿Cómo saben hoy si un comunicado llegó a un chofer / operario?",
-    },
-    { type: "item", text: "· ¿Quién es dueño de la adopción del frontline?" },
-    { type: "item", text: "· ¿Qué intentaron antes y por qué no funcionó?" },
-    { type: "subheading", text: "Manejo de objeciones" },
-    {
-      type: "item",
-      text: "· “Ya usamos WhatsApp” → informal, sin acuse ni control; riesgo de compliance.",
-    },
-    {
-      type: "item",
-      text: "· “No hay presupuesto” → ROI por rotación y HR Ops; entrar por el entry wedge.",
-    },
-    { type: "subheading", text: "Insight de comparables" },
-    {
-      type: "item",
-      text: "Los deals similares se ganaron entrando por Comunicación; los perdidos cayeron por falta de champion económico o por precio.",
-    },
-  ];
-
   const materials: Material[] = [
     {
       key: "pres",
@@ -165,14 +136,6 @@ export async function generateMaterials(
       clientFacing: false,
       tag: { label: "comms", tone: "info" },
       blocks: postMeeting,
-    },
-    {
-      key: "play",
-      title: "Playbook de venta",
-      sub: "interno · no client-facing",
-      clientFacing: false,
-      tag: { label: "interno", tone: "cold" },
-      blocks: playbook,
     },
   ];
 

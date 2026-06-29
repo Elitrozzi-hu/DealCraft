@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import type {
   Deal,
   DealMeta,
@@ -22,8 +22,10 @@ import {
 } from "@/components/ui";
 import { CompsBlock } from "./comps-block";
 import { PainsBlock } from "./pains-block";
+import { PreCallBriefBlock } from "./pre-call-brief-block";
 import { SignalsBlock } from "./signals-block";
 import { StakeholdersBlock } from "./stakeholders-block";
+import type { PreCallBriefRequest } from "@/types";
 
 export interface AnalysisPanelProps {
   deal: Deal;
@@ -42,7 +44,7 @@ export interface AnalysisPanelProps {
   successCases: PublishedSuccessCase[];
 }
 
-type SubTab = "empresa" | "dolores" | "intel" | "signals";
+type SubTab = "empresa" | "dolores" | "intel" | "signals" | "brief";
 
 const kLabelCls = "text-[10px] font-bold uppercase tracking-wide text-cold";
 
@@ -166,6 +168,30 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   const f = deal.firmographics;
   const [sub, setSub] = useState<SubTab>("empresa");
   const [signalCount, setSignalCount] = useState<number | null>(null);
+  const [briefCount, setBriefCount] = useState<number | null>(null);
+  const briefRequest = useMemo<PreCallBriefRequest>(
+    () => ({
+      company: meta.name,
+      industry: meta.industry,
+      region: meta.region,
+      headcount: meta.headcount != null ? String(meta.headcount) : "",
+      stakeholders: stakeholders.map((s) => ({
+        name: s.name,
+        title: s.title,
+        role: s.role,
+      })),
+      comparableCases: successCases.map((c) => ({
+        company: c.company,
+        industry: c.industry,
+        pains: c.pains,
+        modules: c.modules,
+        metrics: c.metrics.map((m) => ({ value: m.value, label: m.label })),
+        quote: c.quote,
+        sourceUrl: c.link_web ?? c.link_doc ?? null,
+      })),
+    }),
+    [meta, stakeholders, successCases],
+  );
 
   const subTabs: [SubTab, string][] = [
     ["empresa", `Empresa · ${stakeholders.length}`],
@@ -177,6 +203,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         : "Casos de éxito",
     ],
     ["signals", signalCount !== null ? `Signals · ${signalCount}` : "Signals"],
+    ["brief", briefCount !== null ? `Brief · ${briefCount}` : "Brief pre-call"],
   ];
   const subSub =
     sub === "empresa"
@@ -185,7 +212,9 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         ? "Puntos de dolor identificados para este deal."
         : sub === "intel"
           ? "Clientes similares que ya usan Humand."
-          : "Signals recientes de la empresa — liderazgo, expansión, financiamiento.";
+          : sub === "signals"
+            ? "Signals recientes de la empresa — liderazgo, expansión, financiamiento."
+            : "Hipótesis de valor para preparar la call de discovery — uso interno.";
 
   return (
     <div className="grid gap-3">
@@ -347,6 +376,15 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             company={deal.entity.resolved}
             domain={meta.website}
             onCountChange={setSignalCount}
+          />
+        </Section>
+      )}
+
+      {sub === "brief" && (
+        <Section title="Brief pre-call">
+          <PreCallBriefBlock
+            request={briefRequest}
+            onCountChange={setBriefCount}
           />
         </Section>
       )}
