@@ -23,7 +23,6 @@ export async function generatePreCallBrief(
     provider: "openrouter",
     schema: preCallBriefSchema,
     system: renderPreCallBriefPrompt(req),
-    // Empty user turn: all context is in the system prompt; only here to satisfy the SDK.
     prompt: "",
     onUsage: (u) => {
       usage = u;
