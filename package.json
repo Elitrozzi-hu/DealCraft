@@ -2,30 +2,42 @@
   "name": "dealcraft",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "vite",
+    "dev:full": "vercel dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@fontsource-variable/geist": "^5.2.9",
+    "@fontsource-variable/geist-mono": "^5.2.8",
     "@hubspot/api-client": "^13.5.0",
     "@openrouter/ai-sdk-provider": "^2.9.1",
+    "@tanstack/react-query": "^5.101.2",
+    "@vercel/node": "^5.8.22",
     "ai": "^6.0.208",
     "jszip": "^3.10.1",
-    "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-router-dom": "^6",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.62.0",
+    "@typescript-eslint/parser": "^8.62.0",
+    "@vitejs/plugin-react": "^6.0.3",
     "eslint": "^9",
-    "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^54.18.3",
+    "vite": "^8.1.0"
   }
 }

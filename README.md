@@ -4,8 +4,9 @@
 account, enriches and analyzes the deal (pains → solution → modules, stakeholders,
 a deal score with provenance), and generates a ready-to-send `.pptx` deck.
 
-Built as a Next.js App Router app acting as a **BFF** (Backend-for-Frontend) in
-front of swappable **LLM**, **enrichment**, and **CRM** providers.
+Built as a **Vite + React Router SPA** with **Vercel serverless functions**
+(`api/*`) acting as a **BFF** (Backend-for-Frontend) in front of swappable
+**LLM**, **enrichment**, and **CRM** providers.
 
 ---
 
@@ -25,23 +26,24 @@ front of swappable **LLM**, **enrichment**, and **CRM** providers.
 | Area      | Choice                                                              |
 | --------- | ------------------------------------------------------------------ |
 | Language  | TypeScript 5 (strict, no `any`)                                     |
-| Framework | Next.js 16.2.9 (App Router) + React 19.2                            |
+| Frontend  | Vite 8 + React 19.2 + React Router v6 (declarative)                 |
+| Backend   | Vercel serverless functions (`api/*.ts`, `@vercel/node`)           |
+| Runtime   | `bun` (package manager + scripts)                                   |
 | Styling   | Tailwind CSS v4                                                     |
 | AI        | Vercel AI SDK (`ai` v6) + `@openrouter/ai-sdk-provider`, `zod` v4   |
-| CRM       | `@hubspot/api-client` (server-only)                                 |
+| Data      | `@tanstack/react-query` (provider mounted; hooks still use `fetch`) |
+| CRM       | `@hubspot/api-client` (runs only inside `api/*` functions)          |
 | PPTX      | `jszip` (token-fill of a `.pptx` template)                          |
 | Tests     | None — code is verified with **lint + type check** only.           |
-
-> ⚠️ This is **Next.js 16**, which has breaking changes vs. older versions.
-> Before writing Next.js code, read the relevant guide in
-> `node_modules/next/dist/docs/`. See `AGENTS.md`.
 
 ---
 
 ## Getting started
 
 ### Prerequisites
-- Node.js 20+ and npm
+- **bun** (`curl -fsSL https://bun.sh/install | bash`) and Node.js 20+
+- The **Vercel CLI** (installed as a devDependency) + a Vercel account, to run the
+  full stack locally via `vercel dev`
 - API credentials for the providers you intend to use (see below). For a quick
   local spin-up you can use the **mock** providers and skip real credentials.
 
@@ -49,37 +51,47 @@ front of swappable **LLM**, **enrichment**, and **CRM** providers.
 
 ```bash
 # 1. Install dependencies
-npm install
+bun install
 
 # 2. Create your env file from the template and fill in the values
-cp .env.example .env
+cp .env.example .env.local          # vercel dev loads .env.local
 
-# 3. Run the dev server
-npm run dev
+# 3a. Run the FULL stack (SPA + api/* on one origin) — needs the Vercel CLI
+vercel login                        # one-time; first run also links the project (.vercel/)
+bun run dev:full                    # = vercel dev → http://localhost:3000
+
+# 3b. …or just the frontend (no backend; /api/* will 404)
+bun dev                             # = vite → http://localhost:5173
 ```
 
-Open <http://localhost:3000>.
+Open <http://localhost:3000> (full stack) or <http://localhost:5173> (frontend only).
 
 ### Useful commands
 
 ```bash
-npm run dev      # Start dev server (http://localhost:3000)
-npm run build    # Production build + type check
-npm run start    # Run the production build
-npm run lint     # ESLint
-npx tsc --noEmit # Type check only
+bun run dev:full   # Full stack: SPA + api/* via vercel dev (http://localhost:3000)
+bun dev            # Frontend only: vite dev server (http://localhost:5173)
+bun run build      # Production build → dist/  (vite build)
+bun run preview    # Preview the production build
+bun run lint       # ESLint
+bunx tsc --noEmit  # Type check only
 ```
 
 > Before claiming a change "works/done", run **lint + tsc** and check the output —
 > there are no tests to rely on.
 
+> ℹ️ The `dev` script is `vite` (not `vercel dev`): `vercel dev` runs the project's
+> dev command to serve the frontend, so aliasing `dev` to `vercel dev` would recurse.
+> Use `bun run dev:full` (or `vercel dev` directly) for the full stack.
+
 ---
 
 ## Environment variables
 
-All env vars are read in **one place only**: `lib/server/env.ts`. Copy
-`.env.example` to `.env` and fill in what you need. Providers are pluggable via
-registry keys — set the `*_PROVIDER` var to switch implementations.
+All env vars are read in **one place only**: `src/lib/server/env.ts`. Copy
+`.env.example` to `.env.local` and fill in what you need (`vercel dev` loads
+`.env.local`). Providers are pluggable via registry keys — set the `*_PROVIDER`
+var to switch implementations.
 
 | Variable                          | Purpose                                                                 |
 | --------------------------------- | ----------------------------------------------------------------------- |
@@ -92,54 +104,64 @@ registry keys — set the `*_PROVIDER` var to switch implementations.
 | `CASSIDY_SUCCESS_CASE_WEBHOOK_URL`| Cassidy success-case scraper (Notion → success-cases sync). No key.     |
 | `LUSHA_API_KEY`                   | Lusha enrichment key.                                                    |
 | `CRM_PROVIDER`                    | `hubspot` \| `mock`.                                                     |
-| `HUBSPOT_ACCESS_TOKEN`            | HubSpot token (server-only). Required when `CRM_PROVIDER=hubspot`.       |
+| `HUBSPOT_ACCESS_TOKEN`            | HubSpot token (server-side). Required when `CRM_PROVIDER=hubspot`.       |
+| `NOTION_WEBHOOK_TOKEN`            | Shared secret expected in the `token` header of the Notion webhook.     |
 | `LOG_LEVEL`                       | `debug` \| `info` \| `warn` \| `error` \| `silent`. Dev default: `debug`.|
 | `LOG_FORMAT`                      | `pretty` (dev) \| `json` (prod).                                         |
 
 > Set every provider to its `mock` value to run the whole flow with no external
-> credentials.
+> credentials. (Note: there is no `mock` LLM provider — chat/materials/signals/
+> pre-call-brief need a real `OPENROUTER_API_KEY`.)
 
 ---
 
 ## Architecture (high level)
 
-The app is a thin BFF: route handlers parse the request, call **one** `lib/`
-function, and map errors. Business logic lives in `lib/`, where dependencies flow
-strictly downward.
+The app is a thin BFF: Vercel functions parse the request, call **one** `src/lib/`
+function, and map errors. Business logic lives in `src/lib/`, where dependencies
+flow strictly downward.
 
 ```
-app/
-  api/*/route.ts        BFF endpoints: chat, materials, generate-ppt,
-                        deals/search, leads/search, signals, notion-webhook
-  page.tsx, layout.tsx  UI entry
-
-lib/
-  llm/                  generate() abstraction over OpenRouter; named LLM tasks
+index.html              Vite entry → src/main.tsx → src/App.tsx
+src/
+  main.tsx              createRoot(<App/>); imports fonts + index.css
+  App.tsx               <QueryClientProvider><BrowserRouter><Routes>  ("/" → DealCraftApp)
+  index.css             Tailwind v4 @import + @theme; Geist font vars
+  lib/
+    llm/                generate() abstraction over OpenRouter; named LLM tasks
                         live in generations/<task>/ (prompt.ts + structured-output.ts)
-  enrichment/           provider registry (llm-websearch, classidy, lusha, mock)
+    enrichment/         provider registry (llm-websearch, classidy, lusha, mock)
                         + NormalizedEnrichment zod contract + provenance helpers
-  crm/                  getCrmProvider() registry (hubspot, mock); HubSpot deal lookup
-  ppt/                  {{token}}-fill pipeline that builds the .pptx
-  server/               server-only adapters route handlers call; env.ts, logger.ts
-  api-client.ts         client → BFF calls
+    crm/                getCrmProvider() registry (hubspot, mock); HubSpot deal lookup
+    ppt/                {{token}}-fill pipeline that builds the .pptx
+    server/             server-side adapters; env.ts (only process.env reader), logger.ts
+    api-client.ts       client → BFF calls (plain fetch)
+  types/index.ts        barrel over all *.types.ts — always import via @/types
+  components/           ui/ (stateless primitives) + features/ (deal-analysis, etc.)
+  hooks/                use-deal-state, use-deal-search, use-ppt-generator, ...
 
-types/index.ts          barrel over all *.types.ts — always import via @/types
-components/             ui/ (stateless primitives) + features/ (deal-analysis, etc.)
-hooks/                  use-deal-state, use-deal-search, use-ppt-generator, ...
-docs/                   reference docs (HubSpot properties, solutions map)
-scripts/                dev tooling (not in build)
+api/                    Vercel serverless functions (@vercel/node, (req,res)):
+                        chat, materials, generate-ppt, deals/search, leads/search,
+                        signals, pre-call-brief, notion-webhook/success-cases
+vercel.json             framework=vite, outputDirectory=dist, per-fn includeFiles
+deck-assets/, data/     runtime assets read via process.cwd() (stay at project root)
+docs/, scripts/         reference docs + dev tooling (not in build)
 ```
 
 ### Key conventions
-- Path alias `@/*` → project root.
-- Every server module starts with `import "server-only"`.
+- Path alias `@/*` → `./src` (tsconfig `paths` + Vite alias). The `api/*` functions
+  resolve `@/lib/...` via the same tsconfig path.
+- **No `import "server-only"`** — it would crash the Vercel functions. The
+  client/server boundary is by convention: only `api/*` imports
+  `@/lib/{server,llm,enrichment,crm,ppt}`; the frontend imports only
+  `@/lib/api-client`, `@/lib/constants`, `@/lib/fixtures`, `@/types`.
 - **Add or swap a provider = one file + one registry line.** Unknown provider → 400.
-- **Add an LLM task = one `lib/llm/generations/<task>/` dir** (`prompt.ts` +
+- **Add an LLM task = one `src/lib/llm/generations/<task>/` dir** (`prompt.ts` +
   `structured-output.ts`). Never inline prompts in adapters.
-- Shared types → `types/index.ts`; shared constants → `lib/constants.ts`.
+- Shared types → `src/types/index.ts`; shared constants → `src/lib/constants.ts`.
 - Strategic data carries provenance; confidence is **computed**, not LLM-reported.
 
-For the full architecture and rules, read `CLAUDE.md` and `AGENTS.md`.
+For the full architecture and rules, read `CLAUDE.md`.
 
 ---
 
@@ -151,14 +173,19 @@ For the full architecture and rules, read `CLAUDE.md` and `AGENTS.md`.
   server tool (in `llm-websearch.ts`) ≠ the Exa `web` plugin (in `signals-adapter.ts`).
 - **PPTX**: the template is preserved byte-for-byte except `{{token}}` fields. A bad
   body → `ValidationError` → 400.
-- **Long-running routes**: `deals/search` has `maxDuration = 300` (Cassidy can take
-  minutes); `signals` has `maxDuration = 120`.
+- **Long-running functions** (`export const config = { maxDuration }`): `deals/search`
+  & `notion-webhook` = 300 (Cassidy can take minutes); `signals` = 120. 300s needs a
+  Vercel Pro/Enterprise plan.
+- **Runtime assets** (`deck-assets/templates/*.pptx`, `data/success-cases.json`) stay
+  at the project root and are bundled for deploy via `vercel.json` `includeFiles`.
+  Note: `deck-assets/` is gitignored (won't reach a git-based deploy), and the Notion
+  webhook's file write won't persist on Vercel's read-only filesystem.
 - `hubspot-deals.ts` filters BDR-pipeline deals.
 
 ---
 
 ## Workflow notes
 - Don't commit or push unless explicitly asked.
-- This is Next.js 16 — consult `node_modules/next/dist/docs/` before writing Next code.
-</content>
-</invoke>
+- `vercel dev` needs the Vercel CLI + `vercel login` + a linked project (`.vercel/`,
+  gitignored). It is only required for the **full** local stack; the skill's preflight
+  (detecting the `vercel` backend) only needs the `api/` directory to exist.

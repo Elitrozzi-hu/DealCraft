@@ -1,25 +1,37 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsparser from "@typescript-eslint/parser";
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
+// Standalone flat config (replaces eslint-config-next). Type-aware linting via
+// projectService, scoped to the app source under src/ and the Vercel functions
+// under api/. Config files at the root are ignored to avoid "file not in
+// tsconfig project" crashes from the type-aware parser.
+const eslintConfig = [
   {
-    files: ["**/*.ts", "**/*.tsx", "**/*.mts"],
+    // Build artifacts, generated output, dev-only tooling, and the doomed Next
+    // `app/` dir (excluded from tsconfig; deleted in Tasks 2/3) are not linted.
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      ".vercel/**",
+      ".next/**",
+      "out/**",
+      "public/**",
+      "scripts/**",
+      "app/**",
+      "*.config.*",
+    ],
+  },
+  {
+    files: ["src/**/*.{ts,tsx,mts}", "api/**/*.{ts,tsx}"],
     languageOptions: {
+      parser: tsparser,
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+    plugins: {
+      "@typescript-eslint": tseslint,
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
@@ -27,8 +39,9 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-unsafe-call": "warn",
       "@typescript-eslint/no-unsafe-member-access": "warn",
       "@typescript-eslint/no-unsafe-return": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
     },
   },
-]);
+];
 
 export default eslintConfig;
