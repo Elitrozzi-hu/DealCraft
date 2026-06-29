@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import type {
   DealSearchRequest,
   LeadCandidate,
@@ -45,7 +45,10 @@ interface CandidateCardProps {
   onPick: (candidate: LeadCandidate, deal?: LeadDeal) => void;
 }
 
-function CandidateCard({ candidate: c, onPick }: CandidateCardProps) {
+const CandidateCard = memo(function CandidateCard({
+  candidate: c,
+  onPick,
+}: CandidateCardProps) {
   const single = c.deals.length === 1;
   const multiple = c.deals.length > 1;
 
@@ -127,7 +130,7 @@ function CandidateCard({ candidate: c, onPick }: CandidateCardProps) {
       </div>
     </div>
   );
-}
+});
 
 interface RecentDealCardProps {
   deal: RecentDeal;
@@ -144,7 +147,6 @@ function RecentDealCard({ deal: h, onClick }: RecentDealCardProps) {
       onClick={() => onClick(h)}
       className="group flex flex-col gap-3 rounded-2xl border border-line bg-panel p-4 text-left transition-all hover:border-violet/40 hover:shadow-[0_4px_20px_rgba(44,90,246,0.10)]"
     >
-      {/* Company + score */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2.5">
           <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-violet-soft text-[13px] font-extrabold text-violet">
@@ -165,13 +167,11 @@ function RecentDealCard({ deal: h, onClick }: RecentDealCardProps) {
         </div>
       </div>
 
-      {/* Chips */}
       <div className="flex flex-wrap gap-1.5">
         <Chip tone="violet">{h.deskless}% deskless</Chip>
         <Chip>{h.headcount} emp.</Chip>
       </div>
 
-      {/* Stage progress bar */}
       <div>
         <div className="mb-1.5 flex items-center justify-between">
           <span className="text-[12px] font-semibold text-ink">
@@ -197,43 +197,49 @@ export function InputScreen({
 }: InputScreenProps) {
   const [email, setEmail] = useState(initialQuery.email ?? "");
   const lead = useLeadSearch();
+  const { search: leadSearch } = lead;
 
   const trimmedEmail = email.trim();
   const canSearch = trimmedEmail.length > 3 && trimmedEmail.includes("@");
 
-  const runSearch = () => {
-    if (!canSearch) return;
-    void lead.search({ email: trimmedEmail });
-  };
+  const trimmedEmailRef = useRef(trimmedEmail);
+  trimmedEmailRef.current = trimmedEmail;
 
-  const selectCandidate = (c: LeadCandidate, deal?: LeadDeal) => {
-    // Prefer company-level names: company field → deal name → domain root → fullName
-    const domainRoot = c.companyDomain
-      ? c.companyDomain.split(".")[0]
-      : null;
-    const companyLabel =
-      c.companyName?.trim() ||
-      deal?.name?.trim() ||
-      domainRoot ||
-      c.fullName?.trim() ||
-      trimmedEmail;
+  const runSearch = useCallback(() => {
+    const value = trimmedEmailRef.current;
+    if (!(value.length > 3 && value.includes("@"))) return;
+    void leadSearch({ email: value });
+  }, [leadSearch]);
 
-    onSearch({
-      name: companyLabel,
-      website: c.companyDomain?.trim() || undefined,
-      email: c.contactEmail?.trim() || trimmedEmail,
-      jobTitle: c.jobTitle?.trim() || undefined,
-      companyName: c.companyName?.trim() || undefined,
-      companyDomain: c.companyDomain?.trim() || undefined,
-      contactEmail: c.contactEmail?.trim() || trimmedEmail,
-      lifecycleStage: c.lifecycleStage?.trim() || undefined,
-      deal,
-    });
-  };
+  const selectCandidate = useCallback(
+    (c: LeadCandidate, deal?: LeadDeal) => {
+      const currentEmail = trimmedEmailRef.current;
+      // Prefer company-level names: company field → deal name → domain root → fullName
+      const domainRoot = c.companyDomain ? c.companyDomain.split(".")[0] : null;
+      const companyLabel =
+        c.companyName?.trim() ||
+        deal?.name?.trim() ||
+        domainRoot ||
+        c.fullName?.trim() ||
+        currentEmail;
+
+      onSearch({
+        name: companyLabel,
+        website: c.companyDomain?.trim() || undefined,
+        email: c.contactEmail?.trim() || currentEmail,
+        jobTitle: c.jobTitle?.trim() || undefined,
+        companyName: c.companyName?.trim() || undefined,
+        companyDomain: c.companyDomain?.trim() || undefined,
+        contactEmail: c.contactEmail?.trim() || currentEmail,
+        lifecycleStage: c.lifecycleStage?.trim() || undefined,
+        deal,
+      });
+    },
+    [onSearch],
+  );
 
   return (
     <div className="min-h-screen bg-bg">
-      {/* Top bar */}
       <div className="border-b border-line bg-panel px-6 py-4 shadow-[0_1px_3px_rgba(15,27,61,0.05)]">
         <div className="mx-auto max-w-[1060px]">
           <Wordmark big />
@@ -241,7 +247,6 @@ export function InputScreen({
       </div>
 
       <div className="mx-auto max-w-[1060px] px-6">
-        {/* Hero search */}
         <div className="border-b border-line py-10 text-center">
           <h1 className="mb-2 text-[26px] font-extrabold tracking-tight text-ink">
             Analizá tu próximo deal
@@ -251,7 +256,6 @@ export function InputScreen({
             análisis.
           </p>
 
-          {/* Search row */}
           <div className="mx-auto flex max-w-[560px] gap-2">
             <input
               id="email"
@@ -275,7 +279,6 @@ export function InputScreen({
             </button>
           </div>
 
-          {/* Example pills */}
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <span className="text-[11.5px] text-cold">Ejemplos:</span>
             {MOCK_SEARCH_EXAMPLES.map((ex) => (
@@ -292,7 +295,6 @@ export function InputScreen({
           </div>
         </div>
 
-        {/* Lead search results */}
         {lead.status !== "idle" && (
           <div className="mt-5">
             {lead.status === "loading" && (
@@ -336,7 +338,6 @@ export function InputScreen({
           </div>
         )}
 
-        {/* Recent deals */}
         <div className="pb-12 pt-8">
           <div className="mb-4 flex items-baseline justify-between">
             <div className="text-[16px] font-extrabold">

@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import { fetchSignals } from "@/lib/server/signals-adapter";
+import { mapApiError } from "@/lib/server/api-error";
 import { createLogger } from "@/lib/server/logger";
 
 // Web search + structured LLM call can take 30–60s.
@@ -43,12 +44,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .emit();
     res.status(200).json(result);
   } catch (err) {
-    log
+    const { status, error } = mapApiError(err, {
+      upstreamLabel: "Signals",
+      fallback: "Signals research failed",
+    });
+    const ev = log
       .event("signals.request")
-      .set("status", 500)
-      .set("durationMs", Date.now() - t0)
-      .setError(err)
-      .emit("error");
-    res.status(500).json({ error: "Signals research failed" });
+      .set("status", status)
+      .set("durationMs", Date.now() - t0);
+    if (status >= 500) ev.setError(err);
+    ev.emit(status >= 500 ? "error" : "info");
+    res.status(status).json({ error });
   }
 }

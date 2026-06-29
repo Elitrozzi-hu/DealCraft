@@ -39,7 +39,6 @@ export function DealHeader({
     <div className="border-b border-line bg-panel shadow-[0_1px_4px_rgba(15,27,61,0.06)]">
       <div className="mx-auto flex w-full max-w-[1760px] flex-col flex-wrap items-stretch justify-between gap-3 px-4 py-4 sm:px-6 md:flex-row md:items-center md:gap-[18px] lg:px-10">
         <div className="flex min-w-0 items-center gap-3">
-          {/* Back button */}
           <button
             type="button"
             onClick={onBack}
@@ -62,14 +61,12 @@ export function DealHeader({
             </svg>
           </button>
 
-          {/* Company avatar */}
           <div
             className={`grid h-[50px] w-[50px] flex-shrink-0 place-items-center rounded-xl bg-violet-soft text-[15px] font-extrabold text-violet ${avatarBorder}`}
           >
             {initials(meta.name)}
           </div>
 
-          {/* Company info */}
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-[17px] font-extrabold tracking-tight">
@@ -95,7 +92,6 @@ export function DealHeader({
           </div>
         </div>
 
-        {/* Metrics */}
         <div className="flex items-stretch overflow-x-auto md:flex-wrap md:overflow-x-visible">
           <Metric label="Etapa HubSpot">
             <span className="text-[16px] font-extrabold">

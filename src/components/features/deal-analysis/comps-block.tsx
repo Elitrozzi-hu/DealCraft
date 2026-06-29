@@ -72,7 +72,6 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
   return (
     <div className="rounded-xl border border-line bg-panel shadow-sm overflow-hidden">
 
-      {/* ── Header ── */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -95,11 +94,9 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
         <ChevronIcon open={open} />
       </button>
 
-      {/* ── Body ── */}
       {open && hasBody && (
         <div className="border-t border-line/50 px-3 py-3 space-y-3">
 
-          {/* Dolores */}
           {hasPains && (
             <div>
               <p className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-cold/70">
@@ -116,7 +113,6 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
             </div>
           )}
 
-          {/* Módulos */}
           {hasModules && (
             <div className="rounded-lg bg-surface/60 px-2.5 py-2">
               <p className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-cold/70">
@@ -135,7 +131,6 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
             </div>
           )}
 
-          {/* Resultados */}
           {hasMetrics && (
             <div className="border-t border-line/50 pt-2.5">
               <p className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-cold/70">
@@ -156,7 +151,6 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
             </div>
           )}
 
-          {/* Tagline fallback */}
           {!hasMetrics && !hasPains && !hasModules && c.tagline && (
             <p className="text-[11px] italic leading-relaxed text-cold">
               &ldquo;{c.tagline}&rdquo;
@@ -165,7 +159,6 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
         </div>
       )}
 
-      {/* ── Footer links ── */}
       {open && hasLinks && (
         <div className="flex flex-wrap gap-1.5 border-t border-line/50 px-3 py-2">
           {c.link_web && (

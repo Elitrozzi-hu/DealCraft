@@ -1,14 +1,12 @@
 import { generate, type GenerationUsage } from "@/lib/llm/generate";
+import type { LlmProvider } from "@/lib/llm/registry";
 import { humandSignalsSchema } from "@/lib/llm/generations/company-signals/structured-output";
 import { renderSignalsPrompt } from "@/lib/llm/generations/company-signals/prompt";
+import { ENRICHMENT_LLM_PROVIDER } from "@/lib/server/env";
 import { createLogger } from "@/lib/server/logger";
 import type { SignalsResult } from "@/types";
 
 const log = createLogger("signals");
-
-// Single OpenRouter call: the `web` plugin runs live search while
-// `humandSignalsSchema` (structured output) shapes the reply — same pattern as
-// `llm-websearch.ts`. No separate tools call needed.
 export async function fetchSignals(
   company: string,
   domain: string,
@@ -20,7 +18,7 @@ export async function fetchSignals(
 
   let usage: GenerationUsage | undefined;
   const result = await generate({
-    provider: "openrouter",
+    provider: (ENRICHMENT_LLM_PROVIDER ?? "openrouter") as LlmProvider,
     schema: humandSignalsSchema,
     system: renderSignalsPrompt(company, domain),
     prompt: `Find recent buying signals for ${company} (${domain})`,

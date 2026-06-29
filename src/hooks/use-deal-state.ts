@@ -20,7 +20,6 @@ export interface DealStateHook {
   pains: Pain[];
   stage: StageKey;
   headcountValidated: boolean;
-  // actions
   validatePain: (id: string) => void;
   addPain: (draft: PainDraft) => void;
   removePain: (id: string) => void;
@@ -43,7 +42,6 @@ export function useDealState(init?: UseDealStateInit): DealStateHook {
   const [stage, setStage] = useState<StageKey>(init?.stage ?? "champion");
   const [headcountValidated, setHeadcountValidated] = useState(false);
 
-  // ---- pain actions ----
   const validatePain = (id: string) => {
     setPains((ps) =>
       ps.map((x) => (x.id === id ? { ...x, validated: !x.validated } : x)),
@@ -72,7 +70,6 @@ export function useDealState(init?: UseDealStateInit): DealStateHook {
     setPains((ps) => ps.filter((p) => p.id !== id));
   };
 
-  // ---- stakeholder actions ----
   const validateStakeholder = (id: string) => {
     setStakeholders((ss) =>
       ss.map((x) => (x.id === id ? { ...x, validated: !x.validated } : x)),
@@ -106,7 +103,6 @@ export function useDealState(init?: UseDealStateInit): DealStateHook {
     setStakeholders((ss) => ss.filter((s) => s.id !== id));
   };
 
-  // ---- deal actions ----
   const moveDeal = () => {
     const i = stageIndex(stage);
     if (i < STAGES.length - 1) {

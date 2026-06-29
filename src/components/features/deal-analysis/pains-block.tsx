@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Pain, PainDraft } from "@/types";
-import { TAXONOMIES } from "@/lib/constants";
+import { TAXONOMIES, UNMAPPED_TAXONOMY } from "@/lib/constants";
 import { Button, EmptyState, Input, LinkAnchor, SourceLinkIcon } from "@/components/ui";
 
 export interface PainsBlockProps {
@@ -76,7 +76,7 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
             className="rounded-xl border border-line border-l-[3px] border-l-inferred bg-panel px-3 py-2.5"
           >
             <div className="mb-1 flex flex-wrap items-center gap-1.5">
-              {p.taxonomy !== "Otro (no mapeado)" && (
+              {p.taxonomy !== UNMAPPED_TAXONOMY && (
                 <span className="rounded border border-line px-1.5 py-px text-[10px] text-cold">
                   {p.taxonomy}
                 </span>

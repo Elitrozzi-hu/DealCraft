@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import { generatePreCallBrief } from "@/lib/server/pre-call-brief-adapter";
+import { mapApiError } from "@/lib/server/api-error";
 import { createLogger } from "@/lib/server/logger";
 
 // Single structured LLM call (no web search) — default route timeout is enough.
@@ -31,8 +32,8 @@ const bodySchema = z.object({
   industry: z.string().trim().optional().default(""),
   region: z.string().trim().optional().default(""),
   headcount: z.string().trim().optional().default(""),
-  stakeholders: z.array(stakeholderSchema).optional().default([]),
-  comparableCases: z.array(comparableCaseSchema).optional().default([]),
+  stakeholders: z.array(stakeholderSchema).max(50).optional().default([]),
+  comparableCases: z.array(comparableCaseSchema).max(50).optional().default([]),
 });
 
 /**
@@ -64,12 +65,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .emit();
     res.status(200).json(result);
   } catch (err) {
-    log
+    const { status, error } = mapApiError(err, {
+      upstreamLabel: "Pre-call brief",
+      fallback: "Pre-call brief generation failed",
+    });
+    const ev = log
       .event("pre-call-brief.request")
-      .set("status", 500)
-      .set("durationMs", Date.now() - t0)
-      .setError(err)
-      .emit("error");
-    res.status(500).json({ error: "Pre-call brief generation failed" });
+      .set("status", status)
+      .set("durationMs", Date.now() - t0);
+    if (status >= 500) ev.setError(err);
+    ev.emit(status >= 500 ? "error" : "info");
+    res.status(status).json({ error });
   }
 }

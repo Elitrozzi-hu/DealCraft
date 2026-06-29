@@ -17,6 +17,7 @@ export {
 export { Chip, type ChipProps, type ChipTone } from "./chip";
 export { Empty, type EmptyProps } from "./empty";
 export { EmptyState, type EmptyStateProps } from "./empty-state";
+export { ErrorBoundary, type ErrorBoundaryProps } from "./error-boundary";
 export { Gate, type GateProps } from "./gate";
 export { Input, type InputProps, Label, type LabelProps } from "./input";
 export { Metric, type MetricProps } from "./metric";

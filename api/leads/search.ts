@@ -3,6 +3,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import type { LeadSearchInput } from "@/lib/crm/types";
 import { getCrmProvider } from "@/lib/crm/registry";
+import { mapApiError, type ApiError } from "@/lib/server/api-error";
 import { createLogger } from "@/lib/server/logger";
 
 export const config = { maxDuration: 60 };
@@ -11,17 +12,11 @@ const log = createLogger("leads/search");
 
 const bodySchema = z.object({
   email: z.string().trim().min(1, "`email` is required to search for a lead."),
-  // Optional per-request provider override (e.g. "mock" for smoke tests);
-  // the client omits it and lets `CRM_PROVIDER` decide.
+
   provider: z.string().optional(),
 });
 
-/**
- * POST /api/leads/search
- * Body: `{ email, provider? }`. Resolves the CRM provider (per-request
- * `provider` or the `CRM_PROVIDER` default) and returns a normalized
- * `LeadSearchResult`. The lead is searched by `email` only.
- */
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
@@ -39,7 +34,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { email, provider } = parsed.data;
   const input: LeadSearchInput = { email };
 
-  // NOTE: never put `email` (or any contact field) on the event — PII.
   const ev = log
     .event("leads/search.request")
     .set("method", "POST")
@@ -54,7 +48,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .emit();
     res.status(200).json(result);
   } catch (err) {
-    const { status, error } = mapLeadSearchError(err);
+    const { status, error } = mapApiError(err, {
+      upstreamLabel: "CRM",
+      fallback: "Lead search failed",
+      rules: leadSearchRules,
+    });
     ev.set("status", status).set("durationMs", Date.now() - t0);
     if (status >= 500) ev.setError(err);
     ev.emit(status >= 500 ? "error" : "info");
@@ -62,19 +60,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-/** Map a lead-search failure to an HTTP status: unknown provider → 400,
- *  timeout/vendor failure → 502, else 500. */
-function mapLeadSearchError(err: unknown): { status: number; error: string } {
-  if (err instanceof Error) {
-    if (err.message.includes("Unknown CRM provider")) {
-      return { status: 400, error: err.message };
-    }
-    if (err.name === "TimeoutError" || err.name === "AbortError") {
-      return { status: 502, error: "CRM provider timed out" };
-    }
-    if (err.message.startsWith("HubSpot search failed")) {
-      return { status: 502, error: err.message };
-    }
+function leadSearchRules(err: unknown): ApiError | undefined {
+  if (err instanceof Error && err.message.startsWith("HubSpot search failed")) {
+    return { status: 502, error: err.message };
   }
-  return { status: 500, error: "Lead search failed" };
+  return undefined;
 }

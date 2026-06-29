@@ -411,12 +411,10 @@ function normalize(
   contacts: LushaContact[],
   painPointLabels: string[],
 ): NormalizedEnrichment {
-  // summary
   const summary = company.description
     ? { value: company.description, prov: API_PROV }
     : { value: "", prov: coldProv("Lusha") };
 
-  // region
   const city = company.location?.city ?? "";
   const country = company.location?.country ?? "";
   const regionValue = [city, country].filter(Boolean).join(", ");
@@ -424,7 +422,6 @@ function normalize(
     ? { value: regionValue, prov: API_PROV }
     : { value: "", prov: coldProv("Lusha") };
 
-  // headcount
   const exactCount = company.employeeCount?.exact;
   const headcount: NormalizedEnrichment["headcount"] =
     typeof exactCount === "number" ? { value: exactCount, prov: API_PROV } : null;
@@ -450,14 +447,12 @@ function normalize(
     }
   }
 
-  // techStack
   const techs = company.technologies ?? [];
   const techStack: NormalizedEnrichment["techStack"] = {
     items: techs.map((name) => ({ name, kind: "coexistir" as const, prov: API_PROV })),
     prov: techs.length > 0 ? API_PROV : coldProv("Lusha"),
   };
 
-  // stakeholders
   const stakeholders: NormalizedEnrichment["stakeholders"] = contacts.map((c) => {
     const sortedEmails = [...(c.emails ?? [])].sort(
       (a, b) =>
@@ -480,7 +475,6 @@ function normalize(
     };
   });
 
-  // painPoints
   const painPoints = painPointLabels.map((label) => ({ label, prov: LLM_PROV }));
 
   return enrichmentResultSchema.parse({

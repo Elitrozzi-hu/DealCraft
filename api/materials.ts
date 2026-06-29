@@ -3,14 +3,15 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import type { Pain, Stakeholder } from "@/types";
 import { generateMaterials } from "@/lib/server/materials-adapter";
+import { mapApiError } from "@/lib/server/api-error";
 import { createLogger } from "@/lib/server/logger";
 
 const log = createLogger("materials");
 
 const bodySchema = z.object({
   companyName: z.string().min(1, "`companyName` is required"),
-  pains: z.array(z.custom<Pain>()),
-  stakeholders: z.array(z.custom<Stakeholder>()),
+  pains: z.array(z.custom<Pain>()).max(50),
+  stakeholders: z.array(z.custom<Stakeholder>()).max(50),
   includePricing: z.boolean(),
   mrr: z.number(),
   mrrConfirmed: z.boolean(),
@@ -43,10 +44,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ev.set("status", 200).set("durationMs", Date.now() - t0).emit();
     res.status(200).json(result);
   } catch (err) {
-    ev.set("status", 500)
-      .set("durationMs", Date.now() - t0)
-      .setError(err)
-      .emit("error");
-    res.status(500).json({ error: "Materials generation failed" });
+    const { status, error } = mapApiError(err, {
+      upstreamLabel: "Materials",
+      fallback: "Materials generation failed",
+    });
+    ev.set("status", status).set("durationMs", Date.now() - t0);
+    if (status >= 500) ev.setError(err);
+    ev.emit(status >= 500 ? "error" : "info");
+    res.status(status).json({ error });
   }
 }

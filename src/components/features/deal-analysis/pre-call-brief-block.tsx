@@ -78,7 +78,6 @@ function HypothesisCard({
 
   return (
     <div className="rounded-xl border border-line bg-panel p-3.5 shadow-sm">
-      {/* Head: rank · title · module */}
       <div className="mb-2 flex items-start gap-2.5">
         <span className="mt-px grid h-[22px] w-[22px] flex-shrink-0 place-items-center rounded-md bg-violet-soft text-[12px] font-extrabold text-violet">
           {rank}
@@ -91,7 +90,6 @@ function HypothesisCard({
         )}
       </div>
 
-      {/* Rationale + inferido badge */}
       <p className="mb-3 pl-[32px] text-[12.5px] leading-relaxed text-cold">
         {h.rationale}
         <span className="ml-1.5 inline-flex items-center gap-1 align-middle text-[10.5px] font-semibold text-inferred">
@@ -126,7 +124,6 @@ function HypothesisCard({
         </div>
       )}
 
-      {/* Discovery questions */}
       {h.discoveryQuestions.length > 0 && (
         <div className="mb-3 pl-[32px]">
           <div className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-cold">
@@ -145,7 +142,6 @@ function HypothesisCard({
         </div>
       )}
 
-      {/* Confirm / discard signals */}
       <div className="flex flex-col gap-1.5 pl-[32px] sm:flex-row sm:gap-4">
         <p className="m-0 flex-1 text-[12px] leading-snug">
           <span className="font-bold text-validated">✓ Confirma · </span>
@@ -263,7 +259,6 @@ export function PreCallBriefBlock({
 
   return (
     <div>
-      {/* Internal-use banner */}
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className="text-[11.5px] text-cold">
           {hypotheses.length} hipótesis priorizadas · a validar en la call
@@ -273,14 +268,12 @@ export function PreCallBriefBlock({
         </span>
       </div>
 
-      {/* Hypotheses */}
       <div className="flex flex-col gap-2.5">
         {hypotheses.map((h, i) => (
           <HypothesisCard key={i} h={h} rank={i + 1} />
         ))}
       </div>
 
-      {/* Context questions */}
       {contextQuestions.length > 0 && (
         <div className="mt-4 rounded-xl border border-line bg-panel p-3.5 shadow-sm">
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wide text-cold">

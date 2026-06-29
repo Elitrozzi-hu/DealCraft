@@ -89,7 +89,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
         </div>
 
         <div className="relative overflow-hidden rounded-2xl border border-line bg-panel shadow-[0_1px_3px_rgba(15,27,61,0.07),0_8px_28px_rgba(15,27,61,0.06)]">
-          {/* Top loading hairline */}
           <div className="absolute inset-x-0 top-0 h-[3px] bg-surface">
             <div
               className={`h-full transition-[width] duration-500 ease-out ${complete ? "bg-validated" : "bg-violet"}`}
@@ -98,7 +97,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
           </div>
 
           {complete ? (
-            /* Success beat */
             <div
               onAnimationEnd={handleSuccessEnd}
               className="animate-success-pop grid place-items-center px-7 py-10 text-center"
@@ -118,7 +116,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
             </div>
           ) : (
             <div className="p-7">
-              {/* Header */}
               <div className="mb-6">
                 <div className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet">
                   Analizando deal
@@ -128,7 +125,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
                 </div>
               </div>
 
-              {/* Evidence spine */}
               <ol className="relative">
                 {steps.map((s, i) => {
                   const done = i < step;
@@ -136,7 +132,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
                   const isLast = i === steps.length - 1;
                   return (
                     <li key={s} className="relative flex gap-3.5 pb-4 last:pb-0">
-                      {/* Connector spine */}
                       {!isLast && (
                         <span
                           className="absolute left-[10.5px] top-[22px] bottom-0 w-[2px] overflow-hidden rounded-full bg-line"
@@ -149,7 +144,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
                         </span>
                       )}
 
-                      {/* Node */}
                       <span className="relative z-10 mt-px h-[22px] w-[22px] shrink-0">
                         {active && (
                           <span className="absolute inset-0 animate-ping rounded-full bg-violet/25" />
@@ -173,7 +167,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
                         </span>
                       </span>
 
-                      {/* Label */}
                       <div className="flex min-h-[22px] flex-1 items-center">
                         <span
                           className={`text-[13.5px] transition-colors ${
@@ -192,7 +185,6 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
                 })}
               </ol>
 
-              {/* Footer */}
               <div className="mt-6 flex items-center gap-2.5 rounded-xl bg-surface px-3.5 py-3">
                 <span className="shrink-0 text-validated">
                   <ShieldIcon />

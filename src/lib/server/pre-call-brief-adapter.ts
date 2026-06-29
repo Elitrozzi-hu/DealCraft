@@ -18,7 +18,6 @@ export async function generatePreCallBrief(
 
   let usage: GenerationUsage | undefined;
   const result = await generate({
-    provider: "openrouter",
     schema: preCallBriefSchema,
     system: renderPreCallBriefPrompt(req),
     prompt: "",

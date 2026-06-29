@@ -1,6 +1,8 @@
-import { useCallback, useState } from "react";
-import type { AsyncStatus, Material, MaterialsRequest } from "@/types";
+import { useCallback } from "react";
+import { useMutation } from "@tanstack/react-query";
+import type { Material, MaterialsRequest } from "@/types";
 import { generateMaterials } from "@/lib/api-client";
+import { mutationStatus } from "@/hooks/mutation-status";
 
 export interface MaterialsHook {
   status: 'idle' | 'loading' | 'error' | 'success';
@@ -9,24 +11,29 @@ export interface MaterialsHook {
   generate: (req: MaterialsRequest) => Promise<void>;
 }
 
-/** Generates the 5 sales artifacts via the BFF. Idle/loading/error/success. */
+
 export function useMaterials(): MaterialsHook {
-  const [status, setStatus] = useState<AsyncStatus>("idle");
-  const [materials, setMaterials] = useState<Material[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const { mutateAsync, data, isPending, isError, isSuccess, error } =
+    useMutation({ mutationFn: (req: MaterialsRequest) => generateMaterials(req) });
 
-  const generate = useCallback(async (req: MaterialsRequest) => {
-    setStatus("loading");
-    setError(null);
-    try {
-      const res = await generateMaterials(req);
-      setMaterials(res.materials);
-      setStatus("success");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "No se pudieron generar los materiales");
-      setStatus("error");
-    }
-  }, []);
+  const generate = useCallback(
+    async (req: MaterialsRequest) => {
+      try {
+        await mutateAsync(req);
+      } catch {
+      }
+    },
+    [mutateAsync],
+  );
 
-  return { status, materials, error, generate };
+  return {
+    status: mutationStatus(isPending, isError, isSuccess),
+    materials: data?.materials ?? [],
+    error: isError
+      ? error instanceof Error
+        ? error.message
+        : "No se pudieron generar los materiales"
+      : null,
+    generate,
+  };
 }

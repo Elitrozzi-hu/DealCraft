@@ -1,18 +1,30 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ErrorBoundary } from "@/components/ui";
 import { DealCraftApp } from "@/components/features/dealcraft-app";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
-// react-router v6 declarative shell. `patch-app-tsx.ts` (auth-add-staff) keys off
-// this exact <QueryClientProvider><BrowserRouter><Routes> shape to inject the
-// /login and /error routes and wrap "/" with <ProtectedRoute>.
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<DealCraftApp />} />
+          <Route
+            path="/"
+            element={
+              <ErrorBoundary>
+                <DealCraftApp />
+              </ErrorBoundary>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

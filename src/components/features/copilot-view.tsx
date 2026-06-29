@@ -167,7 +167,6 @@ export function CopilotView({
         <div
           className={`grid items-start gap-5 lg:gap-8 ${narrow ? "grid-cols-1" : "grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]"}`}
         >
-          {/* LEFT: Analysis */}
           <div>
             <div className="mb-3">
               <div className="text-[17px] font-extrabold tracking-tight">
@@ -195,7 +194,6 @@ export function CopilotView({
             />
           </div>
 
-          {/* RIGHT: Materials */}
           <div className="grid content-start gap-4">
             <div>
               <div className="text-[17px] font-extrabold tracking-tight">

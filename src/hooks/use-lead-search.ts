@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import type {
   AsyncStatus,
   LeadCandidate,
@@ -16,42 +17,48 @@ export interface LeadSearchHook {
   reset: () => void;
 }
 
-/** Owns the CRM lead-search call: a single fast request (no step animation,
- *  unlike `useDealSearch`). Idle/loading/error/success. */
 export function useLeadSearch(): LeadSearchHook {
-  const [status, setStatus] = useState<AsyncStatus>("idle");
-  const [candidates, setCandidates] = useState<LeadCandidate[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const latestId = useRef(0);
+  const [req, setReq] = useState<LeadSearchRequest | null>(null);
+
+  const query = useQuery({
+    queryKey: ["leads", req?.email ?? null],
+    queryFn: ({ signal }) => {
+      if (!req) throw new Error("no lead-search request");
+      return searchLeads(req, signal);
+    },
+    enabled: req !== null,
+    staleTime: 5 * 60_000,
+  });
 
   const search = useCallback(
-    async (req: LeadSearchRequest): Promise<LeadSearchResult | null> => {
-      const id = ++latestId.current;
-      setStatus("loading");
-      setError(null);
-      setCandidates([]);
-      try {
-        const res = await searchLeads(req);
-        if (id !== latestId.current) return res;
-        setCandidates(res.candidates);
-        setStatus("success");
-        return res;
-      } catch (e) {
-        if (id !== latestId.current) return null;
-        setError(e instanceof Error ? e.message : "Error de búsqueda");
-        setStatus("error");
-        return null;
-      }
+    async (next: LeadSearchRequest): Promise<LeadSearchResult | null> => {
+      setReq(next);
+      return null;
     },
     [],
   );
 
-  const reset = useCallback(() => {
-    latestId.current++;
-    setStatus("idle");
-    setCandidates([]);
-    setError(null);
-  }, []);
+  const reset = useCallback(() => setReq(null), []);
 
-  return { status, candidates, error, search, reset };
+  const status: AsyncStatus =
+    req === null
+      ? "idle"
+      : query.isPending || query.isFetching
+        ? "loading"
+        : query.isError
+          ? "error"
+          : "success";
+
+  return {
+    status,
+    candidates: query.data?.candidates ?? [],
+    error:
+      status === "error"
+        ? query.error instanceof Error
+          ? query.error.message
+          : "Error de búsqueda"
+        : null,
+    search,
+    reset,
+  };
 }

@@ -1,7 +1,4 @@
-// Client-side typed fetchers. The ONLY way the client talks to the backend:
-// every call targets a relative `/api/*` path — never an external service and
-// never a secret. Non-2xx responses are mapped to a thrown `ApiError`.
-// See PLAN "BFF boundary is absolute".
+
 
 import type {
   ApiErrorShape,
@@ -18,7 +15,6 @@ import type {
   SignalsResult,
 } from "@/types";
 
-/** Thrown on any non-2xx API response. */
 export class ApiError extends Error implements ApiErrorShape {
   readonly status: number;
   constructor(status: number, message: string) {
@@ -28,8 +24,6 @@ export class ApiError extends Error implements ApiErrorShape {
   }
 }
 
-// Per-route client timeouts (ms), each sitting just above the route's server
-// `maxDuration` so the backend's own error surfaces before the client aborts.
 const TIMEOUT_MS = {
   dealsSearch: 310_000,
   signals: 130_000,
@@ -43,17 +37,24 @@ async function postJson<TReq, TRes>(
   path: `/api/${string}`,
   body: TReq,
   timeoutMs: number,
+  signal?: AbortSignal,
 ): Promise<TRes> {
   const res = await fetchWithTimeout(path, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(body),
-    signal: AbortSignal.timeout(timeoutMs),
+    signal: withTimeout(timeoutMs, signal),
   });
   if (!res.ok) {
     throw new ApiError(res.status, await readError(res));
   }
   return (await res.json()) as TRes;
+}
+
+
+function withTimeout(timeoutMs: number, signal?: AbortSignal): AbortSignal {
+  const timeout = AbortSignal.timeout(timeoutMs);
+  return signal ? AbortSignal.any([signal, timeout]) : timeout;
 }
 
 async function fetchWithTimeout(input: string, init: RequestInit): Promise<Response> {
@@ -85,53 +86,75 @@ async function readError(res: Response): Promise<string> {
   return `Request failed (${res.status})`;
 }
 
-export function searchDeal(req: DealSearchRequest): Promise<DealSearchResult> {
+export function searchDeal(
+  req: DealSearchRequest,
+  signal?: AbortSignal,
+): Promise<DealSearchResult> {
   return postJson<DealSearchRequest, DealSearchResult>(
     "/api/deals/search",
     req,
     TIMEOUT_MS.dealsSearch,
+    signal,
   );
 }
 
-/** Searches CRM leads by email; returns matching candidates to pick from. */
-export function searchLeads(req: LeadSearchRequest): Promise<LeadSearchResult> {
+export function searchLeads(
+  req: LeadSearchRequest,
+  signal?: AbortSignal,
+): Promise<LeadSearchResult> {
   return postJson<LeadSearchRequest, LeadSearchResult>(
     "/api/leads/search",
     req,
     TIMEOUT_MS.leadsSearch,
+    signal,
   );
 }
 
-export function generateMaterials(req: MaterialsRequest): Promise<MaterialsResult> {
+export function generateMaterials(
+  req: MaterialsRequest,
+  signal?: AbortSignal,
+): Promise<MaterialsResult> {
   return postJson<MaterialsRequest, MaterialsResult>(
     "/api/materials",
     req,
     TIMEOUT_MS.materials,
+    signal,
   );
 }
 
-export function searchSignals(req: SignalsRequest): Promise<SignalsResult> {
-  return postJson<SignalsRequest, SignalsResult>("/api/signals", req, TIMEOUT_MS.signals);
+export function searchSignals(
+  req: SignalsRequest,
+  signal?: AbortSignal,
+): Promise<SignalsResult> {
+  return postJson<SignalsRequest, SignalsResult>(
+    "/api/signals",
+    req,
+    TIMEOUT_MS.signals,
+    signal,
+  );
 }
 
-/** Generates the on-demand internal pre-call brief for a deal. */
 export function generatePreCallBrief(
   req: PreCallBriefRequest,
+  signal?: AbortSignal,
 ): Promise<PreCallBriefResult> {
   return postJson<PreCallBriefRequest, PreCallBriefResult>(
     "/api/pre-call-brief",
     req,
     TIMEOUT_MS.preCallBrief,
+    signal,
   );
 }
 
-/** Generates a `.pptx` and returns it as a Blob for the browser to download. */
-export async function generatePpt(req: DeckRequest): Promise<Blob> {
+export async function generatePpt(
+  req: DeckRequest,
+  signal?: AbortSignal,
+): Promise<Blob> {
   const res = await fetchWithTimeout("/api/generate-ppt", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(req),
-    signal: AbortSignal.timeout(TIMEOUT_MS.generatePpt),
+    signal: withTimeout(TIMEOUT_MS.generatePpt, signal),
   });
   if (!res.ok) {
     throw new ApiError(res.status, await readError(res));

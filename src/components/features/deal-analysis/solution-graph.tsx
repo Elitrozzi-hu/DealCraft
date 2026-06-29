@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Pain, PainDraft } from "@/types";
-import { TAXONOMIES, resolveModule } from "@/lib/constants";
+import { TAXONOMIES, UNMAPPED_TAXONOMY, resolveModule } from "@/lib/constants";
 import { Button, EmptyState, Input, LinkAnchor, SourceLinkIcon } from "@/components/ui";
 
 export interface SolutionGraphProps {
@@ -86,7 +86,6 @@ export function SolutionGraph({
               key={p.id}
               className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center"
             >
-              {/* pain */}
               <div
                 className={`flex-1 rounded-xl border px-3 py-2.5 ${isDom ? "border-violet bg-violet-soft ring-[3px] ring-violet/15" : "border-line bg-panel"}`}
               >
@@ -142,7 +141,6 @@ export function SolutionGraph({
               {/* module (only when the pain maps to one; Classidy pains don't) */}
               {p.module && (
                 <>
-                  {/* connector */}
                   <div
                     className={`self-center text-base ${isDom ? "text-violet" : "text-cold"}`}
                     aria-hidden
@@ -183,7 +181,7 @@ export function SolutionGraph({
               {TAXONOMIES.map((t) => (
                 <option key={t}>{t}</option>
               ))}
-              <option value="Otro (no mapeado)">Otro (no mapeado)</option>
+              <option value={UNMAPPED_TAXONOMY}>{UNMAPPED_TAXONOMY}</option>
             </select>
           </div>
           <Input

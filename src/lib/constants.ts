@@ -3,7 +3,6 @@
 
 import type { Role, Segment, Stage, StageKey, Taxonomy } from "@/types";
 
-// ---------------- stages (5) ----------------
 export const STAGES: Stage[] = [
   {
     key: "lead",
@@ -76,7 +75,6 @@ export const lifecycleStageToStageKey = (
   stage: string | null | undefined,
 ): StageKey => LIFECYCLE_TO_STAGE[stage?.trim().toLowerCase() ?? ""] ?? "lead";
 
-// ---------------- solution graph ----------------
 export const SOLUTION_GRAPH: Record<Taxonomy, string> = {
   "Comunicación interna": "Comunicación (Feed + segmentación + acuse de lectura)",
   "Onboarding / Capacitación": "Onboarding journeys + Capacitaciones",
@@ -89,11 +87,12 @@ export const SOLUTION_GRAPH: Record<Taxonomy, string> = {
 
 export const TAXONOMIES: Taxonomy[] = Object.keys(SOLUTION_GRAPH) as Taxonomy[];
 
+export const UNMAPPED_TAXONOMY = "Otro (no mapeado)";
+
 /** Resolve a taxonomy label to a Humand module, or `null` when unmapped. */
 export const resolveModule = (t: string): string | null =>
   (SOLUTION_GRAPH as Record<string, string>)[t] ?? null;
 
-// ---------------- roles ----------------
 export const ROLES: Role[] = [
   "Champion",
   "Decision Maker",
@@ -102,7 +101,6 @@ export const ROLES: Role[] = [
   "Blocker",
 ];
 
-// ---------------- segmentation defaults ----------------
 /** Derive a market segment from a headcount. */
 export const segmentOf = (headcount: number): Segment =>
   headcount >= 1000 ? "Enterprise" : headcount >= 200 ? "Mid-Market" : "SMB";

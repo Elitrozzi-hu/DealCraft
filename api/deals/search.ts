@@ -1,7 +1,8 @@
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 import type { LeadDeal } from "@/types";
+import { mapApiError, type ApiError } from "@/lib/server/api-error";
 import { enrichDeal } from "@/lib/server/deals-adapter";
 import { createLogger } from "@/lib/server/logger";
 
@@ -59,7 +60,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .emit();
     res.status(200).json(meta ? { ...result, _meta: meta } : result);
   } catch (err) {
-    const { status, error } = mapEnrichError(err);
+    const { status, error } = mapApiError(err, {
+      upstreamLabel: "Enrichment",
+      fallback: "Enrichment failed",
+      rules: enrichRules,
+    });
     ev.set("status", status).set("durationMs", Date.now() - t0);
     if (status >= 500) ev.setError(err);
     ev.emit(status >= 500 ? "error" : "info");
@@ -67,25 +72,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-/** Map an enrichment failure to an HTTP status + message for the error screen:
- *  unknown provider → 400; misconfig / timeout / vendor / unexpected-shape → 502. */
-function mapEnrichError(err: unknown): { status: number; error: string } {
-  if (err instanceof ZodError) {
-    return { status: 502, error: "Enrichment returned an unexpected shape." };
-  }
+function enrichRules(err: unknown): ApiError | undefined {
   if (err instanceof Error) {
-    if (err.message.includes("Unknown enrichment provider")) {
-      return { status: 400, error: err.message };
-    }
     if (err.message.includes("CLASSIDY_WEBHOOK_URL is not set")) {
       return { status: 502, error: "Enrichment provider is not configured." };
-    }
-    if (err.name === "TimeoutError" || err.name === "AbortError") {
-      return { status: 502, error: "Enrichment provider timed out." };
     }
     if (err.message.startsWith("Classidy workflow failed")) {
       return { status: 502, error: err.message };
     }
   }
-  return { status: 500, error: "Enrichment failed" };
+  return undefined;
 }

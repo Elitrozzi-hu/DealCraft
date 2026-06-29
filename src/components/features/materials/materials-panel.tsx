@@ -25,7 +25,6 @@ function MaterialIcon({ materialKey }: { materialKey: string }) {
   const k = materialKey.toLowerCase();
 
   if (k.includes("deck") || k.includes("present") || k.includes("ppt")) {
-    // Slides icon
     return (
       <svg
         width={18}
@@ -45,7 +44,6 @@ function MaterialIcon({ materialKey }: { materialKey: string }) {
     );
   }
   if (k.includes("email") || k.includes("mail")) {
-    // Envelope icon
     return (
       <svg
         width={18}
@@ -65,7 +63,6 @@ function MaterialIcon({ materialKey }: { materialKey: string }) {
     );
   }
   if (k.includes("brief") || k.includes("one-pager") || k.includes("caso")) {
-    // Document icon
     return (
       <svg
         width={18}
@@ -88,7 +85,6 @@ function MaterialIcon({ materialKey }: { materialKey: string }) {
     );
   }
   if (k.includes("propuesta") || k.includes("pricing") || k.includes("oferta")) {
-    // Price tag / dollar icon
     return (
       <svg
         width={18}
@@ -107,7 +103,6 @@ function MaterialIcon({ materialKey }: { materialKey: string }) {
       </svg>
     );
   }
-  // Generic document
   return (
     <svg
       width={18}
