@@ -1,17 +1,14 @@
 import type { DeckRequest } from "@/types";
 import { Button, Spinner } from "@/components/ui";
+import { useT } from "@/i18n";
 import { usePptGenerator } from "@/hooks/use-ppt-generator";
 
 export interface DownloadButtonProps {
-  /**
-   * Deck token payload. TODO: the deal→token mapping (validated pains /
-   * confirmed MRR / company → tokens) is built upstream in the page shell — see
-   * PLAN Task 9. This component just sends it and renders the three states.
-   */
   deckRequest: DeckRequest;
 }
 
 export function DownloadButton({ deckRequest }: DownloadButtonProps) {
+  const t = useT();
   const { status, error, generate } = usePptGenerator();
   const loading = status === "loading";
 
@@ -20,15 +17,15 @@ export function DownloadButton({ deckRequest }: DownloadButtonProps) {
       <Button primary disabled={loading} onClick={() => generate(deckRequest)}>
         {loading ? (
           <>
-            <Spinner /> Generando…
+            <Spinner /> {t("materials.downloadLoading")}
           </>
         ) : (
-          "↓ Descargar .pptx"
+          t("materials.downloadPptx")
         )}
       </Button>
       {status === "error" && (
         <span className="text-[11.5px] text-risk">
-          {error ?? "No se pudo generar la presentación"}
+          {error ?? t("materials.downloadError")}
         </span>
       )}
     </div>

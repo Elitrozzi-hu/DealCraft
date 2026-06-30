@@ -34,13 +34,10 @@ const bodySchema = z.object({
   headcount: z.string().trim().optional().default(""),
   stakeholders: z.array(stakeholderSchema).max(50).optional().default([]),
   comparableCases: z.array(comparableCaseSchema).max(50).optional().default([]),
+  language: z.enum(["es", "en"]).optional().default("es"),
 });
 
-/**
- * POST /api/pre-call-brief
- * Body: `PreCallBriefRequest`. Runs a single structured LLM call and returns
- * `PreCallBriefResult`. Non-2xx on missing input or provider failure.
- */
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });

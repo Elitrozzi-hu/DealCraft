@@ -1,7 +1,9 @@
-// Domain constants & pure stage/solution-graph helpers ported from `poc.jsx`.
-// No React, no presentation (colors live in the UI layer as Tailwind tokens).
 
-import type { Role, Segment, Stage, StageKey, Taxonomy } from "@/types";
+import type { Language, Role, Segment, Stage, StageKey, Taxonomy } from "@/types";
+
+export const LANGUAGES: readonly Language[] = ["es", "en"];
+export const DEFAULT_LANGUAGE: Language = "es";
+export const LANGUAGE_STORAGE_KEY = "dealcraft.lang";
 
 export const STAGES: Stage[] = [
   {

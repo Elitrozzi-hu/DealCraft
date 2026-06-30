@@ -1,30 +1,35 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import type { DealSearchRequest, DealSearchResult } from "@/types";
 import { searchDeal } from "@/lib/api-client";
 import { mutationStatus } from "@/hooks/mutation-status";
-import { MOCK_SEARCH_STEPS } from "@/lib/fixtures";
+import { useLanguage, useT } from "@/i18n";
 
 export interface DealSearchHook {
   status: 'idle' | 'loading' | 'error' | 'success';
   result: DealSearchResult | null;
   error: string | null;
-  /** Index of the current searching step (drives the SearchingScreen). */
   step: number;
   steps: string[];
-  /** Resolves to the result on success, or `null` on error. */
   search: (req: DealSearchRequest) => Promise<DealSearchResult | null>;
   reset: () => void;
 }
 
 const STEP_MS = 480;
+const SEARCH_STEP_COUNT = 6;
 
-/** Owns the search/enrich flow: animates the PoC's searching-steps while the
- *  BFF resolves, then exposes the typed result. Backed by a React Query
- *  mutation; an AbortController cancels the in-flight request when a new search
- *  supersedes it or the component unmounts. Idle/loading/error/success. */
+
 export function useDealSearch(): DealSearchHook {
-  const steps = MOCK_SEARCH_STEPS;
+  const t = useT();
+  const { lang } = useLanguage();
+  const steps = useMemo(() => [
+    t("search.steps.resolving"),
+    t("search.steps.enriching"),
+    t("search.steps.deskless"),
+    t("search.steps.hubspot"),
+    t("search.steps.signals"),
+    t("search.steps.provenance"),
+  ], [t]);
   const [step, setStep] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const controller = useRef<AbortController | null>(null);
@@ -39,8 +44,6 @@ export function useDealSearch(): DealSearchHook {
   const { mutateAsync, data, isPending, isError, isSuccess, error, reset: resetMutation } =
     useMutation({
       mutationFn: (req: DealSearchRequest) => {
-        // Cancel any in-flight search before starting a new one, so a stale
-        // response can never resolve after a newer one.
         controller.current?.abort();
         const ac = new AbortController();
         controller.current = ac;
@@ -53,20 +56,19 @@ export function useDealSearch(): DealSearchHook {
       stopTimer();
       setStep(0);
       timer.current = setInterval(() => {
-        setStep((s) => (s < steps.length - 1 ? s + 1 : s));
+        setStep((s) => (s < SEARCH_STEP_COUNT - 1 ? s + 1 : s));
       }, STEP_MS);
       try {
-        const res = await mutateAsync(req);
+        const res = await mutateAsync({ ...req, language: req.language ?? lang });
         stopTimer();
-        setStep(steps.length);
+        setStep(SEARCH_STEP_COUNT);
         return res;
       } catch {
-        // Aborted (superseded) or failed — surfaces via status/error.
         stopTimer();
         return null;
       }
     },
-    [mutateAsync, stopTimer, steps.length],
+    [mutateAsync, stopTimer, lang],
   );
 
   const reset = useCallback(() => {
@@ -90,7 +92,7 @@ export function useDealSearch(): DealSearchHook {
     error: isError
       ? error instanceof Error
         ? error.message
-        : "Error de búsqueda"
+        : t("search.errorFallback")
       : null,
     step,
     steps,

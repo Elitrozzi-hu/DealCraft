@@ -17,3 +17,4 @@ export * from "./deck.types";
 export * from "./common.types";
 export * from "./signal.types";
 export * from "./pre-call-brief.types";
+export * from "./language.types";

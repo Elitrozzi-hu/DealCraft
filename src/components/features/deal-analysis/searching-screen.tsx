@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { DealSearchRequest } from "@/types";
 import { Wordmark } from "@/components/ui";
+import { useT } from "@/i18n";
 
 export interface SearchingScreenProps {
   query: DealSearchRequest;
@@ -49,6 +50,7 @@ function ShieldIcon() {
 }
 
 export function SearchingScreen({ query, steps, step, onComplete }: SearchingScreenProps) {
+  const t = useT();
   const complete = step >= steps.length;
 
   const [creep, setCreep] = useState(0.04);
@@ -107,18 +109,20 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
                 </div>
               </div>
               <div className="mt-5 text-[19px] font-extrabold tracking-tight text-ink">
-                Análisis completo
+                {t("search.complete")}
               </div>
               <div className="mt-1.5 max-w-[34ch] text-[12.5px] leading-snug text-cold">
-                {companyLabel} · {doneCount} campos verificados, cada uno con su
-                fuente y nivel de confianza.
+                {t("search.completeDetail", {
+                  company: companyLabel,
+                  count: doneCount,
+                })}
               </div>
             </div>
           ) : (
             <div className="p-7">
               <div className="mb-6">
                 <div className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-violet">
-                  Analizando deal
+                  {t("search.analyzing")}
                 </div>
                 <div className="mt-1 truncate text-[22px] font-extrabold leading-tight tracking-tight text-ink">
                   {companyLabel}
@@ -190,8 +194,7 @@ export function SearchingScreen({ query, steps, step, onComplete }: SearchingScr
                   <ShieldIcon />
                 </span>
                 <p className="text-[11.5px] leading-snug text-cold">
-                  Cada dato se guarda con su fuente y nivel de confianza. Nunca
-                  inventamos.
+                  {t("search.provenanceNote")}
                 </p>
               </div>
             </div>

@@ -1,7 +1,14 @@
 // Runtime source of the company-signals prompt. Mirrors prompt.md (human-readable docs).
 // Pure string builder — no `server-only`, no I/O.
 
-export function renderSignalsPrompt(company: string, domain: string): string {
+import type { Language } from "@/types";
+import { languageDirective } from "@/lib/llm/language";
+
+export function renderSignalsPrompt(
+  company: string,
+  domain: string,
+  language: Language = "es",
+): string {
   return `ROLE
 You are a sales-intelligence agent for Humand. Find REAL, RECENT, verifiable buying
 signals about a target company and return them as structured JSON only.
@@ -83,6 +90,10 @@ SELF-CHECK (run before output)
 For each signal confirm: (a) event date ≥ CUTOFF or still in effect; (b) source URL is specific and
 supports the claim; (c) no invented detail; (d) status/confidence consistent with the rules;
 (e) no duplicate of another signal. Drop anything that fails.
+
+OUTPUT LANGUAGE
+${languageDirective(language)}
+(This governs the OUTPUT only — search in whatever language finds the best sources.)
 
 OUTPUT
 Return ONLY a single JSON object that validates against the provided humand_signals schema.

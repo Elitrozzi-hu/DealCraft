@@ -3,6 +3,7 @@ import type {
   Deal,
   DealSearchRequest,
   DealSearchResult,
+  Language,
   PublishedSuccessCase,
   Pain,
   RecentDeal,
@@ -17,6 +18,7 @@ import {
 } from "@/lib/fixtures";
 import { Button, Card, Wordmark } from "@/components/ui";
 import { useDealSearch } from "@/hooks/use-deal-search";
+import { useLanguage, useT } from "@/i18n";
 import { InputScreen, SearchingScreen } from "@/components/features/deal-analysis";
 import { CopilotView, type ActiveMeta } from "@/components/features/copilot-view";
 
@@ -28,10 +30,11 @@ interface CopilotSession {
   pains: Pain[];
   stage: StageKey;
   resolvedName: string;
-  coldStart: boolean;
+coldStart: boolean;
   activeMeta: ActiveMeta | null;
   website: string;
   successCases: PublishedSuccessCase[];
+  language: Language;
 }
 
 const historyToActiveMeta = (h: RecentDeal): ActiveMeta => ({
@@ -43,6 +46,8 @@ const historyToActiveMeta = (h: RecentDeal): ActiveMeta => ({
 });
 
 export function DealCraftApp() {
+  const t = useT();
+  const { lang } = useLanguage();
   const [view, setView] = useState<View>("input");
   const [query, setQuery] = useState<DealSearchRequest>(MOCK_INITIAL_QUERY);
   const [session, setSession] = useState<CopilotSession | null>(null);
@@ -51,20 +56,22 @@ export function DealCraftApp() {
   const [pending, setPending] = useState<{
     result: DealSearchResult;
     website: string;
+    language: Language;
   } | null>(null);
 
   const onSearch = async (q: DealSearchRequest) => {
     setQuery(q);
     setPending(null);
     setView("searching");
+    const language = q.language ?? lang;
     const result = await search.search(q);
-    if (!result) return; // error → searching view renders the error state
-    setPending({ result, website: q.website ?? "" });
+    if (!result) return; 
+    setPending({ result, website: q.website ?? "", language });
   };
 
   const onAnalysisReady = () => {
     if (!pending) return;
-    const { result, website } = pending;
+    const { result, website, language } = pending;
     setSession({
       deal: result.deal,
       stakeholders: result.stakeholders,
@@ -75,6 +82,7 @@ export function DealCraftApp() {
       activeMeta: null,
       website,
       successCases: result.successCases ?? [],
+      language,
     });
     setSessionKey((k) => k + 1);
     setPending(null);
@@ -92,6 +100,9 @@ export function DealCraftApp() {
       activeMeta: historyToActiveMeta(h),
       website: historyToActiveMeta(h).website,
       successCases: [],
+      // History replays static fixtures (not a fresh generation), so pin to the
+      // current app language to avoid a dead-end stale-language note.
+      language: lang,
     });
     setSessionKey((k) => k + 1);
     setView("copilot");
@@ -121,12 +132,12 @@ export function DealCraftApp() {
             <div className="mb-8 flex justify-center">
               <Wordmark big />
             </div>
-            <Card title="No se pudo completar la búsqueda" accent="risk">
+            <Card title={t("search.errorTitle")} accent="risk">
               <p className="mb-4 text-[13px] text-cold">
-                {search.error ?? "Error de búsqueda."}
+                {search.error ?? t("search.errorFallback")}
               </p>
               <Button primary onClick={onNewSearch}>
-                Volver al inicio
+                {t("nav.backToStart")}
               </Button>
             </Card>
           </div>
@@ -165,6 +176,7 @@ export function DealCraftApp() {
       activeMeta={session.activeMeta}
       website={session.website}
       successCases={session.successCases}
+      contentLanguage={session.language}
       onBack={onNewSearch}
     />
   );

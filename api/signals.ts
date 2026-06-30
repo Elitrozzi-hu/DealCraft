@@ -13,13 +13,10 @@ const log = createLogger("signals/route");
 const bodySchema = z.object({
   company: z.string().trim().min(1, "`company` is required"),
   domain: z.string().trim().optional().default(""),
+  language: z.enum(["es", "en"]).optional().default("es"),
 });
 
-/**
- * POST /api/signals
- * Body: `SignalsRequest`. Runs a live web-search + structured LLM call and
- * returns `SignalsResult`. Non-2xx on missing input or provider failure.
- */
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
@@ -35,7 +32,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const t0 = Date.now();
   try {
-    const result = await fetchSignals(parsed.data.company, parsed.data.domain);
+    const result = await fetchSignals(
+      parsed.data.company,
+      parsed.data.domain,
+      parsed.data.language,
+    );
     log
       .event("signals.request")
       .set("status", 200)

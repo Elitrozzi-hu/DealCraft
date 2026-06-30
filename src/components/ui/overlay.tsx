@@ -4,18 +4,17 @@ import {
   useRef,
   type ReactNode,
 } from "react";
+import { useT } from "@/i18n";
 
 export interface OverlayProps {
   title: string;
   onClose: () => void;
-  /** Wider panel for richer content (e.g. material previews). */
   wide?: boolean;
   children: ReactNode;
 }
 
-/** Right-side drawer. Closes on backdrop click and ESC; traps focus and
- *  restores it to the trigger on unmount. */
 export function Overlay({ title, onClose, wide, children }: OverlayProps) {
+  const t = useT();
   const panelRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
 
@@ -81,7 +80,7 @@ export function Overlay({ title, onClose, wide, children }: OverlayProps) {
           </div>
           <button
             type="button"
-            aria-label="Cerrar"
+            aria-label={t("ui.overlay.close")}
             onClick={onClose}
             className="grid h-[30px] w-[30px] place-items-center rounded-lg bg-cold-soft text-base"
           >

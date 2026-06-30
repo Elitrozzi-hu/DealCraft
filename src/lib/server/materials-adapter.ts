@@ -19,8 +19,7 @@ export async function generateMaterials(
 ): Promise<MaterialsResult> {
   void getProviderConfig(); // seam: LLM creds resolved server-side only
 
-  const { companyName, pains, stakeholders, includePricing, mrr, mrrConfirmed } =
-    req;
+  const { companyName, pains, stakeholders } = req;
   const company = companyName.split(" — ")[0];
   const valid = pains.filter((p) => p.validated);
   const modules = [
@@ -34,25 +33,6 @@ export async function generateMaterials(
       type: "paragraph",
       text: "Para un workforce ≈82% deskless, donde el frontline hoy queda fuera de la comunicación corporativa.",
     },
-  ];
-
-  const proposal: MaterialBlock[] = [
-    {
-      type: "gate",
-      ok: valid.length > 0,
-      message: "Client-facing · gated: solo dolores validados.",
-    },
-    { type: "heading", text: "Propuesta comercial" },
-    { type: "subheading", text: "Alcance" },
-    ...(valid.length
-      ? valid.map(
-          (p): MaterialBlock => ({ type: "item", text: p.module ?? p.label }),
-        )
-      : ([
-          { type: "empty", text: "Validá dolores para definir el alcance." },
-        ] satisfies MaterialBlock[])),
-    { type: "subheading", text: "Inversión" },
-    { type: "pricing", mrr, confirmed: mrrConfirmed, hidden: !includePricing },
   ];
 
   const preMeeting: MaterialBlock[] = [
@@ -107,17 +87,6 @@ export async function generateMaterials(
         tone: valid.length ? "ok" : "inferred",
       },
       blocks: presentation,
-    },
-    {
-      key: "prop",
-      title: "Propuesta",
-      sub: "client-facing · pricing gated",
-      clientFacing: true,
-      tag: {
-        label: mrrConfirmed ? "pricing confirmado" : "pricing estimado",
-        tone: mrrConfirmed ? "ok" : "inferred",
-      },
-      blocks: proposal,
     },
     {
       key: "pre",

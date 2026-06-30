@@ -6,9 +6,13 @@
 //
 // Pure string builder — no `server-only`, no I/O.
 
+import type { Language } from "@/types";
+import { languageDirective } from "@/lib/llm/language";
+
 export function renderResearchPrompt(
   companyName: string,
   companyDomain: string,
+  language: Language = "es",
 ): string {
   return `# ROLE
 You are a B2B sales-intelligence researcher building an account profile for Humand,
@@ -84,5 +88,9 @@ If a source is inaccessible or returns nothing, note it and move on. Do not gues
   Apply rules #1 and #2 strictly.
 - painPoints: 3–5 specific, evidence-based pain points Humand could solve, grounded in this
   company's size, industry, workforce profile, and current tools — not generic HR pain.
-  Tie each to a Humand capability (centralized HR ops, internal comms, or culture).`;
+  Tie each to a Humand capability (centralized HR ops, internal comms, or culture).
+
+# OUTPUT LANGUAGE
+${languageDirective(language)}
+Region names and proper nouns stay as they are; everything else follows this directive.`;
 }

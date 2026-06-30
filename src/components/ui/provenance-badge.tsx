@@ -2,25 +2,20 @@ import type { ReactNode } from "react";
 
 import type { ProvenanceStatus } from "@/types";
 
+import { useT } from "@/i18n";
+
 import { SourceLinkIcon } from "./source-link-icon";
-import { STATUS_META, StatusDot } from "./status-dot";
+import { STATUS_META, STATUS_WORD_KEY, StatusDot } from "./status-dot";
 
 export interface ProvenanceBadgeProps {
   source: string;
   sourceType: string;
   confidence: number;
   status: ProvenanceStatus;
-  /** When present, the badge becomes a link to the real source (opens in a new
-   *  tab) and shows an external-link affordance. Absent → a plain badge. */
   url?: string;
-  /** Hide the source name (used in tight layouts). */
   compact?: boolean;
 }
 
-// --- Source icons ----------------------------------------------------------
-// A small inline glyph that hints at WHERE a datum came from (distinct from the
-// status dot, which says how trusted it is). Inherits the badge text color via
-// `currentColor`. Picked from the free-text source name with a generic fallback.
 const iconProps = {
   width: 11,
   height: 11,
@@ -84,11 +79,13 @@ export function ProvenanceBadge({
   url,
   compact,
 }: ProvenanceBadgeProps) {
+  const t = useT();
   const m = STATUS_META[status];
   const pct = Math.round(confidence * 100);
-  const title = `${m.word} · ${source} (${sourceType}) · confianza ${pct}%${
-    url ? ` · ${url}` : ""
-  }`;
+  const title = `${t(STATUS_WORD_KEY[status])} · ${source} (${sourceType}) · ${t(
+    "ui.provenanceBadge.confidence",
+    { pct },
+  )}${url ? ` · ${url}` : ""}`;
   const cls = `inline-flex max-w-full items-center gap-1.5 whitespace-nowrap rounded-full border px-[7px] py-[3px] text-[10.5px] font-semibold leading-none ${m.badge}`;
 
   const inner = (

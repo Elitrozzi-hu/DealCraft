@@ -1,7 +1,19 @@
 import { useState } from "react";
-import type { Pain, PainDraft } from "@/types";
+import type { Pain, PainDraft, Taxonomy } from "@/types";
 import { TAXONOMIES, UNMAPPED_TAXONOMY } from "@/lib/constants";
 import { Button, EmptyState, Input, LinkAnchor, SourceLinkIcon } from "@/components/ui";
+import { useT, type MessageKey } from "@/i18n";
+
+
+const TAXONOMY_LABEL_KEY: Record<Taxonomy, MessageKey> = {
+  "Comunicación interna": "taxonomy.comunicacionInterna",
+  "Onboarding / Capacitación": "taxonomy.onboarding",
+  "Clima / Engagement": "taxonomy.clima",
+  "Autogestión / Documentos": "taxonomy.autogestion",
+  Reconocimiento: "taxonomy.reconocimiento",
+  "Seguridad / Compliance": "taxonomy.seguridad",
+  Beneficios: "taxonomy.beneficios",
+};
 
 export interface PainsBlockProps {
   pains: Pain[];
@@ -34,6 +46,7 @@ function PainGlyph() {
 }
 
 export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockProps) {
+  const t = useT();
   const [adding, setAdding] = useState(false);
   const [d, setD] = useState<PainDraft>(emptyDraft);
 
@@ -48,11 +61,11 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
     return (
       <EmptyState
         icon={<PainGlyph />}
-        title="Sin dolores identificados"
-        hint="No encontramos puntos de dolor para este deal. Podés agregar uno a mano."
+        title={t("pains.emptyTitle")}
+        hint={t("pains.emptyHint")}
         action={
           <Button small onClick={() => setAdding(true)}>
-            ＋ agregar dolor
+            {t("pains.addPain")}
           </Button>
         }
       />
@@ -64,7 +77,7 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
       <div className="mb-2 flex justify-end">
         {!adding && (
           <Button small onClick={() => setAdding(true)}>
-            ＋ agregar
+            {t("common.add")}
           </Button>
         )}
       </div>
@@ -78,12 +91,14 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
             <div className="mb-1 flex flex-wrap items-center gap-1.5">
               {p.taxonomy !== UNMAPPED_TAXONOMY && (
                 <span className="rounded border border-line px-1.5 py-px text-[10px] text-cold">
-                  {p.taxonomy}
+                  {p.taxonomy in TAXONOMY_LABEL_KEY
+                    ? t(TAXONOMY_LABEL_KEY[p.taxonomy as Taxonomy])
+                    : p.taxonomy}
                 </span>
               )}
               {p.validated && (
                 <span className="rounded border border-validated/30 bg-validated-soft px-1.5 py-px text-[10px] font-bold text-validated">
-                  ✓ validado
+                  ✓ {t("common.validated")}
                 </span>
               )}
             </div>
@@ -94,7 +109,7 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
               <span className="flex min-w-0 items-center gap-1.5">
                 {!p.validated && (
                   <span className="text-[10.5px] font-semibold text-inferred">
-                    inferido {Math.round(p.conf * 100)}%
+                    {t("ui.status.inferred.word")} {Math.round(p.conf * 100)}%
                   </span>
                 )}
                 {p.evidence && (
@@ -105,8 +120,8 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
                     href={p.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    title="Abrir fuente"
-                    aria-label="Abrir fuente"
+                    title={t("ui.sourceLink.open")}
+                    aria-label={t("ui.sourceLink.open")}
                     tone="cold"
                   >
                     <SourceLinkIcon className="shrink-0" />
@@ -116,7 +131,7 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
               <div className="flex shrink-0 gap-1.5">
                 {!p.validated && (
                   <Button small tone="ok" onClick={() => onValidate(p.id)}>
-                    validar
+                    {t("common.validate")}
                   </Button>
                 )}
                 <Button small onClick={() => onRemove(p.id)}>
@@ -135,35 +150,37 @@ export function PainsBlock({ pains, onValidate, onAdd, onRemove }: PainsBlockPro
               id="pain-label"
               compact
               className="flex-[1_1_200px]"
-              placeholder="Punto de dolor"
+              placeholder={t("pains.labelPlaceholder")}
               value={d.label}
               onChange={(e) => setD({ ...d, label: e.target.value })}
             />
             <select
-              aria-label="Categoría"
+              aria-label={t("pains.categoryLabel")}
               className={selectCls}
               value={d.taxonomy}
               onChange={(e) => setD({ ...d, taxonomy: e.target.value })}
             >
-              {TAXONOMIES.map((t) => (
-                <option key={t}>{t}</option>
+              {TAXONOMIES.map((tax) => (
+                <option key={tax} value={tax}>
+                  {t(TAXONOMY_LABEL_KEY[tax])}
+                </option>
               ))}
             </select>
             <Input
               id="pain-evidence"
               compact
               className="flex-[1_1_200px]"
-              placeholder="Evidencia (opcional)"
+              placeholder={t("pains.evidencePlaceholder")}
               value={d.evidence}
               onChange={(e) => setD({ ...d, evidence: e.target.value })}
             />
           </div>
           <div className="mt-2 flex gap-2">
             <Button small primary onClick={save}>
-              Guardar
+              {t("common.save")}
             </Button>
             <Button small onClick={() => { setAdding(false); setD(emptyDraft); }}>
-              Cancelar
+              {t("common.cancel")}
             </Button>
           </div>
         </div>

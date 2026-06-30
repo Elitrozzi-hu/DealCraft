@@ -17,6 +17,7 @@ export { EmptyState, type EmptyStateProps } from "./empty-state";
 export { ErrorBoundary, type ErrorBoundaryProps } from "./error-boundary";
 export { Gate, type GateProps } from "./gate";
 export { Input, type InputProps, Label, type LabelProps } from "./input";
+export { LanguageToggle } from "./language-toggle";
 export { Metric, type MetricProps } from "./metric";
 export { Overlay, type OverlayProps } from "./overlay";
 export {
@@ -27,6 +28,10 @@ export {
   ProvenanceLegend,
   type ProvenanceLegendProps,
 } from "./provenance-legend";
+export {
+  StaleLanguageNote,
+  type StaleLanguageNoteProps,
+} from "./stale-language-note";
 export { StatusDot, type StatusDotProps } from "./status-dot";
 export { SourceLinkIcon, SourceLinkButton } from "./source-link-icon";
 export { Spinner, type SpinnerProps } from "./spinner";

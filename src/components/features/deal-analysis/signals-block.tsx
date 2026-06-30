@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
-import { Button, Chip, LinkAnchor, LinkButton, SourceLinkIcon, StatusDot } from "@/components/ui";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { Button, Chip, LinkAnchor, LinkButton, SourceLinkIcon, StaleLanguageNote, StatusDot } from "@/components/ui";
 import { searchSignals } from "@/lib/api-client";
-import type { SignalItem, SignalType } from "@/types";
+import type { Language, SignalItem, SignalType } from "@/types";
+import { localeFor, useLanguage, useT, type MessageKey } from "@/i18n";
 
 // --- Types ---
 
@@ -9,7 +10,7 @@ type Phase =
   | { kind: "idle" }
   | { kind: "loading" }
   | { kind: "error"; message: string }
-  | { kind: "done"; signals: SignalItem[] };
+  | { kind: "done"; signals: SignalItem[]; lang: Language };
 
 export interface SignalsBlockProps {
   company: string;
@@ -19,30 +20,24 @@ export interface SignalsBlockProps {
 
 // --- Constants ---
 
-const SCAN_STEPS = [
-  "Buscando cambios de liderazgo…",
-  "Buscando M&A y financiamiento…",
-  "Buscando expansiones y nuevas aperturas…",
-  "Buscando programas de cultura y GPTW…",
-  "Buscando reestructuraciones y conflictos…",
-  "Verificando stack tecnológico…",
-];
+// Number of scan-step labels cycled while loading (labels resolved via t()).
+const SCAN_STEP_COUNT = 6;
 
-const TYPE_LABELS: Record<SignalType, string> = {
-  new_people_leader: "Nuevo líder RRHH",
-  m_and_a: "M&A",
-  funding: "Financiamiento",
-  hiring_surge: "Contratación masiva",
-  expansion: "Expansión",
-  hr_digital_transformation: "Transf. HR Digital",
-  culture_program: "Cultura",
-  gptw: "GPTW",
-  restructuring: "Reestructuración",
-  labor_conflict: "Conflicto laboral",
-  esg_dei: "ESG / DEI",
-  compliance_training: "Compliance",
-  turnover: "Rotación",
-  stack: "Stack tecnológico",
+const TYPE_LABEL_KEY: Record<SignalType, MessageKey> = {
+  new_people_leader: "signals.type.new_people_leader",
+  m_and_a: "signals.type.m_and_a",
+  funding: "signals.type.funding",
+  hiring_surge: "signals.type.hiring_surge",
+  expansion: "signals.type.expansion",
+  hr_digital_transformation: "signals.type.hr_digital_transformation",
+  culture_program: "signals.type.culture_program",
+  gptw: "signals.type.gptw",
+  restructuring: "signals.type.restructuring",
+  labor_conflict: "signals.type.labor_conflict",
+  esg_dei: "signals.type.esg_dei",
+  compliance_training: "signals.type.compliance_training",
+  turnover: "signals.type.turnover",
+  stack: "signals.type.stack",
 };
 
 const TIER_CHIP_TONE: Record<1 | 2 | 3, "violet" | "inferred" | "cold"> = {
@@ -60,12 +55,15 @@ const TIER_CARD: Record<1 | 2 | 3, string> = {
 
 // --- Helpers ---
 
-function formatDate(d: string): string {
+function formatDate(d: string, lang: Language): string {
   const iso = d.match(/^(\d{4})-(\d{2})(-\d{2})?$/);
   if (!iso) return d;
   try {
     const date = new Date(`${iso[1]}-${iso[2]}-01`);
-    return date.toLocaleDateString("es-AR", { month: "short", year: "numeric" });
+    return date.toLocaleDateString(localeFor(lang), {
+      month: "short",
+      year: "numeric",
+    });
   } catch {
     return d;
   }
@@ -106,22 +104,21 @@ function RadarIcon({ className = "" }: { className?: string }) {
 }
 
 function SignalCard({ signal }: { signal: SignalItem }) {
-  // A source_url is proof the fact is backed by a real source — show as
-  // verified regardless of the LLM's inferred/verified distinction, which
-  // reflects how it was derived rather than whether a source exists.
+  const t = useT();
+  const { lang } = useLanguage();
   const statusDotStatus = signal.source_url ? "validated" : "inferred";
 
   return (
     <div className={`rounded-xl p-3 ${TIER_CARD[signal.tier]}`}>
       <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
-        <Chip tone={TIER_CHIP_TONE[signal.tier]}>{TYPE_LABELS[signal.type]}</Chip>
+        <Chip tone={TIER_CHIP_TONE[signal.tier]}>{t(TYPE_LABEL_KEY[signal.type])}</Chip>
         {signal.date && (
-          <span className="text-[11px] text-cold">{formatDate(signal.date)}</span>
+          <span className="text-[11px] text-cold">{formatDate(signal.date, lang)}</span>
         )}
         <span className={`ml-auto flex items-center gap-1 ${statusDotStatus === "validated" ? "text-validated" : "text-inferred"}`}>
           <StatusDot status={statusDotStatus} size={8} />
           <span className="text-[10px] font-semibold">
-            {signal.source_url ? "verificado" : "inferido"}
+            {signal.source_url ? t("signals.verified") : t("ui.status.inferred.word")}
           </span>
         </span>
       </div>
@@ -144,14 +141,24 @@ function SignalCard({ signal }: { signal: SignalItem }) {
 // --- Main component ---
 
 export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockProps) {
+  const t = useT();
+  const { lang } = useLanguage();
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const [stepIdx, setStepIdx] = useState(0);
+  const scanSteps = useMemo(() => [
+    t("signals.scan.leadership"),
+    t("signals.scan.maFunding"),
+    t("signals.scan.expansion"),
+    t("signals.scan.culture"),
+    t("signals.scan.restructuring"),
+    t("signals.scan.stack"),
+  ], [t]);
 
   // Cycle scan step labels while loading.
   useEffect(() => {
     if (phase.kind !== "loading") return;
     const id = setInterval(() => {
-      setStepIdx((i) => (i + 1) % SCAN_STEPS.length);
+      setStepIdx((i) => (i + 1) % SCAN_STEP_COUNT);
     }, 3000);
     return () => clearInterval(id);
   }, [phase.kind]);
@@ -169,13 +176,13 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
     setPhase({ kind: "loading" });
     setStepIdx(0);
     try {
-      const result = await searchSignals({ company, domain });
-      setPhase({ kind: "done", signals: result.signals });
+      const result = await searchSignals({ company, domain, language: lang });
+      setPhase({ kind: "done", signals: result.signals, lang });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error desconocido";
+      const message = err instanceof Error ? err.message : t("common.unknownError");
       setPhase({ kind: "error", message });
     }
-  }, [company, domain]);
+  }, [company, domain, lang, t]);
 
   // --- Idle ---
   if (phase.kind === "idle") {
@@ -185,14 +192,13 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
           <RadarIcon />
         </div>
         <div>
-          <p className="text-[13.5px] font-bold text-ink">Signals de mercado</p>
+          <p className="text-[13.5px] font-bold text-ink">{t("signals.idleTitle")}</p>
           <p className="mt-1 max-w-[34ch] text-[11.5px] leading-relaxed text-cold">
-            Detectá qué está pasando en la empresa ahora — cambios de
-            liderazgo, financiamiento, expansiones y más.
+            {t("signals.idleBody")}
           </p>
         </div>
         <Button primary onClick={handleResearch}>
-          Investigar signals
+          {t("signals.research")}
         </Button>
       </div>
     );
@@ -209,9 +215,9 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
           </div>
         </div>
         <div>
-          <p className="text-[13.5px] font-bold text-ink">Investigando…</p>
+          <p className="text-[13.5px] font-bold text-ink">{t("signals.researching")}</p>
           <p className="mt-1 text-[11.5px] text-cold transition-all">
-            {SCAN_STEPS[stepIdx]}
+            {scanSteps[stepIdx]}
           </p>
         </div>
       </div>
@@ -226,12 +232,12 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
           ✕
         </div>
         <div>
-          <p className="text-[13px] font-bold text-ink">La investigación falló</p>
+          <p className="text-[13px] font-bold text-ink">{t("signals.errorTitle")}</p>
           <p className="mt-1 max-w-[36ch] text-[11.5px] leading-relaxed text-cold">
             {phase.message}
           </p>
         </div>
-        <Button onClick={handleResearch}>Reintentar</Button>
+        <Button onClick={handleResearch}>{t("common.retry")}</Button>
       </div>
     );
   }
@@ -247,24 +253,22 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
         </div>
         <div>
           <p className="text-[13px] font-bold text-ink">
-            Sin signals en los últimos 6 meses
+            {t("signals.emptyTitle")}
           </p>
           <p className="mt-1 max-w-[36ch] text-[11.5px] leading-relaxed text-cold">
-            No encontramos eventos recientes y verificables para esta empresa.
-            Puede haber más información disponible en otros idiomas o fuentes.
+            {t("signals.emptyBody")}
           </p>
         </div>
-        <Button onClick={handleResearch}>Reintentar</Button>
+        <Button onClick={handleResearch}>{t("common.retry")}</Button>
       </div>
     );
   }
 
   return (
     <div>
+      <StaleLanguageNote contentLang={phase.lang} className="mb-2" />
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-[11.5px] text-cold">
-          Últimos 6 meses · investigación en tiempo real
-        </span>
+        <span className="text-[11.5px] text-cold">{t("signals.realtime")}</span>
         <span className="rounded-md border border-cold/20 bg-cold-soft px-2 py-px text-[10px] font-semibold text-cold">
           llm-websearch
         </span>
@@ -276,7 +280,7 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
       </div>
       <div className="mt-3">
         <LinkButton tone="cold" onClick={handleResearch}>
-          Reinvestigar →
+          {t("signals.reResearch")}
         </LinkButton>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Role, Stakeholder, StakeholderDraft } from "@/types";
 import { ROLES } from "@/lib/constants";
 import { Button, EmptyState, Input, ProvenanceBadge, SourceLinkButton } from "@/components/ui";
+import { useT } from "@/i18n";
 
 export interface StakeholdersBlockProps {
   stakeholders: Stakeholder[];
@@ -76,6 +77,7 @@ export function StakeholdersBlock({
   onUpdate,
   onRemove,
 }: StakeholdersBlockProps) {
+  const t = useT();
   const [editId, setEditId] = useState<string | null>(null);
   const [draft, setDraft] = useState<StakeholderDraft>(emptyDraft);
 
@@ -100,7 +102,7 @@ export function StakeholdersBlock({
         id="sh-name"
         compact
         className="flex-[1_1_130px]"
-        placeholder="Nombre"
+        placeholder={t("stakeholders.namePlaceholder")}
         value={draft.name}
         onChange={(e) => setDraft({ ...draft, name: e.target.value })}
       />
@@ -108,12 +110,12 @@ export function StakeholdersBlock({
         id="sh-title"
         compact
         className="flex-[1_1_130px]"
-        placeholder="Puesto"
+        placeholder={t("stakeholders.titlePlaceholder")}
         value={draft.title}
         onChange={(e) => setDraft({ ...draft, title: e.target.value })}
       />
       <select
-        aria-label="Rol"
+        aria-label={t("stakeholders.roleLabel")}
         className={selectCls}
         value={draft.role}
         onChange={(e) => setDraft({ ...draft, role: e.target.value as Role })}
@@ -128,13 +130,13 @@ export function StakeholdersBlock({
           checked={draft.validated}
           onChange={(e) => setDraft({ ...draft, validated: e.target.checked })}
         />{" "}
-        validado
+        {t("common.validated")}
       </label>
       <Button small primary onClick={save}>
-        Guardar
+        {t("common.save")}
       </Button>
       <Button small onClick={() => setEditId(null)}>
-        Cancelar
+        {t("common.cancel")}
       </Button>
     </div>
   );
@@ -143,11 +145,11 @@ export function StakeholdersBlock({
     return (
       <EmptyState
         icon={<PeopleGlyph />}
-        title="Sin stakeholders todavía"
-        hint="El research no encontró decisores verificables para este deal. Agregá uno a mano o reintentá el enrichment."
+        title={t("stakeholders.emptyTitle")}
+        hint={t("stakeholders.emptyHint")}
         action={
           <Button small onClick={startAdd}>
-            ＋ agregar stakeholder
+            {t("stakeholders.addStakeholder")}
           </Button>
         }
       />
@@ -159,7 +161,7 @@ export function StakeholdersBlock({
       <div className="mb-1 flex justify-end">
         {editId !== "new" && (
           <Button small onClick={startAdd}>
-            ＋ agregar
+            {t("common.add")}
           </Button>
         )}
       </div>
@@ -205,7 +207,7 @@ export function StakeholdersBlock({
                           ? "Call"
                           : s.source === "manual"
                             ? "AE"
-                            : "Firmografía"
+                            : t("stakeholders.sourceFirmografia")
                       }
                       sourceType={s.source}
                       confidence={s.conf}
@@ -219,13 +221,16 @@ export function StakeholdersBlock({
                     tone={s.validated ? "ok" : undefined}
                     onClick={() => onValidate(s.id)}
                   >
-                    {s.validated ? "✓ validado" : "validar"}
+                    {s.validated ? `✓ ${t("common.validated")}` : t("common.validate")}
                   </Button>
                   <Button small onClick={() => startEdit(s)}>
-                    editar
+                    {t("common.edit")}
                   </Button>
                   {sourceLink ? (
-                    <SourceLinkButton href={sourceLink} title={`Abrir fuente de ${s.name}`} />
+                    <SourceLinkButton
+                      href={sourceLink}
+                      title={t("stakeholders.openSourceOf", { name: s.name })}
+                    />
                   ) : (
                     <Button small onClick={() => onRemove(s.id)}>
                       ✕

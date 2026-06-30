@@ -6,21 +6,9 @@ import type { LanguageModel } from "ai";
 
 import { LLM_PROVIDER, OPENROUTER_API_KEY, OPENROUTER_MODEL } from "@/lib/server/env";
 
-// LLM provider registry. The single place that knows which concrete vendors
-// exist and how to build a model from each. Consumers depend on `getModel`
-// (and `generate`), never on a vendor SDK directly.
-//
-// Golden rule: adding a provider = a new factory entry below + (if it needs a
-// shared client) its own accessor. Nothing else in the app changes.
-
-// --- OpenRouter -----------------------------------------------------------
-// Memoized provider instance so the API key is read once and the same client
-// is reused (its `.tools.webSearch` factory is also consumed by the
-// llm-websearch enrichment provider — the only place allowed to know the
-// OpenRouter web-search contract).
 let openrouterProvider: OpenRouterProvider | null = null;
 
-/** The shared OpenRouter provider instance. Throws if the key is missing. */
+
 export function getOpenRouterProvider(): OpenRouterProvider {
   if (!OPENROUTER_API_KEY) {
     throw new Error(
@@ -31,9 +19,6 @@ export function getOpenRouterProvider(): OpenRouterProvider {
   return openrouterProvider;
 }
 
-// --- Registry -------------------------------------------------------------
-// `satisfies` keeps each entry type-checked while preserving the literal keys
-// for `LlmProvider`. Adding `anthropic` later is one line here.
 export const providers = {
   openrouter: (model?: string) =>
     getOpenRouterProvider()(model ?? OPENROUTER_MODEL ?? ""),

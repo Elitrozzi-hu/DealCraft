@@ -4,12 +4,13 @@ import { humandSignalsSchema } from "@/lib/llm/generations/company-signals/struc
 import { renderSignalsPrompt } from "@/lib/llm/generations/company-signals/prompt";
 import { ENRICHMENT_LLM_PROVIDER } from "@/lib/server/env";
 import { createLogger } from "@/lib/server/logger";
-import type { SignalsResult } from "@/types";
+import type { Language, SignalsResult } from "@/types";
 
 const log = createLogger("signals");
 export async function fetchSignals(
   company: string,
   domain: string,
+  language: Language = "es",
 ): Promise<SignalsResult> {
   log.info("signals started", { company, domain });
   const t0 = Date.now();
@@ -20,7 +21,7 @@ export async function fetchSignals(
   const result = await generate({
     provider: (ENRICHMENT_LLM_PROVIDER ?? "openrouter") as LlmProvider,
     schema: humandSignalsSchema,
-    system: renderSignalsPrompt(company, domain),
+    system: renderSignalsPrompt(company, domain, language),
     prompt: `Find recent buying signals for ${company} (${domain})`,
     providerOptions: {
       openrouter: { plugins: [plugin], usage: { include: true } },

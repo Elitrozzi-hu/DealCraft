@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { PublishedSuccessCase } from "@/types";
+import { formatNumber, useLanguage, useT } from "@/i18n";
 
 export interface CompsBlockProps {
   successCases: PublishedSuccessCase[];
@@ -34,6 +35,7 @@ function PlayIcon() {
 
 /** One-line summary shown while the card is collapsed so the AE can decide whether to open it. */
 function CollapsedPreview({ c }: { c: PublishedSuccessCase }) {
+  const t = useT();
   const hasAnything = c.metrics.length > 0 || c.pains.length > 0 || c.modules.length > 0;
   if (!hasAnything) return null;
 
@@ -49,12 +51,18 @@ function CollapsedPreview({ c }: { c: PublishedSuccessCase }) {
       ))}
       {c.pains.length > 0 && (
         <span className="text-[9.5px] text-cold/70">
-          {c.metrics.length > 0 && "·"} {c.pains.length} dolor{c.pains.length !== 1 ? "es" : ""}
+          {c.metrics.length > 0 && "·"}{" "}
+          {c.pains.length === 1
+            ? t("comps.painsOne", { count: c.pains.length })
+            : t("comps.painsMany", { count: c.pains.length })}
         </span>
       )}
       {c.modules.length > 0 && (
         <span className="text-[9.5px] text-cold/70">
-          · {c.modules.length} módulo{c.modules.length !== 1 ? "s" : ""}
+          ·{" "}
+          {c.modules.length === 1
+            ? t("comps.modulesOne", { count: c.modules.length })
+            : t("comps.modulesMany", { count: c.modules.length })}
         </span>
       )}
     </div>
@@ -62,6 +70,8 @@ function CollapsedPreview({ c }: { c: PublishedSuccessCase }) {
 }
 
 function CaseCard({ c }: { c: PublishedSuccessCase }) {
+  const t = useT();
+  const { lang } = useLanguage();
   const [open, setOpen] = useState(false);
   const hasMetrics = c.metrics.length > 0;
   const hasPains = c.pains.length > 0;
@@ -82,7 +92,9 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
             <p className="text-[13px] font-bold leading-tight text-ink">{c.company}</p>
             {c.users != null && (
               <span className="text-[10px] tabular-nums text-cold/80">
-                {c.users.toLocaleString("es")} colabs.
+                {t("comps.collaborators", {
+                  count: formatNumber(c.users, lang),
+                })}
               </span>
             )}
           </div>
@@ -100,7 +112,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
           {hasPains && (
             <div>
               <p className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-cold/70">
-                Dolores
+                {t("panel.tab.pains")}
               </p>
               <ul className="space-y-1">
                 {c.pains.map((p) => (
@@ -116,7 +128,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
           {hasModules && (
             <div className="rounded-lg bg-surface/60 px-2.5 py-2">
               <p className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-cold/70">
-                Módulos de Humand implementados
+                {t("comps.modulesImplemented")}
               </p>
               <div className="flex flex-wrap gap-1">
                 {c.modules.map((m) => (
@@ -134,7 +146,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
           {hasMetrics && (
             <div className="border-t border-line/50 pt-2.5">
               <p className="mb-1.5 text-[9px] font-bold uppercase tracking-widest text-cold/70">
-                Tras implementar Humand
+                {t("comps.afterImplementing")}
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {c.metrics.map((m) => (
@@ -168,7 +180,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 rounded-lg border border-violet/25 bg-violet-soft px-3 py-1 text-[10.5px] font-semibold text-violet transition-colors hover:bg-violet/10"
             >
-              Ver caso de éxito
+              {t("comps.viewCase")}
               <ExternalIcon />
             </a>
           )}
@@ -180,7 +192,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
               className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-1 text-[10.5px] font-semibold text-cold transition-colors hover:bg-cold-soft"
             >
               <PlayIcon />
-              Ver video
+              {t("comps.viewVideo")}
             </a>
           )}
         </div>
@@ -190,12 +202,15 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
 }
 
 export function CompsBlock({ successCases }: CompsBlockProps) {
+  const t = useT();
   if (successCases.length === 0) {
     return (
       <div className="flex flex-col items-center gap-1.5 rounded-xl border border-dashed border-cold/20 bg-cold-soft/20 px-5 py-6 text-center">
-        <p className="text-[12.5px] font-semibold text-ink">Sin casos para esta industria</p>
+        <p className="text-[12.5px] font-semibold text-ink">
+          {t("comps.emptyTitle")}
+        </p>
         <p className="max-w-[32ch] text-[11px] leading-relaxed text-cold">
-          Humand aún no tiene un caso publicado para este sector.
+          {t("comps.emptyBody")}
         </p>
       </div>
     );

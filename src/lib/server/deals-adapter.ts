@@ -27,6 +27,7 @@ export async function enrichDeal(
     domain: req.companyDomain ?? req.website,
     jobTitle: req.jobTitle,
     companyName: req.companyName ?? req.name,
+    language: req.language,
   };
 
   const enrichment = await getEnrichmentProvider(req.enrichmentProvider).enrich(input);

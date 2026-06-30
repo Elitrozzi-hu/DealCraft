@@ -1,13 +1,11 @@
 import type { DealMeta } from "@/types";
 import { Metric } from "@/components/ui";
+import { formatNumber, useLanguage, useT } from "@/i18n";
 
 export interface DealHeaderProps {
   meta: DealMeta;
-  /** Resolved HubSpot deal-stage label (never the numeric id); "" → "—". */
   dealStage: string;
-  /** HubSpot deal amount; null → "—". */
   amount: number | null;
-  /** Back to the input screen to start a new analysis. */
   onBack: () => void;
 }
 
@@ -32,6 +30,8 @@ export function DealHeader({
   amount,
   onBack,
 }: DealHeaderProps) {
+  const t = useT();
+  const { lang } = useLanguage();
   const avatarBorder =
     segmentBorder[meta.segment] ?? "border-[3px] border-cold/20";
 
@@ -42,8 +42,8 @@ export function DealHeader({
           <button
             type="button"
             onClick={onBack}
-            aria-label="Volver al inicio"
-            title="Nuevo análisis"
+            aria-label={t("nav.backToStart")}
+            title={t("nav.newAnalysis")}
             className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-line bg-panel text-cold transition-colors hover:border-violet/40 hover:bg-violet-soft hover:text-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-violet/50"
           >
             <svg
@@ -87,22 +87,28 @@ export function DealHeader({
                 </>
               )}
               <span className="text-line">·</span>
-              <span>{meta.headcount.toLocaleString("en-US")} emp.</span>
+              <span>
+                {t("common.empCount", {
+                  count: formatNumber(meta.headcount, lang),
+                })}
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-stretch overflow-x-auto md:flex-wrap md:overflow-x-visible">
-          <Metric label="Etapa HubSpot">
-            <span className="text-[16px] font-extrabold">
-              {dealStage || "—"}
-            </span>
-          </Metric>
-          <Metric label="Monto" last>
-            <span className="text-[16px] font-extrabold">
-              {amount != null ? `USD ${amount.toLocaleString("en-US")}` : "—"}
-            </span>
-          </Metric>
+        <div className="flex items-center gap-3">
+          <div className="flex items-stretch overflow-x-auto md:flex-wrap md:overflow-x-visible">
+            <Metric label={t("dealHeader.stage")}>
+              <span className="text-[16px] font-extrabold">
+                {dealStage || "—"}
+              </span>
+            </Metric>
+            <Metric label={t("dealHeader.amount")} last>
+              <span className="text-[16px] font-extrabold">
+                {amount != null ? `USD ${formatNumber(amount, lang)}` : "—"}
+              </span>
+            </Metric>
+          </div>
         </div>
       </div>
     </div>

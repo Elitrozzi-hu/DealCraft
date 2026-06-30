@@ -2,6 +2,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import type {
   Deal,
   DealMeta,
+  Language,
   PublishedSuccessCase,
   Pain,
   PainDraft,
@@ -17,7 +18,9 @@ import {
   ProvenanceBadge,
   ProvenanceLegend,
   SourceLinkButton,
+  StaleLanguageNote,
 } from "@/components/ui";
+import { useT, type MessageKey } from "@/i18n";
 import { CompsBlock } from "./comps-block";
 import { PainsBlock } from "./pains-block";
 import { PreCallBriefBlock } from "./pre-call-brief-block";
@@ -29,6 +32,8 @@ export interface AnalysisPanelProps {
   deal: Deal;
   meta: DealMeta;
   coldStart: boolean;
+  /** Language the analysis content was generated in (drives the stale-language note). */
+  contentLanguage: Language;
   onValidateHeadcount: () => void;
   stakeholders: Stakeholder[];
   onValidateStakeholder: (id: string) => void;
@@ -50,6 +55,13 @@ const techBorderLeft: Record<TechKind, string> = {
   desplazar: "border-l-risk",
   integrar: "border-l-validated",
   coexistir: "border-l-cold",
+};
+
+// TechKind enum values stay the logic key; only the displayed label is localized.
+const TECHKIND_LABEL_KEY: Record<TechKind, MessageKey> = {
+  desplazar: "panel.techKind.desplazar",
+  integrar: "panel.techKind.integrar",
+  coexistir: "panel.techKind.coexistir",
 };
 
 // Section glyph for the empty tech-stack state — stacked layers.
@@ -111,6 +123,7 @@ function KMetric({
   highlight?: boolean;
   tooltip?: string;
 }) {
+  const t = useT();
   return (
     <div
       className={`min-w-0 rounded-xl border p-2.5 ${highlight ? "border-violet/30 bg-violet-soft" : "border-line bg-panel"}`}
@@ -137,7 +150,10 @@ function KMetric({
         <div className="mt-2 flex items-center gap-1.5">
           <ProvenanceBadge {...prov} compact url={undefined} />
           {prov.url && (
-            <SourceLinkButton href={prov.url} title={`Abrir fuente · ${prov.source}`} />
+            <SourceLinkButton
+              href={prov.url}
+              title={t("panel.openSourceWith", { source: prov.source })}
+            />
           )}
         </div>
       )}
@@ -150,6 +166,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
     deal,
     meta,
     coldStart,
+    contentLanguage,
     onValidateHeadcount,
     stakeholders,
     onValidateStakeholder,
@@ -163,6 +180,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
     successCases,
   } = props;
 
+  const t = useT();
   const f = deal.firmographics;
   const [sub, setSub] = useState<SubTab>("empresa");
   const [signalCount, setSignalCount] = useState<number | null>(null);
@@ -192,30 +210,42 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   );
 
   const subTabs: [SubTab, string][] = [
-    ["empresa", `Empresa · ${stakeholders.length}`],
-    ["dolores", `Dolores · ${pains.length}`],
+    ["empresa", `${t("panel.tab.company")} · ${stakeholders.length}`],
+    ["dolores", `${t("panel.tab.pains")} · ${pains.length}`],
     [
       "intel",
       successCases.length > 0
-        ? `Casos de éxito · ${successCases.length}`
-        : "Casos de éxito",
+        ? `${t("panel.tab.cases")} · ${successCases.length}`
+        : t("panel.tab.cases"),
     ],
-    ["signals", signalCount !== null ? `Signals · ${signalCount}` : "Signals"],
-    ["brief", briefCount !== null ? `Brief · ${briefCount}` : "Brief pre-call"],
+    [
+      "signals",
+      signalCount !== null
+        ? `${t("panel.tab.signals")} · ${signalCount}`
+        : t("panel.tab.signals"),
+    ],
+    [
+      "brief",
+      briefCount !== null
+        ? `${t("panel.tab.briefShort")} · ${briefCount}`
+        : t("panel.tab.brief"),
+    ],
   ];
   const subSub =
     sub === "empresa"
-      ? "Contexto y stakeholders del deal."
+      ? t("panel.sub.company")
       : sub === "dolores"
-        ? "Puntos de dolor identificados para este deal."
+        ? t("panel.sub.pains")
         : sub === "intel"
-          ? "Clientes similares que ya usan Humand."
+          ? t("panel.sub.cases")
           : sub === "signals"
-            ? "Signals recientes de la empresa — liderazgo, expansión, financiamiento."
-            : "Hipótesis de valor para preparar la call de discovery — uso interno.";
+            ? t("panel.sub.signals")
+            : t("panel.sub.brief");
 
   return (
     <div className="grid gap-3">
+      <StaleLanguageNote contentLang={contentLanguage} />
+
       {coldStart && (
         <div className="flex items-start gap-2.5 rounded-xl border border-inferred/30 bg-inferred-soft px-3.5 py-3">
           <svg
@@ -235,11 +265,8 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
           <div className="text-[12.5px] text-inferred">
-            <b>Cold start.</b>{" "}
-            <span className="opacity-80">
-              Todo inferido, baja confianza. No fabricamos data — marcamos qué
-              validar.
-            </span>
+            <b>{t("panel.coldStart.title")}</b>{" "}
+            <span className="opacity-80">{t("panel.coldStart.body")}</span>
           </div>
         </div>
       )}
@@ -263,26 +290,31 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
 
       {sub === "empresa" && (
         <>
-          <Section title="Contexto">
+          <Section title={t("panel.section.context")}>
             <p className="m-0 mt-0.5 text-[13px] leading-relaxed text-ink">
               {f.summary.value}
             </p>
             <div className="mb-3.5 mt-2 flex items-center gap-1.5">
               <ProvenanceBadge {...f.summary.prov} url={undefined} />
               {f.summary.prov.url && (
-                <SourceLinkButton href={f.summary.prov.url} title={`Abrir fuente · ${f.summary.prov.source}`} />
+                <SourceLinkButton
+                  href={f.summary.prov.url}
+                  title={t("panel.openSourceWith", {
+                    source: f.summary.prov.source,
+                  })}
+                />
               )}
             </div>
-            <div className={`${kLabelCls} mb-2`}>Key metrics</div>
+            <div className={`${kLabelCls} mb-2`}>{t("panel.keyMetrics")}</div>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2.5">
-              <KMetric label="Región" v={meta.region} prov={f.regionProv} />
-              <KMetric label="Industria" v={meta.industry} prov={f.industry.prov} />
-              <KMetric label="Workforce" v={meta.deskless} highlight prov={f.deskless.prov} />
+              <KMetric label={t("panel.metric.region")} v={meta.region} prov={f.regionProv} />
+              <KMetric label={t("panel.metric.industry")} v={meta.industry} prov={f.industry.prov} />
+              <KMetric label={t("panel.metric.workforce")} v={meta.deskless} highlight prov={f.deskless.prov} />
               {deal.hubspot.integraciones && (
                 <KMetric
-                  label="Sistemas integrados"
+                  label={t("panel.metric.integratedSystems")}
                   v={deal.hubspot.integraciones}
-                  tooltip="Sistemas de terceros con los que Humand se ha integrado en esta cuenta"
+                  tooltip={t("panel.metric.integratedSystemsTooltip")}
                   prov={{
                     source: "HubSpot",
                     sourceType: "declarado",
@@ -293,43 +325,53 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
               )}
               {!meta.headcountConflict ? (
                 <KMetric
-                  label="Headcount"
-                  v={`${meta.headcount} empleados`}
+                  label={t("panel.metric.headcount")}
+                  v={t("panel.metric.headcountValue", { count: meta.headcount })}
                   prov={f.headcountProv}
                 />
               ) : (
                 <div className="rounded-xl border border-inferred/30 bg-inferred-soft p-2.5">
-                  <div className={kLabelCls}>Headcount · conflicto</div>
+                  <div className={kLabelCls}>
+                    {t("panel.metric.headcountConflict")}
+                  </div>
                   <div className="mt-0.5 text-[13px] font-bold">450 vs 520</div>
                   <div className="mt-1">
                     <LinkButton onClick={onValidateHeadcount}>
-                      resolver → 485
+                      {t("panel.metric.resolveHeadcount")}
                     </LinkButton>
                   </div>
                 </div>
               )}
             </div>
             <div className={`${kLabelCls} mb-2 mt-4`}>
-              Tech stack ({f.tech.length})
+              {t("panel.techStack", { count: f.tech.length })}
             </div>
             {f.tech.length === 0 ? (
               <EmptyState
                 icon={<StackGlyph />}
-                title="Sin tecnología detectada"
-                hint="No encontramos herramientas de RR.HH., nómina o comunicación interna con evidencia de uso. Aparecerán acá al detectarse."
+                title={t("panel.techEmpty.title")}
+                hint={t("panel.techEmpty.hint")}
               />
             ) : (
               <div className="flex flex-wrap gap-[7px]">
-                {f.tech.map((t) => {
-                  const chipCls = `inline-flex items-center gap-1 rounded-md border border-line border-l-[3px] bg-panel px-2.5 py-1 text-xs font-semibold text-ink ${techBorderLeft[t.kind]}`;
-                  const url = t.prov?.status !== "inferred" ? t.prov?.url : undefined;
+                {f.tech.map((tech) => {
+                  const chipCls = `inline-flex items-center gap-1 rounded-md border border-line border-l-[3px] bg-panel px-2.5 py-1 text-xs font-semibold text-ink ${techBorderLeft[tech.kind]}`;
+                  const url =
+                    tech.prov?.status !== "inferred" ? tech.prov?.url : undefined;
                   return (
-                    <span key={t.t} className="inline-flex items-center gap-1">
-                      <span title={t.kind} className={chipCls}>{t.t}</span>
+                    <span key={tech.t} className="inline-flex items-center gap-1">
+                      <span
+                        title={t(TECHKIND_LABEL_KEY[tech.kind])}
+                        className={chipCls}
+                      >
+                        {tech.t}
+                      </span>
                       {url && (
                         <SourceLinkButton
                           href={url}
-                          title={`${t.kind} · ${t.prov?.source ?? "fuente"}`}
+                          title={`${t(TECHKIND_LABEL_KEY[tech.kind])} · ${
+                            tech.prov?.source ?? t("panel.sourceFallback")
+                          }`}
                         />
                       )}
                     </span>
@@ -339,7 +381,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             )}
           </Section>
 
-          <Section title="Stakeholders">
+          <Section title={t("panel.section.stakeholders")}>
             <StakeholdersBlock
               stakeholders={stakeholders}
               onValidate={onValidateStakeholder}
@@ -352,7 +394,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
       )}
 
       {sub === "dolores" && (
-        <Section title="Dolores">
+        <Section title={t("panel.tab.pains")}>
           <PainsBlock
             pains={pains}
             onValidate={onValidatePain}
@@ -363,13 +405,13 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
       )}
 
       {sub === "intel" && (
-        <Section title="Casos de éxito">
+        <Section title={t("panel.tab.cases")}>
           <CompsBlock successCases={successCases} />
         </Section>
       )}
 
       {sub === "signals" && (
-        <Section title="Signals">
+        <Section title={t("panel.tab.signals")}>
           <SignalsBlock
             company={deal.entity.resolved}
             domain={meta.website}
@@ -379,7 +421,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
       )}
 
       {sub === "brief" && (
-        <Section title="Brief pre-call">
+        <Section title={t("panel.tab.brief")}>
           <PreCallBriefBlock
             request={briefRequest}
             onCountChange={setBriefCount}

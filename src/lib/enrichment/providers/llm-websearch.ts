@@ -202,10 +202,9 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
     const options = optionsSchema.parse(rawOptions ?? {});
     const name = input.companyName ?? "";
     const domain = input.domain ?? (input.email?.split("@")[1] ?? "");
+    const language = input.language ?? "es";
 
-    // `engine: "exa"` forces OpenRouter's server-side search (model-agnostic)
-    // instead of "auto", which would only browse on models with native search.
-    // Default to 8 results (vs OpenRouter's default 5) for richer grounding.
+
     const plugin: Record<string, unknown> = {
       id: "web",
       engine: "exa",
@@ -225,10 +224,8 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
         // Validated at runtime by the LLM registry (unknown key → throws).
         provider: (ENRICHMENT_LLM_PROVIDER ?? "openrouter") as LlmProvider,
         schema: llmResearchOutputSchema,
-        system: renderResearchPrompt(name, domain),
+        system: renderResearchPrompt(name, domain, language),
         prompt: query,
-        // `usage: { include: true }` turns on OpenRouter usage accounting so the
-        // response carries the USD cost (surfaced as `costUsd` via onUsage).
         providerOptions: {
           openrouter: { plugins: [plugin], usage: { include: true } },
         },
@@ -266,10 +263,8 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
       outputTokens: usage?.outputTokens,
       totalTokens: usage?.totalTokens,
       costUsd: usage?.costUsd != null ? Number(usage.costUsd.toFixed(4)) : undefined,
-      // 0 citations ⇒ web search didn't return sources (the "all inferred" smell).
       citations: usage?.citations,
     });
-    // Source URLs aren't PII; log a sample at debug for spot-checking grounding.
     if (usage?.citationUrls?.length) {
       log.debug("citations", { urls: usage.citationUrls.slice(0, 5).join(", ") });
     }

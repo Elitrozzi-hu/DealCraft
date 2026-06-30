@@ -1,3 +1,5 @@
+import { useT } from "@/i18n";
+
 const sourceLinkBtnCls =
   "inline-flex items-center justify-center gap-1.5 rounded-full border border-line bg-panel px-3 py-[5px] text-xs font-semibold text-ink transition-colors hover:border-violet/40 hover:text-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-violet/50";
 
@@ -8,13 +10,14 @@ export function SourceLinkButton({
   href: string;
   title?: string;
 }) {
+  const t = useT();
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       title={title}
-      aria-label={title ?? "Abrir fuente"}
+      aria-label={title ?? t("ui.sourceLink.open")}
       className={sourceLinkBtnCls}
     >
       <SourceLinkIcon className="shrink-0" />

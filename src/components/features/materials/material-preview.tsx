@@ -1,13 +1,13 @@
 import type { DeckRequest, Material, MaterialBlock } from "@/types";
 import { Empty, Gate, Overlay } from "@/components/ui";
+import { useT } from "@/i18n";
 import { DownloadButton } from "./download-button";
 import { DeckConfigForm } from "./deck-config-form";
+import { MATERIAL_TITLE_KEY } from "./material-labels";
 
 export interface MaterialPreviewProps {
   material: Material;
-  /** Client-side pricing gate (overrides the baked-in `hidden` flag). */
   includePricing: boolean;
-  /** Editable deck tokens (Presentación preview), pre-filled from the deal. */
   deckConfig: DeckRequest;
   onDeckConfigChange: (value: DeckRequest) => void;
   onClose: () => void;
@@ -20,6 +20,7 @@ function Block({
   block: MaterialBlock;
   includePricing: boolean;
 }) {
+  const t = useT();
   switch (block.type) {
     case "heading":
       return <h3 className="mb-2 mt-1 text-lg font-extrabold">{block.text}</h3>;
@@ -41,17 +42,18 @@ function Block({
       return <Empty text={block.text} />;
     case "pricing":
       if (!includePricing)
-        return <Empty text="Pricing oculto. Activá el toggle." />;
+        return <Empty text={t("materials.pricingHidden")} />;
       if (block.confirmed)
         return (
           <div className="py-1 text-[13px] font-bold text-validated">
-            USD {block.mrr}/mes · confirmado ✓
+            {t("materials.pricingConfirmed", { mrr: block.mrr })}
           </div>
         );
       return (
         <div className="rounded-lg border border-inferred/30 bg-inferred-soft p-3 text-[13px] text-inferred">
-          <b>Possibly MRR ≈ USD {block.mrr}/mes</b> — estimado. Hereda el{" "}
-          <code>possibly</code> hasta confirmar.
+          <b>{t("materials.pricingEstimateBold", { mrr: block.mrr })}</b>{" "}
+          {t("materials.pricingEstimateBefore")} <code>possibly</code>{" "}
+          {t("materials.pricingEstimateAfter")}
         </div>
       );
     default:
@@ -66,10 +68,11 @@ export function MaterialPreview({
   onDeckConfigChange,
   onClose,
 }: MaterialPreviewProps) {
+  const t = useT();
   const previewTitle =
     material.key === "pres"
-      ? `Presentación - ${deckConfig.clientName}`
-      : material.title;
+      ? t("materials.presentationTitle", { client: deckConfig.clientName })
+      : t(MATERIAL_TITLE_KEY[material.key]);
   return (
     <Overlay title={previewTitle} onClose={onClose} wide>
       <div>
@@ -83,7 +86,7 @@ export function MaterialPreview({
         {material.key === "pres" && (
           <div className="mt-5 border-t border-line pt-4">
             <h4 className="mb-3 text-xs font-extrabold uppercase tracking-wide text-cold">
-              Configurar presentación
+              {t("materials.configurePresentation")}
             </h4>
             <DeckConfigForm value={deckConfig} onChange={onDeckConfigChange} />
             <div className="mt-4">

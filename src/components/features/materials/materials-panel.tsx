@@ -1,7 +1,9 @@
 import { useState } from "react";
 import type { DeckRequest, Material, MaterialTagTone } from "@/types";
 import { Button, Spinner } from "@/components/ui";
+import { useT } from "@/i18n";
 import { MaterialPreview } from "./material-preview";
+import { MATERIAL_SUB_KEY, MATERIAL_TITLE_KEY } from "./material-labels";
 
 export interface MaterialsPanelProps {
   materials: Material[];
@@ -131,6 +133,7 @@ export function MaterialsPanel({
   onDeckConfigChange,
   onRetry,
 }: MaterialsPanelProps) {
+  const t = useT();
   const [active, setActive] = useState<Material | null>(null);
 
   return (
@@ -140,10 +143,10 @@ export function MaterialsPanel({
           <Spinner />
           <div>
             <div className="text-[13px] font-semibold text-ink">
-              Generando materiales…
+              {t("materials.generating")}
             </div>
             <div className="mt-0.5 text-[12px] text-cold">
-              Personalizando para este deal
+              {t("materials.personalizing")}
             </div>
           </div>
         </div>
@@ -152,14 +155,14 @@ export function MaterialsPanel({
       {status === "error" && (
         <div className="flex flex-col items-start gap-3 rounded-xl bg-risk-soft px-3.5 py-3.5 text-[12.5px] text-risk">
           <div>
-            <div className="font-semibold">No se pudieron generar los materiales</div>
+            <div className="font-semibold">{t("materials.errorTitle")}</div>
             <div className="mt-0.5 opacity-80">
-              {error ?? "Revisá la conexión e intentá de nuevo."}
+              {error ?? t("materials.errorFallback")}
             </div>
           </div>
           {onRetry && (
             <Button small onClick={onRetry}>
-              Reintentar
+              {t("common.retry")}
             </Button>
           )}
         </div>
@@ -167,9 +170,7 @@ export function MaterialsPanel({
 
       {status !== "loading" && status !== "error" && materials.length === 0 && (
         <div className="rounded-xl border border-dashed border-line px-4 py-6 text-center">
-          <div className="text-[13px] text-cold">
-            Los materiales aparecerán acá en segundos.
-          </div>
+          <div className="text-[13px] text-cold">{t("materials.empty")}</div>
         </div>
       )}
 
@@ -186,18 +187,18 @@ export function MaterialsPanel({
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-2">
-                <b className="text-[13.5px] leading-tight">{it.title}</b>
+                <b className="text-[13.5px] leading-tight">{t(MATERIAL_TITLE_KEY[it.key])}</b>
                 <span
                   className={`mt-0.5 flex-shrink-0 whitespace-nowrap rounded-md px-[7px] py-0.5 text-[10px] font-bold ${tagCls[it.tag.tone]}`}
                 >
                   {it.tag.label}
                 </span>
               </div>
-              <div className="mt-0.5 text-xs text-cold">{it.sub}</div>
+              <div className="mt-0.5 text-xs text-cold">{t(MATERIAL_SUB_KEY[it.key])}</div>
             </div>
           </div>
           <div className="mt-2.5 flex items-center gap-1 text-[12px] font-semibold text-violet group-hover:underline">
-            Ver material
+            {t("materials.viewMaterial")}
             <svg
               width={12}
               height={12}

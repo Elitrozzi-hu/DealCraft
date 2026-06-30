@@ -3,6 +3,7 @@ import type {
   Deal,
   DealMeta,
   DeckRequest,
+  Language,
   PublishedSuccessCase,
   MaterialsRequest,
   Pain,
@@ -20,6 +21,7 @@ import {
   DealHeader,
 } from "@/components/features/deal-analysis";
 import { MaterialsPanel } from "@/components/features/materials";
+import { useT } from "@/i18n";
 
 /** Firmographics overridden when a deal is opened from history. */
 export interface ActiveMeta {
@@ -41,6 +43,8 @@ export interface CopilotViewProps {
   activeMeta: ActiveMeta | null;
   website: string;
   successCases: PublishedSuccessCase[];
+  /** Language the analysis content was generated in (drives the stale-language note). */
+  contentLanguage: Language;
   /** Back to the input screen (triggered by the DealCraft wordmark). */
   onBack: () => void;
 }
@@ -55,16 +59,15 @@ export function CopilotView({
   activeMeta,
   website,
   successCases,
+  contentLanguage,
   onBack,
 }: CopilotViewProps) {
   const narrow = useIsNarrow();
-  // History opens from `activeMeta`; a fresh analysis uses the enriched
-  // firmographics carried on `deal`.
+  const t = useT();
   const headcount = activeMeta ? activeMeta.headcount : deal.firmographics.headcount;
   const ds = useDealState({ stakeholders, pains, stage });
   const materials = useMaterials();
 
-  // Pricing toggle was removed from the UI — materials always include pricing.
   const includePricing = true;
 
   const VALID_SEGMENTS: Segment[] = ["Enterprise", "Mid-Market", "SMB"];
@@ -81,8 +84,6 @@ export function CopilotView({
     headcount,
     segment,
     website: activeMeta?.website ?? website,
-    // Only flag a conflict when the data source reports one — Classidy returns a
-    // single headcount value, so this is normally false.
     headcountConflict:
       !activeMeta &&
       !ds.headcountValidated &&
@@ -91,8 +92,6 @@ export function CopilotView({
         .includes("conflicto"),
   };
 
-  // Regenerate materials when the gated inputs change (validated pains, pricing).
-  // Idle/loading/error/success surface in MaterialsPanel.
   const { generate } = materials;
   const painsKey = ds.pains
     .map((p) => `${p.id}:${p.validated ? 1 : 0}:${p.module ?? ""}`)
@@ -100,8 +99,6 @@ export function CopilotView({
   const stakeholdersKey = ds.stakeholders
     .map((s) => `${s.id}:${s.role}`)
     .join("|");
-  // Pricing is the HubSpot deal amount (the only figure we carry from the CRM);
-  // "confirmed" when HubSpot actually has an amount, absent → 0.
   const mrr = deal.hubspot.amount ?? 0;
   const mrrConfirmed = deal.hubspot.amount != null;
 
@@ -115,7 +112,6 @@ export function CopilotView({
       mrrConfirmed,
     };
     void generate(req);
-    // ds.pains/ds.stakeholders captured via stable key strings below.
   }, [
     generate,
     resolvedName,
@@ -125,10 +121,6 @@ export function CopilotView({
     painsKey,
     stakeholdersKey,
   ]);
-
-  // Deck `{{…}}` tokens — pre-filled from the deal, then user-editable in the
-  // Presentación preview (DeckConfigForm). Initialized once per deal session.
-  // TODO (PLAN Task 9): refine the deal→deck mapping (plan A/B tiers).
   const [deckConfig, setDeckConfig] = useState<DeckRequest>(() => ({
     clientName: meta.name,
     date: new Date().toISOString().slice(0, 10),
@@ -170,16 +162,17 @@ export function CopilotView({
           <div>
             <div className="mb-3">
               <div className="text-[17px] font-extrabold tracking-tight">
-                Análisis del deal
+                {t("copilot.analysisTitle")}
               </div>
               <div className="text-[13px] text-cold">
-                Contexto, stakeholders, dolores y señales del mercado.
+                {t("copilot.analysisSub")}
               </div>
             </div>
             <AnalysisPanel
               deal={deal}
               meta={meta}
               coldStart={coldStart}
+              contentLanguage={contentLanguage}
               onValidateHeadcount={ds.validateHeadcount}
               stakeholders={ds.stakeholders}
               onValidateStakeholder={ds.validateStakeholder}
@@ -197,11 +190,10 @@ export function CopilotView({
           <div className="grid content-start gap-4">
             <div>
               <div className="text-[17px] font-extrabold tracking-tight">
-                Materiales de venta
+                {t("copilot.materialsTitle")}
               </div>
               <div className="text-[13px] text-cold">
-                Personalizados para este deal. Revisá y descargá antes de la
-                reunión.
+                {t("copilot.materialsSub")}
               </div>
             </div>
             <Card pad="md">

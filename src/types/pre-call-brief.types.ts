@@ -1,7 +1,6 @@
-// Pre-call Brief — internal AE prep artifact: 2-3 prioritized, falsifiable
-// value hypotheses (in Spanish), each with proof drawn verbatim from a
-// comparable case. Detected pains are intentionally NOT an input (avoids
-// circular inference).
+
+
+import type { Language } from "./language.types";
 
 export interface PreCallHypothesis {
   title: string;
@@ -44,6 +43,7 @@ export interface PreCallBriefRequest {
   headcount: string;
   stakeholders: PreCallStakeholder[];
   comparableCases: PreCallComparableCase[];
+  language?: Language;
 }
 
 export type PreCallBriefResult = PreCallBrief;

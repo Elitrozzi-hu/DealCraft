@@ -24,14 +24,9 @@ const bodySchema = z.object({
   deal: z.custom<LeadDeal>().optional(),
   enrichmentProvider: z.string().optional(),
   benchmark: z.boolean().optional(),
+  language: z.enum(["es", "en"]).optional().default("es"),
 });
 
-/**
- * POST /api/deals/search
- * Body: `DealSearchRequest`. Runs the configured enrichment provider via
- * `enrichDeal` and returns a typed `DealSearchResult`. Failures map to a status
- * + message the analysis error screen can show.
- */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });

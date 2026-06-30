@@ -1,5 +1,6 @@
 import type { DeckRequest } from "@/types";
 import { Input, Label } from "@/components/ui";
+import { useT } from "@/i18n";
 
 export interface DeckConfigFormProps {
   value: DeckRequest;
@@ -8,7 +9,7 @@ export interface DeckConfigFormProps {
 
 type NumKey = Exclude<keyof DeckRequest, "clientName" | "date" | "logo">;
 
-/** A pricing plan = 3 deck tokens (users / mrr / mrr_disc). */
+
 function PlanGroup({
   title,
   usersKey,
@@ -24,6 +25,7 @@ function PlanGroup({
   value: DeckRequest;
   onChange: (value: DeckRequest) => void;
 }) {
+  const t = useT();
   const setNum = (key: NumKey, v: string) => {
     const n = v === "" ? 0 : Number(v);
     if (Number.isNaN(n)) return;
@@ -31,9 +33,9 @@ function PlanGroup({
   };
 
   const fields: [NumKey, string][] = [
-    [usersKey, "Users"],
-    [mrrKey, "MRR"],
-    [discKey, "MRR desc."],
+    [usersKey, t("deck.users")],
+    [mrrKey, t("deck.mrr")],
+    [discKey, t("deck.mrrDesc")],
   ];
 
   return (
@@ -62,6 +64,7 @@ function PlanGroup({
 
 /** Editable form for the deck's `{{…}}` tokens, pre-filled from the deal. */
 export function DeckConfigForm({ value, onChange }: DeckConfigFormProps) {
+  const t = useT();
   const setStr = (key: "clientName" | "date" | "logo", v: string) =>
     onChange({ ...value, [key]: v });
 
@@ -69,7 +72,7 @@ export function DeckConfigForm({ value, onChange }: DeckConfigFormProps) {
     <div className="grid gap-4">
       <div className="grid grid-cols-2 gap-3">
         <div className="col-span-2">
-          <Label htmlFor="dk-clientName">Cliente</Label>
+          <Label htmlFor="dk-clientName">{t("deck.client")}</Label>
           <Input
             id="dk-clientName"
             compact
@@ -78,7 +81,7 @@ export function DeckConfigForm({ value, onChange }: DeckConfigFormProps) {
           />
         </div>
         <div>
-          <Label htmlFor="dk-date">Fecha</Label>
+          <Label htmlFor="dk-date">{t("deck.date")}</Label>
           <Input
             id="dk-date"
             compact
@@ -88,19 +91,19 @@ export function DeckConfigForm({ value, onChange }: DeckConfigFormProps) {
           />
         </div>
         <div>
-          <Label htmlFor="dk-logo">Logo</Label>
+          <Label htmlFor="dk-logo">{t("deck.logo")}</Label>
           <Input
             id="dk-logo"
             compact
             value={value.logo ?? ""}
-            placeholder="url o image.png (opcional)"
+            placeholder={t("deck.logoPlaceholder")}
             onChange={(e) => setStr("logo", e.target.value)}
           />
         </div>
       </div>
 
       <PlanGroup
-        title="Plan principal"
+        title={t("deck.planMain")}
         usersKey="users"
         mrrKey="mrr"
         discKey="mrr_disc"
@@ -108,7 +111,7 @@ export function DeckConfigForm({ value, onChange }: DeckConfigFormProps) {
         onChange={onChange}
       />
       <PlanGroup
-        title="Plan A"
+        title={t("deck.planA")}
         usersKey="users_a"
         mrrKey="mrr_a"
         discKey="mrr_disc_a"
@@ -116,7 +119,7 @@ export function DeckConfigForm({ value, onChange }: DeckConfigFormProps) {
         onChange={onChange}
       />
       <PlanGroup
-        title="Plan B"
+        title={t("deck.planB")}
         usersKey="users_b"
         mrrKey="mrr_b"
         discKey="mrr_disc_b"

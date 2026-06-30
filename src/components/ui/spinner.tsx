@@ -1,6 +1,7 @@
+import { useT } from "@/i18n";
+
 export interface SpinnerProps {
   size?: "sm" | "md";
-  /** Accessible label announced to screen readers. */
   label?: string;
 }
 
@@ -9,12 +10,12 @@ const sizeCls = {
   md: "h-6 w-6 border-[3px]",
 } as const;
 
-/** CSS-only loading indicator (no state — server-renderable). */
-export function Spinner({ size = "sm", label = "Cargando…" }: SpinnerProps) {
+export function Spinner({ size = "sm", label }: SpinnerProps) {
+  const t = useT();
   return (
     <span
       role="status"
-      aria-label={label}
+      aria-label={label ?? t("ui.spinner.loading")}
       className={`inline-block animate-spin rounded-full border-cold-soft border-t-violet ${sizeCls[size]}`}
     />
   );

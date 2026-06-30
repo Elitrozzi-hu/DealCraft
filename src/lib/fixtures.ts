@@ -267,15 +267,6 @@ export const MOCK_SEARCH_EXAMPLES: SearchExample[] = [
     email: "rrhh@cafedelnorte.com",
     tag: "retail",
   },
-  { name: "LogiSur (startup)", website: "logisur.io", email: "", tag: "cold start" },
 ];
 
-export const MOCK_SEARCH_STEPS: string[] = [
-  "Resolviendo entidad…",
-  "Enriqueciendo firmografía…",
-  "Estimando % deskless…",
-  "Consultando HubSpot…",
-  "Buscando señales…",
-  "Compilando procedencia…",
-];
 

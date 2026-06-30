@@ -1,18 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Button,
   Chip,
   LinkAnchor,
   LinkButton,
   SourceLinkIcon,
+  StaleLanguageNote,
   StatusDot,
 } from "@/components/ui";
 import { generatePreCallBrief } from "@/lib/api-client";
 import type {
+  Language,
   PreCallBrief,
   PreCallBriefRequest,
   PreCallHypothesis,
 } from "@/types";
+import { useLanguage, useT } from "@/i18n";
 
 // --- Types ---
 
@@ -20,7 +23,7 @@ type Phase =
   | { kind: "idle" }
   | { kind: "loading" }
   | { kind: "error"; message: string }
-  | { kind: "done"; brief: PreCallBrief };
+  | { kind: "done"; brief: PreCallBrief; lang: Language };
 
 export interface PreCallBriefBlockProps {
   request: PreCallBriefRequest;
@@ -29,12 +32,8 @@ export interface PreCallBriefBlockProps {
 
 // --- Constants ---
 
-const BUILD_STEPS = [
-  "Leyendo perfil de la empresa…",
-  "Cruzando casos comparables del sector…",
-  "Formulando hipótesis de valor…",
-  "Armando preguntas de discovery…",
-];
+// Number of build-step labels cycled while loading (labels resolved via t()).
+const BUILD_STEP_COUNT = 4;
 
 // --- Sub-components ---
 
@@ -59,11 +58,11 @@ function BriefIcon({ className = "" }: { className?: string }) {
   );
 }
 
-function getHostname(url: string): string {
+function getHostname(url: string, fallback: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, "");
   } catch {
-    return "caso";
+    return fallback;
   }
 }
 
@@ -74,6 +73,7 @@ function HypothesisCard({
   h: PreCallHypothesis;
   rank: number;
 }) {
+  const t = useT();
   const hasProof = h.proofMetric !== null;
 
   return (
@@ -94,7 +94,7 @@ function HypothesisCard({
         {h.rationale}
         <span className="ml-1.5 inline-flex items-center gap-1 align-middle text-[10.5px] font-semibold text-inferred">
           <StatusDot status="inferred" size={8} />
-          inferido
+          {t("ui.status.inferred.word")}
         </span>
       </p>
 
@@ -102,7 +102,7 @@ function HypothesisCard({
       {hasProof && (
         <div className="mb-3 pl-[32px]">
           <div className="mb-1 text-[10px] font-bold uppercase tracking-wide text-cold">
-            Prueba
+            {t("brief.proof")}
           </div>
           <div className="flex items-center gap-2 rounded-lg border border-validated/20 bg-validated-soft px-2.5 py-2">
             <span className="flex-1 text-[12px] font-semibold leading-snug text-validated">
@@ -116,7 +116,7 @@ function HypothesisCard({
                 rel="noopener noreferrer"
                 tone="cold"
               >
-                {getHostname(h.proofSourceUrl)}
+                {getHostname(h.proofSourceUrl, t("brief.caseFallback"))}
                 <SourceLinkIcon className="shrink-0" />
               </LinkAnchor>
             )}
@@ -127,7 +127,7 @@ function HypothesisCard({
       {h.discoveryQuestions.length > 0 && (
         <div className="mb-3 pl-[32px]">
           <div className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-cold">
-            Preguntar para confirmar
+            {t("brief.askToConfirm")}
           </div>
           <ul className="m-0 flex list-none flex-col gap-1 p-0">
             {h.discoveryQuestions.map((q, i) => (
@@ -144,11 +144,11 @@ function HypothesisCard({
 
       <div className="flex flex-col gap-1.5 pl-[32px] sm:flex-row sm:gap-4">
         <p className="m-0 flex-1 text-[12px] leading-snug">
-          <span className="font-bold text-validated">✓ Confirma · </span>
+          <span className="font-bold text-validated">✓ {t("brief.confirmsLabel")} · </span>
           <span className="text-cold">{h.confirms}</span>
         </p>
         <p className="m-0 flex-1 text-[12px] leading-snug">
-          <span className="font-bold text-risk">✕ Descartá · </span>
+          <span className="font-bold text-risk">✕ {t("brief.discardsLabel")} · </span>
           <span className="text-cold">{h.discards}</span>
         </p>
       </div>
@@ -162,14 +162,22 @@ export function PreCallBriefBlock({
   request,
   onCountChange,
 }: PreCallBriefBlockProps) {
+  const t = useT();
+  const { lang } = useLanguage();
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const [stepIdx, setStepIdx] = useState(0);
+  const buildSteps = useMemo(() => [
+    t("brief.build.profile"),
+    t("brief.build.comparables"),
+    t("brief.build.hypotheses"),
+    t("brief.build.questions"),
+  ], [t]);
 
   // Cycle build-step labels while loading.
   useEffect(() => {
     if (phase.kind !== "loading") return;
     const id = setInterval(() => {
-      setStepIdx((i) => (i + 1) % BUILD_STEPS.length);
+      setStepIdx((i) => (i + 1) % BUILD_STEP_COUNT);
     }, 2500);
     return () => clearInterval(id);
   }, [phase.kind]);
@@ -187,13 +195,17 @@ export function PreCallBriefBlock({
     setPhase({ kind: "loading" });
     setStepIdx(0);
     try {
-      const brief = await generatePreCallBrief(request);
-      setPhase({ kind: "done", brief });
+      const briefLang = request.language ?? lang;
+      const brief = await generatePreCallBrief({
+        ...request,
+        language: briefLang,
+      });
+      setPhase({ kind: "done", brief, lang: briefLang });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Error desconocido";
+      const message = err instanceof Error ? err.message : t("common.unknownError");
       setPhase({ kind: "error", message });
     }
-  }, [request]);
+  }, [request, lang, t]);
 
   // --- Idle ---
   if (phase.kind === "idle") {
@@ -203,14 +215,13 @@ export function PreCallBriefBlock({
           <BriefIcon />
         </div>
         <div>
-          <p className="text-[13.5px] font-bold text-ink">Brief pre-call</p>
+          <p className="text-[13.5px] font-bold text-ink">{t("panel.tab.brief")}</p>
           <p className="mt-1 max-w-[36ch] text-[11.5px] leading-relaxed text-cold">
-            Llegá preparado a la call: 2-3 hipótesis de valor priorizadas, con
-            prueba de casos comparables y preguntas para validarlas.
+            {t("brief.idleBody")}
           </p>
         </div>
         <Button primary onClick={handleBuild}>
-          Armar brief pre-call
+          {t("brief.buildAction")}
         </Button>
       </div>
     );
@@ -227,9 +238,9 @@ export function PreCallBriefBlock({
           </div>
         </div>
         <div>
-          <p className="text-[13.5px] font-bold text-ink">Armando brief…</p>
+          <p className="text-[13.5px] font-bold text-ink">{t("brief.building")}</p>
           <p className="mt-1 text-[11.5px] text-cold transition-all">
-            {BUILD_STEPS[stepIdx]}
+            {buildSteps[stepIdx]}
           </p>
         </div>
       </div>
@@ -244,12 +255,12 @@ export function PreCallBriefBlock({
           ✕
         </div>
         <div>
-          <p className="text-[13px] font-bold text-ink">No se pudo armar el brief</p>
+          <p className="text-[13px] font-bold text-ink">{t("brief.errorTitle")}</p>
           <p className="mt-1 max-w-[36ch] text-[11.5px] leading-relaxed text-cold">
             {phase.message}
           </p>
         </div>
-        <Button onClick={handleBuild}>Reintentar</Button>
+        <Button onClick={handleBuild}>{t("common.retry")}</Button>
       </div>
     );
   }
@@ -259,12 +270,13 @@ export function PreCallBriefBlock({
 
   return (
     <div>
+      <StaleLanguageNote contentLang={phase.lang} className="mb-3" />
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className="text-[11.5px] text-cold">
-          {hypotheses.length} hipótesis priorizadas · a validar en la call
+          {t("brief.prioritized", { count: hypotheses.length })}
         </span>
         <span className="rounded-full border border-cold/20 bg-cold-soft px-2 py-px text-[10px] font-semibold text-cold">
-          ● uso interno · no se envía al cliente
+          {t("brief.internalUse")}
         </span>
       </div>
 
@@ -277,7 +289,7 @@ export function PreCallBriefBlock({
       {contextQuestions.length > 0 && (
         <div className="mt-4 rounded-xl border border-line bg-panel p-3.5 shadow-sm">
           <div className="mb-2 text-[10px] font-bold uppercase tracking-wide text-cold">
-            Contexto a cubrir en discovery
+            {t("brief.contextToCover")}
           </div>
           <ul className="m-0 flex list-none flex-col gap-1 p-0">
             {contextQuestions.map((q, i) => (
@@ -290,16 +302,14 @@ export function PreCallBriefBlock({
             ))}
           </ul>
           <p className="mt-3 border-t border-dashed border-line pt-2.5 text-[11px] leading-relaxed text-cold">
-            Generado desde el perfil de la empresa + casos comparables del mismo
-            sector. Las hipótesis son inferencias para validar en la call, no
-            hechos confirmados.
+            {t("brief.footer")}
           </p>
         </div>
       )}
 
       <div className="mt-3">
         <LinkButton tone="cold" onClick={handleBuild}>
-          Rearmar brief →
+          {t("brief.rebuild")}
         </LinkButton>
       </div>
     </div>

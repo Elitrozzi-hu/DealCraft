@@ -1,4 +1,5 @@
 import type { PreCallBriefRequest } from "@/types";
+import { languageDirective } from "@/lib/llm/language";
 
 function renderStakeholders(req: PreCallBriefRequest): string {
   if (req.stakeholders.length === 0) return "(none identified yet)";
@@ -75,14 +76,14 @@ Each hypothesis must include:
 - confirms: what customer answer VALIDATES the hypothesis.
 - discards: what answer RULES IT OUT (when NOT to pursue it).
 
-contextQuestions: include the playbook's standard discovery questions, phrased in Spanish
-for the AE to ask: number and type of employees (operational vs. administrative), number
-of sites, current HR systems, plus "¿Qué te hizo tomar la reunión?", "¿Cuál es el principal
-reto hoy en el área de RRHH?", and "¿Hay algún proceso manual que te gustaría digitalizar?".
+contextQuestions: include the playbook's standard discovery questions, phrased in the
+output language for the AE to ask: number and type of employees (operational vs.
+administrative), number of sites, current HR systems, plus "What made you take this
+meeting?", "What is the main HR challenge today?", and "Is there a manual process you'd
+like to digitize?".
 
 RULES
-- Write ALL output fields in neutral/Rioplatense Spanish — the brief is read by a
-  Spanish-speaking AE. Keep it concise and scannable.
+- ${languageDirective(req.language ?? "es")} Keep it concise and scannable.
 - Do not invent metrics, names, or sources. No case → proof fields null.
 - Prioritize the playbook's red flags: manual processes, multiple systems, low internal
   adoption, frontline with no communication.

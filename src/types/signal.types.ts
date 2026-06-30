@@ -1,3 +1,5 @@
+import type { Language } from "./language.types";
+
 export const SIGNAL_TYPES = [
   "new_people_leader",
   "m_and_a",
@@ -31,6 +33,7 @@ export interface SignalItem {
 export interface SignalsRequest {
   company: string;
   domain: string;
+  language?: Language;
 }
 
 export interface SignalsResult {
