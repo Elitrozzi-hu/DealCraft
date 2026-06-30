@@ -17,6 +17,7 @@ import {
   MOCK_STAKEHOLDERS,
 } from "@/lib/fixtures";
 import { Button, Card, Wordmark } from "@/components/ui";
+import { useAuth } from "@/contexts/Auth";
 import { useDealSearch } from "@/hooks/use-deal-search";
 import { useLanguage, useT } from "@/i18n";
 import { InputScreen, SearchingScreen } from "@/components/features/deal-analysis";
@@ -48,6 +49,12 @@ const historyToActiveMeta = (h: RecentDeal): ActiveMeta => ({
 export function DealCraftApp() {
   const t = useT();
   const { lang } = useLanguage();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.href = '/login';
+  };
   const [view, setView] = useState<View>("input");
   const [query, setQuery] = useState<DealSearchRequest>(MOCK_INITIAL_QUERY);
   const [session, setSession] = useState<CopilotSession | null>(null);
@@ -120,6 +127,7 @@ export function DealCraftApp() {
         onSearch={onSearch}
         onOpenHistory={onOpenHistory}
         initialQuery={query}
+        onLogout={handleLogout}
       />
     );
   }

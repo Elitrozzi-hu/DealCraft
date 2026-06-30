@@ -239,6 +239,19 @@ const es = {
   "deck.planA": "Plan A",
   "deck.planB": "Plan B",
 
+  // ── auth ─────────────────────────────────────────────────────────────────────
+  "auth.signOut": "Cerrar sesión",
+  "auth.login.heading": "Ingresá a DealCraft",
+  "auth.login.subhead": "Usá tu cuenta de Google de Humand para continuar.",
+  "auth.login.googleButton": "Continuar con Google",
+  "auth.error.title": "Algo salió mal",
+  "auth.error.missing_params": "La sesión expiró o la URL de callback estaba incompleta. Volvé a intentar el inicio de sesión.",
+  "auth.error.auth_failed": "No pudimos validar tu identidad con Google. Volvé a intentarlo.",
+  "auth.error.session_expired": "Tu sesión expiró. Iniciá sesión de nuevo para continuar.",
+  "auth.error.fallback": "No pudimos completar el inicio de sesión. Por favor, volvé a intentarlo.",
+  "auth.error.retry": "Volver a intentar",
+  "auth.error.goToHumand": "Ir a Humand",
+
   // ── search steps + taxonomy display (keys stay Spanish for matching) ───────
   "search.steps.resolving": "Resolviendo entidad…",
   "search.steps.enriching": "Enriqueciendo firmografía…",
@@ -493,6 +506,19 @@ const en: Record<MessageKey, string> = {
   "deck.planMain": "Main plan",
   "deck.planA": "Plan A",
   "deck.planB": "Plan B",
+
+  // ── auth ─────────────────────────────────────────────────────────────────────
+  "auth.signOut": "Sign out",
+  "auth.login.heading": "Sign in to DealCraft",
+  "auth.login.subhead": "Use your Humand Google account to continue.",
+  "auth.login.googleButton": "Continue with Google",
+  "auth.error.title": "Something went wrong",
+  "auth.error.missing_params": "Session expired or the callback URL was incomplete. Try signing in again.",
+  "auth.error.auth_failed": "We couldn't validate your identity with Google. Please try again.",
+  "auth.error.session_expired": "Your session expired. Sign in again to continue.",
+  "auth.error.fallback": "We couldn't complete sign-in. Please try again.",
+  "auth.error.retry": "Try again",
+  "auth.error.goToHumand": "Go to Humand",
 
   // ── search steps + taxonomy display (keys stay Spanish for matching) ───────
   "search.steps.resolving": "Resolving entity…",

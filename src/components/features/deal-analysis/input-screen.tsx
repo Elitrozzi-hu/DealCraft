@@ -14,6 +14,7 @@ import {
   Spinner,
   Wordmark,
 } from "@/components/ui";
+import { useAuth } from "@/contexts/Auth";
 import { useLeadSearch } from "@/hooks/use-lead-search";
 import { formatNumber, useLanguage, useT } from "@/i18n";
 import { STAGES, stageIndex, stageObj } from "@/lib/constants";
@@ -28,6 +29,7 @@ export interface InputScreenProps {
   onSearch: (query: DealSearchRequest) => void;
   onOpenHistory: (deal: RecentDeal) => void;
   initialQuery?: DealSearchRequest;
+  onLogout?: () => void;
 }
 
 function formatAmount(amount: number | null, lang: Language): string {
@@ -197,13 +199,22 @@ function RecentDealCard({ deal: h, onClick }: RecentDealCardProps) {
   );
 }
 
+function userInitials(name?: string, email?: string): string {
+  if (name) {
+    return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  }
+  return (email?.[0] ?? "?").toUpperCase();
+}
+
 export function InputScreen({
   onSearch,
   onOpenHistory,
   initialQuery = MOCK_INITIAL_QUERY,
+  onLogout,
 }: InputScreenProps) {
   const [email, setEmail] = useState(initialQuery.email ?? "");
   const t = useT();
+  const { user } = useAuth();
   const lead = useLeadSearch();
   const { search: leadSearch } = lead;
 
@@ -251,7 +262,45 @@ export function InputScreen({
       <div className="border-b border-line bg-panel px-6 py-4 shadow-[0_1px_3px_rgba(15,27,61,0.05)]">
         <div className="mx-auto flex max-w-[1060px] items-center justify-between gap-3">
           <Wordmark big />
-          <LanguageToggle />
+          <div className="flex items-center gap-3">
+            <LanguageToggle />
+            {onLogout && (
+              <>
+                <div className="h-4 w-px bg-line" />
+                <div className="flex items-center gap-2">
+                  <div className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-violet-soft text-[11px] font-bold text-violet">
+                    {userInitials(user?.name, user?.email)}
+                  </div>
+                  {user?.email && (
+                    <span className="hidden text-[12px] text-cold sm:block">
+                      {user.email}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-1.5 text-[12px] font-medium text-cold transition-colors hover:border-risk/30 hover:bg-risk-soft hover:text-risk focus:outline-none focus-visible:ring-2 focus-visible:ring-risk/40"
+                >
+                  <svg
+                    viewBox="0 0 16 16"
+                    className="h-[13px] w-[13px] flex-none"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.75}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <path d="M10 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3" />
+                    <path d="M6.5 11L10 8 6.5 5" />
+                    <path d="M10 8H2" />
+                  </svg>
+                  {t("auth.signOut")}
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
