@@ -19,7 +19,11 @@ const eslintConfig = [
     ],
   },
   {
-    files: ["src/**/*.{ts,tsx,mts}", "api/**/*.{ts,tsx}"],
+    files: [
+      "src/**/*.{ts,tsx,mts}",
+      "api/**/*.{ts,tsx}",
+      "tests/**/*.{ts,tsx}",
+    ],
     languageOptions: {
       parser: tsparser,
       parserOptions: {

@@ -59,7 +59,7 @@ type WebSearchOptions = z.infer<typeof optionsSchema>;
 /** If `s` is a usable http(s) URL, return its canonical href + a tidy label
  *  (the www-stripped hostname); otherwise null. The prompt allows `source` to be
  *  "URL or source name", so this tells the two apart without trusting the model. */
-function asSourceUrl(s: string | null): { href: string; label: string } | null {
+export function asSourceUrl(s: string | null): { href: string; label: string } | null {
   if (!s) return null;
   try {
     const u = new URL(s);
@@ -71,7 +71,7 @@ function asSourceUrl(s: string | null): { href: string; label: string } | null {
 }
 
 /** Default research query when the caller doesn't override it. */
-function buildQuery(input: EnrichmentInput): string {
+export function buildQuery(input: EnrichmentInput): string {
   const parts: string[] = [];
   if (input.companyName) parts.push(input.companyName);
   if (input.domain) parts.push(input.domain);
@@ -99,7 +99,7 @@ const CONFIDENCE_BY_STATUS: Record<LlmProvenance["status"], number> = {
 
 /** Build the normalized provenance for a stakeholder from its lean self-report.
  *  A link is surfaced only for a validated person citing a real page. */
-function stakeholderProv(
+export function stakeholderProv(
   sourceUrl: string | null,
   status: LlmProvenance["status"],
 ): NormalizedProvenance {
@@ -116,7 +116,7 @@ function stakeholderProv(
 /** Map the model's self-reported provenance into our normalized shape, with
  *  honest defaults and confidence clamped to [0,1] (the sent schema no longer
  *  bounds it). */
-function fromLlmProv(p: LlmProvenance): NormalizedProvenance {
+export function fromLlmProv(p: LlmProvenance): NormalizedProvenance {
   // Surface a clickable source link ONLY for non-inferred fields that cite a real
   // URL. An inferred/cold field is a benchmark/estimate with no page to open, so it
   // stays a plain badge (matches the "link only when the source is not inferido"
@@ -138,7 +138,7 @@ function fromLlmProv(p: LlmProvenance): NormalizedProvenance {
 }
 
 /** Map the model's rich research output into the shared normalized shape. */
-function normalize(out: LlmResearchOutput): NormalizedEnrichment {
+export function normalize(out: LlmResearchOutput): NormalizedEnrichment {
   const WEB = "Web research";
   return {
     summary: out.summary.value?.trim()

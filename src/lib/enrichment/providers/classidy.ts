@@ -113,7 +113,7 @@ type RawProv = z.infer<typeof rawProvSchema>;
 
 /** Map Cassidy's `Provenance Metadata` to our normalized provenance, with
  *  honest defaults when a field is missing. */
-function toProv(p: RawProv): NormalizedProvenance {
+export function toProv(p: RawProv): NormalizedProvenance {
   const status = p?.Status;
   return {
     source: p?.Source ?? "Cassidy",
@@ -126,14 +126,14 @@ function toProv(p: RawProv): NormalizedProvenance {
   };
 }
 
-function toKind(raw: unknown): TechKind {
+export function toKind(raw: unknown): TechKind {
   return raw === "desplazar" || raw === "integrar" || raw === "coexistir"
     ? raw
     : "coexistir";
 }
 
 /** Extract `{ name, kind }` items from Cassidy's loosely-typed Technology Stack. */
-function toTechItems(arr: unknown[] | null | undefined): NormalizedEnrichment["techStack"]["items"] {
+export function toTechItems(arr: unknown[] | null | undefined): NormalizedEnrichment["techStack"]["items"] {
   if (!arr) return [];
   const items: NormalizedEnrichment["techStack"]["items"] = [];
   for (const it of arr) {
@@ -157,7 +157,7 @@ function toTechItems(arr: unknown[] | null | undefined): NormalizedEnrichment["t
 }
 
 /** Normalize Cassidy's raw response into the shared `NormalizedEnrichment` contract. */
-function normalize(raw: CassidyRaw): NormalizedEnrichment {
+export function normalize(raw: CassidyRaw): NormalizedEnrichment {
   const summary = raw["Company Summary"];
   const region = raw["Region Information"];
   const workforce = raw["Workforce Percentage"];

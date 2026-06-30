@@ -34,7 +34,7 @@ Built as a **Vite + React Router SPA** with **Vercel serverless functions**
 | Data      | `@tanstack/react-query` (provider mounted; hooks still use `fetch`) |
 | CRM       | `@hubspot/api-client` (runs only inside `api/*` functions)          |
 | PPTX      | `jszip` (token-fill of a `.pptx` template)                          |
-| Tests     | None — code is verified with **lint + type check** only.           |
+| Tests     | **Vitest 4** unit suite (`tests/`) over the highest-risk pure logic |
 
 ---
 
@@ -75,14 +75,38 @@ bun run build      # Production build → dist/  (vite build)
 bun run preview    # Preview the production build
 bun run lint       # ESLint
 bunx tsc --noEmit  # Type check only
+bun run test       # Vitest unit suite (vitest run)
+bun run test:watch # Vitest in watch mode
 ```
 
-> Before claiming a change "works/done", run **lint + tsc** and check the output —
-> there are no tests to rely on.
+> Before claiming a change "works/done", run **lint + tsc + test** and check the
+> output.
 
 > ℹ️ The `dev` script is `vite` (not `vercel dev`): `vercel dev` runs the project's
 > dev command to serve the frontend, so aliasing `dev` to `vercel dev` would recurse.
 > Use `bun run dev:full` (or `vercel dev` directly) for the full stack.
+
+---
+
+## Testing & CI
+
+A **Vitest 4** unit suite lives in `tests/`, mirroring `src/` (e.g.
+`tests/lib/server/enrichment-to-deal.test.ts`). It deliberately targets only the
+highest-risk **pure logic** — enrichment normalization (`classidy`,
+`llm-websearch`) and the `enrichment-to-deal` adapter — with no LLM/CRM/network
+calls and no component rendering.
+
+```bash
+bun run test        # run the suite once (vitest run)
+bun run test:watch  # watch mode
+```
+
+- `vitest.config.ts` reuses the Vite `@` alias via `mergeConfig`; `node`
+  environment, no globals (import `{ describe, it, expect }` from `vitest`).
+- `tests/` is in `tsconfig` `include` and the ESLint glob, so tests are
+  type-checked and linted under the same strict rules as `src/`.
+- **CI** (`.github/workflows/test.yml`) runs `lint → tsc → test` on every
+  `pull_request` to `main`, and re-runs on each push to a branch with an open PR.
 
 ---
 
@@ -153,7 +177,8 @@ deck-assets/, data/     runtime assets read via process.cwd() (stay at project r
 - **No `import "server-only"`** — it would crash the Vercel functions. The
   client/server boundary is by convention: only `api/*` imports
   `@/lib/{server,llm,enrichment,crm,ppt}`; the frontend imports only
-  `@/lib/api-client`, `@/lib/constants`, `@/lib/fixtures`, `@/types`.
+  `@/lib/api-client`, `@/lib/constants`, `@/lib/fixtures`, `@/types`. Unit tests
+  under `tests/` are exempt (Node-only, never bundled).
 - **Add or swap a provider = one file + one registry line.** Unknown provider → 400.
 - **Add an LLM task = one `src/lib/llm/generations/<task>/` dir** (`prompt.ts` +
   `structured-output.ts`). Never inline prompts in adapters.

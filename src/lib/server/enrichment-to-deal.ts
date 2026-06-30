@@ -26,11 +26,11 @@ const ROLE_MAP: Record<string, Role> = {
   "Head of IT": "Influencer",
 };
 
-function toRole(decisionRole: string | null | undefined): Role {
+export function toRole(decisionRole: string | null | undefined): Role {
   return (decisionRole && ROLE_MAP[decisionRole]) || "Influencer";
 }
 
-function toStakeholders(data: NormalizedEnrichment): Stakeholder[] {
+export function toStakeholders(data: NormalizedEnrichment): Stakeholder[] {
   return data.stakeholders.map((s, i) => ({
     id: `cl-sh-${i}`,
     // The research can place a role without a verifiable name (it nulls names it
@@ -50,7 +50,7 @@ function toStakeholders(data: NormalizedEnrichment): Stakeholder[] {
 }
 
 /** Attempt case-insensitive substring match against SOLUTION_GRAPH keys. */
-function resolveTaxonomy(value: string): { taxonomy: string; module: string | null } {
+export function resolveTaxonomy(value: string): { taxonomy: string; module: string | null } {
   const lower = value.toLowerCase();
   for (const key of Object.keys(SOLUTION_GRAPH) as (keyof typeof SOLUTION_GRAPH)[]) {
     if (lower.includes(key.toLowerCase()) || key.toLowerCase().includes(lower)) {
@@ -64,7 +64,7 @@ function resolveTaxonomy(value: string): { taxonomy: string; module: string | nu
  * Build synthetic `Pain[]` from the CRM deal's declared fields.
  * Pain items are prepended before LLM-inferred pains so they sort first.
  */
-function toCrmPains(deal: LeadDeal): Pain[] {
+export function toCrmPains(deal: LeadDeal): Pain[] {
   const items: Pain[] = [];
   let idx = 0;
 
@@ -101,7 +101,7 @@ function toCrmPains(deal: LeadDeal): Pain[] {
   return items;
 }
 
-function toPains(data: NormalizedEnrichment): Pain[] {
+export function toPains(data: NormalizedEnrichment): Pain[] {
   return data.painPoints.map((p, i) => ({
     id: `cl-p-${i}`,
     label: p.label,
