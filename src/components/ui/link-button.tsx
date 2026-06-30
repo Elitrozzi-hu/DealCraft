@@ -41,8 +41,3 @@ export function LinkAnchor({
     </a>
   );
 }
-
-/** Use this class string when you need a link style on an element that can't
- *  accept a <button> or <a> wrapper (e.g., a span inside a <button>). */
-export const linkTextCls = `${baseCls} ${toneCls.violet}`;
-export const linkTextColdCls = `${baseCls} ${toneCls.cold}`;

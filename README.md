@@ -145,7 +145,6 @@ api/                    Vercel serverless functions (@vercel/node, (req,res)):
                         signals, pre-call-brief, notion-webhook/success-cases
 vercel.json             framework=vite, outputDirectory=dist, per-fn includeFiles
 deck-assets/, data/     runtime assets read via process.cwd() (stay at project root)
-docs/, scripts/         reference docs + dev tooling (not in build)
 ```
 
 ### Key conventions

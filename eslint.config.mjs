@@ -7,17 +7,14 @@ import tsparser from "@typescript-eslint/parser";
 // tsconfig project" crashes from the type-aware parser.
 const eslintConfig = [
   {
-    // Build artifacts, generated output, dev-only tooling, and the doomed Next
-    // `app/` dir (excluded from tsconfig; deleted in Tasks 2/3) are not linted.
+    // Build artifacts, generated output, dev-only tooling, and static assets
+    // are not linted.
     ignores: [
       "dist/**",
       "node_modules/**",
       ".vercel/**",
-      ".next/**",
-      "out/**",
       "public/**",
       "scripts/**",
-      "app/**",
       "*.config.*",
     ],
   },

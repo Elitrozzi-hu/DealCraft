@@ -35,9 +35,6 @@ AI sales copilot for Humand: resolve a lead/company, enrich + analyze the deal (
 
 **Frontend** — entry `index.html` → `src/main.tsx` → `src/App.tsx` (`QueryClientProvider` > `BrowserRouter` > `Routes`, with `/` → `DealCraftApp`). `src/components/`: `ui/` = stateless primitives (no fetching); `features/` = `deal-analysis/`, `materials/`, `copilot-view`. `src/hooks/`: `use-deal-state`, `use-deal-search`, `use-lead-search`, `use-materials`, `use-ppt-generator`, `use-is-narrow`. Fonts: `@fontsource-variable/geist` (self-hosted, imported in `main.tsx`) feeding the `@theme` `--font-*` chain in `src/index.css`.
 
-**scripts/** — dev tooling (`benchmark-enrichment.ts`, `make-pptx-template.mjs`); at project root, not in build.
-**docs/** — reference docs (HubSpot properties, solutions map). Project root, not in build.
-
 ## Key rules
 - Path alias `@/*` → `./src` (tsconfig `"@/*": ["./src/*"]`; Vite `resolve.alias`). The `api/*` functions resolve `@/lib/...` via the same tsconfig path.
 - No `import "server-only"` (it throws outside Next's `react-server` condition and would crash the Vercel functions). The client/server boundary is **by convention**: only `api/*` imports `@/lib/{server,llm,enrichment,crm,ppt}` + `@/lib/cassidy-envelope`. The frontend imports only `@/lib/api-client`, `@/lib/constants`, `@/lib/fixtures`, `@/types`.

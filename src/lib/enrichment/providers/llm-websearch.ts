@@ -44,7 +44,7 @@ const log = createLogger("llm-websearch");
 
 // --- Per-request search-steering options ----------------------------------
 // Validated before use. Only knobs the OpenRouter `web` plugin actually supports.
-export const optionsSchema = z.object({
+const optionsSchema = z.object({
   /** Cap on search results pulled in (plugin: `max_results`). */
   maxResults: z.number().int().positive().optional(),
   /** Custom prompt that steers how results are folded in (plugin: `search_prompt`). */
@@ -53,7 +53,7 @@ export const optionsSchema = z.object({
   query: z.string().optional(),
 });
 
-export type WebSearchOptions = z.infer<typeof optionsSchema>;
+type WebSearchOptions = z.infer<typeof optionsSchema>;
 
 
 /** If `s` is a usable http(s) URL, return its canonical href + a tidy label
