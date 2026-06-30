@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { withAuth } from './_with-auth.js';
 
 import { generatePresentation, ValidationError } from "@/lib/ppt";
 import { createLogger } from "@/lib/server/logger";
@@ -24,7 +24,7 @@ function contentDisposition(filename: string): string {
  * so this runs on the Node runtime (default) — the template is bundled via
  * `vercel.json` `functions[...].includeFiles`.
  */
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default withAuth(async (req, res, _session) => {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
@@ -53,4 +53,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .emit("error");
     res.status(500).json({ error: "Failed to generate presentation" });
   }
-}
+});

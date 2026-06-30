@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { withAuth } from './_with-auth.js';
 
 import type { Pain, Stakeholder } from "@/types";
 import { generateMaterials } from "@/lib/server/materials-adapter";
@@ -22,7 +22,7 @@ const bodySchema = z.object({
  * Body: `MaterialsRequest`. Returns a typed `MaterialsResult` with the 5 sales
  * artifacts as structured stubs (behind the `generateMaterials` LLM seam).
  */
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default withAuth(async (req, res, _session) => {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
@@ -53,4 +53,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ev.emit(status >= 500 ? "error" : "info");
     res.status(status).json({ error });
   }
-}
+});

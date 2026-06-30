@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { withAuth } from './_with-auth.js';
 
 import { generatePreCallBrief } from "@/lib/server/pre-call-brief-adapter";
 import { mapApiError } from "@/lib/server/api-error";
@@ -38,7 +38,7 @@ const bodySchema = z.object({
 });
 
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default withAuth(async (req, res, _session) => {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
@@ -74,4 +74,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ev.emit(status >= 500 ? "error" : "info");
     res.status(status).json({ error });
   }
-}
+});

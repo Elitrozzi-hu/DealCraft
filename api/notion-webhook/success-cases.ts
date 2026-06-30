@@ -87,12 +87,11 @@ function mapSyncError(err: unknown): { status: number; error: string } {
       return { status: 502, error: "Cassidy success-case workflow timed out." };
     }
     if (err.message.startsWith("Cassidy success-case workflow failed")) {
-      return { status: 502, error: err.message };
+      return { status: 502, error: "Cassidy success-case workflow failed." };
     }
     if (err.message.includes("Unrecognizable Notion payload")) {
-      return { status: 400, error: err.message };
+      return { status: 400, error: "Unrecognizable Notion payload." };
     }
   }
-  const message = err instanceof Error ? err.message : String(err);
-  return { status: 500, error: `Success-case sync failed: ${message}` };
+  return { status: 500, error: "Success-case sync failed." };
 }

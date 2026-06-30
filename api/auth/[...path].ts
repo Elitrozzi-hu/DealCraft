@@ -69,6 +69,8 @@ async function handleCallback(req: VercelRequest, res: VercelResponse) {
   const pkce = parsePKCECookie(pkceRaw);
   if (!pkce) return res.redirect('/error?reason=missing_params');
 
+  if (state !== pkce.state) return res.redirect('/error?reason=state_mismatch');
+
   // Decode returnTo from state (base64url). Fall back to '/' if missing or malformed.
   let returnTo = '/';
   if (state) {
