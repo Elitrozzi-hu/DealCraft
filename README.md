@@ -19,6 +19,7 @@ Built as a **Vite + React Router SPA** with **Vercel serverless functions**
    point carries provenance (`source · sourceType · confidence · timestamp · status`).
 4. **Generate** a `.pptx` sales deck from a template, filled with the analysis.
 
+
 ---
 
 ## Tech stack
