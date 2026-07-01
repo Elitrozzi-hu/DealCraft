@@ -1,0 +1,2281 @@
+[
+  {
+    "id": "farmashop-es",
+    "slug": "farmashop-es",
+    "company": "Farmashop",
+    "country": [
+      "Uruguay"
+    ],
+    "users": 2900,
+    "link_web": "https://humand.co/es/caso-de-exito/farmashop-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=p5qeWVHC9mg&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=8&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Acercando más de 120 farmacias en 19 departamentos",
+    "description": "Farmashop optimizó sus procesos y facilitó la colaboración entre sus más de 120 farmacias en 19 departamentos, mejorando la alineación operativa y la experiencia del usuario con Humand.",
+    "pains": [
+      "Necesidad de un sistema de intranet más versátil y accesible.",
+      "Unificar la información y facilitar la colaboración entre todos los colaboradores, sin importar su ubicación geográfica.",
+      "Necesidad de una solución adaptable, fácil de usar y accesible desde dispositivos móviles.",
+      "Personal con menos experiencia tecnológica que necesitaba interactuar de manera eficiente.",
+      "Mantener una visión clara del clima en las sucursales.",
+      "Alinear a todos los colaboradores con los objetivos corporativos."
+    ],
+    "solution_narrative": "Humand implementó una plataforma que centralizó todas las herramientas operativas y de comunicación en un solo lugar, accesible desde cualquier dispositivo móvil. Esto mejoró la alineación operativa entre las distintas sucursales y aseguró que todos los colaboradores estuvieran sincronizados en cuanto a procedimientos y políticas internas.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:08:58.915Z",
+    "industry": "Farmacéutica",
+    "industry_en": "Pharmaceutical"
+  },
+  {
+    "id": "greenpaper-es",
+    "slug": "greenpaper-es",
+    "company": "Greenpaper",
+    "country": [
+      "México"
+    ],
+    "users": 1000,
+    "link_web": "https://humand.co/es/caso-de-exito/greenpaper-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=IOZH5YczTdo&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=2&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "\"Humand se ha vuelto indispensable para nuestras operaciones diarias\"",
+    "description": "Greenpaper, una empresa tradicional, modernizó sus procesos de RR. HH. y digitalizó operaciones con Humand, logrando una comunicación más rápida y efectiva, y una alta adopción por parte de los colaboradores.",
+    "pains": [
+      "Problemas de comunicación e interconectividad",
+      "Imposibilidad de democratizar la información",
+      "Dificultad para simplificar la gestión de todos los procesos de RR. HH. a través de una sola herramienta",
+      "Imposibilidad de medir las acciones de recursos humanos (consultas, procesos resueltos, etc.)",
+      "Necesidad de mejorar la experiencia de los colaboradores",
+      "Necesidad de mejorar la eficiencia en la gestión de RR. HH."
+    ],
+    "solution_narrative": "Humand transformó los procesos internos y la cultura organizacional de Greenpaper al centralizar la comunicación, digitalizar la gestión de RR. HH. y mejorar la experiencia del colaborador. La plataforma logró una alta adopción y se integró con sistemas existentes para optimizar operaciones y reducir costos.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:03.265Z",
+    "industry": "Papel",
+    "industry_en": "Paper"
+  },
+  {
+    "id": "siemens-es",
+    "slug": "siemens-es",
+    "company": "Siemens",
+    "country": [
+      "México"
+    ],
+    "users": 5000,
+    "link_web": "https://humand.co/es/caso-de-exito/siemens-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=RgrcSqdC5v8&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=16&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Unificando procesos de gestión, comunicación y cultura",
+    "description": "Siemens logró conectar a más del 95% de su personal operativo y centralizar procesos clave de RR. HH. con Humand, mejorando la productividad y la satisfacción laboral.",
+    "pains": [
+      "Más del 85% de su personal sin acceso a herramientas digitales tradicionales (deskless/frontline).",
+      "Dificultad para centralizar procesos de gestión de recursos humanos.",
+      "Comunicación interna ineficiente con trabajadores operativos dispersos en cuatro plantas de manufactura.",
+      "Los empleados no tenían acceso a correos electrónicos ni computadoras.",
+      "Dependencia de documentos en papel para procesos de RR. HH.",
+      "Agilización de solicitudes de RR. HH. era un desafío."
+    ],
+    "solution_narrative": "Humand conectó a la fuerza laboral de Siemens, unificando procesos clave de gestión de recursos humanos y fortaleciendo su cultura organizacional. La plataforma permitió centralizar la visualización de recibos de nómina, reportes diversos y capacitaciones digitales, todo accesible desde dispositivos móviles.",
+    "modules": [
+      "Comunicación Interna",
+      "Gestión de RR. HH.",
+      "Cultura Empresarial",
+      "Chat",
+      "Red Social Interna",
+      "Live Streaming",
+      "Noticias",
+      "Organigrama",
+      "Biblioteca de Recursos",
+      "Beneficios",
+      "Documentos",
+      "Onboarding",
+      "Vacaciones y Permisos",
+      "Expediente digital del colaborador",
+      "Archivos",
+      "Reserva de espacios",
+      "Accesos Rápidos",
+      "Políticas",
+      "Encuestas",
+      "Evaluación de desempeño",
+      "Objetivos y Resultados Clave",
+      "Aprendizaje",
+      "Plan de carrera",
+      "Búsquedas internas",
+      "Gestión de Servicios",
+      "Formularios, trámites y aprobaciones",
+      "Control de Asistencia",
+      "Programa de referidos",
+      "People Experience",
+      "Cumpleaños y Aniversarios",
+      "Marketplace",
+      "Eventos",
+      "Reconocimientos",
+      "Workflows",
+      "Roles & Permisos",
+      "Integraciones",
+      "Insights",
+      "Acceso con ID",
+      "Seguridad y privacidad"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:09.115Z",
+    "industry": "Tecnológica",
+    "industry_en": "Technology"
+  },
+  {
+    "id": "mrvco-solucion-ideal",
+    "slug": "mrvco-solucion-ideal",
+    "company": "MRV",
+    "country": [
+      "Brasil"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/mrvco-solucion-ideal/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "MRV&CO + Humand: Construyendo juntos la solución ideal",
+    "description": "MRV&CO fortaleció su comunicación interna y alcanzó un 80% de usuarios activos con Humand. La plataforma mejoró la conexión y el compromiso de sus más de 20.000 colaboradores en todo Brasil.",
+    "pains": [
+      "Mantener a las personas comprometidas, informadas y conectadas en una realidad interna altamente diversa (equipos de obra y administrativos).",
+      "Necesidad de una solución de comunicación interna que respondiera a las expectativas de un equipo acostumbrado a experiencias digitales modernas (similares a redes sociales).",
+      "Búsqueda de un socio tecnológico que ofreciera calidad, flexibilidad y facilidad de uso, y que practicara la escucha activa para comprender y responder a las necesidades.",
+      "Falta de flexibilidad para gestionar y optimizar el trabajo de los equipos.",
+      "Necesidad de una interfaz limpia, navegación sencilla y acceso práctico, especialmente desde dispositivos móviles.",
+      "Dificultad para que la plataforma de comunicación interna evolucionara junto a sus usuarios."
+    ],
+    "solution_narrative": "Humand fortaleció la comunicación interna de MRV&CO ofreciendo una plataforma con acceso móvil, comunicaciones en vivo, diseño limpio y un repositorio centralizado de documentación. La escucha activa y la colaboración cercana permitieron adaptar la solución a las necesidades específicas de la empresa, impulsando la adopción y el compromiso de los colaboradores.",
+    "modules": [
+      "Eventos",
+      "Grupos",
+      "Organigrama"
+    ],
+    "metrics": [
+      {
+        "value": "80%",
+        "label": "de usuarios activos"
+      },
+      {
+        "value": "3",
+        "label": "meses para alcanzar el objetivo interno de engagement"
+      },
+      {
+        "value": "90%",
+        "label": "de los usuarios activos interactúan semanalmente en la plataforma"
+      }
+    ],
+    "quote": "“Las soluciones de Humand, combinadas con la escucha activa y una búsqueda constante de mejora, marcan la diferencia.”",
+    "quote_author": "Eron Rodrigues",
+    "quote_author_role": "Gerente de Proyecto",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Impulsa el engagement y la comunicación interna de tu equipo con el socio adecuado",
+    "synced_at": "2026-06-26T16:09:14.014Z",
+    "industry": "Construcción",
+    "industry_en": "Construction"
+  },
+  {
+    "id": "grupo-assa-es",
+    "slug": "grupo-assa-es",
+    "company": "Grupo ASSA",
+    "country": [
+      "México"
+    ],
+    "users": 3600,
+    "link_web": "https://humand.co/es/success-story/grupo-assa-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=s5Ovk6S5oGQ&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=14&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Revolucionando los procesos de RR. HH. para lograr una mayor eficiencia",
+    "description": "Grupo Industrial ASSA revolucionó sus procesos de RR. HH. con Humand, logrando una eficiencia operativa sin precedentes y fortaleciendo su cultura organizacional a través de la digitalización y la mejora de la comunicación.",
+    "pains": [
+      "Procesos de recursos humanos manuales y en papel",
+      "Burocracia interna que limitaba la eficiencia",
+      "Dispersión geográfica de los colaboradores dificultaba la comunicación efectiva",
+      "Gestión manual de recibos de nómina",
+      "Limitaciones en la realización de encuestas de clima laboral"
+    ],
+    "solution_narrative": "Humand centralizó los procesos de RR. HH., mejoró la comunicación interna y fortaleció la cultura organizacional de Grupo Industrial ASSA. La plataforma digitalizó tareas clave como la distribución de recibos de nómina y la gestión de vacaciones, adaptándose a las necesidades específicas de la empresa.",
+    "modules": [
+      "Formularios",
+      "Encuestas",
+      "Documentos Personales",
+      "Grupos y Muro",
+      "Capacitaciones",
+      "Chats y Canales de Consulta",
+      "Librerías de Conocimiento"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:19.463Z",
+    "industry": "Textil",
+    "industry_en": "Textile"
+  },
+  {
+    "id": "cirion-es",
+    "slug": "cirion-es",
+    "company": "Cirion",
+    "country": [
+      "CAM",
+      "LATAM",
+      "USA"
+    ],
+    "users": 2500,
+    "link_web": "https://humand.co/es/success-story/cirion-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=Sk-DiY9InlI&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=12&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "La sinergia entre lo digital y lo humano que transformó a Cirion",
+    "description": "Cirion transformó su experiencia del empleado y comunicación interna con Humand, logrando mayor eficiencia, colaboración y satisfacción a través de una plataforma digital ágil y adaptable.",
+    "pains": [
+      "Necesidad de una herramienta digital ágil, fácil de usar y amigable para mejorar la comunicación.",
+      "Dificultad en el almacenamiento de datos.",
+      "Procesos clave como la gestión de recibos de sueldos eran complejos.",
+      "Conectividad limitada entre empleados distribuidos geográficamente.",
+      "Tareas repetitivas que consumían tiempo de los empleados.",
+      "Falta de mecanismos sencillos para dar feedback y participar en encuestas."
+    ],
+    "solution_narrative": "Humand proporcionó a Cirion una plataforma digital intuitiva y flexible que mejoró la comunicación interna, fortaleció los vínculos con los empleados y simplificó procesos clave como la gestión de recibos de sueldos, demostrando gran capacidad de adaptación a las necesidades de la compañía.",
+    "modules": [
+      "mensajería instantánea",
+      "redes sociales internas",
+      "intranet",
+      "portal de empleados",
+      "app todo en uno",
+      "gestión de recibos de sueldos",
+      "encuestas"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:25.482Z",
+    "industry": "Tecnológica",
+    "industry_en": "Technology"
+  },
+  {
+    "id": "swiss-medical-es",
+    "slug": "swiss-medical-es",
+    "company": "Swiss Medical",
+    "country": [
+      "Argentina"
+    ],
+    "users": 12500,
+    "link_web": "https://humand.co/es/success-story/swiss-medical-es/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": "https://drive.google.com/file/d/1wE-FiovFhEbOE51sfYe4fDhpBarQjyaI/view",
+    "tagline": "Resultados tangibles: 90% de los empleados conectados",
+    "description": "Swiss Medical Group logró conectar al 90% de sus empleados y mejorar la comunicación interna con Humand, transformando su gestión de RR. HH. y cultura organizacional.",
+    "pains": [
+      "Solo el 40% de los empleados tenían acceso a correo electrónico corporativo, dejando al 60% restante fuera del circuito informativo.",
+      "Intentos previos de comunicación interna (correos personales, redes sociales privadas) no fueron efectivos.",
+      "Era casi imposible medir el impacto de la comunicación interna.",
+      "Dificultad para unificar la comunicación interna en un único canal accesible.",
+      "Necesidad de fomentar la interacción y el sentido de pertenencia entre empleados dispersos geográficamente.",
+      "Falta de métricas precisas para mejorar la toma de decisiones en RR. HH."
+    ],
+    "solution_narrative": "Humand implementó una plataforma de comunicación interna robusta y fácil de usar, logrando conectar al 90% de los colaboradores de Swiss Medical. Esto permitió unificar la comunicación, fomentar la interacción y el sentido de pertenencia, y acceder a métricas precisas para la toma de decisiones en RR. HH.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:31.369Z",
+    "industry": "Salud",
+    "industry_en": "Healthcare"
+  },
+  {
+    "id": "miniso-es",
+    "slug": "miniso-es",
+    "company": "Miniso Genérico",
+    "country": [
+      "Colombia",
+      "México",
+      "Perú"
+    ],
+    "users": 3000,
+    "link_web": "https://humand.co/es/caso-de-exito/miniso-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=LmDmML6fumA&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=3&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Migración exitosa de Workplace a Humand: 93% de adopción en tres semanas",
+    "description": "Miniso logró una migración exitosa de su plataforma de comunicación interna, alcanzando un 90% de adopción en México, Colombia y Perú. Humand se convirtió en un socio estratégico que mejoró la comunicación y el engagement de sus colaboradores.",
+    "pains": [
+      "Migrar a más de 3.000 usuarios activos desde Workplace (Meta) a una nueva plataforma en solo un mes.",
+      "El desafío abarcaba tres países de América Latina: México, Perú y Colombia.",
+      "Necesidad de una solución tecnológica robusta y un servicio que resonara con los valores de la empresa.",
+      "La plataforma anterior (Workplace) tenía una activación del 80%, lo que implicaba un margen de mejora en la interacción."
+    ],
+    "solution_narrative": "Humand permitió una migración exitosa y rápida gracias a su diseño intuitivo y capacidad de integración con la cultura de Miniso. La plataforma se convirtió en una herramienta esencial en la rutina diaria de los colaboradores, mejorando la comunicación interna y el engagement.",
+    "modules": [
+      "Aprendizaje",
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Noticias",
+      "Onboarding"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:36.654Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "fb-group-es",
+    "slug": "fb-group-es",
+    "company": "FB Group",
+    "country": [
+      "Chile",
+      "México"
+    ],
+    "users": 1700,
+    "link_web": "https://humand.co/es/caso-de-exito/fb-group-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=-HkpX4Zit6M&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=1&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Conectando a +1.500 empleados distribuidos en cuatro plantas",
+    "description": "FB Group mejoró su comunicación interna y gestión de RR. HH. en sus cuatro plantas con Humand, logrando una alta activación de usuarios y agilizando procesos administrativos.",
+    "pains": [
+      "Dificultades en la gestión de recursos humanos debido al tamaño y dispersión geográfica.",
+      "Problemas de comunicación interna por la dispersión geográfica.",
+      "Falta de una herramienta que integrara la gestión de RR. HH. y la comunicación.",
+      "Dificultad para la medición y optimización de procesos de RR. HH.",
+      "Dificultad en la transmisión de la cultura organizacional.",
+      "Procesos administrativos lentos (ej. solicitud de vacaciones, entrega de constancias)."
+    ],
+    "solution_narrative": "Humand, una plataforma todo en uno, unificó la gestión de recursos humanos, la comunicación interna y la cultura organizacional de FB Group. Esto permitió una conexión efectiva con los colaboradores, simplificó procesos administrativos y facilitó el acceso a información y métricas para la toma de decisiones.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:41.708Z",
+    "industry": "Maquinaria",
+    "industry_en": "Machinery"
+  },
+  {
+    "id": "lusqtoff-es",
+    "slug": "lusqtoff-es",
+    "company": "Luqstoff",
+    "country": [
+      "Argentina"
+    ],
+    "users": 150,
+    "link_web": "https://humand.co/es/caso-de-exito/lusqtoff-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=RMEwwZU9HLs&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=4&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Mejorando la comunicacion interna en entornos multilocalizados",
+    "description": "Lusqtoff unificó su comunicación y fortaleció la conexión del equipo en entornos multilocalizados con Humand. La plataforma potenció su comunicación, beneficios y propuesta de valor desde RR.HH.",
+    "pains": [
+      "falta de tiempo para gestionar todos los procesos de HR",
+      "dificultades en la gestión de la comunicación interna debido a la dispersión geográfica de sus colaboradores",
+      "necesidad de digitalizar sus procesos de HR"
+    ],
+    "solution_narrative": "Humand permitió a Lusqtoff mejorar su comunicación interna, digitalizar procesos de RR.HH. como la gestión de recibos de sueldo, y fomentar el reconocimiento entre colaboradores, fortaleciendo así su propuesta de valor en Recursos Humanos.",
+    "modules": [
+      "módulo de reconocimientos"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:45.953Z",
+    "industry": "Maquinaria",
+    "industry_en": "Machinery"
+  },
+  {
+    "id": "nordex-es",
+    "slug": "nordex-es",
+    "company": "Nordex",
+    "country": [
+      "Uruguay"
+    ],
+    "users": 640,
+    "link_web": "https://humand.co/es/caso-de-exito/nordex-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=U-AzsVJ4TCo&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=5&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Innovación en recursos humanos en la industria automotriz",
+    "description": "Nordex transformó su gestión de RR. HH. y comunicación interna con Humand, logrando mayor eficiencia operativa y una experiencia del colaborador mejorada. La app digital conectó a más de 650 colaboradores sin acceso a computadoras.",
+    "pains": [
+      "Acceso limitado a tecnología para colaboradores sin computadoras.",
+      "Reto constante en la comunicación y gestión de procesos.",
+      "Necesidad de una comunicación eficiente y transparente.",
+      "Optimización de procesos de recursos humanos (seguimiento de desempeño, evaluación de competencias, planificación de capacitaciones)."
+    ],
+    "solution_narrative": "Humand proporcionó una app digital todo en uno que mejoró la comunicación interna, automatizó procesos y centralizó la información, transformando la gestión de recursos humanos y la experiencia del colaborador en Nordex.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:50.309Z",
+    "industry": "Automotriz",
+    "industry_en": "Automotive"
+  },
+  {
+    "id": "soprinsa",
+    "slug": "soprinsa",
+    "company": "Soprinsa",
+    "country": [
+      "Guatemala"
+    ],
+    "users": 1500,
+    "link_web": "https://humand.co/es/caso-de-exito/soprinsa/",
+    "link_youtube": "https://www.youtube.com/watch?v=BALJu4yDvlk&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=26",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Grupo Soprinsa: Transformando la comunicación interna con Humand",
+    "description": "Soprinsa transformó su comunicación interna y procesos de RR. HH. con Humand, logrando mayor cercanía con sus colaboradores y eficiencia operativa.",
+    "pains": [
+      "Establecer una comunicación directa, simple y eficaz con todo el equipo.",
+      "Estructura organizacional muy sectorizada que generaba fragmentación y desconexión entre áreas.",
+      "Necesidad de ir personalmente a las oficinas o esperar para solicitar documentos (recibos, cartas).",
+      "Falta de centralización de la información de pagos, generando desorganización y falta de claridad.",
+      "Uso de múltiples plataformas para solicitudes, tickets y consultas.",
+      "Falta de cercanía entre los colaboradores y la empresa."
+    ],
+    "solution_narrative": "Humand resolvió los problemas de comunicación interna de Soprinsa, haciendo la interacción inmediata y sin intermediarios. La plataforma centralizó la información y los procesos, permitiendo a los colaboradores acceder a lo que necesitaban con un solo clic y acercando a la empresa a su gente.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:09:54.985Z",
+    "industry": "Servicios",
+    "industry_en": "Services"
+  },
+  {
+    "id": "zeni",
+    "slug": "zeni",
+    "company": "Zeni",
+    "country": [
+      "Argentina"
+    ],
+    "users": 600,
+    "link_web": "https://humand.co/es/caso-de-exito/zeni/",
+    "link_youtube": "https://www.youtube.com/watch?v=cWUHzHWb-Hw&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=27",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Zeni: una organización más conectada, transparente y eficiente",
+    "description": "Zeni eliminó el uso de papel y mejoró la comunicación y satisfacción de más de 750 colaboradores al centralizar procesos y comunicación en Humand. Logró una organización más conectada, transparente y eficiente.",
+    "pains": [
+      "Comunicación interna dispersa en múltiples canales informales.",
+      "Dificultad para que las novedades llegaran a todos los colaboradores a tiempo.",
+      "Falta de conexión entre las personas.",
+      "Documentación relevante no centralizada, generando confusión y reclamos.",
+      "Incremento en los costos administrativos debido a la gestión de documentos.",
+      "Necesidad de una plataforma flexible para adaptarse a diversas operaciones y equipos distribuidos."
+    ],
+    "solution_narrative": "Humand centralizó la comunicación interna y procesos administrativos clave como recibos de sueldo, encuestas, licencias y evaluaciones de desempeño. Esto permitió a Zeni eliminar el uso de papel, mejorar la transparencia y fortalecer el sentido de pertenencia y el vínculo entre los colaboradores.",
+    "modules": [
+      "Aprendizaje",
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos"
+    ],
+    "metrics": [
+      {
+        "value": "750",
+        "label": "colaboradores conectados"
+      },
+      {
+        "value": "100%",
+        "label": "documentación digitalizada"
+      },
+      {
+        "value": "10",
+        "label": "puntos en el indicador de comunicación"
+      }
+    ],
+    "quote": "Lo mejor es la facilidad de tener todo a mano, de tener todo en el teléfono, y que podemos estar al día con toda la información y todas las novedades de la empresa.",
+    "quote_author": "Patricia Cárdenas",
+    "quote_author_role": "Supervisora de pagos",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Descubre cómo Humand puede potenciar tus equipos.",
+    "synced_at": "2026-06-26T16:09:59.565Z",
+    "industry": "Agro",
+    "industry_en": "Agriculture"
+  },
+  {
+    "id": "transber-integrar-personas-procesos-y-comunicacion-en-una-sola-plataforma",
+    "slug": "transber-integrar-personas-procesos-y-comunicacion-en-una-sola-plataforma",
+    "company": "Transber",
+    "country": [
+      "Perú"
+    ],
+    "users": 350,
+    "link_web": "https://humand.co/es/caso-de-exito/transber-integrar-personas-procesos-y-comunicacion-en-una-sola-plataforma/",
+    "link_youtube": "https://www.youtube.com/watch?v=cdqBbBFOE6M&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=28",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Transber: integrar personas, procesos y comunicación en una sola plataforma",
+    "description": "Transber centralizó su comunicación y procesos de RR. HH. con Humand, mejorando la experiencia de más de 350 colaboradores. Lograron digitalizar documentos, agilizar la contratación y fortalecer el sentido de pertenencia en equipos distribuidos.",
+    "pains": [
+      "Manejo de la información y procesos de RR. HH. complejo debido al crecimiento.",
+      "Comunicación interna ineficiente, basada principalmente en correos electrónicos que no siempre llegaban a todos.",
+      "Gestión documental dependiente de archivos físicos, lo que generaba tareas manuales y falta de agilidad.",
+      "Búsqueda de boletas de pago o contratos implicaba procesos manuales y lentos.",
+      "Proceso de firma de documentos lento, demorando entre uno y dos días."
+    ],
+    "solution_narrative": "Humand permitió a Transber centralizar la comunicación y los procesos de RR. HH., digitalizando la documentación, agilizando la contratación con firma digital y facilitando el acceso a capacitaciones. Esto mejoró la experiencia de los colaboradores y fortaleció el sentido de pertenencia.",
+    "modules": [
+      "Aprendizaje",
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Onboarding",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "350",
+        "label": "colaboradores conectados"
+      },
+      {
+        "value": "3horas",
+        "label": "para la firma de contratos"
+      }
+    ],
+    "quote": "“Antes, todas las comunicaciones eran a través de correos y muchas veces la carga que tenemos de comunicaciones hace que se nos pasen algunos correos. En cambio, en Huamnd tienes toda la información bien específica, detallada y filtrada.”",
+    "quote_author": "Carmen Gil",
+    "quote_author_role": "Gerente de exportaciones",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Agiliza la firma de documentos con Humand",
+    "synced_at": "2026-06-26T16:10:05.610Z",
+    "industry": "Logística",
+    "industry_en": "Logistics"
+  },
+  {
+    "id": "essen",
+    "slug": "essen",
+    "company": "Essen",
+    "country": [
+      "Argentina"
+    ],
+    "users": 415,
+    "link_web": "https://humand.co/es/caso-de-exito/essen/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": "https://drive.google.com/file/d/1llUZBFglWpka9HMC9HioZYFn-lXVsuo9/view?usp=drive_link",
+    "tagline": "+94% de adopción y +70% de uso diario: el caso de éxito de Essen",
+    "description": "Essen logró +94% de adopción y +70% de uso diario al migrar a Humand, transformando su cultura interna y gestión de personas con tecnología ágil y centrada en el colaborador.",
+    "pains": [
+      "Herramientas disgregadas y poco integradas para la gestión de procesos de Recursos Humanos.",
+      "Limitaba la eficiencia operativa.",
+      "Dificultaba la comunicación interna.",
+      "Fragmentaba la experiencia del colaborador.",
+      "Necesidad de fortalecer la cultura interna.",
+      "Necesidad de automatizar y centralizar procesos clave de RRHH."
+    ],
+    "solution_narrative": "Essen migró de Workplace a Humand buscando una solución más robusta e integral. Humand les permitió fortalecer su cultura interna, mejorar la comunicación, automatizar procesos de RRHH y lograr una alta adopción en poco tiempo.",
+    "modules": [
+      "Aprendizaje",
+      "Chat",
+      "Encuestas",
+      "Formularios, trámites y aprobaciones",
+      "Objetivos y Resultados Clave",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "80%",
+        "label": "Usuarios activos antes"
+      },
+      {
+        "value": "94%",
+        "label": "Usuarios activos ahora"
+      },
+      {
+        "value": "70%",
+        "label": "Adopción diaria"
+      }
+    ],
+    "quote": "“Fue de una agilidad instantánea. La misma comunidad, pero una plataforma mucho mejor.\"",
+    "quote_author": "Marcelo Figueroa",
+    "quote_author_role": "Gerente de Personas | LATAM Essen",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:10:09.928Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "viva-aerobus-es",
+    "slug": "viva-aerobus-es",
+    "company": "Viva Aerobús",
+    "country": [
+      "México"
+    ],
+    "users": 4000,
+    "link_web": "https://humand.co/es/success-story/viva-aerobus-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=xGpO2ZT3NxQ&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=10&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Crecimiento, expansión y comunicación interna",
+    "description": "Viva Aerobus mejoró su comunicación interna y gestión de RR. HH. con Humand, logrando mayor eficiencia y satisfacción de los empleados. La plataforma conectó a su personal disperso, facilitando el acceso a información y procesos clave.",
+    "pains": [
+      "Dispersión geográfica del personal (pilotos y tripulación en constante movimiento)",
+      "Dificultad para la conexión entre empleados",
+      "Dificultad para la resolución de problemas en persona",
+      "Desafíos significativos en la comunicación interna debido al crecimiento acelerado",
+      "Falta de centralización en la gestión de RR. HH."
+    ],
+    "solution_narrative": "Humand impulsó una transformación digital en Viva Aerobus, centralizando la gestión de RR. HH. y la comunicación interna. Esto permitió a miles de empleados acceder a procesos de recursos humanos, comunicarse con compañeros, y acceder a información relevante desde sus celulares, sin importar su ubicación.",
+    "modules": [
+      "Comunicación Interna",
+      "Gestión de RR. HH.",
+      "Chat",
+      "Red Social Interna",
+      "Noticias",
+      "Documentos",
+      "Políticas",
+      "Búsquedas internas",
+      "Beneficios"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:10:15.991Z",
+    "industry": "Aerolínea",
+    "industry_en": "Airline"
+  },
+  {
+    "id": "rapanui-es",
+    "slug": "rapanui-es",
+    "company": "Rapanuí",
+    "country": [
+      "Argentina"
+    ],
+    "users": 700,
+    "link_web": "https://humand.co/es/success-story/rapanui-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=ptbOOT2oFb8&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=15",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Transformando la comunicación para conectar a toda la fuerza laboral",
+    "description": "Rapanui mejoró la cohesión del equipo y la eficiencia de recursos humanos a través de la plataforma digital de Humand, logrando una alta tasa de adopción y modernizando sus procesos.",
+    "pains": [
+      "Asegurar que la información llegara a todos los colaboradores, con el 90% distribuidos en diversas provincias y la mayoría sin acceso a computadoras.",
+      "Medir de forma efectiva las consultas y procesos resueltos dentro del departamento de recursos humanos.",
+      "Mejorar la experiencia de los colaboradores.",
+      "Hacer más eficiente la gestión de recursos humanos."
+    ],
+    "solution_narrative": "Humand resolvió los desafíos de comunicación y gestión de RR. HH. de Rapanui al proporcionar una plataforma intuitiva y de alta adopción. Esto permitió centralizar la comunicación, digitalizar procesos y mejorar la experiencia de los colaboradores, fortaleciendo la cultura organizacional.",
+    "modules": [
+      "Comunicación Interna",
+      "Recibos de nómina"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:10:21.546Z",
+    "industry": "Gastronómica",
+    "industry_en": "Food & Beverage"
+  },
+  {
+    "id": "mautone",
+    "slug": "mautone",
+    "company": "Sanatorio Mautone",
+    "industry": "Salud",
+    "industry_en": "Healthcare",
+    "country": [
+      "Uruguay",
+      "LATAM",
+      "USA"
+    ],
+    "users": 1300,
+    "link_web": "https://humand.co/es/caso-de-exito/mautone/",
+    "link_youtube": "https://www.youtube.com/watch?v=rvO6mufPTh8&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=21&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Cómo Humand está transformando la industria de la salud con Mautone",
+    "description": "Humand se convirtió en una pieza clave para Mautone, una institución de salud con más de 1,300 colaboradores, al optimizar la comunicación interna y agilizar los procesos corporativos.",
+    "solution_narrative": "Humand se implementó como la solución ideal para Mautone, centralizando todas las comunicaciones internas y la gestión de procesos. La plataforma permitió gestionar programas para empleados, políticas institucionales y otros procesos internos de manera organizada, facilitando encuestas de satisfacción y la obtención de informes detallados. Además, simplificó la gestión de solicitudes de capacitación, que antes eran manuales y propensas a errores, ahora realizándose directamente desde la aplicación a través de formularios, chats y tickets, optimizando el tiempo y proporcionando respuestas más rápidas.",
+    "quote": "el soporte de Humand fue excelente. A lo largo del proceso, nos sentimos muy apoyados antes, durante y después del lanzamiento, siempre dispuestos a resolver las preguntas que surgían y proporcionarnos oportunidades de mejora.",
+    "quote_author": "Yaden Cardeza",
+    "quote_author_role": "Asistente Administrativa de Capital Humano",
+    "company_description": "Mautone es una institución de salud ubicada en Maldonado, Uruguay, con más de 45 años de experiencia en servicios de salud.",
+    "pains": [
+      "Necesidad de unificar comunicaciones internas.",
+      "Necesidad de optimizar procesos corporativos.",
+      "Colaboradores demandaban estar mejor informados.",
+      "Procesos internos poco integrados.",
+      "Manejo ineficiente de solicitudes de capacitación (formularios físicos, envío a RRHH, escaneo)."
+    ],
+    "modules": [
+      "Comunicación Interna",
+      "Chat",
+      "Tickets"
+    ],
+    "metrics": [],
+    "synced_at": "2026-06-28T21:40:30.123Z"
+  },
+  {
+    "id": "rodelag-conectar-personas-y-optimizar-procesos-a-escala-nacional",
+    "slug": "rodelag-conectar-personas-y-optimizar-procesos-a-escala-nacional",
+    "company": "Rodelag",
+    "country": [
+      "Panamá"
+    ],
+    "users": 325,
+    "link_web": "https://humand.co/es/caso-de-exito/rodelag-conectar-personas-y-optimizar-procesos-a-escala-nacional/",
+    "link_youtube": "https://www.youtube.com/watch?v=j1uml8-mLZI&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=23&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Rodelag: conectar personas y optimizar procesos a escala nacional",
+    "description": "Rodelag centralizó su comunicación interna y digitalizó procesos clave como vacaciones y comprobantes con Humand, conectando a equipos distribuidos en 16 sucursales en Panamá. Esto optimizó la gestión y la experiencia de los colaboradores a nivel nacional.",
+    "pains": [
+      "Comunicación interna fragmentada y no siempre clara ni oportuna.",
+      "Procesos administrativos manuales o presenciales (vacaciones, comprobantes, cartas de trabajo, formularios).",
+      "Gestiones administrativas que implicaban llamadas y visitas a oficinas.",
+      "Envío físico de documentación entre sucursales.",
+      "Logística adicional y demanda de tiempo y recursos para colaboradores y RR. HH."
+    ],
+    "solution_narrative": "Rodelag centralizó su comunicación interna en un muro digital y digitalizó procesos clave como la gestión de vacaciones, acceso a comprobantes y documentación laboral, solicitudes administrativas y formularios. Esto permitió a los colaboradores autogestionar sus consultas y acceder a la información desde una única aplicación móvil, mejorando la eficiencia y la conexión en sus 16 sucursales.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Marketplace",
+      "Onboarding",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "16",
+        "label": "sucursales conectadas a nivel nacional"
+      },
+      {
+        "value": "3",
+        "label": "procesos clave digitalizados: vacaciones, formularios y comprobantes"
+      }
+    ],
+    "quote": "“Humand porque se traduce en comunicación, en conexión. Sin importar dónde estén, Human conecta a todos los colaboradores a nivel nacional en nuestras 16 sucursales.”",
+    "quote_author": "Blasco Alzamora",
+    "quote_author_role": "Gerente de Desarrollo Organizacional y Humano",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Optimiza la comunicación de tus equipos",
+    "synced_at": "2026-06-26T16:10:32.550Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "es-equipo-vallejo",
+    "slug": "es-equipo-vallejo",
+    "company": "Equipo Vallejo",
+    "country": [
+      "Argentina"
+    ],
+    "users": 370,
+    "link_web": "https://humand.co/es/caso-de-exito/es-equipo-vallejo/",
+    "link_youtube": "https://www.youtube.com/watch?v=3vFrnxNxdfw&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=19&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Gestión de RR. HH. en el sector retail",
+    "description": "Equipo Vallejo digitalizó y centralizó la gestión de RR. HH. con Humand, mejorando la comunicación interna y fortaleciendo la cultura organizacional. Esto resultó en una mayor cercanía con los colaboradores y un ahorro significativo de costos.",
+    "pains": [
+      "Mantenimiento de la cohesión y eficiencia operativa de 380 colaboradores en 36 sucursales.",
+      "Procesos de recursos humanos mayormente manuales.",
+      "Dificultad en la planificación de licencias, gestión de documentación y seguimiento de desempeño por falta de digitalización.",
+      "Comunicación interna inefectiva entre colaboradores de diferentes ubicaciones.",
+      "Falta de un canal efectivo para conectar y alinear a los colaboradores con los objetivos corporativos.",
+      "Dependencia en procesos en papel."
+    ],
+    "solution_narrative": "Humand proporcionó a Equipo Vallejo una solución integral para digitalizar sus procesos de RR. HH. y mejorar la comunicación interna. La plataforma centralizó la información, automatizó procesos críticos y facilitó la interacción entre colaboradores, fortaleciendo la cohesión cultural y la eficiencia operativa.",
+    "modules": [
+      "muro",
+      "chats",
+      "noticias",
+      "encuestas",
+      "legajos y documentación",
+      "gestión de vacaciones y licencias",
+      "onboarding"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:10:37.843Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "grupo-del-plata-es",
+    "slug": "grupo-del-plata-es",
+    "company": "Del Plata Salud",
+    "country": [
+      "Argentina"
+    ],
+    "users": 500,
+    "link_web": "https://humand.co/es/caso-de-exito/grupo-del-plata-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=DA1ooKdBL-g&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=15&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Integración cultural y transformación de RR. HH.",
+    "description": "Del Plata Salud transformó su dinámica interna y fortaleció su cultura organizacional con Humand, logrando una comunicación más rápida y eficiente, y un alto sentido de pertenencia entre sus colaboradores.",
+    "pains": [
+      "Dificultad para mantener la cohesión cultural en un entorno de rápido crecimiento y expansión de sucursales.",
+      "Transmisión de valores corporativos difícil con colaboradores distribuidos.",
+      "Desafíos en la gestión de recursos humanos (comunicación interna, capacitación, evaluación de iniciativas de RR. HH.).",
+      "Falta de herramientas adecuadas para la comunicación interna rápida y eficiente."
+    ],
+    "solution_narrative": "Humand se convirtió en la herramienta clave para Del Plata Salud, agilizando la comunicación interna y permitiendo la personalización de la plataforma para diseminar la cultura empresarial de manera uniforme. Esto facilitó la conexión entre líderes y colaboradores, creando una comunidad dinámica y fortaleciendo el sentido de pertenencia.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:10:42.481Z",
+    "industry": "Farmacéutica",
+    "industry_en": "Pharmaceutical"
+  },
+  {
+    "id": "dia-es",
+    "slug": "dia-es",
+    "company": "Supermercados Día",
+    "country": [
+      "Argentina"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/dia-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=5WqLBws-TXQ&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=9&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Humand es todo Día en un solo lugar",
+    "description": "Supermercados Día superó los desafíos de comunicación interna y eficiencia operativa al conectar a 3.500 colaboradores con Humand, logrando una reducción del 30% en el tiempo de coordinación de tareas.",
+    "pains": [
+      "Dificultad para gestionar, sostener y mejorar la comunicación interna debido a la amplia dispersión geográfica de los colaboradores.",
+      "Muchos colaboradores no tenían acceso a una computadora, lo que dificultaba la difusión eficiente de procesos internos, comunicación y cultura corporativa.",
+      "Barreras significativas para la coordinación y colaboración entre los diferentes departamentos y niveles de la empresa.",
+      "Falta de una herramienta centralizada para la comunicación y la información relevante.",
+      "Procesos de coordinación de tareas interdepartamentales lentos y poco eficientes."
+    ],
+    "solution_narrative": "Humand se convirtió en la herramienta esencial para conectar a los 3.500 colaboradores de Supermercados Día a través de una sola aplicación, permitiendo una comunicación instantánea, centralización de la información y facilitando la colaboración. Esto agilizó la toma de decisiones y mejoró la eficiencia operativa.",
+    "modules": [
+      "Comunicación instantánea",
+      "Centralización de la información",
+      "Facilitación de la colaboración",
+      "Agilización de la toma de decisiones"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:10:47.347Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "bigbox-es",
+    "slug": "bigbox-es",
+    "company": "BigBox",
+    "country": [
+      "Argentina",
+      "Chile",
+      "Colombia",
+      "México",
+      "Perú",
+      "Uruguay"
+    ],
+    "users": 200,
+    "link_web": "https://humand.co/es/caso-de-exito/bigbox-es/",
+    "link_youtube": "https://www.youtube.com/watch?v=XCC2uz0tW-A&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=7&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "\"Una herramienta que resolvió todos los problemas que teníamos\"",
+    "description": "Bigbox simplificó sus procesos de comunicación y RR. HH. con Humand, centralizando la información y mejorando la colaboración entre equipos dispersos geográficamente. La implementación resultó en un mejor clima laboral y mayor eficiencia operativa.",
+    "pains": [
+      "Gestionar la comunicación entre colaboradores distribuidos en múltiples países y entornos laborales variados (retail, oficinas, desarrollo tecnológico).",
+      "Transmitir de manera cotidiana el propósito y la visión de la compañía a equipos dispersos.",
+      "Mantener a todos alineados con los avances de los proyectos y los resultados mensuales.",
+      "Centralizar la información de recursos humanos (políticas internas, procedimientos, comunicados).",
+      "Coordinar tareas y proyectos entre diferentes equipos y asegurar el cumplimiento de plazos.",
+      "Mantener una comunicación fluida y cercana con la expansión de la empresa y la dispersión geográfica."
+    ],
+    "solution_narrative": "Humand proporcionó a Bigbox una plataforma centralizada para la gestión de Recursos Humanos, mejorando la comunicación interna y la coordinación de tareas y proyectos entre equipos dispersos geográficamente. Esto permitió mantener a todos los colaboradores informados y alineados con la visión y objetivos de la compañía, fortaleciendo el sentido de comunidad y colaboración.",
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:10:52.224Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "interredes",
+    "slug": "interredes",
+    "company": "Interredes",
+    "country": [
+      "Argentina"
+    ],
+    "users": 110,
+    "link_web": "https://humand.co/es/caso-de-exito/interredes/",
+    "link_youtube": "https://www.youtube.com/watch?v=eXBaYCqHX9U&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=20&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Transformación digital e impacto en los procesos",
+    "description": "Interredes, una proveedora de servicios de Internet en expansión, superó desafíos de comunicación y gestión de RR. HH. con Humand, logrando automatización y mayor eficiencia. La plataforma centralizó recursos y agilizó procesos, mejorando la experiencia de sus colaboradores.",
+    "pains": [
+      "Dependencia de WhatsApp y correo electrónico para la comunicación interna, volviéndose insostenible con el crecimiento.",
+      "Procesos críticos (liquidación de sueldos) manuales en Excel, con cinco días de carga de novedades y retrasos de hasta cuatro meses para la firma de recibos.",
+      "Dificultad en la distribución de material relevante (capacitaciones, planillas de EPP) a través de canales informales.",
+      "Falta de una plataforma integral para automatizar procesos y mejorar la coordinación entre equipos.",
+      "Desafíos en la comunicación interna y gestión operativa debido al aumento de personal y la dispersión geográfica."
+    ],
+    "solution_narrative": "Humand transformó la gestión de Interredes al centralizar la comunicación y los procesos de RR. HH., eliminando la dependencia de WhatsApp y correo. Automatizó tareas críticas como la liquidación de sueldos y la firma de recibos, mejorando la eficiencia y la experiencia del colaborador.",
+    "modules": [
+      "Chat",
+      "Notificaciones",
+      "Evaluaciones de desempeño",
+      "Control horario"
+    ],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:10:57.403Z",
+    "industry": "Tecnológica",
+    "industry_en": "Technology"
+  },
+  {
+    "id": "ps-bank",
+    "slug": "ps-bank",
+    "company": "PSBank",
+    "country": [
+      "Filipinas"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/ps-bank/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "PSBank: impulsando a todas las áreas con una forma más inteligente de trabajar",
+    "description": "PSBank impulsó la eficiencia y la cultura organizacional al centralizar servicios internos, comunicación y aprendizaje con Humand. La plataforma optimizó la gestión de solicitudes y la capacitación, empoderando a cada unidad de negocio.",
+    "pains": [
+      "Necesidad de una plataforma centralizada para simplificar servicios internos, capacitación y colaboración.",
+      "Necesidad de gestionar miles de solicitudes internas de manera eficiente.",
+      "Optimizar la comunicación entre equipos.",
+      "Escalar el aprendizaje de los colaboradores.",
+      "Tiempos de respuesta lentos para solicitudes internas.",
+      "Uso de herramientas externas para encuestas."
+    ],
+    "solution_narrative": "Humand se convirtió en la plataforma centralizada que PSBank necesitaba, conectando personas, soporte y cultura en un único entorno digital. Permitió a cada equipo personalizar el uso de la plataforma con flujos de trabajo automatizados, rutas de aprendizaje y herramientas de reconocimiento, transformándose en una herramienta esencial para el día a día de los colaboradores.",
+    "modules": [
+      "Aprendizaje",
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Noticias",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "100%",
+        "label": "de activación en la primera semana"
+      },
+      {
+        "value": "95%",
+        "label": "de usuarios activos semanalmente"
+      },
+      {
+        "value": "10h",
+        "label": "ahorradas en la resolución de tickets"
+      }
+    ],
+    "quote": "Humand trajo un nuevo entusiasmo y valor al equipo. Empoderó a nuestra gente para reimaginar no solo sus tareas, sino toda su jornada laboral, con herramientas que inspiran innovación, simplifican procesos y fortalecen nuestra cultura de mejora continua.",
+    "quote_author": "Rex Jardinero",
+    "quote_author_role": "Responsable de Experiencia y Cultura de Personas",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Ayuda a tus equipos a trabajar de forma más inteligente",
+    "synced_at": "2026-06-26T16:11:02.033Z",
+    "industry": "Servicios financieros",
+    "industry_en": "Financial Services"
+  },
+  {
+    "id": "la-digitalizacion-de-rr-hh-como-motor-de-eficiencia-en-relectroni",
+    "slug": "la-digitalizacion-de-rr-hh-como-motor-de-eficiencia-en-relectroni",
+    "company": "Relectroni",
+    "country": [
+      "México"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/la-digitalizacion-de-rr-hh-como-motor-de-eficiencia-en-relectroni/",
+    "link_youtube": "https://youtu.be/1p20nBSZrcg?si=5SLWuKrW0OCiNcLW",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "La digitalización de RR. HH. como motor de eficiencia en Relectroni",
+    "description": "Relectroni digitalizó sus procesos de RR. HH. con Humand, logrando eficiencia operativa, agilizando la gestión de documentos y capacitaciones, y mejorando la experiencia del colaborador. La plataforma facilitó el cumplimiento normativo y la obtención de indicadores clave para la toma de decisiones.",
+    "pains": [
+      "Encuestas y evaluaciones realizadas en papel, lo que implicaba impresión y recolección manual.",
+      "Demoras de entre 2 y 5 días para recolectar firmas de documentos.",
+      "Dificultad para analizar resultados de evaluaciones y convertirlos en información útil para la toma de decisiones.",
+      "Limitaciones para coordinar capacitaciones por la disponibilidad de los colaboradores.",
+      "Gestión manual de gran parte de los procesos de RR. HH. generando fricciones operativas y pérdida de tiempo."
+    ],
+    "solution_narrative": "Humand permitió a Relectroni centralizar la comunicación interna, encuestas, evaluaciones, firma de recibos de nómina, capacitaciones y onboarding en un solo espacio digital. Esto automatizó tareas administrativas, redujo tiempos y facilitó el acceso a la información, mejorando la experiencia del colaborador y el cumplimiento normativo.",
+    "modules": [
+      "Archivos",
+      "Documentos",
+      "Encuestas",
+      "Formularios, trámites y aprobaciones",
+      "Onboarding",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "40%",
+        "label": "Más acceso a capacitaciones"
+      },
+      {
+        "value": "80%",
+        "label": "Menos tiempo en la recolección de firmas"
+      },
+      {
+        "value": "1día",
+        "label": "Análisis de evaluaciones (antes: 1 mes)"
+      }
+    ],
+    "quote": "“Los colaboradores han aprendido muy fácilmente a utilizar Humand, no importa si son jóvenes o si son grandes. La plataforma ha sido de mucha ayuda tanto para la organización como para el colaborador”.",
+    "quote_author": "Óscar Guzmán",
+    "quote_author_role": "Coordinador de Recursos Humanos",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Facilita el cumplimiento normativo de tu organización",
+    "synced_at": "2026-06-26T16:11:07.513Z",
+    "industry": "Maquinaria",
+    "industry_en": "Machinery"
+  },
+  {
+    "id": "bass-tech",
+    "slug": "bass-tech",
+    "company": "Bass Tech",
+    "country": [
+      "Brasil"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/bass-tech/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Bass Tech: Construyendo una cultura de conexión y eficiencia desde la base",
+    "description": "Bass Tech transformó sus procesos de RR. HH. manuales y su comunicación informal con Humand, logrando automatización, eficiencia y una cultura de conexión. La plataforma centralizó la gestión de personal, ahorrando tiempo y mejorando el compromiso del equipo.",
+    "pains": [
+      "Operaba sin una plataforma de RR. HH. dedicada.",
+      "Las comunicaciones se gestionaban a través de grupos de WhatsApp.",
+      "Los procesos internos (vacaciones, horas extra, evaluaciones) se realizaban de forma manual (planillas, correos, papel).",
+      "La falta de un sistema centralizado dificultaba el seguimiento, la organización y el control de las necesidades de los colaboradores.",
+      "Los procesos manuales consumían mucho tiempo del equipo de RR. HH.",
+      "La comunicación interna era informal y desestructurada."
+    ],
+    "solution_narrative": "Humand se convirtió en la primera plataforma digital de RR. HH. de Bass Tech, centralizando la comunicación y automatizando procesos manuales. Esto permitió reemplazar WhatsApp por un chat estructurado, digitalizar solicitudes y evaluaciones, y generar reportes automáticos, ahorrando tiempo al equipo de RR. HH. y mejorando la conexión organizacional.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Objetivos y Resultados Clave",
+      "Onboarding",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "99%",
+        "label": "Usuarios activos mensuales (MAUs)"
+      },
+      {
+        "value": "68%",
+        "label": "Usuarios activos semanales (WAUs)"
+      },
+      {
+        "value": "68%",
+        "label": "Tasa de participación"
+      }
+    ],
+    "quote": "“Humand trajo claridad, estructura y conexión a toda nuestra organización. Finalmente tenemos las herramientas para comunicar, automatizar y generar compromiso, todo en un solo lugar, con un equipo que crece junto.”",
+    "quote_author": "Cynthia",
+    "quote_author_role": "Coordinadora de RR. HH., Bass Tech",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:12.490Z",
+    "industry": "Servicios",
+    "industry_en": "Services"
+  },
+  {
+    "id": "wish-upon-a-star-with-us",
+    "slug": "wish-upon-a-star-with-us",
+    "company": "Wish Upon A Star With Us",
+    "country": [
+      "USA"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/wish-upon-a-star-with-us/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Wish Upon a Star with Us: Comunicación fluida, conexión más fuerte",
+    "description": "Wish Upon a Star with Us mejoró su comunicación interna y conexión con su equipo de agentes de viaje remotos gracias a la interfaz limpia y la experiencia optimizada para móviles de Humand.",
+    "pains": [
+      "Dependencia de una plataforma (Workplace) que fue cerrada.",
+      "Necesidad de una solución que ofreciera una experiencia familiar para el equipo de asesores de viaje remotos.",
+      "Mantener al equipo informado, organizado y comprometido sin interrupciones tras el cierre de la plataforma anterior.",
+      "Dificultad para encontrar actualizaciones y publicar contenido de forma eficiente con la solución anterior.",
+      "Necesidad de una plataforma con diseño limpio y accesibilidad móvil para un equipo distribuido."
+    ],
+    "solution_narrative": "Humand proporcionó una plataforma con diseño limpio, accesibilidad móvil y la capacidad de replicar la estructura familiar para Wish Upon a Star with Us. Esto permitió mantener al equipo informado, organizado y comprometido, facilitando la comunicación y la colaboración a través de módulos como Red Social Interna, Chat, Revista y Bibliotecas de Conocimiento.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Objetivos y Resultados Clave"
+    ],
+    "metrics": [
+      {
+        "value": "90%",
+        "label": "Usuarios activos"
+      }
+    ],
+    "quote": "“Me encanta lo limpio y organizado que se siente Humand—es mucho más fácil encontrar actualizaciones, publicar contenido y mantener informado a mi equipo. La plataforma se ha convertido realmente en una parte central de cómo nos comunicamos y gestionamos la agencia. Constantemente descubro nuevas funciones que puedo integrar en mi negocio, y valoro muchísimo cómo el equipo de Humand siempre está mejorando y evolucionando la experiencia. El soporte continuo ha hecho toda la diferencia—no es solo una herramienta, es un socio que crece con nosotros.”",
+    "quote_author": "Debi Mitchell",
+    "quote_author_role": "Propietaria de Wish Upon a Star with Us",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:17.222Z",
+    "industry": "Hospitalidad y Turismo",
+    "industry_en": "Hospitality & Tourism"
+  },
+  {
+    "id": "schneider",
+    "slug": "schneider",
+    "company": "Schneider SRL",
+    "country": [
+      "Argentina"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/schneider/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Schneider SRL: Transformando la operación industrial con flujos de trabajo digitales",
+    "description": "Schneider SRL transformó su operación industrial digitalizando procesos clave y fortaleciendo la comunicación interna con Humand. Esto resultó en una gestión más ordenada, accesible y moderna, optimizando la eficiencia operativa y generando ahorros.",
+    "pains": [
+      "Gestión manual de solicitudes de permisos y ausencias con formularios en papel.",
+      "Demoras, desorganización y pérdida de información debido a procesos manuales.",
+      "Solicitudes verbales de ausencias imprevistas o adelantos de sueldo.",
+      "Falta de un sistema centralizado para el registro y seguimiento de incidentes laborales.",
+      "Fragmentación que dificultaba la planificación y el control en un entorno industrial.",
+      "Desperdicio de recursos (tiempo y material) por procesos informales."
+    ],
+    "solution_narrative": "Humand digitalizó y ordenó los procesos internos de Schneider SRL, permitiendo configurar flujos personalizados con doble aprobación y haciendo que la gestión sea clara, trazable y accesible. Esto optimizó la eficiencia operativa, la planificación diaria del personal y la gestión de la nómina, además de generar ahorros de tiempo y material.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Onboarding",
+      "Organigrama"
+    ],
+    "metrics": [
+      {
+        "value": "100%",
+        "label": "Usuarios activos"
+      },
+      {
+        "value": "99%",
+        "label": "Usuarios activos mensuales"
+      },
+      {
+        "value": "93%",
+        "label": "Usuarios activos semanales"
+      }
+    ],
+    "quote": "“Humand fue clave para dar el paso de automatización y digitalización de los procesos de Capital Humano, que es un camino de ida. Nos ayudó a ordenar y simplificar procesos que antes eran informales y que además nos hacían desperdiciar recursos. Nos permitió asegurar nuestros procesos y generar ahorros de tiempo y material. Es una gran herramienta para nosotros.”",
+    "quote_author": "Carolina Schneider",
+    "quote_author_role": "Directora de Schneider SRL",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:21.794Z",
+    "industry": "Servicios",
+    "industry_en": "Services"
+  },
+  {
+    "id": "itrip-franchise-association",
+    "slug": "itrip-franchise-association",
+    "company": "iTrip Franchise Association",
+    "country": [
+      "USA"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/itrip-franchise-association/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "iTrip Franchise Association: Una migración fluida hacia una comunicación interna más inteligente",
+    "description": "iTrip Franchise Association migró a Humand para mejorar la comunicación interna y la alineación, logrando mayor eficiencia y colaboración con un espacio de trabajo personalizado.",
+    "pains": [
+      "La plataforma anterior (Workplace) carecía de funciones clave.",
+      "Falta de distribución estructurada de contenidos.",
+      "Ausencia de acceso centralizado a la información.",
+      "Poca visibilidad entre equipos en un modelo de franquicia distribuido.",
+      "La comunicación clara y consistente era un desafío.",
+      "Dificultad para unificar el mensaje y aumentar la visibilidad del contenido a nivel corporativo."
+    ],
+    "solution_narrative": "Humand ofreció un ecosistema de herramientas para la alineación interna, el intercambio de conocimiento y el reconocimiento de los equipos, destacándose por su acompañamiento personalizado durante la transición. La implementación de módulos como la Revista permitió unificar el mensaje y aumentar la visibilidad del contenido corporativo, algo que no lograban con la plataforma anterior.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "100%",
+        "label": "Tasa de Activación de Usuarios"
+      },
+      {
+        "value": "80%",
+        "label": "Tasa de Compromiso"
+      },
+      {
+        "value": "62%",
+        "label": "Usuarios Activos Semanales (UAS)"
+      }
+    ],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:26.349Z",
+    "industry": "Hospitalidad y Turismo",
+    "industry_en": "Hospitality & Tourism"
+  },
+  {
+    "id": "dreams-by-design-travel",
+    "slug": "dreams-by-design-travel",
+    "company": "Dreams by Design Travel",
+    "country": [
+      "USA"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/dreams-by-design-travel/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Una transición fluida con apoyo personalizado: Historia de éxito de Dreams by Design Travel",
+    "description": "Dreams by Design Travel logró una transición fluida de Workplace a Humand, manteniendo la familiaridad y añadiendo valor con nuevas herramientas. La plataforma de Humand proporcionó claridad, consistencia y un sólido apoyo, optimizando sus operaciones diarias.",
+    "pains": [
+      "Dependencia de Workplace para la organización y sincronización de asesores de viajes.",
+      "Necesidad de encontrar una solución similar a Workplace tras su desactivación en 2026.",
+      "Riesgo de interrupción de operaciones diarias sin una plataforma de reemplazo.",
+      "Búsqueda de una solución que ofreciera funcionalidad y personalización familiar.",
+      "Necesidad de una transición intuitiva y no abrumadora.",
+      "Falta de estructura y claridad en la gestión de procesos internos antes de Humand."
+    ],
+    "solution_narrative": "Humand ofreció una plataforma con funcionalidad y personalización similares a Workplace, facilitando una transición intuitiva. El compromiso y la capacidad de respuesta de Humand durante la migración, junto con la implementación de módulos clave, permitieron a Dreams by Design Travel operar con claridad y consistencia, introduciendo nuevas herramientas para gestionar procesos internos.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Objetivos y Resultados Clave"
+    ],
+    "metrics": [
+      {
+        "value": "100%",
+        "label": "Usuarios activos"
+      },
+      {
+        "value": "100%",
+        "label": "Transición efectiva"
+      },
+      {
+        "value": "83%",
+        "label": "Participación"
+      }
+    ],
+    "quote": "“Debido a que es tan similar a Workplace, el impacto ha sido mínimo. La transición fue fluida una vez que completamos la migración, y el soporte ante cualquier cambio, solicitud de funciones o problemas ha sido excelente.”",
+    "quote_author": "Donna Sharick",
+    "quote_author_role": "Dueña de Dreams by Design Travel",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:31.905Z",
+    "industry": "Servicios",
+    "industry_en": "Services"
+  },
+  {
+    "id": "mystical-dream",
+    "slug": "mystical-dream",
+    "company": "Mystical Dream Travel",
+    "country": [
+      "USA"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/mystical-dream/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "100% usuarios activos: Migración efectiva en Mystical Dream Travel",
+    "description": "Mystical Dream Travel logró una migración efectiva a Humand, alcanzando el 100% de usuarios activos. Esto resultó en mayor eficiencia, mejor colaboración y un espacio de trabajo personalizado.",
+    "pains": [
+      "Rápido crecimiento del equipo (23 asesores) que generó nuevos desafíos.",
+      "Necesidad de mantener la excelencia en el servicio tipo concierge mientras gestionaban operaciones internas cada vez más complejas.",
+      "Sistema antiguo.",
+      "Procesos dispersos.",
+      "Falta de un canal de comunicación estructurado."
+    ],
+    "solution_narrative": "Humand proporcionó una plataforma sólida que estructuró la comunicación interna, mejoró la eficiencia de los flujos de trabajo y escaló con el crecimiento del negocio. Con soporte personalizado, un módulo de onboarding centralizado y capacitación continua, lograron una migración sin fricciones y una adopción del 100% de usuarios activos.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Grupos"
+    ],
+    "metrics": [
+      {
+        "value": "90%",
+        "label": "Usuarios activos antes"
+      },
+      {
+        "value": "100%",
+        "label": "Usuarios activos ahora"
+      }
+    ],
+    "quote": "“Recomendamos ampliamente a Humand a las organizaciones que buscan optimizar sus flujos de trabajo y la comunicación interna. La interfaz amigable de la plataforma, su sólido sistema de soporte y su compromiso con la mejora continua la convierten en una inversión valiosa para cualquier empresa en crecimiento.”",
+    "quote_author": "Tina McHugh",
+    "quote_author_role": "Dueña de Mystical Dream Travel",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:36.589Z",
+    "industry": "Servicios",
+    "industry_en": "Services"
+  },
+  {
+    "id": "atlantic-city",
+    "slug": "atlantic-city",
+    "company": "Atlantic City",
+    "country": [
+      "Perú"
+    ],
+    "users": 1100,
+    "link_web": "https://humand.co/es/caso-de-exito/atlantic-city/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "De Workplace a Humand: +85% de usuarios activos y cero pérdida de data",
+    "description": "Atlantic City superó el 85% de usuarios activos en menos de dos meses con Humand, optimizando operaciones y fortaleciendo la cultura organizacional. La plataforma centralizó la gestión de RR. HH. y mejoró la experiencia de los colaboradores.",
+    "pains": [
+      "Baja participación activa de usuarios (menos del 50%) en la plataforma anterior (Workplace).",
+      "Falta de funciones esenciales como visualización del organigrama en la plataforma anterior.",
+      "Falta de funciones esenciales como gestión de vacaciones en la plataforma anterior.",
+      "Dificultad en la eficiencia operativa debido a la fragmentación de la experiencia interna.",
+      "Necesidad de centralizar procesos de Gestión Humana.",
+      "Necesidad de mejorar la adopción entre los equipos."
+    ],
+    "solution_narrative": "Atlantic City migró a Humand buscando una plataforma que centralizara sus procesos de Gestión Humana y mejorara la adopción. La implementación fue rápida y efectiva, superando el 85% de participación activa en menos de dos meses y optimizando la experiencia de los colaboradores con módulos clave.",
+    "modules": [
+      "Biblioteca de Recursos",
+      "Chat",
+      "Cumpleaños y Aniversarios",
+      "Encuestas",
+      "Eventos",
+      "Feed",
+      "Grupos",
+      "Noticias",
+      "Organigrama",
+      "People Experience"
+    ],
+    "metrics": [
+      {
+        "value": "1100",
+        "label": "Colaboradores"
+      },
+      {
+        "value": "85%",
+        "label": "Participación en un mes"
+      },
+      {
+        "value": "63%",
+        "label": "Objetivo alcanzado en menos de dos meses"
+      }
+    ],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:41.909Z",
+    "industry": "Entretenimiento",
+    "industry_en": "Entertainment"
+  },
+  {
+    "id": "farmacity",
+    "slug": "farmacity",
+    "company": "Farmacity",
+    "country": [
+      "Argentina"
+    ],
+    "users": 8200,
+    "link_web": "https://humand.co/es/caso-de-exito/farmacity/",
+    "link_youtube": "https://youtu.be/tgZUp2t5Ym8?si=ctMMFn-YX7ogfrTF",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Farmacity: conectar, escuchar y transformar en tiempo real",
+    "description": "Farmacity transformó su comunicación interna y la experiencia del colaborador con Humand. Lograron conectar, escuchar y actuar en tiempo real, mejorando la llegada de mensajes y la gestión del feedback.",
+    "pains": [
+      "Comunicación centralizada y difícil de medir.",
+      "No había forma de saber si los mensajes llegaban, eran leídos o generaban impacto.",
+      "Dificultad para llegar con el mensaje correcto a cada persona debido a la gran cantidad de colaboradores y sucursales.",
+      "No podían entender la experiencia del colaborador en todos los momentos importantes de su ciclo de vida."
+    ],
+    "solution_narrative": "Humand permitió a Farmacity agilizar su comunicación interna, haciendo que cada colaborador acceda a toda la información desde una app. Además, con el módulo People Experience, pudieron escuchar, medir y actuar sobre la experiencia del colaborador en tiempo real, generando una conexión real y rápida.",
+    "modules": [
+      "Aprendizaje",
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Noticias",
+      "Onboarding",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "8200",
+        "label": "Colaboradores conectados"
+      },
+      {
+        "value": "300",
+        "label": "Sucursales en 15 provincias"
+      },
+      {
+        "value": "100%",
+        "label": "De respuesta en el uso de experiencia"
+      }
+    ],
+    "quote": "“Antes de tener Humand, comunicábamos a ciegas. Hoy vemos el impacto de cada mensaje, respondemos al feedback y generamos conexión real, rápido.”",
+    "quote_author": "Paola Carosella",
+    "quote_author_role": "Owner de Experiencia | Dominio Cultural",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Mejora el desarrollo de tus empleados",
+    "synced_at": "2026-06-26T16:11:46.422Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "magalu",
+    "slug": "magalu",
+    "company": "Magalú",
+    "country": [
+      "Brasil"
+    ],
+    "users": 26000,
+    "link_web": "https://humand.co/es/success-story/magalu/",
+    "link_youtube": "https://www.youtube.com/watch?v=AlTH16TpPjs",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Magalu impulsa el compromiso, la estrategia y las ventas con Humand",
+    "description": "Magalu transformó su comunicación interna con Humand, logrando democratizar la información y conectar a más de 40.000 empleados. Esto impulsó la ejecución estratégica y mejoró la productividad, impactando positivamente en los resultados y las ventas.",
+    "pains": [
+      "Necesidad de democratizar la información para más de 40.000 empleados distribuidos en casi todos los estados del país.",
+      "Dificultad para conectar a personas de distintas regiones, realidades sociales y perfiles.",
+      "Reto de involucrar a los empleados en torno a la estrategia y la cultura de la empresa.",
+      "Búsqueda de una plataforma que no ofreciera modelos predefinidos, sino que se adaptara a sus premisas particulares.",
+      "Necesidad de agilizar la comunicación de la estrategia a los colaboradores de primera línea.",
+      "Dificultad para mantener a los empleados de tienda conectados e informados."
+    ],
+    "solution_narrative": "Humand se convirtió en la plataforma oficial de comunicación interna de Magalu, democratizando la información y conectando a más de 40.000 empleados. La plataforma permitió construir una disciplina de ejecución con sesiones en vivo, comunicados segmentados y chatbots, lo que agilizó la implementación de la estrategia y mejoró la productividad.",
+    "modules": [
+      "Biblioteca de Recursos",
+      "Chat",
+      "Encuestas",
+      "Feed",
+      "Gestión de Servicios",
+      "Grupos",
+      "Live Streaming",
+      "People Experience"
+    ],
+    "metrics": [
+      {
+        "value": "26.000",
+        "label": "empleados conectados en la plataforma"
+      },
+      {
+        "value": "1.200",
+        "label": "tiendas alcanzadas en todo Brasil"
+      },
+      {
+        "value": "93%",
+        "label": "de los empleados conectados están activos mensualmente en la plataforma"
+      }
+    ],
+    "quote": "Humand ha sido de gran ayuda para movilizar a nuestros equipos e involucrar a nuestros empleados para que puedan ejecutar nuestra estrategia a la perfección. Esta disciplina de comunicación y ejecución es lo que permite a Magalu alcanzar excelentes resultados, reducir costos y ofrecer un rendimiento acorde a nuestros objetivos.",
+    "quote_author": "Tiago Augusto",
+    "quote_author_role": "Director de Reputación",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Lleva velocidad, compromiso y mejores resultados a tu empresa con Humand",
+    "synced_at": "2026-06-26T16:11:52.808Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "loginter",
+    "slug": "loginter",
+    "company": "Loginter",
+    "country": [
+      "Argentina"
+    ],
+    "users": 1500,
+    "link_web": "https://humand.co/es/success-story/loginter/",
+    "link_youtube": "https://youtu.be/yYGvnG7FxEY?si=bepPWoSK-aqIxc6N",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Comunicación sin barreras: todo Loginter en un mismo lugar",
+    "description": "Loginter superó sus desafíos de comunicación interna y conexión de equipos distribuidos gracias a Humand, logrando que el 70% de su plantilla esté activa en la aplicación. Esto transformó su cultura, creando un espacio unificado para todos los colaboradores.",
+    "pains": [
+      "Dificultad para conectar a una plantilla distribuida (choferes y operarios sin acceso a computadora).",
+      "La comunicación interna dependía del mail corporativo, al que gran parte de la plantilla no tenía acceso.",
+      "Uso de cartelera física para llegar a choferes y operarios, difícil de sostener y mantener, con mensajes que llegaban tarde o no llegaban.",
+      "La comunicación llegaba solo a la mitad de la empresa.",
+      "Colaboradores de distintas áreas y ubicaciones no se conocían entre sí, sin un canal directo.",
+      "La comunidad Loginter existía, pero no había un espacio donde encontrarse."
+    ],
+    "solution_narrative": "Humand proporcionó una aplicación de fácil acceso que eliminó la barrera del correo corporativo, permitiendo que la comunicación llegara a todos los colaboradores, incluidos choferes y operarios. Además, la plataforma se convirtió en un punto de encuentro para la comunidad Loginter, fomentando la conexión y el feedback continuo.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Documentos",
+      "Encuestas",
+      "Formularios, trámites y aprobaciones",
+      "Marketplace",
+      "Noticias",
+      "Onboarding",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "100%",
+        "label": "del equipo de RR. HH. activo en Humand"
+      },
+      {
+        "value": "70%",
+        "label": "de la plantilla ya conectada en la app"
+      },
+      {
+        "value": "1.500",
+        "label": "usuarios activos"
+      }
+    ],
+    "quote": "El mayor valor que encontramos hoy en Loginter, gracias a Humand, es poder encontrarnos en esta aplicación, todos, independientemente de dónde estemos.",
+    "quote_author": "Melisa Barceló",
+    "quote_author_role": "Consultora de RR. HH., Loginter",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">¿Tu equipo también trabaja disperso? Conecta a toda tu plantilla en una sola plataforma.",
+    "synced_at": "2026-06-26T16:11:58.546Z",
+    "industry": "Logística",
+    "industry_en": "Logistics"
+  },
+  {
+    "id": "econt",
+    "slug": "econt",
+    "company": "Econt",
+    "country": [
+      "Bulgaria"
+    ],
+    "users": 4500,
+    "link_web": "https://humand.co/es/success-story/econt/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Econt: Construyendo un hub social para una comunidad de 4.500 personas",
+    "description": "Econt, la empresa de logística más grande de Bulgaria, logró una adopción del 99% de Humand para conectar a sus 4.500 empleados distribuidos. La plataforma se convirtió en un hub social que agiliza la comunicación y fortalece la cultura empresarial.",
+    "pains": [
+      "Mantener a 4.500 personas distribuidas en cientos de ubicaciones alineadas, informadas y comprometidas.",
+      "La descontinuación de Workplace, su plataforma de comunicación interna anterior.",
+      "Necesidad de una plataforma que respondiera a las necesidades de comunicación de una comunidad grande y distribuida.",
+      "La mayoría de los colegas no trabajan en una oficina, lo que dificultaba la conexión.",
+      "Encontrar una plataforma que manejara la escala de Econt y cumpliera con estándares técnicos.",
+      "Asegurar que la nueva plataforma fuera segura, fácil de acceder y natural de usar desde el primer día."
+    ],
+    "solution_narrative": "Humand proporcionó una plataforma intuitiva y familiar que facilitó la comunicación interna y la conexión entre los 4.500 empleados de Econt, incluso aquellos que no trabajan en oficinas. Gracias a una implementación ágil y un enfoque personalizado, Econt logró una adopción del 99% y transformó la plataforma en un hub social donde la información fluye y la cultura empresarial se fortalece.",
+    "modules": [
+      "Archivos",
+      "Chat",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Marketplace",
+      "Noticias",
+      "Onboarding",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "1",
+        "label": "comunidad de 4.500 personas"
+      },
+      {
+        "value": "99%",
+        "label": "de adopción"
+      },
+      {
+        "value": "55.000",
+        "label": "mensajes enviados semanalmente"
+      },
+      {
+        "value": "59.411",
+        "label": "vistas de cumpleaños y aniversarios en 24 semanas"
+      }
+    ],
+    "quote": "Cuando las personas están conectadas, el trabajo es más fácil. Y cuando se sienten parte de una comunidad, los resultados llegan de forma natural",
+    "quote_author": "Katrin Atanasova",
+    "quote_author_role": "Asistente de Desarrollo de Marca, Comunicaciones de Marca en Econt",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Construye una plataforma de trabajo que se sienta tan natural como una red social",
+    "synced_at": "2026-06-26T16:12:04.896Z",
+    "industry": "Logística",
+    "industry_en": "Logistics"
+  },
+  {
+    "id": "klimber",
+    "slug": "klimber",
+    "company": "Klimber",
+    "country": [
+      "Argentina"
+    ],
+    "users": 100,
+    "link_web": "https://humand.co/es/success-story/klimber/",
+    "link_youtube": "https://youtu.be/tkejNRmkJr4?si=u8c9kyWKMeDVT2Vc",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Humanizar la digitalización a escala regional",
+    "description": "Klimber humanizó su digitalización regional con Humand, unificando procesos de RR. HH. y fortaleciendo la cultura en equipos distribuidos. La plataforma permitió automatizar tareas y potenciar la experiencia del colaborador.",
+    "pains": [
+      "Procesos internos descentralizados y dispersos en distintas herramientas.",
+      "El onboarding, pedido de licencias, capacitaciones, firma de recibos y reserva de salas funcionaban en circuitos separados.",
+      "No había una estructura única para bajar la cultura ni un canal claro para llegar a toda la plantilla.",
+      "El equipo de RR. HH. dedicaba demasiado tiempo a tareas operativas y repetitivas.",
+      "Falta de foco en la toma de decisiones estratégicas y la conexión con las personas.",
+      "Dificultad para unificar la operación de RR. HH. sin perder el lado humano de la organización."
+    ],
+    "solution_narrative": "Humand unificó los procesos de RR. HH. de Klimber en una sola plataforma ágil e intuitiva, permitiendo automatizar tareas operativas y fortalecer la comunicación y la cultura en equipos distribuidos. Esto liberó al equipo de RR. HH. para enfocarse en lo estratégico y mantener la cercanía con los colaboradores.",
+    "modules": [
+      "Biblioteca de Recursos",
+      "Documentos",
+      "Feed",
+      "Formularios, trámites y aprobaciones",
+      "Gestión de Servicios",
+      "Grupos",
+      "Onboarding",
+      "People Experience",
+      "Vacaciones y Permisos"
+    ],
+    "metrics": [
+      {
+        "value": "100%",
+        "label": "de los colaboradores activos en la plataforma"
+      },
+      {
+        "value": "90%",
+        "label": "de firma de recibos a través de Humand"
+      },
+      {
+        "value": "70%",
+        "label": "de usuarios activos semanalmente"
+      },
+      {
+        "value": "1",
+        "label": "mes del kickoff al go-live"
+      }
+    ],
+    "quote": "Humand nos brindó un servicio espectacular. En menos de un mes ya teníamos todo integrado, nos sentimos escuchados y eso nos dio la confianza para empezar a tener creatividad en conjunto y armar secciones nuevas",
+    "quote_author": "Lucía M. Julio Farjat",
+    "quote_author_role": "Chief of Staff.",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">¿Tu equipo también está distribuido? Unifica a toda tu plantilla en una sola plataforma.",
+    "synced_at": "2026-06-26T16:12:10.681Z",
+    "industry": "Tecnología",
+    "industry_en": "Technology"
+  },
+  {
+    "id": "nik-group",
+    "slug": "nik-group",
+    "company": "NIK Group",
+    "country": [
+      "Bulgaria"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/success-story/nik-group/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "NIK Group: de herramientas fragmentadas a una sola plataforma para un equipo global",
+    "description": "NIK Group unificó sus operaciones globales y mejoró la experiencia de sus 280+ colaboradores en múltiples países e idiomas, pasando de herramientas fragmentadas a una plataforma centralizada de Humand.",
+    "pains": [
+      "Operaciones internas fragmentadas en múltiples plataformas (onboarding, seguimiento de activos, capacitación, comunicación interna).",
+      "Cada herramienta requería un login diferente y no había un lugar centralizado para la información.",
+      "Dificultad en el manejo de ausencias, con empleados sin forma rápida de solicitar días libres y líderes sin visibilidad.",
+      "Gestión de payroll compleja debido a múltiples países y proveedores, sin un sistema unificado.",
+      "Desafío logístico y de comunicación para mantener alineados, informados y conectados a equipos en varios países e idiomas.",
+      "Bajos puntajes en comunicación y reconocimiento en encuestas internas de RR.HH."
+    ],
+    "solution_narrative": "Humand consolidó las herramientas fragmentadas de NIK Group en una única plataforma intuitiva y personalizable, facilitando la comunicación, el reconocimiento y la gestión de RR.HH. a nivel global. Esto permitió a NIK Group unificar sus operaciones, mejorar la experiencia del empleado y optimizar procesos en sus diversos mercados e idiomas.",
+    "modules": [
+      "Aprendizaje",
+      "Chat",
+      "Encuestas",
+      "Eventos",
+      "Formularios, trámites y aprobaciones",
+      "Grupos",
+      "Onboarding",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "6",
+        "label": "plataformas consolidadas en una sola"
+      },
+      {
+        "value": "95%",
+        "label": "de usuarios activos mensuales"
+      },
+      {
+        "value": "88%",
+        "label": "de usuarios activos semanales"
+      },
+      {
+        "value": "160",
+        "label": "usuarios únicos alcanzados por semana a través de publicaciones"
+      }
+    ],
+    "quote": "También logramos que la plataforma se viera como nuestra. Todo refleja la identidad de marca de NIK, lo que era muy importante para nosotros. Ese nivel de personalización es algo que antes no podíamos tener.",
+    "quote_author": "Mariyana Vucheva",
+    "quote_author_role": "Marketing Director",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Reuní a tu equipo global en una sola plataforma",
+    "synced_at": "2026-06-26T16:12:16.922Z",
+    "industry": "Agro",
+    "industry_en": "Agriculture"
+  },
+  {
+    "id": "grupo-cps",
+    "slug": "grupo-cps",
+    "company": "Grupo CPS",
+    "country": [
+      "España"
+    ],
+    "users": 1440,
+    "link_web": "https://humand.co/es/success-story/grupo-cps/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Grupo CPS: Llegar a quien antes era imposible llegar",
+    "description": "Grupo CPS unificó a más de 1.440 empleados, incluyendo a aquellos en entornos de obra y campo, en una sola plataforma de comunicación interna. Lograron un 97% de usuarios activos mensuales y una gestión más moderna y conectada.",
+    "pains": [
+      "Parte importante de la plantilla no era alcanzada por la comunicación interna.",
+      "Empleados en entornos de obra y campo sin correo ni teléfono corporativo.",
+      "Comunicación dependía de cadenas de responsables intermedios, resultando en avisos tardíos o no recibidos.",
+      "Gestiones requerían seguimiento manual constante.",
+      "No siempre había un canal directo para transmitir información clave (campañas internas, novedades).",
+      "Necesidad impostergable de cumplir con la obligación legal del registro de jornada para todos los empleados."
+    ],
+    "solution_narrative": "Humand unificó a más de 1.440 empleados, muchos de ellos en entornos de obra y campo sin correo corporativo, en una sola plataforma. Hoy Humand es su canal principal de comunicación interna, con un 97% de usuarios activos mensualmente, permitiendo una gestión más moderna, ágil y conectada.",
+    "modules": [
+      "Archivos",
+      "Biblioteca de Recursos",
+      "Chat",
+      "Control de Asistencia",
+      "Documentos",
+      "Encuestas",
+      "Evaluación de desempeño",
+      "Feed",
+      "Formularios, trámites y aprobaciones",
+      "Gestión de Servicios",
+      "Grupos",
+      "Onboarding",
+      "People Experience",
+      "Vacaciones y Permisos"
+    ],
+    "metrics": [
+      {
+        "value": "1.440",
+        "label": "empleados conectados"
+      },
+      {
+        "value": "97%",
+        "label": "de usuarios activos mensualmente"
+      },
+      {
+        "value": "13.000",
+        "label": "recibos de nómina distribuidos"
+      },
+      {
+        "value": "1mes",
+        "label": "del kickoff al go-live"
+      }
+    ],
+    "quote": "Ha sido un paso decisivo hacia una gestión más moderna, ágil y conectada.",
+    "quote_author": "Álvaro Mayoral Solá",
+    "quote_author_role": "Responsable de Organización y Selección, Grupo CPS.",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">¿Tu equipo también trabaja disperso? Conectá a toda tu plantilla en una sola plataforma.",
+    "synced_at": "2026-06-26T16:12:22.790Z",
+    "industry": "Telecomunicaciones",
+    "industry_en": "Telecommunications"
+  },
+  {
+    "id": "puppis",
+    "slug": "puppis",
+    "company": "Puppis",
+    "country": [
+      "Argentina"
+    ],
+    "users": null,
+    "link_web": "https://humand.co/es/caso-de-exito/puppis/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Puppis + Humand: una cultura sin fronteras",
+    "description": "Puppis logró un 100% de adopción de Humand, ampliando el alcance de sus capacitaciones y obteniendo información precisa sobre el clima organizacional. La plataforma permitió una gestión de RR. HH. más eficiente y conectada para sus equipos distribuidos.",
+    "pains": [
+      "Procesos del área de Personas dependían de planillas de Excel, formularios de Google y herramientas básicas difíciles de sostener a escala.",
+      "No contaban con una plataforma de aprendizaje capaz de organizar contenidos, ampliar su alcance y acompañar el desarrollo de equipos distribuidos en dos países.",
+      "Las encuestas internas no ofrecían la profundidad ni la visibilidad necesarias para interpretar el clima de la organización y tomar decisiones a partir de datos concretos.",
+      "Necesidad de construir una infraestructura digital que acompañara su crecimiento y fortaleciera el vínculo con cada colaborador.",
+      "La capacitación estaba limitada por la ubicación física.",
+      "La comunicación interna dependía de múltiples intermediarios para llegar a equipos distribuidos."
+    ],
+    "solution_narrative": "Humand permitió a Puppis digitalizar y ordenar procesos cotidianos, ampliar el alcance de sus capacitaciones a equipos en Argentina y Colombia, y obtener información precisa sobre el clima organizacional. Esto resultó en un 100% de adopción y una mejora significativa en la calidad de la información para la toma de decisiones.",
+    "modules": [
+      "Aprendizaje",
+      "Archivos",
+      "Chat",
+      "Control de Asistencia",
+      "Documentos",
+      "Encuestas",
+      "Feed",
+      "Formularios, trámites y aprobaciones",
+      "Gestión de Servicios",
+      "Grupos",
+      "Noticias",
+      "Onboarding",
+      "Vacaciones y Permisos"
+    ],
+    "metrics": [
+      {
+        "value": "100%",
+        "label": "usuarios activos en Humand"
+      },
+      {
+        "value": "100%",
+        "label": "de respuestas en encuestas de clima"
+      }
+    ],
+    "quote": "Logramos que el cien por ciento de los colaboradores esté activo. El nivel de respuesta también es casi total. Exprimimos Humand al 100%.",
+    "quote_author": "Macarena Orellana",
+    "quote_author_role": "Líder de Capacitación y Desarrollo de Puppis.",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">¿Tu organización necesita conectar mejor a sus equipos?",
+    "synced_at": "2026-06-26T16:12:27.806Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "las-marias",
+    "slug": "las-marias",
+    "company": "Las Marías",
+    "country": [
+      "Argentina"
+    ],
+    "users": 1500,
+    "link_web": "https://humand.co/es/caso-de-exito/las-marias/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Las Marías: Del campo a la oficina, todos conectados",
+    "description": "Las Marías logró conectar a sus 1.500 colaboradores, desde el campo hasta la oficina, estandarizando procesos y mejorando la comunicación interna. La adopción de la plataforma por parte del personal de campo fue un éxito inesperado.",
+    "pains": [
+      "Dificultad para la comunicación interna con equipos en campo, depósitos y oficinas.",
+      "La mayoría de los colaboradores no estaban sentados detrás de un escritorio, dificultando la comunicación.",
+      "Gestionar una población de colaboradores con perfiles muy diversos (personal de campo, administrativos) de forma uniforme y simultánea.",
+      "Los trámites de Recursos Humanos (consultas, solicitudes) tomaban más tiempo del necesario.",
+      "Falta de un canal de comunicación natural y menos intimidante para conectar con colaboradores que no se conocían en persona.",
+      "Preocupación por la adopción de la herramienta por parte de los colaboradores del área de agricultura, menos familiarizados con aplicaciones móviles."
+    ],
+    "solution_narrative": "Humand centralizó la comunicación interna y los trámites de RR. HH., incluyendo la gestión de tickets de sistemas. El chat se convirtió en un canal clave para conectar a colaboradores con perfiles diversos, incluso aquellos que no se conocían en persona, y la adopción por parte del personal de campo superó las expectativas, logrando conectar a 1.500 colaboradores sin importar su ubicación.",
+    "modules": [
+      "Aprendizaje",
+      "Chat",
+      "Cumpleaños y Aniversarios",
+      "Formularios, trámites y aprobaciones",
+      "Gestión de Servicios",
+      "Onboarding",
+      "Red Social Interna"
+    ],
+    "metrics": [
+      {
+        "value": "1.500",
+        "label": "colaboradores conectados"
+      },
+      {
+        "value": "5",
+        "label": "sedes en Argentina"
+      }
+    ],
+    "quote": "El módulo de Chats yo creo que vino a resolver que hay mucha gente que la verdad que yo no he visto en mi vida, pero con la que puedo chatear. Un contacto personal, un celular, a veces es más intimidante. Entonces tener este perfil, este canal directo de comunicación para poder adelantar algo rápido, saber que están ahí activos, creo que eso es donde más lo utilizamos.",
+    "quote_author": "Valentina Albarracín",
+    "quote_author_role": "Asistente de RR. HH., Las Marías",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Tu equipo de RR. HH. también puede estar en todos lados a la vez.",
+    "synced_at": "2026-06-26T16:12:32.846Z",
+    "industry": "Agroindustrial",
+    "industry_en": "Agribusiness"
+  },
+  {
+    "id": "agir-saude",
+    "slug": "agir-saude",
+    "company": "Agir Saúde",
+    "country": [
+      "Brasil"
+    ],
+    "users": 85,
+    "link_web": "https://humand.co/es/caso-de-exito/agir-saude/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "Agir Saúde: el compromiso de cuidar a quienes cuidan",
+    "description": "Agir Saúde, una de las mayores organizaciones de salud de Brasil, capacitó a 11.000 colaboradores en 22 unidades con Humand, eliminando planillas de Excel y la necesidad de presencia física. La plataforma mejoró la comunicación, la capacitación y el sentido de pertenencia, logrando más del 91% de activación general.",
+    "pains": [
+      "Mantener una comunicación clara y constante en equipos distribuidos.",
+      "Capacitar de forma constante a equipos distribuidos en múltiples unidades y estados.",
+      "Garantizar que la cultura organizacional llegara a todos los equipos, sin importar la unidad o el estado.",
+      "Comunicación interna ineficiente, apoyada en grupos de WhatsApp y e-mails que se perdían.",
+      "Gestión de personas compleja debido a la rotación de profesionales y la necesidad de actualización constante de conocimientos.",
+      "Necesidad de asegurar la seguridad de la información y el cumplimiento de la legislación laboral, LGPD y estándares de compliance."
+    ],
+    "solution_narrative": "Humand proporcionó a Agir Saúde un canal ágil y seguro para centralizar la comunicación institucional, los cursos y la información, reduciendo la dispersión de canales. La plataforma permitió organizar su cultura de aprendizaje y fortalecer su modelo interno de enseñanza, logrando un alto nivel de activación y participación de los colaboradores.",
+    "modules": [
+      "Aprendizaje",
+      "Biblioteca de Recursos",
+      "Chat",
+      "Feed",
+      "Grupos",
+      "Noticias",
+      "Organigrama",
+      "Reconocimientos"
+    ],
+    "metrics": [
+      {
+        "value": "13K",
+        "label": "profesionales conectados"
+      },
+      {
+        "value": "91%",
+        "label": "de tasa de activación en la plataforma"
+      },
+      {
+        "value": "85K",
+        "label": "capacitaciones realizadas por cerca de 11.000 colaboradores"
+      }
+    ],
+    "quote": "Hoy tenemos 85.600 capacitaciones realizadas. Antes, extraíamos los datos a Excel y los tratábamos manualmente, porque la plataforma no nos daba esas facilidades. Hoy Humand lo muestra en tiempo real.",
+    "quote_author": "Áquila Pereira Alves Martins",
+    "quote_author_role": "Supervisor de Desarrollo de Carrera",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">Lleva la capacitación corporativa a escala en tu organización con Humand",
+    "synced_at": "2026-06-26T16:12:38.108Z",
+    "industry": "Salud",
+    "industry_en": "Healthcare"
+  },
+  {
+    "id": "lanus",
+    "slug": "lanus",
+    "company": "Lanús",
+    "country": [
+      "Argentina"
+    ],
+    "users": 400,
+    "link_web": "https://humand.co/es/caso-de-exito/lanus/",
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": "De correr con papeles a un ecosistema digital: La transformación de RR. HH. en el Club Atlético Lanús",
+    "description": "El Club Atlético Lanús digitalizó su gestión de RR. HH. y conectó a 400 colaboradores con Humand, pasando de procesos manuales a un ecosistema digital. Esto agilizó la comunicación interna y la administración de personal, liberando tiempo para tareas de mayor valor.",
+    "pains": [
+      "Los recibos de sueldo se imprimían, firmaban a mano y entregaban en persona, generando acumulación y dificultad para la entrega.",
+      "Los certificados médicos se entregaban en papel, en la oficina y en horario laboral, impidiendo envíos fuera de ese horario.",
+      "Las vacaciones se gestionaban con formularios y los legajos vivían en carpetas físicas, lo que era ineficiente.",
+      "La comunicación interna era manual y lenta, dificultando hacer llegar novedades a todos los colaboradores dispersos en distintas sedes y turnos.",
+      "El equipo de RR. HH. no siempre coincidía en horario con los empleados para la entrega de documentos.",
+      "La gestión de una comunidad interna grande y dispersa era ineficiente."
+    ],
+    "solution_narrative": "Humand centralizó la gestión de RR. HH. en una única plataforma, digitalizando recibos, control de asistencia, comunicación interna y legajos. Esto permitió al Club Atlético Lanús conectar a sus 400 colaboradores de manera eficiente y ahorrar tiempo en tareas administrativas.",
+    "modules": [
+      "Control de Asistencia",
+      "Documentos",
+      "Red Social Interna",
+      "Vacaciones y Permisos"
+    ],
+    "metrics": [
+      {
+        "value": "400",
+        "label": "colaboradores conectados en Humand"
+      },
+      {
+        "value": "100%",
+        "label": "de recibos y legajos digitalizados"
+      },
+      {
+        "value": "93%",
+        "label": "de usuarios activos"
+      }
+    ],
+    "quote": "Nos costaba llegar a todos los ámbitos en tiempo y forma. Y con Humand eso lo pudimos resolver para que estén todos conectados en el mismo momento.",
+    "quote_author": "Magalí Bernachea",
+    "quote_author_role": "Analista Sr. de RR. HH., Club Atlético Lanús",
+    "company_description": "class=\"elementor-heading-title elementor-size-default\">¿Tu organización todavía gestiona los procesos de RR. HH. de manera física? Es hora de iniciar la transformación.",
+    "synced_at": "2026-06-26T16:12:43.036Z",
+    "industry": "Club Deportivo",
+    "industry_en": "Sports Club"
+  },
+  {
+    "id": "grupo-del-pilar",
+    "slug": "grupo-del-pilar",
+    "company": "Grupo del Pilar",
+    "country": [
+      "Argentina"
+    ],
+    "users": 1800,
+    "link_web": null,
+    "link_youtube": "https://www.youtube.com/watch?v=wmtGA8WTrXU&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=24&pp=iAQB",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": null,
+    "description": null,
+    "pains": [],
+    "solution_narrative": null,
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:12:43.036Z",
+    "industry": "Logística",
+    "industry_en": "Logistics"
+  },
+  {
+    "id": "whego",
+    "slug": "whego",
+    "company": "Whego",
+    "country": [
+      "Portugal"
+    ],
+    "users": 500,
+    "link_web": null,
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": null,
+    "description": null,
+    "pains": [],
+    "solution_narrative": null,
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:12:43.037Z",
+    "industry": "Limpieza",
+    "industry_en": "Cleaning"
+  },
+  {
+    "id": "binomia",
+    "slug": "binomia",
+    "company": "Binomia",
+    "country": [
+      "México"
+    ],
+    "users": 200,
+    "link_web": null,
+    "link_youtube": null,
+    "link_video": null,
+    "link_doc": null,
+    "tagline": null,
+    "description": null,
+    "pains": [],
+    "solution_narrative": null,
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:12:43.037Z",
+    "industry": "Tecnológica",
+    "industry_en": "Technology"
+  },
+  {
+    "id": "antonio-luquin",
+    "slug": "antonio-luquin",
+    "company": "Antonio Luquin",
+    "country": [
+      "Argentina"
+    ],
+    "users": 1200,
+    "link_web": null,
+    "link_youtube": "https://www.youtube.com/watch?v=54aNnf2PXZM&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=25",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": null,
+    "description": null,
+    "pains": [],
+    "solution_narrative": null,
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:12:43.037Z",
+    "industry": "Retail",
+    "industry_en": "Retail"
+  },
+  {
+    "id": "imi-sas",
+    "slug": "imi-sas",
+    "company": "IMI SAS",
+    "country": [
+      "Colombia"
+    ],
+    "users": 150,
+    "link_web": null,
+    "link_youtube": "https://www.youtube.com/watch?v=bNqMwOWo_yw&list=PLcp3hvhOUd6Fiw33pnC1a19vg_SsHIdLO&index=22",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": null,
+    "description": null,
+    "pains": [],
+    "solution_narrative": null,
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:12:43.037Z",
+    "industry": "Maquinaria",
+    "industry_en": "Machinery"
+  },
+  {
+    "id": "grupo-cenoa",
+    "slug": "grupo-cenoa",
+    "company": "Grupo Cenoa",
+    "country": [
+      "Argentina"
+    ],
+    "users": null,
+    "link_web": null,
+    "link_youtube": "https://youtu.be/FCp0Ylo6vew?si=ZL1-LxcsIEkOvYCi",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": null,
+    "description": null,
+    "pains": [],
+    "solution_narrative": null,
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:12:43.037Z",
+    "industry": "Automotriz",
+    "industry_en": "Automotive"
+  },
+  {
+    "id": "la-gaceta",
+    "slug": "la-gaceta",
+    "company": "La Gaceta",
+    "country": [
+      "Argentina"
+    ],
+    "users": null,
+    "link_web": null,
+    "link_youtube": "https://youtu.be/W1nAzG66W4k",
+    "link_video": null,
+    "link_doc": null,
+    "tagline": null,
+    "description": null,
+    "pains": [],
+    "solution_narrative": null,
+    "modules": [],
+    "metrics": [],
+    "quote": null,
+    "quote_author": null,
+    "quote_author_role": null,
+    "company_description": null,
+    "synced_at": "2026-06-26T16:12:43.037Z",
+    "industry": "Medios de comunicación",
+    "industry_en": "Media"
+  }
+]
