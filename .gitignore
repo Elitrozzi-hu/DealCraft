@@ -37,10 +37,16 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+next-env.d.ts
 
 .claude/
 .agents/
 skill-lock.json
-
 scripts/
 deck-assets/
+
+# Local env files
+.env.local
+.env
+
+hu_staff*
