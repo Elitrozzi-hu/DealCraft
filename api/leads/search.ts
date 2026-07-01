@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { withAuth } from '../_with-auth.js';
 
-import type { LeadSearchInput } from "@/lib/crm/types";
-import { getCrmProvider } from "@/lib/crm/registry";
-import { mapApiError, type ApiError } from "@/lib/server/api-error";
-import { createLogger } from "@/lib/server/logger";
+import type { LeadSearchInput } from "../../src/lib/crm/types.js";
+import { getCrmProvider } from "../../src/lib/crm/registry.js";
+import { mapApiError, type ApiError } from "../../src/lib/server/api-error.js";
+import { createLogger } from "../../src/lib/server/logger.js";
 
 export const config = { maxDuration: 60 };
 

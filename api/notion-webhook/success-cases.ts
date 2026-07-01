@@ -3,9 +3,9 @@ import { timingSafeEqual } from "node:crypto";
 import { ZodError } from "zod";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-import { NOTION_WEBHOOK_TOKEN } from "@/lib/server/env";
-import { createLogger } from "@/lib/server/logger";
-import { syncSuccessCaseFromNotion } from "@/lib/server/success-case-sync";
+import { NOTION_WEBHOOK_TOKEN } from "../../src/lib/server/env.js";
+import { createLogger } from "../../src/lib/server/logger.js";
+import { syncSuccessCaseFromNotion } from "../../src/lib/server/success-case-sync.js";
 
 // Cassidy can take minutes to scrape; outlive the default so the function isn't
 // killed before the 290s fetch timeout. Mirrors deals/search.

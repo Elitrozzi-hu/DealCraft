@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { withAuth } from './_with-auth.js';
 
-import { fetchSignals } from "@/lib/server/signals-adapter";
-import { mapApiError } from "@/lib/server/api-error";
-import { createLogger } from "@/lib/server/logger";
+import { fetchSignals } from "../src/lib/server/signals-adapter.js";
+import { mapApiError } from "../src/lib/server/api-error.js";
+import { createLogger } from "../src/lib/server/logger.js";
 
 // Web search + structured LLM call can take 30–60s.
 export const config = { maxDuration: 120 };

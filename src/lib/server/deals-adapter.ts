@@ -1,9 +1,9 @@
-import type { DealSearchRequest, DealSearchResult } from "@/types";
-import type { EnrichmentInput } from "@/lib/enrichment/types";
-import { lifecycleStageToStageKey } from "@/lib/constants";
-import { getEnrichmentProvider } from "@/lib/enrichment/registry";
-import { mapEnrichmentToDeal } from "./enrichment-to-deal";
-import { getSuccessCasesByIndustry } from "./success-cases-reader";
+import type { DealSearchRequest, DealSearchResult } from "../../types/index.js";
+import type { EnrichmentInput } from "../enrichment/types.js";
+import { lifecycleStageToStageKey } from "../constants.js";
+import { getEnrichmentProvider } from "../enrichment/registry.js";
+import { mapEnrichmentToDeal } from "./enrichment-to-deal.js";
+import { getSuccessCasesByIndustry } from "./success-cases-reader.js";
 
 /**
  * Resolve + enrich a deal.

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { PublishedSuccessCase } from "@/types";
+import type { PublishedSuccessCase } from "../../types/index.js";
 
 // Lenient runtime validator for a `PublishedSuccessCase` minus `synced_at` (which
 // DealCraft stamps on persist). Unknown keys stripped; missing lists → [], missing

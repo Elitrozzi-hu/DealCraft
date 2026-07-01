@@ -1,13 +1,13 @@
-import type { PublishedSuccessCase } from "@/types";
-import { unwrapEnvelope } from "@/lib/cassidy-envelope";
-import { CASSIDY_SUCCESS_CASE_WEBHOOK_URL } from "@/lib/server/env";
-import { createLogger } from "@/lib/server/logger";
+import type { PublishedSuccessCase } from "../../types/index.js";
+import { unwrapEnvelope } from "../cassidy-envelope.js";
+import { CASSIDY_SUCCESS_CASE_WEBHOOK_URL } from "./env.js";
+import { createLogger } from "./logger.js";
 import {
   buildMetadataOnlyRecord,
   parseNotionProperties,
-} from "@/lib/server/notion-success-case";
-import { validateCassidyRecord } from "@/lib/server/success-case-schema";
-import { upsertSuccessCase } from "@/lib/server/success-cases-reader";
+} from "./notion-success-case.js";
+import { validateCassidyRecord } from "./success-case-schema.js";
+import { upsertSuccessCase } from "./success-cases-reader.js";
 
 const log = createLogger("success-case-sync");
 

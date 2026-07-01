@@ -1,7 +1,7 @@
-import { CRM_PROVIDER } from "@/lib/server/env";
-import type { CrmProvider } from "@/lib/crm/types";
-import { hubspotCrmProvider } from "@/lib/crm/providers/hubspot";
-import { mockCrmProvider } from "@/lib/crm/providers/mock";
+import { CRM_PROVIDER } from "../server/env.js";
+import type { CrmProvider } from "./types.js";
+import { hubspotCrmProvider } from "./providers/hubspot.js";
+import { mockCrmProvider } from "./providers/mock.js";
 
 // CRM provider registry. The single place that knows which providers exist.
 // Golden rule: adding a provider = a new file + one line here.

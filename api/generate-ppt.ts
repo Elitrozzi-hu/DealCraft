@@ -1,7 +1,7 @@
 import { withAuth } from './_with-auth.js';
 
-import { generatePresentation, ValidationError } from "@/lib/ppt";
-import { createLogger } from "@/lib/server/logger";
+import { generatePresentation, ValidationError } from "../src/lib/ppt/index.js";
+import { createLogger } from "../src/lib/server/logger.js";
 
 const log = createLogger("generate-ppt");
 

@@ -1,20 +1,20 @@
 import { z } from "zod";
 
-import { unwrapEnvelope } from "@/lib/cassidy-envelope";
-import { clamp } from "@/lib/enrichment/clamp";
-import { CLASSIDY_API_KEY, CLASSIDY_WEBHOOK_URL } from "@/lib/server/env";
-import { createLogger } from "@/lib/server/logger";
-import type { TechKind } from "@/types";
+import { unwrapEnvelope } from "../../cassidy-envelope.js";
+import { clamp } from "../clamp.js";
+import { CLASSIDY_API_KEY, CLASSIDY_WEBHOOK_URL } from "../../server/env.js";
+import { createLogger } from "../../server/logger.js";
+import type { TechKind } from "../../../types/index.js";
 import type {
   EnrichmentInput,
   EnrichmentProvider,
   EnrichmentResult,
-} from "@/lib/enrichment/types";
+} from "../types.js";
 import {
   coldProv,
   type NormalizedEnrichment,
   type NormalizedProvenance,
-} from "@/lib/enrichment/result-schema";
+} from "../result-schema.js";
 
 // Classidy (Cassidy): a synchronous third-party enrichment workflow. One request
 // in, the enriched result in the same response body — no job store, status

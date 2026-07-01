@@ -1,5 +1,5 @@
-import type { PublishedSuccessCase } from "@/types";
-import { validateCassidyRecord } from "@/lib/server/success-case-schema";
+import type { PublishedSuccessCase } from "../../types/index.js";
+import { validateCassidyRecord } from "./success-case-schema.js";
 
 // Notion → success-case mapping for the metadata-only path (no `link_web`). Plain
 // field-mapping, defensive against missing/null. Mirrors STEP 1/2/4 of the Cassidy

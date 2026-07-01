@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { TECH_KINDS } from "@/types";
+import { TECH_KINDS } from "../../types/index.js";
 
 // The normalized, provider-agnostic enrichment shape. EVERY enrichment provider
 // (classidy, llm-websearch, mock) normalizes its vendor response into this one

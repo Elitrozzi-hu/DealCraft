@@ -2,7 +2,7 @@
 // applying base defaults and formatting numbers with thousands separators. The
 // actual substitution into the deck happens in fill.ts.
 
-import type { ClientData } from './validate';
+import type { ClientData } from './validate.js';
 
 const DEFAULT_CLIENT_NAME = 'Royal Caribbean Group';
 

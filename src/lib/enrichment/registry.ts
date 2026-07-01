@@ -1,9 +1,9 @@
-import { ENRICHMENT_PROVIDER } from "@/lib/server/env";
-import type { EnrichmentProvider } from "@/lib/enrichment/types";
-import { llmWebSearchProvider } from "@/lib/enrichment/providers/llm-websearch";
-import { classidyProvider } from "@/lib/enrichment/providers/classidy";
-import { mockEnrichmentProvider } from "@/lib/enrichment/providers/mock";
-import { lushaProvider } from "@/lib/enrichment/providers/lusha";
+import { ENRICHMENT_PROVIDER } from "../server/env.js";
+import type { EnrichmentProvider } from "./types.js";
+import { llmWebSearchProvider } from "./providers/llm-websearch.js";
+import { classidyProvider } from "./providers/classidy.js";
+import { mockEnrichmentProvider } from "./providers/mock.js";
+import { lushaProvider } from "./providers/lusha.js";
 
 // Enrichment provider registry. The single place that knows which providers
 // exist. Golden rule: adding a provider = a new file + one line here.

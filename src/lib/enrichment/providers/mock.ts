@@ -2,7 +2,7 @@ import type {
   EnrichmentInput,
   EnrichmentProvider,
   EnrichmentResult,
-} from "@/lib/enrichment/types";
+} from "../types.js";
 
 // Deterministic, offline enrichment provider for smoke-testing the deals flow
 // without spending vendor calls. Returns a fixed payload in the Classidy

@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { withAuth } from '../_with-auth.js';
 
-import type { LeadDeal } from "@/types";
-import { mapApiError, type ApiError } from "@/lib/server/api-error";
-import { enrichDeal } from "@/lib/server/deals-adapter";
-import { createLogger } from "@/lib/server/logger";
+import type { LeadDeal } from "../../src/types/index.js";
+import { mapApiError, type ApiError } from "../../src/lib/server/api-error.js";
+import { enrichDeal } from "../../src/lib/server/deals-adapter.js";
+import { createLogger } from "../../src/lib/server/logger.js";
 
 // Cassidy's synchronous workflow can take several minutes; allow the function to
 // outlive the default so it doesn't get killed before the fetch timeout (290s).

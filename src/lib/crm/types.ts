@@ -2,7 +2,7 @@
 // the registry — never on a concrete provider. Every provider normalizes its
 // vendor-specific response into one `LeadSearchResult` shape (`@/types`).
 
-import type { LeadSearchResult } from "@/types";
+import type { LeadSearchResult } from "../../types/index.js";
 
 /**
  * Normalized, server-side lead-search input. `email` is the only search key

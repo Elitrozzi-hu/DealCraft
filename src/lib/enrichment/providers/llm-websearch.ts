@@ -1,27 +1,27 @@
 import { z } from "zod";
 
-import { generate, type GenerationUsage } from "@/lib/llm/generate";
-import type { LlmProvider } from "@/lib/llm/registry";
-import { ENRICHMENT_LLM_PROVIDER } from "@/lib/server/env";
+import { generate, type GenerationUsage } from "../../llm/generate.js";
+import type { LlmProvider } from "../../llm/registry.js";
+import { ENRICHMENT_LLM_PROVIDER } from "../../server/env.js";
 import {
   llmResearchOutputSchema,
   type LlmResearchOutput,
   type LlmProvenance,
-} from "@/lib/llm/generations/company-research/structured-output";
-import { renderResearchPrompt } from "@/lib/llm/generations/company-research/prompt";
-import { createLogger } from "@/lib/server/logger";
+} from "../../llm/generations/company-research/structured-output.js";
+import { renderResearchPrompt } from "../../llm/generations/company-research/prompt.js";
+import { createLogger } from "../../server/logger.js";
 import type {
   EnrichmentInput,
   EnrichmentProvider,
   EnrichmentResult,
-} from "@/lib/enrichment/types";
-import { clamp } from "@/lib/enrichment/clamp";
+} from "../types.js";
+import { clamp } from "../clamp.js";
 import {
   coldProv,
   enrichmentResultSchema,
   type NormalizedEnrichment,
   type NormalizedProvenance,
-} from "@/lib/enrichment/result-schema";
+} from "../result-schema.js";
 
 // Enrichment via a SINGLE OpenRouter call: the `web` plugin runs live search while
 // `llmResearchOutputSchema` (structured output) shapes the reply. This is the ONLY

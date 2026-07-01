@@ -1,4 +1,4 @@
-import { LOG_LEVEL, LOG_FORMAT, NODE_ENV } from "./env";
+import { LOG_LEVEL, LOG_FORMAT, NODE_ENV } from "./env.js";
 
 // Structured, server-only logger (the "wide event" / canonical-log-line approach:
 // emit ONE event per request enriched through its lifecycle, not scattered lines).

@@ -1,8 +1,8 @@
 // Runtime source of the company-signals prompt. Mirrors prompt.md (human-readable docs).
 // Pure string builder — no `server-only`, no I/O.
 
-import type { Language } from "@/types";
-import { languageDirective } from "@/lib/llm/language";
+import type { Language } from "../../../../types/index.js";
+import { languageDirective } from "../../language.js";
 
 export function renderSignalsPrompt(
   company: string,

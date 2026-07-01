@@ -8,13 +8,13 @@ import type {
   StageKey,
   Stakeholder,
   TechItem,
-} from "@/types";
+} from "../../types/index.js";
 import {
   coldProv,
   enrichmentResultSchema,
   type NormalizedEnrichment,
-} from "@/lib/enrichment/result-schema";
-import { SOLUTION_GRAPH, UNMAPPED_TAXONOMY } from "@/lib/constants";
+} from "../enrichment/result-schema.js";
+import { SOLUTION_GRAPH, UNMAPPED_TAXONOMY } from "../constants.js";
 const ROLE_MAP: Record<string, Role> = {
   Champion: "Champion",
   "Decision Maker": "Decision Maker",

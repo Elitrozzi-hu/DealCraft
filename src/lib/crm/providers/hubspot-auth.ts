@@ -1,4 +1,4 @@
-import { HUBSPOT_ACCESS_TOKEN } from "@/lib/server/env";
+import { HUBSPOT_ACCESS_TOKEN } from "../../server/env.js";
 
 // HubSpot authentication contract — isolated from the search contract in
 // `hubspot.ts`. Turns whatever is in `HUBSPOT_ACCESS_TOKEN` into a usable bearer:

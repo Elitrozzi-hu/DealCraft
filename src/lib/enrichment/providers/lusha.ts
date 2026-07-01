@@ -1,15 +1,15 @@
 import { z } from "zod";
 
-import { generate } from "@/lib/llm/generate";
-import { LUSHA_API_KEY } from "@/lib/server/env";
-import { createLogger } from "@/lib/server/logger";
+import { generate } from "../../llm/generate.js";
+import { LUSHA_API_KEY } from "../../server/env.js";
+import { createLogger } from "../../server/logger.js";
 import {
   coldProv,
   enrichmentResultSchema,
   type NormalizedEnrichment,
   type NormalizedProvenance,
-} from "@/lib/enrichment/result-schema";
-import type { EnrichmentInput, EnrichmentProvider } from "@/lib/enrichment/types";
+} from "../result-schema.js";
+import type { EnrichmentInput, EnrichmentProvider } from "../types.js";
 
 // This file is the ONLY place that encodes the Lusha vendor contract: endpoint
 // URLs, authentication, request/response shapes, credit flow, and the mapping

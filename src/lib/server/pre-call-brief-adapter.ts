@@ -1,8 +1,8 @@
-import { generate, type GenerationUsage } from "@/lib/llm/generate";
-import { preCallBriefSchema } from "@/lib/llm/generations/pre-call-brief/structured-output";
-import { renderPreCallBriefPrompt } from "@/lib/llm/generations/pre-call-brief/prompt";
-import { createLogger } from "@/lib/server/logger";
-import type { PreCallBriefRequest, PreCallBriefResult } from "@/types";
+import { generate, type GenerationUsage } from "../llm/generate.js";
+import { preCallBriefSchema } from "../llm/generations/pre-call-brief/structured-output.js";
+import { renderPreCallBriefPrompt } from "../llm/generations/pre-call-brief/prompt.js";
+import { createLogger } from "./logger.js";
+import type { PreCallBriefRequest, PreCallBriefResult } from "../../types/index.js";
 
 const log = createLogger("pre-call-brief");
 

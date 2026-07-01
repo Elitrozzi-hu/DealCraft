@@ -3,8 +3,8 @@ import type {
   MaterialBlock,
   MaterialsRequest,
   MaterialsResult,
-} from "@/types";
-import { getProviderConfig } from "./config";
+} from "../../types/index.js";
+import { getProviderConfig } from "./config.js";
 
 /**
  * Build the 5 sales artifacts for a deal.

@@ -1,5 +1,5 @@
-import { getHubspotAccessToken } from "@/lib/crm/providers/hubspot-auth";
-import type { LeadDeal } from "@/types";
+import { getHubspotAccessToken } from "./hubspot-auth.js";
+import type { LeadDeal } from "../../../types/index.js";
 
 // HubSpot **Deal** lookup — isolated from the Contacts search contract in
 // `hubspot.ts`. Resolves the deals associated with a set of contacts and their

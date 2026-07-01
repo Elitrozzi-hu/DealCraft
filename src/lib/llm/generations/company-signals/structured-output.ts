@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { SIGNAL_TYPES, type SignalItem } from "@/types";
+import { SIGNAL_TYPES, type SignalItem } from "../../../../types/index.js";
 
 // Structured-output contract for the signals LLM call — mirrors the
 // `humand_signals` JSON schema in the feature spec.

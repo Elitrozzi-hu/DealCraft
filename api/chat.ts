@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { withAuth } from './_with-auth.js';
 
-import { generate } from "@/lib/llm/generate";
-import type { LlmProvider } from "@/lib/llm/registry";
-import { mapApiError } from "@/lib/server/api-error";
-import { createLogger } from "@/lib/server/logger";
-import { getGladosToken } from "@/lib/server/glados-auth";
-import { LLM_PROVIDER } from "@/lib/server/env";
+import { generate } from "../src/lib/llm/generate.js";
+import type { LlmProvider } from "../src/lib/llm/registry.js";
+import { mapApiError } from "../src/lib/server/api-error.js";
+import { createLogger } from "../src/lib/server/logger.js";
+import { getGladosToken } from "../src/lib/server/glados-auth.js";
+import { LLM_PROVIDER } from "../src/lib/server/env.js";
 
 export const config = { maxDuration: 60 };
 

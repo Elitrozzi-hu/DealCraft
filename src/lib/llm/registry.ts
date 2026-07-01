@@ -4,7 +4,7 @@ import {
 } from "@openrouter/ai-sdk-provider";
 import type { LanguageModel } from "ai";
 
-import { LLM_PROVIDER, OPENROUTER_API_KEY, OPENROUTER_MODEL } from "@/lib/server/env";
+import { LLM_PROVIDER, OPENROUTER_API_KEY, OPENROUTER_MODEL } from "../server/env.js";
 
 let openrouterProvider: OpenRouterProvider | null = null;
 

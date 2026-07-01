@@ -6,8 +6,8 @@ import {
 } from "ai";
 import type { z } from "zod";
 
-import { getModel, type LlmProvider } from "./registry";
-import { GLADOS_API_URL, LLM_PROVIDER } from "@/lib/server/env";
+import { getModel, type LlmProvider } from "./registry.js";
+import { GLADOS_API_URL, LLM_PROVIDER } from "../server/env.js";
 
 
 export interface GenerationUsage {

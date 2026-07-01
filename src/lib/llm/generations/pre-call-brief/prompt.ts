@@ -1,5 +1,5 @@
-import type { PreCallBriefRequest } from "@/types";
-import { languageDirective } from "@/lib/llm/language";
+import type { PreCallBriefRequest } from "../../../../types/index.js";
+import { languageDirective } from "../../language.js";
 
 function renderStakeholders(req: PreCallBriefRequest): string {
   if (req.stakeholders.length === 0) return "(none identified yet)";

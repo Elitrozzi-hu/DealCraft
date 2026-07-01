@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import type { PublishedSuccessCase } from "@/types";
+import type { PublishedSuccessCase } from "../../types/index.js";
 
 const FILE_PATH = path.join(process.cwd(), "data", "success-cases.json");
 

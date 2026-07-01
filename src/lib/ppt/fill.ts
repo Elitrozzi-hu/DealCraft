@@ -5,8 +5,8 @@
 // the output is the template byte-for-byte except the filled fields.
 
 import JSZip from 'jszip';
-import { normalizeSplitTokens, replaceTokens } from './xml';
-import { injectLogo, type LogoAsset } from './logo';
+import { normalizeSplitTokens, replaceTokens } from './xml.js';
+import { injectLogo, type LogoAsset } from './logo.js';
 
 const SLIDE_RE = /^ppt\/slides\/slide\d+\.xml$/;
 const LOGO_TOKEN = '{{logo}}';

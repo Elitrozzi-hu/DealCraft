@@ -2,10 +2,10 @@ import { Client } from "@hubspot/api-client";
 import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts/models/Filter";
 import type { SimplePublicObject } from "@hubspot/api-client/lib/codegen/crm/contacts/models/SimplePublicObject";
 
-import { getHubspotAccessToken } from "@/lib/crm/providers/hubspot-auth";
-import { fetchDealsForContacts } from "@/lib/crm/providers/hubspot-deals";
-import type { CrmProvider, LeadSearchInput } from "@/lib/crm/types";
-import type { LeadCandidate, LeadSearchResult } from "@/types";
+import { getHubspotAccessToken } from "./hubspot-auth.js";
+import { fetchDealsForContacts } from "./hubspot-deals.js";
+import type { CrmProvider, LeadSearchInput } from "../types.js";
+import type { LeadCandidate, LeadSearchResult } from "../../../types/index.js";
 
 // HubSpot CRM provider. Resolves the meeting's lead by searching the **Contacts**
 // object by exact email (decision: "siempre buscamos por su email"; pivoted from

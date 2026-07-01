@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { withAuth } from './_with-auth.js';
 
-import type { Pain, Stakeholder } from "@/types";
-import { generateMaterials } from "@/lib/server/materials-adapter";
-import { mapApiError } from "@/lib/server/api-error";
-import { createLogger } from "@/lib/server/logger";
+import type { Pain, Stakeholder } from "../src/types/index.js";
+import { generateMaterials } from "../src/lib/server/materials-adapter.js";
+import { mapApiError } from "../src/lib/server/api-error.js";
+import { createLogger } from "../src/lib/server/logger.js";
 
 const log = createLogger("materials");
 

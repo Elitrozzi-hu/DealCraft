@@ -2,12 +2,12 @@
 // filled in place -> rendered .pptx bytes + a safe download filename.
 
 import { readFile } from 'node:fs/promises';
-import { parseClientData } from './validate';
-import { buildTokenMap } from './tokens';
-import { templatePath } from './templates';
-import { fillTemplate } from './fill';
-import { loadLogo, type LogoAsset } from './logo';
-import { createLogger } from '@/lib/server/logger';
+import { parseClientData } from './validate.js';
+import { buildTokenMap } from './tokens.js';
+import { templatePath } from './templates.js';
+import { fillTemplate } from './fill.js';
+import { loadLogo, type LogoAsset } from './logo.js';
+import { createLogger } from '../server/logger.js';
 
 const log = createLogger('ppt');
 

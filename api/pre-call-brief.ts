@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { withAuth } from './_with-auth.js';
 
-import { generatePreCallBrief } from "@/lib/server/pre-call-brief-adapter";
-import { mapApiError } from "@/lib/server/api-error";
-import { createLogger } from "@/lib/server/logger";
-import { getGladosToken } from "@/lib/server/glados-auth";
-import { LLM_PROVIDER } from "@/lib/server/env";
+import { generatePreCallBrief } from "../src/lib/server/pre-call-brief-adapter.js";
+import { mapApiError } from "../src/lib/server/api-error.js";
+import { createLogger } from "../src/lib/server/logger.js";
+import { getGladosToken } from "../src/lib/server/glados-auth.js";
+import { LLM_PROVIDER } from "../src/lib/server/env.js";
 
 // Single structured LLM call (no web search) — default route timeout is enough.
 

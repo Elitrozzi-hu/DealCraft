@@ -1,5 +1,5 @@
-import type { CrmProvider, LeadSearchInput } from "@/lib/crm/types";
-import type { LeadCandidate, LeadSearchResult } from "@/types";
+import type { CrmProvider, LeadSearchInput } from "../types.js";
+import type { LeadCandidate, LeadSearchResult } from "../../../types/index.js";
 
 // Mock CRM provider: returns a fixed set of lead candidates without touching
 // HubSpot. Enables route/UI smoke tests offline and without a token.

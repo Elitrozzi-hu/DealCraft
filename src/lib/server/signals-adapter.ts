@@ -1,10 +1,10 @@
-import { generate, type GenerationUsage } from "@/lib/llm/generate";
-import type { LlmProvider } from "@/lib/llm/registry";
-import { humandSignalsSchema } from "@/lib/llm/generations/company-signals/structured-output";
-import { renderSignalsPrompt } from "@/lib/llm/generations/company-signals/prompt";
-import { ENRICHMENT_LLM_PROVIDER } from "@/lib/server/env";
-import { createLogger } from "@/lib/server/logger";
-import type { Language, SignalsResult } from "@/types";
+import { generate, type GenerationUsage } from "../llm/generate.js";
+import type { LlmProvider } from "../llm/registry.js";
+import { humandSignalsSchema } from "../llm/generations/company-signals/structured-output.js";
+import { renderSignalsPrompt } from "../llm/generations/company-signals/prompt.js";
+import { ENRICHMENT_LLM_PROVIDER } from "./env.js";
+import { createLogger } from "./logger.js";
+import type { Language, SignalsResult } from "../../types/index.js";
 
 const log = createLogger("signals");
 export async function fetchSignals(

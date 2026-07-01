@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import { getGladosToken } from '@/lib/server/glados-auth';
-import { GLADOS_API_URL } from '@/lib/server/env';
-import { mapApiError } from '@/lib/server/api-error';
+import { getGladosToken } from '../../src/lib/server/glados-auth.js';
+import { GLADOS_API_URL } from '../../src/lib/server/env.js';
+import { mapApiError } from '../../src/lib/server/api-error.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });

@@ -1,8 +1,8 @@
 
 
-import type { Language } from "@/types";
+import type { Language } from "../../types/index.js";
 
-import type { NormalizedEnrichment } from "./result-schema";
+import type { NormalizedEnrichment } from "./result-schema.js";
 
 
 export interface EnrichmentInput {

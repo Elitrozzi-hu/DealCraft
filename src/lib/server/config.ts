@@ -2,7 +2,7 @@ import {
   CRM_PROVIDER,
   ENRICHMENT_PROVIDER,
   LLM_PROVIDER,
-} from "./env";
+} from "./env.js";
 
 // Provider-agnostic backend config seam. Real provider credentials
 // (HubSpot / Lusha / web-search / LLM) come from `env.ts` (the single source
