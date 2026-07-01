@@ -1,6 +1,6 @@
 import { Client } from "@hubspot/api-client";
-import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts/models/Filter";
-import type { SimplePublicObject } from "@hubspot/api-client/lib/codegen/crm/contacts/models/SimplePublicObject";
+import { FilterOperatorEnum } from "@hubspot/api-client/lib/codegen/crm/contacts/models/Filter.js";
+import type { SimplePublicObject } from "@hubspot/api-client/lib/codegen/crm/contacts/models/SimplePublicObject.js";
 
 import { getHubspotAccessToken } from "./hubspot-auth.js";
 import { fetchDealsForContacts } from "./hubspot-deals.js";

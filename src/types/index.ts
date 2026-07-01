@@ -3,18 +3,18 @@
 // Types are organized by feature in `*.types.ts` siblings; always import via
 // `@/types` (never a deep path), so this split stays an internal detail.
 
-export * from "./provenance.types";
-export * from "./stage.types";
-export * from "./stakeholder.types";
-export * from "./pain.types";
-export * from "./deal.types";
-export * from "./scoring.types";
-export * from "./success-case.types";
-export * from "./input.types";
-export * from "./material.types";
-export * from "./lead.types";
-export * from "./deck.types";
-export * from "./common.types";
-export * from "./signal.types";
-export * from "./pre-call-brief.types";
-export * from "./language.types";
+export * from "./provenance.types.js";
+export * from "./stage.types.js";
+export * from "./stakeholder.types.js";
+export * from "./pain.types.js";
+export * from "./deal.types.js";
+export * from "./scoring.types.js";
+export * from "./success-case.types.js";
+export * from "./input.types.js";
+export * from "./material.types.js";
+export * from "./lead.types.js";
+export * from "./deck.types.js";
+export * from "./common.types.js";
+export * from "./signal.types.js";
+export * from "./pre-call-brief.types.js";
+export * from "./language.types.js";
