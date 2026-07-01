@@ -12,6 +12,9 @@ export const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 export const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL;
 export const LLM_PROVIDER = process.env.LLM_PROVIDER;
 
+// --- AI Gateway (GLaDOS) ---
+export const GLADOS_API_URL = process.env.GLADOS_API_URL;
+
 // --- Enrichment ---
 export const ENRICHMENT_PROVIDER = process.env.ENRICHMENT_PROVIDER;
 /** LLM provider (registry key) used by the `llm-websearch` enrichment, kept
@@ -23,6 +26,11 @@ export const LUSHA_API_KEY = process.env.LUSHA_API_KEY;
 export const CASSIDY_SUCCESS_CASE_WEBHOOK_URL = process.env.CASSIDY_SUCCESS_CASE_WEBHOOK_URL;
 /** Shared secret expected in the `token` header of inbound Notion webhooks. */
 export const NOTION_WEBHOOK_TOKEN = process.env.NOTION_WEBHOOK_TOKEN;
+
+// --- Auth / Janus ---
+export const JANUS_URL = process.env.JANUS_URL;
+export const HUMAND_CLIENT_ID = process.env.HUMAND_CLIENT_ID;
+export const HUMAND_CLIENT_SECRET = process.env.HUMAND_CLIENT_SECRET;
 
 // --- CRM (pre-existing seam) ---
 export const CRM_PROVIDER = process.env.CRM_PROVIDER;

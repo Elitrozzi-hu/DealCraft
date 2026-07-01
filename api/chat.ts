@@ -5,6 +5,8 @@ import { generate } from "@/lib/llm/generate";
 import type { LlmProvider } from "@/lib/llm/registry";
 import { mapApiError } from "@/lib/server/api-error";
 import { createLogger } from "@/lib/server/logger";
+import { getGladosToken } from "@/lib/server/glados-auth";
+import { LLM_PROVIDER } from "@/lib/server/env";
 
 export const config = { maxDuration: 60 };
 
@@ -40,17 +42,22 @@ export default withAuth(async (req, res, _session) => {
   }
 
   const { messages, provider, model } = parsed.data;
+  const effectiveProvider = (provider ?? LLM_PROVIDER ?? "openrouter") as string;
   const ev = log
     .event("chat.request")
     .set("method", "POST")
     .set("path", "/api/chat")
-    .set("provider", provider ?? "default");
+    .set("provider", effectiveProvider);
   const t0 = Date.now();
   try {
+    const gladosToken = effectiveProvider === "glados"
+      ? await getGladosToken(req, res)
+      : undefined;
     const text = await generate({
       provider: provider as LlmProvider | undefined,
       model,
       messages,
+      gladosToken,
     });
     ev.set("status", 200).set("durationMs", Date.now() - t0).emit();
     res.status(200).json({ text });

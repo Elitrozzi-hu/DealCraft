@@ -24,7 +24,7 @@ export const providers = {
     getOpenRouterProvider()(model ?? OPENROUTER_MODEL ?? ""),
 } satisfies Record<string, (model?: string) => LanguageModel>;
 
-export type LlmProvider = keyof typeof providers;
+export type LlmProvider = keyof typeof providers | 'glados';
 
 /**
  * Resolve a `LanguageModel` for the requested provider/model.
@@ -38,5 +38,5 @@ export function getModel(name?: LlmProvider, model?: string): LanguageModel {
       `Unknown LLM provider "${key}". Known providers: ${Object.keys(providers).join(", ")}.`,
     );
   }
-  return providers[key as LlmProvider](model);
+  return providers[key as keyof typeof providers](model);
 }

@@ -7,80 +7,47 @@ import {
 import type { z } from "zod";
 
 import { getModel, type LlmProvider } from "./registry";
+import { GLADOS_API_URL, LLM_PROVIDER } from "@/lib/server/env";
 
-// The single LLM entry point. Every model call in the app flows through here,
-// so swapping the provider/model (registry + env) swaps it everywhere.
-//
-// Hard rule: `schema` XOR `tools`. With a `schema` we run `generateObject`
-// (structured, no tools); without one we run `generateText` (free text, tools
-// allowed). Live web search can ride alongside a `schema` via `providerOptions`
-// (e.g. OpenRouter's `web` plugin) — that path is orthogonal to `tools`.
 
-/** Resolved model id + token usage from one completed generation. Token counts
- *  and `costUsd` are `undefined` when the provider doesn't report them (cost
- *  needs OpenRouter usage accounting enabled — `usage: { include: true }`). */
 export interface GenerationUsage {
   model: string;
   inputTokens?: number;
   outputTokens?: number;
   totalTokens?: number;
-  /** End-to-end spend in USD, as billed by the provider. */
   costUsd?: number;
-  /** Web-search citations the provider attached. `0` ⇒ search likely didn't run. */
   citations?: number;
-  /** URLs of those citations, for spot-checking which sources were used. */
   citationUrls?: string[];
 }
 
-/** The complete, untyped result of one generation — for debugging/inspection.
- *  Surfaced via `onResponse` so a caller can log the full provider envelope
- *  (raw OpenRouter JSON, citations, cost) without the SDK types leaking out. */
+
 export interface GenerationResponse {
-  /** Parsed object (schema path); `undefined` on the free-text path. */
   object?: unknown;
-  /** Generated text (free-text path); `undefined` on the schema path. */
   text?: string;
-  /** Provider response envelope — `response.body` is the raw OpenRouter JSON
-   *  (choices, annotations/citations, usage). */
   response: unknown;
-  /** Provider-specific metadata (OpenRouter usage accounting + cost live here). */
   providerMetadata: unknown;
-  /** Normalized token usage from the AI SDK. */
   usage: unknown;
 }
 
 export interface CommonOptions {
-  /** Registry key; defaults to `LLM_PROVIDER` env, then `openrouter`. */
   provider?: LlmProvider;
-  /** Vendor model id; defaults to the provider's own env default. */
+  gladosToken?: string;
   model?: string;
   system?: string;
   prompt?: string;
   messages?: ModelMessage[];
   temperature?: number;
   maxOutputTokens?: number;
-  /** Server/function tools for the free-text path. Forbidden with `schema`. */
   tools?: ToolSet;
-  /**
-   * Provider-specific options forwarded verbatim to the AI SDK call, e.g.
-   * `{ openrouter: { plugins: [{ id: "web" }] } }` to enable live web search
-   * alongside structured output in a single OpenRouter call. Orthogonal to
-   * `tools`, so it is allowed with a `schema`.
-   */
+
   providerOptions?: Record<string, Record<string, unknown>>;
-  /** Called once after a successful call with the model id + token usage, so
-   *  callers can log/meter spend without the SDK result leaking out of here. */
   onUsage?: (usage: GenerationUsage) => void;
-  /** Called once after a successful call with the COMPLETE, untyped result
-   *  (raw provider envelope included) — for debugging/inspection only. */
   onResponse?: (raw: GenerationResponse) => void;
 }
 
-/** Free-text generation (tools allowed). Returns the model's text. */
 export async function generate(
   opts: CommonOptions & { schema?: undefined },
 ): Promise<string>;
-/** Structured generation. Returns the zod-inferred object. */
 export async function generate<T extends z.ZodType>(
   opts: CommonOptions & { schema: T },
 ): Promise<z.infer<T>>;
@@ -92,6 +59,11 @@ export async function generate<T extends z.ZodType>(
       "generate(): `schema` and `tools` cannot be combined in one call — " +
         "run the tools (e.g. web search) call first, then a separate structured call.",
     );
+  }
+
+  const resolvedProvider = (opts.provider ?? LLM_PROVIDER ?? "openrouter") as string;
+  if (resolvedProvider === "glados") {
+    return callGlados(opts);
   }
 
   const model = getModel(opts.provider, opts.model);
@@ -124,6 +96,99 @@ export async function generate<T extends z.ZodType>(
   return text;
 }
 
+
+async function callGlados<T extends z.ZodType>(
+  opts: CommonOptions & { schema?: T },
+): Promise<string | z.infer<T>> {
+  if (!opts.gladosToken) {
+    throw Object.assign(
+      new Error(
+        "GLaDOS token required — call getGladosToken(req, res) in your BFF handler and pass the result as `gladosToken`.",
+      ),
+      { statusCode: 401 },
+    );
+  }
+  if (!GLADOS_API_URL) throw new Error("GLADOS_API_URL is not set");
+
+  type GladosMessage = { role: string; content: string };
+  let messages: GladosMessage[];
+
+  if (opts.messages && opts.messages.length > 0) {
+    messages = opts.messages.flatMap((m): GladosMessage[] => {
+      const content = typeof m.content === "string" ? m.content : "";
+      return content !== undefined ? [{ role: m.role as string, content }] : [];
+    });
+  } else {
+    messages = [];
+    if (opts.system) messages.push({ role: "system", content: opts.system });
+    if (opts.prompt) messages.push({ role: "user", content: opts.prompt });
+  }
+
+  // For structured calls, append a JSON instruction so GLaDOS returns parseable output
+  if (opts.schema) {
+    const sysIdx = messages.findIndex((m) => m.role === "system");
+    const jsonInstruction =
+      "Respond with ONLY valid JSON matching the required schema. No markdown code blocks, no explanation.";
+    if (sysIdx >= 0) {
+      messages[sysIdx] = {
+        ...messages[sysIdx],
+        content: messages[sysIdx].content + "\n\n" + jsonInstruction,
+      };
+    } else {
+      messages.unshift({ role: "system", content: jsonInstruction });
+    }
+  }
+
+  const gladosRes = await fetch(`${GLADOS_API_URL}/v1/public/calls`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${opts.gladosToken}`,
+    },
+    body: JSON.stringify({ messages }),
+  });
+
+  if (!gladosRes.ok) {
+    const detail = await gladosRes.json().catch(() => ({}));
+    throw Object.assign(
+      new Error(`GLaDOS responded ${gladosRes.status}`),
+      { statusCode: gladosRes.status >= 500 ? 502 : gladosRes.status, detail },
+    );
+  }
+
+  const data = await gladosRes.json() as {
+    content: string;
+    usage?: { input_tokens?: number; output_tokens?: number };
+  };
+
+  const inputTokens = data.usage?.input_tokens;
+  const outputTokens = data.usage?.output_tokens;
+  opts.onUsage?.({
+    model: "glados",
+    inputTokens,
+    outputTokens,
+    totalTokens:
+      inputTokens !== undefined && outputTokens !== undefined
+        ? inputTokens + outputTokens
+        : undefined,
+  });
+  opts.onResponse?.({ text: data.content, response: data, providerMetadata: {}, usage: data.usage });
+
+  if (opts.schema) {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(data.content);
+    } catch {
+      throw new Error(
+        `GLaDOS returned non-JSON for structured generation: ${data.content.slice(0, 200)}`,
+      );
+    }
+    return opts.schema.parse(parsed) as z.infer<T>;
+  }
+
+  return data.content;
+}
+
 /** Fan a completed call's model + token usage (+ USD cost + citations) to `onUsage`. */
 function reportUsage(
   onUsage: CommonOptions["onUsage"],
@@ -143,8 +208,6 @@ function reportUsage(
   });
 }
 
-/** OpenRouter reports spend at `providerMetadata.openrouter.usage.cost` (USD)
- *  when usage accounting is on. Read defensively — it's absent otherwise. */
 function readCostUsd(providerMetadata: unknown): number | undefined {
   const cost = (
     providerMetadata as
@@ -154,9 +217,6 @@ function readCostUsd(providerMetadata: unknown): number | undefined {
   return typeof cost === "number" ? cost : undefined;
 }
 
-/** Pull web-search citation URLs from the raw OpenRouter body. `url_citation`
- *  annotations sit on `choices[].message.annotations` (they aren't surfaced on
- *  the typed `generateObject` result). An empty list ⇒ no sources came back. */
 function readCitationUrls(responseBody: unknown): string[] {
   const choices = (
     responseBody as

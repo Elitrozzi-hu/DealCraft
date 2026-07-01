@@ -20,6 +20,7 @@ export { buildClearCookies, buildTokenCookies, parseCookies, refreshTokens, reso
 const CLIENT_ID = process.env.HUMAND_CLIENT_ID!;
 const APP_CALLBACK_URL = process.env.APP_CALLBACK_URL!;
 const JANUS_URL = process.env.JANUS_URL!;
+const HUMAND_AUDIENCE = process.env.HUMAND_AUDIENCE!;
 
 export const PKCE_COOKIE = 'hu_pkce';
 
@@ -64,6 +65,7 @@ export function buildLoginUrl(state: string, challenge: string): string {
     code_challenge: challenge,
     code_challenge_method: 'S256',
     state,
+    resource: HUMAND_AUDIENCE,
   });
   return `${JANUS_URL}/oauth2/authorize?${params.toString()}&continue`;
 }
@@ -80,6 +82,7 @@ export async function exchangeCode(
       code,
       code_verifier: codeVerifier,
       redirect_uri: APP_CALLBACK_URL,
+      resource: HUMAND_AUDIENCE,
     }),
   );
 }

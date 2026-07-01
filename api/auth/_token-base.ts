@@ -7,6 +7,7 @@
 const JANUS_URL = process.env.JANUS_URL!;
 const CLIENT_ID = process.env.HUMAND_CLIENT_ID!;
 const CLIENT_SECRET = process.env.HUMAND_CLIENT_SECRET!;
+const HUMAND_AUDIENCE = process.env.HUMAND_AUDIENCE!;
 
 export const COOKIE_ACCESS = 'hu_access_token';
 export const COOKIE_REFRESH = 'hu_refresh_token';
@@ -57,6 +58,8 @@ export async function callJanusToken(body: URLSearchParams): Promise<TokenSet> {
 
     if (!res.ok) {
       const errorBody = await res.json();
+      console.error('[janus] token request body:', body.toString());
+      console.error('[janus] error response:', JSON.stringify(errorBody));
       throw new Error(`Janus ${res.status}: ${(errorBody as { error?: string }).error}`);
     }
 
@@ -68,7 +71,7 @@ export async function callJanusToken(body: URLSearchParams): Promise<TokenSet> {
 
 export async function refreshTokens(refreshToken: string): Promise<TokenSet> {
   return callJanusToken(
-    new URLSearchParams({ grant_type: 'refresh_token', refresh_token: refreshToken }),
+    new URLSearchParams({ grant_type: 'refresh_token', refresh_token: refreshToken, resource: HUMAND_AUDIENCE }),
   );
 }
 

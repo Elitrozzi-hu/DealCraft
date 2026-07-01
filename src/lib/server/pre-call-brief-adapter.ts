@@ -8,6 +8,7 @@ const log = createLogger("pre-call-brief");
 
 export async function generatePreCallBrief(
   req: PreCallBriefRequest,
+  gladosToken?: string,
 ): Promise<PreCallBriefResult> {
   log.info("pre-call-brief started", {
     company: req.company,
@@ -21,6 +22,7 @@ export async function generatePreCallBrief(
     schema: preCallBriefSchema,
     system: renderPreCallBriefPrompt(req),
     prompt: "",
+    gladosToken,
     onUsage: (u) => {
       usage = u;
     },
