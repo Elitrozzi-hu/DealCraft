@@ -11,5 +11,11 @@
     "api/notion-webhook/success-cases.ts": {
       "includeFiles": "data/success-cases.json"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
 }
