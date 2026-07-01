@@ -48,4 +48,5 @@ deck-assets/
 .env.local
 .env
 
-hu_staff*.sandbox/
+hu_staff*
+.sandbox/
