@@ -20,10 +20,8 @@ export function getSuccessCasesByIndustry(
   if (!industry || industry.trim() === "") return [];
   const b = industry.toLowerCase();
   return loadAll().filter((c) => {
-    const es = c.industry.toLowerCase();
-    // Skip the English check when industry_en is null — don't collapse to "" (a
-    // `b.includes("")` would match every query).
-    const en = c.industry_en?.toLowerCase();
+    const es = c.content.es.industry.toLowerCase();
+    const en = c.content.en?.industry.toLowerCase();
     return (
       es.includes(b) ||
       b.includes(es) ||
@@ -32,9 +30,7 @@ export function getSuccessCasesByIndustry(
   });
 }
 
-/** Upsert by `slug` into the local JSON store. Reads fresh from disk (not the
- *  cached `loadAll()`), replaces or appends, writes 2-space JSON. Leaves the module
- *  cache untouched (dev-only staleness). Interim store — see the persistence TODO. */
+
 export function upsertSuccessCase(record: PublishedSuccessCase): void {
   const raw = fs.readFileSync(FILE_PATH, "utf-8");
   const all = JSON.parse(raw) as PublishedSuccessCase[];

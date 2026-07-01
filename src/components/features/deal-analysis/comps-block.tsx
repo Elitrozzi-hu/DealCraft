@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { PublishedSuccessCase } from "@/types";
+import type { LocalizedSuccessCaseContent, PublishedSuccessCase } from "@/types";
 import { formatNumber, useLanguage, useT } from "@/i18n";
 
 export interface CompsBlockProps {
@@ -34,14 +34,14 @@ function PlayIcon() {
 }
 
 /** One-line summary shown while the card is collapsed so the AE can decide whether to open it. */
-function CollapsedPreview({ c }: { c: PublishedSuccessCase }) {
+function CollapsedPreview({ cc }: { cc: LocalizedSuccessCaseContent }) {
   const t = useT();
-  const hasAnything = c.metrics.length > 0 || c.pains.length > 0 || c.modules.length > 0;
+  const hasAnything = cc.metrics.length > 0 || cc.pains.length > 0 || cc.modules.length > 0;
   if (!hasAnything) return null;
 
   return (
     <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1">
-      {c.metrics.map((m) => (
+      {cc.metrics.map((m) => (
         <span
           key={`${m.label}-${m.value}`}
           className="rounded border border-validated/20 bg-validated-soft/60 px-1.5 py-px text-[9.5px] font-bold text-validated"
@@ -49,20 +49,20 @@ function CollapsedPreview({ c }: { c: PublishedSuccessCase }) {
           {m.value}
         </span>
       ))}
-      {c.pains.length > 0 && (
+      {cc.pains.length > 0 && (
         <span className="text-[9.5px] text-cold/70">
-          {c.metrics.length > 0 && "·"}{" "}
-          {c.pains.length === 1
-            ? t("comps.painsOne", { count: c.pains.length })
-            : t("comps.painsMany", { count: c.pains.length })}
+          {cc.metrics.length > 0 && "·"}{" "}
+          {cc.pains.length === 1
+            ? t("comps.painsOne", { count: cc.pains.length })
+            : t("comps.painsMany", { count: cc.pains.length })}
         </span>
       )}
-      {c.modules.length > 0 && (
+      {cc.modules.length > 0 && (
         <span className="text-[9.5px] text-cold/70">
           ·{" "}
-          {c.modules.length === 1
-            ? t("comps.modulesOne", { count: c.modules.length })
-            : t("comps.modulesMany", { count: c.modules.length })}
+          {cc.modules.length === 1
+            ? t("comps.modulesOne", { count: cc.modules.length })
+            : t("comps.modulesMany", { count: cc.modules.length })}
         </span>
       )}
     </div>
@@ -73,9 +73,10 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
   const t = useT();
   const { lang } = useLanguage();
   const [open, setOpen] = useState(false);
-  const hasMetrics = c.metrics.length > 0;
-  const hasPains = c.pains.length > 0;
-  const hasModules = c.modules.length > 0;
+  const cc = c.content[lang] ?? c.content.es;
+  const hasMetrics = cc.metrics.length > 0;
+  const hasPains = cc.pains.length > 0;
+  const hasModules = cc.modules.length > 0;
   const hasLinks = c.link_web || c.link_youtube;
   const hasBody = hasMetrics || hasPains || hasModules;
 
@@ -99,9 +100,9 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
             )}
           </div>
           <p className="mt-0.5 text-[10px] text-cold/80">
-            {[c.industry, c.country.join(", ")].filter(Boolean).join(" · ")}
+            {[cc.industry, c.country.join(", ")].filter(Boolean).join(" · ")}
           </p>
-          {!open && <CollapsedPreview c={c} />}
+          {!open && <CollapsedPreview cc={cc} />}
         </div>
         <ChevronIcon open={open} />
       </button>
@@ -115,7 +116,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
                 {t("panel.tab.pains")}
               </p>
               <ul className="space-y-1">
-                {c.pains.map((p) => (
+                {cc.pains.map((p) => (
                   <li key={p} className="flex gap-2 text-[11px] leading-snug text-ink/70">
                     <span className="mt-px shrink-0 font-medium text-cold/50">–</span>
                     <span>{p}</span>
@@ -131,7 +132,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
                 {t("comps.modulesImplemented")}
               </p>
               <div className="flex flex-wrap gap-1">
-                {c.modules.map((m) => (
+                {cc.modules.map((m) => (
                   <span
                     key={m}
                     className="rounded-md border border-violet/20 bg-panel px-2 py-0.5 text-[10px] font-medium text-violet"
@@ -149,7 +150,7 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
                 {t("comps.afterImplementing")}
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {c.metrics.map((m) => (
+                {cc.metrics.map((m) => (
                   <div key={`${m.label}-${m.value}`} className="rounded-lg border border-validated/15 bg-validated-soft/40 px-2.5 py-1.5 max-w-[8rem]">
                     <p className="text-[13px] font-bold tabular-nums leading-none text-validated">
                       {m.value}
@@ -163,9 +164,9 @@ function CaseCard({ c }: { c: PublishedSuccessCase }) {
             </div>
           )}
 
-          {!hasMetrics && !hasPains && !hasModules && c.tagline && (
+          {!hasMetrics && !hasPains && !hasModules && cc.tagline && (
             <p className="text-[11px] italic leading-relaxed text-cold">
-              &ldquo;{c.tagline}&rdquo;
+              &ldquo;{cc.tagline}&rdquo;
             </p>
           )}
         </div>

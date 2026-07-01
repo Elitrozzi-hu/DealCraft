@@ -20,7 +20,7 @@ import {
   SourceLinkButton,
   StaleLanguageNote,
 } from "@/components/ui";
-import { useT, type MessageKey } from "@/i18n";
+import { useLanguage, useT, type MessageKey } from "@/i18n";
 import { CompsBlock } from "./comps-block";
 import { PainsBlock } from "./pains-block";
 import { PreCallBriefBlock } from "./pre-call-brief-block";
@@ -181,6 +181,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   } = props;
 
   const t = useT();
+  const { lang } = useLanguage();
   const f = deal.firmographics;
   const [sub, setSub] = useState<SubTab>("empresa");
   const [signalCount, setSignalCount] = useState<number | null>(null);
@@ -196,17 +197,20 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         title: s.title,
         role: s.role,
       })),
-      comparableCases: successCases.map((c) => ({
-        company: c.company,
-        industry: c.industry,
-        pains: c.pains,
-        modules: c.modules,
-        metrics: c.metrics.map((m) => ({ value: m.value, label: m.label })),
-        quote: c.quote,
-        sourceUrl: c.link_web ?? c.link_doc ?? null,
-      })),
+      comparableCases: successCases.map((c) => {
+        const cc = c.content[lang] ?? c.content.es;
+        return {
+          company: c.company,
+          industry: cc.industry,
+          pains: cc.pains,
+          modules: cc.modules,
+          metrics: cc.metrics.map((m) => ({ value: m.value, label: m.label })),
+          quote: cc.quote,
+          sourceUrl: c.link_web ?? c.link_doc ?? null,
+        };
+      }),
     }),
-    [meta, stakeholders, successCases],
+    [meta, stakeholders, successCases, lang],
   );
 
   const subTabs: [SubTab, string][] = [
