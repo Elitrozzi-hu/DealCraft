@@ -77,7 +77,6 @@ const es = {
   "panel.section.context": "Contexto",
   "panel.section.stakeholders": "Stakeholders",
   "panel.sub.company": "Contexto y stakeholders del deal.",
-  "panel.sub.pains": "Puntos de dolor identificados para este deal.",
   "panel.sub.cases": "Clientes similares que ya usan Humand.",
   "panel.sub.signals":
     "Signals recientes de la empresa — liderazgo, expansión, financiamiento.",
@@ -107,7 +106,7 @@ const es = {
   "panel.sourceFallback": "fuente",
   "panel.openSourceWith": "Abrir fuente · {source}",
   "copilot.analysisTitle": "Análisis del deal",
-  "copilot.analysisSub": "Contexto, stakeholders, dolores y señales del mercado.",
+  "copilot.analysisSub": "Contexto, stakeholders y señales del mercado.",
   "copilot.materialsTitle": "Materiales de venta",
   "copilot.materialsSub":
     "Personalizados para este deal. Revisá y descargá antes de la reunión.",
@@ -128,13 +127,6 @@ const es = {
   "stakeholders.addStakeholder": "＋ agregar stakeholder",
   "stakeholders.openSourceOf": "Abrir fuente de {name}",
   "stakeholders.sourceFirmografia": "Firmografía",
-  "pains.emptyTitle": "Sin dolores identificados",
-  "pains.emptyHint":
-    "No encontramos puntos de dolor para este deal. Podés agregar uno a mano.",
-  "pains.addPain": "＋ agregar dolor",
-  "pains.labelPlaceholder": "Punto de dolor",
-  "pains.categoryLabel": "Categoría",
-  "pains.evidencePlaceholder": "Evidencia (opcional)",
   "comps.painsOne": "{count} dolor",
   "comps.painsMany": "{count} dolores",
   "comps.modulesOne": "{count} módulo",
@@ -345,7 +337,6 @@ const en: Record<MessageKey, string> = {
   "panel.section.context": "Context",
   "panel.section.stakeholders": "Stakeholders",
   "panel.sub.company": "Deal context and stakeholders.",
-  "panel.sub.pains": "Pain points identified for this deal.",
   "panel.sub.cases": "Similar customers already using Humand.",
   "panel.sub.signals":
     "Recent company signals — leadership, expansion, funding.",
@@ -375,7 +366,7 @@ const en: Record<MessageKey, string> = {
   "panel.sourceFallback": "source",
   "panel.openSourceWith": "Open source · {source}",
   "copilot.analysisTitle": "Deal analysis",
-  "copilot.analysisSub": "Context, stakeholders, pains, and market signals.",
+  "copilot.analysisSub": "Context, stakeholders, and market signals.",
   "copilot.materialsTitle": "Sales materials",
   "copilot.materialsSub":
     "Tailored to this deal. Review and download before the meeting.",
@@ -396,13 +387,6 @@ const en: Record<MessageKey, string> = {
   "stakeholders.addStakeholder": "＋ add stakeholder",
   "stakeholders.openSourceOf": "Open {name}'s source",
   "stakeholders.sourceFirmografia": "Firmographics",
-  "pains.emptyTitle": "No pains identified",
-  "pains.emptyHint":
-    "We found no pain points for this deal. You can add one manually.",
-  "pains.addPain": "＋ add pain",
-  "pains.labelPlaceholder": "Pain point",
-  "pains.categoryLabel": "Category",
-  "pains.evidencePlaceholder": "Evidence (optional)",
   "comps.painsOne": "{count} pain",
   "comps.painsMany": "{count} pains",
   "comps.modulesOne": "{count} module",

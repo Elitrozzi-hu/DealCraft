@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { withAuth } from './_with-auth.js';
 
-import type { Pain, Stakeholder } from "../src/types/index.js";
+import type { Stakeholder } from "../src/types/index.js";
 import { generateMaterials } from "../src/lib/server/materials-adapter.js";
 import { mapApiError } from "../src/lib/server/api-error.js";
 import { createLogger } from "../src/lib/server/logger.js";
@@ -10,7 +10,6 @@ const log = createLogger("materials");
 
 const bodySchema = z.object({
   companyName: z.string().min(1, "`companyName` is required"),
-  pains: z.array(z.custom<Pain>()).max(50),
   stakeholders: z.array(z.custom<Stakeholder>()).max(50),
   includePricing: z.boolean(),
   mrr: z.number(),

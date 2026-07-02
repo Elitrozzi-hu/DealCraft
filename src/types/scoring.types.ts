@@ -15,6 +15,5 @@ export interface Score {
   coverage: number;
   dominantId: string | null;
   si: number;
-  painsUnlocked: boolean;
   rolesUnlocked: boolean;
 }

@@ -86,9 +86,6 @@ If a source is inaccessible or returns nothing, note it and move on. Do not gues
   buyer / champion / influencer / user), email, \`sourceUrl\` (their LinkedIn profile
   or the page that lists them — null if inferred), and \`status\`. No other fields.
   Apply rules #1 and #2 strictly.
-- painPoints: 3–5 specific, evidence-based pain points Humand could solve, grounded in this
-  company's size, industry, workforce profile, and current tools — not generic HR pain.
-  Tie each to a Humand capability (centralized HR ops, internal comms, or culture).
 
 # OUTPUT LANGUAGE
 ${languageDirective(language)}

@@ -2,7 +2,6 @@ import type {
   Deal,
   DealSearchResult,
   LeadDeal,
-  Pain,
   ProvenancedValue,
   Role,
   StageKey,
@@ -14,7 +13,6 @@ import {
   enrichmentResultSchema,
   type NormalizedEnrichment,
 } from "../enrichment/result-schema.js";
-import { SOLUTION_GRAPH, UNMAPPED_TAXONOMY } from "../constants.js";
 const ROLE_MAP: Record<string, Role> = {
   Champion: "Champion",
   "Decision Maker": "Decision Maker",
@@ -46,72 +44,6 @@ export function toStakeholders(data: NormalizedEnrichment): Stakeholder[] {
     validated: s.prov.status === "validated",
     linkedinUrl: s.linkedinUrl ?? undefined,
     sourceUrl: s.prov.url,
-  }));
-}
-
-/** Attempt case-insensitive substring match against SOLUTION_GRAPH keys. */
-export function resolveTaxonomy(value: string): { taxonomy: string; module: string | null } {
-  const lower = value.toLowerCase();
-  for (const key of Object.keys(SOLUTION_GRAPH) as (keyof typeof SOLUTION_GRAPH)[]) {
-    if (lower.includes(key.toLowerCase()) || key.toLowerCase().includes(lower)) {
-      return { taxonomy: key, module: SOLUTION_GRAPH[key] };
-    }
-  }
-  return { taxonomy: UNMAPPED_TAXONOMY, module: null };
-}
-
-/**
- * Build synthetic `Pain[]` from the CRM deal's declared fields.
- * Pain items are prepended before LLM-inferred pains so they sort first.
- */
-export function toCrmPains(deal: LeadDeal): Pain[] {
-  const items: Pain[] = [];
-  let idx = 0;
-
-  const addPain = (label: string, taxonomy: string, module: string | null) => {
-    items.push({
-      id: `hs-p-${idx++}`,
-      label,
-      taxonomy,
-      source: "crm",
-      conf: 1,
-      evidence: "HubSpot · declarado",
-      module,
-      validated: true,
-    });
-  };
-
-  if (deal.painDetected) {
-    for (const raw of deal.painDetected.split(",")) {
-      const label = raw.trim();
-      if (label) addPain(label, UNMAPPED_TAXONOMY, null);
-    }
-  }
-
-  for (const field of [deal.modulosDeInteres]) {
-    if (!field) continue;
-    for (const raw of field.split(",")) {
-      const label = raw.trim();
-      if (!label) continue;
-      const { taxonomy, module } = resolveTaxonomy(label);
-      addPain(label, taxonomy, module);
-    }
-  }
-
-  return items;
-}
-
-export function toPains(data: NormalizedEnrichment): Pain[] {
-  return data.painPoints.map((p, i) => ({
-    id: `cl-p-${i}`,
-    label: p.label,
-    taxonomy: UNMAPPED_TAXONOMY,
-    source: "firmographic",
-    conf: p.prov.confidence,
-    evidence: `${p.prov.source} · ${p.prov.sourceType}`,
-    module: null,
-    validated: p.prov.status === "validated",
-    sourceUrl: p.prov.url,
   }));
 }
 
@@ -177,14 +109,11 @@ export function mapEnrichmentToDeal(
     },
   };
 
-  const crmPains = ctx.deal ? toCrmPains(ctx.deal) : [];
-
   return {
     resolvedName: ctx.resolvedName,
     coldStart: data.summary.prov.status === "cold",
     deal,
     stakeholders: toStakeholders(data),
-    pains: [...crmPains, ...toPains(data)],
     successCases: [],
   };
 }

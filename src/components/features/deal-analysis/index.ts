@@ -1,6 +1,5 @@
 export { AnalysisPanel, type AnalysisPanelProps } from "./analysis-panel";
 export { CompsBlock, type CompsBlockProps } from "./comps-block";
-export { PainsBlock, type PainsBlockProps } from "./pains-block";
 export {
   PreCallBriefBlock,
   type PreCallBriefBlockProps,

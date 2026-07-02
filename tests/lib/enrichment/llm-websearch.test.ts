@@ -118,7 +118,6 @@ describe("llm-websearch normalize", () => {
       { name: null, title: "CFO", decisionRole: null, email: null, sourceUrl: null, status: "inferred" },
       { name: null, title: null, decisionRole: null, email: null, sourceUrl: null, status: "cold" },
     ],
-    painPoints: [],
   };
 
   it("replaces an empty summary with the '—' cold placeholder", () => {

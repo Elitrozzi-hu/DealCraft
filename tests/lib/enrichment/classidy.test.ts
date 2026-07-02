@@ -178,6 +178,5 @@ describe("classidy normalize", () => {
     expect(out.workforcePercentage).toBeNull();
     expect(out.headcount).toBeNull();
     expect(out.stakeholders).toEqual([]);
-    expect(out.painPoints).toEqual([]);
   });
 });

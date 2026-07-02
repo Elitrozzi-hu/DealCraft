@@ -60,12 +60,6 @@ export const enrichmentResultSchema = z.object({
       prov: provenanceSchema,
     }),
   ),
-  painPoints: z.array(
-    z.object({
-      label: z.string(),
-      prov: provenanceSchema,
-    }),
-  ),
 });
 
 export type NormalizedEnrichment = z.infer<typeof enrichmentResultSchema>;

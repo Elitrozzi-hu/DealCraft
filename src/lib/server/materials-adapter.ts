@@ -19,12 +19,8 @@ export async function generateMaterials(
 ): Promise<MaterialsResult> {
   void getProviderConfig(); // seam: LLM creds resolved server-side only
 
-  const { companyName, pains, stakeholders } = req;
+  const { companyName, stakeholders } = req;
   const company = companyName.split(" — ")[0];
-  const valid = pains.filter((p) => p.validated);
-  const modules = [
-    ...new Set(pains.filter((p) => p.module).map((p) => p.module as string)),
-  ];
   const champ = stakeholders.find((s) => s.role === "Champion");
   const champName = champ?.name?.split(" ")[0] ?? "el champion";
 
@@ -59,20 +55,9 @@ export async function generateMaterials(
       type: "paragraph",
       text: "Resumen + próximos pasos. Al enviarlo se dispara el re-análisis.",
     },
-    { type: "subheading", text: "Dolores confirmados" },
-    ...(valid.length
-      ? valid.map(
-          (p): MaterialBlock => ({ type: "item", text: `· ${p.label}` }),
-        )
-      : ([
-          { type: "empty", text: "Validá dolores para poblar el recap." },
-        ] satisfies MaterialBlock[])),
     { type: "subheading", text: "Próximos pasos" },
     { type: "item", text: "· Sumar al decisor económico (CFO / MD)" },
-    {
-      type: "item",
-      text: `· Demo con Operaciones sobre ${modules[0] ?? "el módulo dominante"}`,
-    },
+    { type: "item", text: "· Demo con Operaciones" },
     { type: "item", text: "· Fijar fecha tentativa de propuesta" },
   ];
 
@@ -82,10 +67,7 @@ export async function generateMaterials(
       title: "Presentación",
       sub: "client-facing · gated",
       clientFacing: true,
-      tag: {
-        label: valid.length ? "gated" : "sin data validada",
-        tone: valid.length ? "ok" : "inferred",
-      },
+      tag: { label: "gated", tone: "ok" },
       blocks: presentation,
     },
     {
