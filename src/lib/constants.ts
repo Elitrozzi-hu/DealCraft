@@ -106,3 +106,8 @@ export const ROLES: Role[] = [
 /** Derive a market segment from a headcount. */
 export const segmentOf = (headcount: number): Segment =>
   headcount >= 1000 ? "Enterprise" : headcount >= 200 ? "Mid-Market" : "SMB";
+
+/** Pre-call-brief always calls GLaDOS' tiny tier, regardless of `LLM_PROVIDER`. */
+export const PRE_CALL_BRIEF_PROVIDER = "glados" as const;
+export const PRE_CALL_BRIEF_TIER = "tiny" as const;
+export const PRE_CALL_BRIEF_ATTRIBUTION_TAG = "pre-call-brief:generate" as const;

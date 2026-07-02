@@ -2,6 +2,11 @@ import { generate, type GenerationUsage } from "../llm/generate.js";
 import { preCallBriefSchema } from "../llm/generations/pre-call-brief/structured-output.js";
 import { renderPreCallBriefPrompt } from "../llm/generations/pre-call-brief/prompt.js";
 import { createLogger } from "./logger.js";
+import {
+  PRE_CALL_BRIEF_ATTRIBUTION_TAG,
+  PRE_CALL_BRIEF_PROVIDER,
+  PRE_CALL_BRIEF_TIER,
+} from "../constants.js";
 import type { PreCallBriefRequest, PreCallBriefResult } from "../../types/index.js";
 
 const log = createLogger("pre-call-brief");
@@ -22,6 +27,9 @@ export async function generatePreCallBrief(
     schema: preCallBriefSchema,
     system: renderPreCallBriefPrompt(req),
     prompt: "",
+    provider: PRE_CALL_BRIEF_PROVIDER,
+    tier: PRE_CALL_BRIEF_TIER,
+    attributionTag: PRE_CALL_BRIEF_ATTRIBUTION_TAG,
     gladosToken,
     onUsage: (u) => {
       usage = u;
@@ -31,6 +39,7 @@ export async function generatePreCallBrief(
   log.info("pre-call-brief complete", {
     durationMs: Date.now() - t0,
     hypotheses: result.hypotheses.length,
+    provider: usage?.provider,
     model: usage?.model,
     inputTokens: usage?.inputTokens,
     outputTokens: usage?.outputTokens,

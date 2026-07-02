@@ -5,7 +5,7 @@ import { generatePreCallBrief } from "../src/lib/server/pre-call-brief-adapter.j
 import { mapApiError } from "../src/lib/server/api-error.js";
 import { createLogger } from "../src/lib/server/logger.js";
 import { getGladosToken } from "../src/lib/server/glados-auth.js";
-import { LLM_PROVIDER } from "../src/lib/server/env.js";
+import { PRE_CALL_BRIEF_PROVIDER } from "../src/lib/constants.js";
 
 // Single structured LLM call (no web search) — default route timeout is enough.
 
@@ -55,12 +55,11 @@ export default withAuth(async (req, res, _session) => {
 
   const t0 = Date.now();
   try {
-    const gladosToken = LLM_PROVIDER === "glados"
-      ? await getGladosToken(req, res)
-      : undefined;
+    const gladosToken = await getGladosToken(req, res);
     const result = await generatePreCallBrief(parsed.data, gladosToken);
     log
       .event("pre-call-brief.request")
+      .set("provider", PRE_CALL_BRIEF_PROVIDER)
       .set("status", 200)
       .set("durationMs", Date.now() - t0)
       .set("count", result.hypotheses.length)
@@ -68,11 +67,30 @@ export default withAuth(async (req, res, _session) => {
     res.status(200).json(result);
   } catch (err) {
     const { status, error } = mapApiError(err, {
+      rules: (e) => {
+        if (!(e instanceof Error) || !("statusCode" in e) || !("detail" in e)) return undefined;
+        const code = (e as { detail?: { error?: { code?: string } } }).detail?.error?.code;
+        switch (code) {
+          case "scope_insufficient":
+            return { status: 403, error: "glados_scope_insufficient" };
+          case "validation_error":
+            return { status: 400, error: "glados_validation_error" };
+          case "spend_limit_exceeded":
+            return { status: 402, error: "glados_spend_limit_exceeded" };
+          case "jwt_expired":
+            return { status: 401, error: "glados_jwt_expired" };
+          case "all_providers_failed":
+            return { status: 502, error: "glados_all_providers_failed" };
+          default:
+            return undefined;
+        }
+      },
       upstreamLabel: "Pre-call brief",
       fallback: "Pre-call brief generation failed",
     });
     const ev = log
       .event("pre-call-brief.request")
+      .set("provider", PRE_CALL_BRIEF_PROVIDER)
       .set("status", status)
       .set("durationMs", Date.now() - t0);
     if (status >= 500) ev.setError(err);
