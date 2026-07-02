@@ -13,9 +13,7 @@
     }
   },
   "rewrites": [
-    {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/error", "destination": "/index.html" }
   ]
 }
