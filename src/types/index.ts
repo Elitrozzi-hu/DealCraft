@@ -6,7 +6,6 @@
 export * from "./provenance.types.js";
 export * from "./stage.types.js";
 export * from "./stakeholder.types.js";
-export * from "./pain.types.js";
 export * from "./deal.types.js";
 export * from "./scoring.types.js";
 export * from "./success-case.types.js";

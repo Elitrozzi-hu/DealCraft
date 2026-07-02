@@ -93,14 +93,6 @@ const cassidyRawSchema = z
         }),
       )
       .nullish(),
-    "Company Pain Points": z
-      .array(
-        z.object({
-          "Pain Point": z.string().nullish(),
-          "Provenance Metadata": rawProvSchema,
-        }),
-      )
-      .nullish(),
   })
   .passthrough();
 
@@ -209,12 +201,6 @@ export function normalize(raw: CassidyRaw): NormalizedEnrichment {
             ? s["LinkedIn URL"]
             : null,
         prov: toProv(s["Provenance Metadata"]),
-      })),
-    painPoints: (raw["Company Pain Points"] ?? [])
-      .filter((p) => typeof p["Pain Point"] === "string" && p["Pain Point"]!.trim())
-      .map((p) => ({
-        label: p["Pain Point"] as string,
-        prov: toProv(p["Provenance Metadata"]),
       })),
   };
 }

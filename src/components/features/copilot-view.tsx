@@ -6,7 +6,6 @@ import type {
   Language,
   PublishedSuccessCase,
   MaterialsRequest,
-  Pain,
   Segment,
   StageKey,
   Stakeholder,
@@ -35,7 +34,6 @@ export interface ActiveMeta {
 export interface CopilotViewProps {
   deal: Deal;
   stakeholders: Stakeholder[];
-  pains: Pain[];
   stage: StageKey;
   resolvedName: string;
   coldStart: boolean;
@@ -52,7 +50,6 @@ export interface CopilotViewProps {
 export function CopilotView({
   deal,
   stakeholders,
-  pains,
   stage,
   resolvedName,
   coldStart,
@@ -65,7 +62,7 @@ export function CopilotView({
   const narrow = useIsNarrow();
   const t = useT();
   const headcount = activeMeta ? activeMeta.headcount : deal.firmographics.headcount;
-  const ds = useDealState({ stakeholders, pains, stage });
+  const ds = useDealState({ stakeholders, stage });
   const materials = useMaterials();
 
   const includePricing = true;
@@ -93,9 +90,6 @@ export function CopilotView({
   };
 
   const { generate } = materials;
-  const painsKey = ds.pains
-    .map((p) => `${p.id}:${p.validated ? 1 : 0}:${p.module ?? ""}`)
-    .join("|");
   const stakeholdersKey = ds.stakeholders
     .map((s) => `${s.id}:${s.role}`)
     .join("|");
@@ -105,7 +99,6 @@ export function CopilotView({
   useEffect(() => {
     const req: MaterialsRequest = {
       companyName: resolvedName,
-      pains: ds.pains,
       stakeholders: ds.stakeholders,
       includePricing,
       mrr,
@@ -118,7 +111,6 @@ export function CopilotView({
     includePricing,
     mrr,
     mrrConfirmed,
-    painsKey,
     stakeholdersKey,
   ]);
   const [deckConfig, setDeckConfig] = useState<DeckRequest>(() => ({
@@ -139,7 +131,6 @@ export function CopilotView({
   const retryMaterials = () =>
     void generate({
       companyName: resolvedName,
-      pains: ds.pains,
       stakeholders: ds.stakeholders,
       includePricing,
       mrr,
@@ -179,10 +170,6 @@ export function CopilotView({
               onAddStakeholder={ds.addStakeholder}
               onUpdateStakeholder={ds.updateStakeholder}
               onRemoveStakeholder={ds.removeStakeholder}
-              pains={ds.pains}
-              onValidatePain={ds.validatePain}
-              onAddPain={ds.addPain}
-              onRemovePain={ds.removePain}
               successCases={successCases}
             />
           </div>

@@ -64,12 +64,6 @@ export const llmResearchOutputSchema = z.object({
       status: z.enum(["validated", "inferred", "cold"]),
     }),
   ),
-  painPoints: z.array(
-    z.object({
-      painPoint: z.string(),
-      provenance: llmProvenanceSchema,
-    }),
-  ),
 });
 
 export type LlmResearchOutput = z.infer<typeof llmResearchOutputSchema>;

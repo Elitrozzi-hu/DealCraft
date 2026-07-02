@@ -187,9 +187,6 @@ export function normalize(out: LlmResearchOutput): NormalizedEnrichment {
         email: s.email ?? null,
         prov: stakeholderProv(s.sourceUrl, s.status),
       })),
-    painPoints: out.painPoints
-      .filter((p) => p.painPoint.trim())
-      .map((p) => ({ label: p.painPoint, prov: fromLlmProv(p.provenance) })),
   };
 }
 
@@ -242,7 +239,6 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
 
     log.debug("extraction done", {
       stakeholders: extracted.stakeholders.length,
-      painPoints: extracted.painPoints.length,
       techItems: extracted.techStack.length,
     });
 

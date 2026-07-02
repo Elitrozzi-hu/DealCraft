@@ -4,8 +4,6 @@ import type {
   DealMeta,
   Language,
   PublishedSuccessCase,
-  Pain,
-  PainDraft,
   Provenance,
   Stakeholder,
   StakeholderDraft,
@@ -22,7 +20,6 @@ import {
 } from "@/components/ui";
 import { useLanguage, useT, type MessageKey } from "@/i18n";
 import { CompsBlock } from "./comps-block";
-import { PainsBlock } from "./pains-block";
 import { PreCallBriefBlock } from "./pre-call-brief-block";
 import { SignalsBlock } from "./signals-block";
 import { StakeholdersBlock } from "./stakeholders-block";
@@ -40,14 +37,10 @@ export interface AnalysisPanelProps {
   onAddStakeholder: (draft: StakeholderDraft) => void;
   onUpdateStakeholder: (id: string, patch: Partial<StakeholderDraft>) => void;
   onRemoveStakeholder: (id: string) => void;
-  pains: Pain[];
-  onValidatePain: (id: string) => void;
-  onAddPain: (draft: PainDraft) => void;
-  onRemovePain: (id: string) => void;
   successCases: PublishedSuccessCase[];
 }
 
-type SubTab = "empresa" | "dolores" | "intel" | "signals" | "brief";
+type SubTab = "empresa" | "intel" | "signals" | "brief";
 
 const kLabelCls = "text-[10px] font-bold uppercase tracking-wide text-cold";
 
@@ -173,10 +166,6 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
     onAddStakeholder,
     onUpdateStakeholder,
     onRemoveStakeholder,
-    pains,
-    onValidatePain,
-    onAddPain,
-    onRemovePain,
     successCases,
   } = props;
 
@@ -215,7 +204,6 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
 
   const subTabs: [SubTab, string][] = [
     ["empresa", `${t("panel.tab.company")} · ${stakeholders.length}`],
-    ["dolores", `${t("panel.tab.pains")} · ${pains.length}`],
     [
       "intel",
       successCases.length > 0
@@ -238,13 +226,11 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   const subSub =
     sub === "empresa"
       ? t("panel.sub.company")
-      : sub === "dolores"
-        ? t("panel.sub.pains")
-        : sub === "intel"
-          ? t("panel.sub.cases")
-          : sub === "signals"
-            ? t("panel.sub.signals")
-            : t("panel.sub.brief");
+      : sub === "intel"
+        ? t("panel.sub.cases")
+        : sub === "signals"
+          ? t("panel.sub.signals")
+          : t("panel.sub.brief");
 
   return (
     <div className="grid gap-3">
@@ -395,17 +381,6 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             />
           </Section>
         </>
-      )}
-
-      {sub === "dolores" && (
-        <Section title={t("panel.tab.pains")}>
-          <PainsBlock
-            pains={pains}
-            onValidate={onValidatePain}
-            onAdd={onAddPain}
-            onRemove={onRemovePain}
-          />
-        </Section>
       )}
 
       {sub === "intel" && (

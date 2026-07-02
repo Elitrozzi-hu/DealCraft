@@ -52,13 +52,6 @@ export const mockEnrichmentProvider: EnrichmentProvider = {
             prov: prov("inferred"),
           },
         ],
-        painPoints: [
-          {
-            label: "Fragmented frontline communication",
-            prov: prov("inferred"),
-          },
-          { label: "Slow onboarding for new hires", prov: prov("inferred") },
-        ],
       },
       raw: { mock: true, input },
     };

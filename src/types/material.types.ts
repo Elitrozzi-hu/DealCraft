@@ -1,6 +1,5 @@
 
 
-import type { Pain } from "./pain.types";
 import type { Stakeholder } from "./stakeholder.types";
 
 export type MaterialKey = "pres" | "pre" | "post";
@@ -33,7 +32,6 @@ export interface Material {
 
 export interface MaterialsRequest {
   companyName: string;
-  pains: Pain[];
   stakeholders: Stakeholder[];
   includePricing: boolean;
   mrr: number;

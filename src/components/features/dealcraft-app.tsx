@@ -5,7 +5,6 @@ import type {
   DealSearchResult,
   Language,
   PublishedSuccessCase,
-  Pain,
   RecentDeal,
   StageKey,
   Stakeholder,
@@ -13,7 +12,6 @@ import type {
 import {
   MOCK_DEAL,
   MOCK_INITIAL_QUERY,
-  MOCK_PAINS,
   MOCK_STAKEHOLDERS,
 } from "@/lib/fixtures";
 import { Button, Card, Wordmark } from "@/components/ui";
@@ -28,7 +26,6 @@ type View = "input" | "searching" | "copilot";
 interface CopilotSession {
   deal: Deal;
   stakeholders: Stakeholder[];
-  pains: Pain[];
   stage: StageKey;
   resolvedName: string;
 coldStart: boolean;
@@ -82,7 +79,6 @@ export function DealCraftApp() {
     setSession({
       deal: result.deal,
       stakeholders: result.stakeholders,
-      pains: result.pains,
       stage: result.deal.stage,
       resolvedName: result.resolvedName,
       coldStart: result.coldStart,
@@ -100,7 +96,6 @@ export function DealCraftApp() {
     setSession({
       deal: MOCK_DEAL,
       stakeholders: MOCK_STAKEHOLDERS,
-      pains: MOCK_PAINS,
       stage: h.stageKey,
       resolvedName: h.name,
       coldStart: false,
@@ -177,7 +172,6 @@ export function DealCraftApp() {
       key={sessionKey}
       deal={session.deal}
       stakeholders={session.stakeholders}
-      pains={session.pains}
       stage={session.stage}
       resolvedName={session.resolvedName}
       coldStart={session.coldStart}

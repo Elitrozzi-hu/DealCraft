@@ -5,12 +5,10 @@
 import type {
   Deal,
   DealSearchRequest,
-  Pain,
   RecentDeal,
   SearchExample,
   Stakeholder,
 } from "@/types";
-import { SOLUTION_GRAPH } from "@/lib/constants";
 
 export const MOCK_INITIAL_QUERY: DealSearchRequest = {
   name: "Distribuidora Patagonia",
@@ -148,51 +146,6 @@ export const MOCK_STAKEHOLDERS: Stakeholder[] = [
     conf: 0.5,
     source: "firmographic",
     evidence: "Aprueba presupuesto. Sin engagement — gap crítico.",
-    validated: false,
-  },
-];
-
-export const MOCK_PAINS: Pain[] = [
-  {
-    id: "p1",
-    label: "Comunicación fragmentada con el frontline",
-    taxonomy: "Comunicación interna",
-    source: "call",
-    conf: 0.88,
-    evidence:
-      "«No tenemos forma de saber si un comunicado llegó a los choferes» — Diego, 17/06",
-    module: SOLUTION_GRAPH["Comunicación interna"],
-    validated: true,
-  },
-  {
-    id: "p2",
-    label: "Onboarding lento de operarios en los nuevos CDs",
-    taxonomy: "Onboarding / Capacitación",
-    source: "firmographic",
-    conf: 0.66,
-    evidence:
-      "Inferido del spike de hiring + apertura de 2 CDs. Sin confirmar en call.",
-    module: SOLUTION_GRAPH["Onboarding / Capacitación"],
-    validated: false,
-  },
-  {
-    id: "p3",
-    label: "Sin canal para clima/feedback del deskless",
-    taxonomy: "Clima / Engagement",
-    source: "firmographic",
-    conf: 0.6,
-    evidence: "Inferido del mandato de la CHRO. Hipótesis.",
-    module: SOLUTION_GRAPH["Clima / Engagement"],
-    validated: false,
-  },
-  {
-    id: "p4",
-    label: "Procesos de RRHH en papel (recibos, vacaciones)",
-    taxonomy: "Autogestión / Documentos",
-    source: "firmographic",
-    conf: 0.52,
-    evidence: "Inferido del HRIS legacy. Baja evidencia.",
-    module: SOLUTION_GRAPH["Autogestión / Documentos"],
     validated: false,
   },
 ];

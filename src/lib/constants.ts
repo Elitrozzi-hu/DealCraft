@@ -1,5 +1,5 @@
 
-import type { Language, Role, Segment, Stage, StageKey, Taxonomy } from "@/types";
+import type { Language, Role, Segment, Stage, StageKey } from "@/types";
 
 export const LANGUAGES: readonly Language[] = ["es", "en"];
 export const DEFAULT_LANGUAGE: Language = "es";
@@ -76,24 +76,6 @@ const LIFECYCLE_TO_STAGE: Record<string, StageKey> = {
 export const lifecycleStageToStageKey = (
   stage: string | null | undefined,
 ): StageKey => LIFECYCLE_TO_STAGE[stage?.trim().toLowerCase() ?? ""] ?? "lead";
-
-export const SOLUTION_GRAPH: Record<Taxonomy, string> = {
-  "Comunicación interna": "Comunicación (Feed + segmentación + acuse de lectura)",
-  "Onboarding / Capacitación": "Onboarding journeys + Capacitaciones",
-  "Clima / Engagement": "Encuestas de clima + pulse",
-  "Autogestión / Documentos": "Documentos + firma digital + autogestión",
-  Reconocimiento: "Reconocimientos + badges",
-  "Seguridad / Compliance": "Comunicados obligatorios + acuse + checklist",
-  Beneficios: "Beneficios + marketplace",
-};
-
-export const TAXONOMIES: Taxonomy[] = Object.keys(SOLUTION_GRAPH) as Taxonomy[];
-
-export const UNMAPPED_TAXONOMY = "Otro (no mapeado)";
-
-/** Resolve a taxonomy label to a Humand module, or `null` when unmapped. */
-export const resolveModule = (t: string): string | null =>
-  (SOLUTION_GRAPH as Record<string, string>)[t] ?? null;
 
 export const ROLES: Role[] = [
   "Champion",
