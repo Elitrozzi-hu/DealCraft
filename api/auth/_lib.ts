@@ -13,14 +13,21 @@ import {
   revokeToken,
   COOKIE_OPTS,
 } from './_token-base.js';
+import {
+  HUMAND_CLIENT_ID,
+  APP_CALLBACK_URL as APP_CALLBACK_URL_ENV,
+  JANUS_URL as JANUS_URL_ENV,
+  HUMAND_AUDIENCE as HUMAND_AUDIENCE_ENV,
+  NODE_ENV,
+} from '../../src/lib/server/env.js';
 
 export type { TokenSet, JwtPayload, Session };
 export { buildClearCookies, buildTokenCookies, parseCookies, refreshTokens, resolveSession, revokeToken };
 
-const CLIENT_ID = process.env.HUMAND_CLIENT_ID!;
-const APP_CALLBACK_URL = process.env.APP_CALLBACK_URL!;
-const JANUS_URL = process.env.JANUS_URL!;
-const HUMAND_AUDIENCE = process.env.HUMAND_AUDIENCE!;
+const CLIENT_ID = HUMAND_CLIENT_ID!;
+const APP_CALLBACK_URL = APP_CALLBACK_URL_ENV!;
+const JANUS_URL = JANUS_URL_ENV!;
+const HUMAND_AUDIENCE = HUMAND_AUDIENCE_ENV!;
 
 export const PKCE_COOKIE = 'hu_pkce';
 
@@ -40,7 +47,7 @@ export function generatePKCE() {
 }
 
 export function buildPKCECookie(verifier: string, state: string): string {
-  const PKCE_OPTS = `HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/; Max-Age=300`;
+  const PKCE_OPTS = `HttpOnly; ${NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/; Max-Age=300`;
   return `${PKCE_COOKIE}=${verifier}|${state}; ${PKCE_OPTS}`;
 }
 

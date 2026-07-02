@@ -4,14 +4,22 @@
  * Refresh: silent renewal on expired access_token; redirect to /login on missing refresh_token.
  */
 
-const JANUS_URL = process.env.JANUS_URL!;
-const CLIENT_ID = process.env.HUMAND_CLIENT_ID!;
-const CLIENT_SECRET = process.env.HUMAND_CLIENT_SECRET!;
-const HUMAND_AUDIENCE = process.env.HUMAND_AUDIENCE!;
+import {
+  JANUS_URL as JANUS_URL_ENV,
+  HUMAND_CLIENT_ID,
+  HUMAND_CLIENT_SECRET,
+  HUMAND_AUDIENCE as HUMAND_AUDIENCE_ENV,
+  NODE_ENV,
+} from '../../src/lib/server/env.js';
+
+const JANUS_URL = JANUS_URL_ENV!;
+const CLIENT_ID = HUMAND_CLIENT_ID!;
+const CLIENT_SECRET = HUMAND_CLIENT_SECRET!;
+const HUMAND_AUDIENCE = HUMAND_AUDIENCE_ENV!;
 
 export const COOKIE_ACCESS = 'hu_access_token';
 export const COOKIE_REFRESH = 'hu_refresh_token';
-export const COOKIE_OPTS = `HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/`;
+export const COOKIE_OPTS = `HttpOnly; ${NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/`;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 

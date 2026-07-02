@@ -4,12 +4,13 @@ import {
   JANUS_URL,
   HUMAND_CLIENT_ID,
   HUMAND_CLIENT_SECRET,
+  NODE_ENV,
 } from './env.js';
 
 const COOKIE_GLADOS  = 'hu_glados_token';
 const COOKIE_REFRESH = 'hu_refresh_token';
-const GLADOS_COOKIE_OPTS  = `HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/api/glados`;
-const REFRESH_COOKIE_OPTS = `HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/`;
+const GLADOS_COOKIE_OPTS  = `HttpOnly; ${NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/api`;
+const REFRESH_COOKIE_OPTS = `HttpOnly; ${NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/`;
 
 function parseCookies(req: VercelRequest): Record<string, string> {
   const raw = (req.headers.cookie as string | undefined) ?? '';
@@ -39,7 +40,7 @@ function decodeGladosToken(raw: string | undefined): string | null {
 
 /**
  * Extracts or refreshes the GLaDOS access token from the incoming request's
- * cookies, then caches it in `hu_glados_token` (scoped to /api/glados) and
+ * cookies, then caches it in `hu_glados_token` (scoped to /api) and
  * rotates `hu_refresh_token`. Call this from any BFF function before making
  * server-side GLaDOS requests (i.e. when LLM_PROVIDER=glados).
  */

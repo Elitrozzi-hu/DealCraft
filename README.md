@@ -122,7 +122,7 @@ var to switch implementations.
 | --------------------------------- | ----------------------------------------------------------------------- |
 | `OPENROUTER_API_KEY`              | OpenRouter API key (LLM calls). **Required** for real LLM output.       |
 | `OPENROUTER_MODEL`                | Default model id, e.g. `google/gemini-2.5-flash`.                       |
-| `LLM_PROVIDER`                    | Active LLM provider. Only `openrouter` is implemented.                  |
+| `LLM_PROVIDER`                    | Active LLM provider: `openrouter` \| `glados`.                          |
 | `ENRICHMENT_PROVIDER`             | `llm-websearch` \| `classidy` \| `lusha` \| `mock`.                     |
 | `ENRICHMENT_LLM_PROVIDER`         | LLM used by the `llm-websearch` enrichment (defaults to `openrouter`).  |
 | `CLASSIDY_WEBHOOK_URL` / `CLASSIDY_API_KEY` | Cassidy enrichment workflow webhook + key.                   |
@@ -153,8 +153,11 @@ src/
   App.tsx               <QueryClientProvider><BrowserRouter><Routes>  ("/" → DealCraftApp)
   index.css             Tailwind v4 @import + @theme; Geist font vars
   lib/
-    llm/                generate() abstraction over OpenRouter; named LLM tasks
-                        live in generations/<task>/ (prompt.ts + structured-output.ts)
+    llm/                generate() abstraction: generate.ts (dispatcher) +
+                        registry.ts (getGenerationProvider()) + providers/
+                        (openrouter, glados) + types.ts (shared contracts).
+                        Named LLM tasks live in generations/<task>/
+                        (prompt.ts + structured-output.ts)
     enrichment/         provider registry (llm-websearch, classidy, lusha, mock)
                         + NormalizedEnrichment zod contract + provenance helpers
     crm/                getCrmProvider() registry (hubspot, mock); HubSpot deal lookup
