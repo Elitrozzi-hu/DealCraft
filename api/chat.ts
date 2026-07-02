@@ -5,7 +5,7 @@ import { generate } from "../src/lib/llm/generate.js";
 import type { LlmProvider } from "../src/lib/llm/registry.js";
 import { mapApiError } from "../src/lib/server/api-error.js";
 import { createLogger } from "../src/lib/server/logger.js";
-import { getGladosToken } from "../src/lib/server/glados-auth.js";
+import { getGladosTokenIfNeeded } from "../src/lib/server/glados-auth.js";
 import { LLM_PROVIDER } from "../src/lib/server/env.js";
 
 export const config = { maxDuration: 60 };
@@ -50,9 +50,7 @@ export default withAuth(async (req, res, _session) => {
     .set("provider", effectiveProvider);
   const t0 = Date.now();
   try {
-    const gladosToken = effectiveProvider === "glados"
-      ? await getGladosToken(req, res)
-      : undefined;
+    const gladosToken = await getGladosTokenIfNeeded(req, res, effectiveProvider);
     const text = await generate({
       provider: provider as LlmProvider | undefined,
       model,

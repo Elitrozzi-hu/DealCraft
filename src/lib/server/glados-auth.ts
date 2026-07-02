@@ -95,3 +95,17 @@ export async function getGladosToken(
 
   return access_token;
 }
+
+/**
+ * Fetches a GLaDOS token only when the resolved provider is `"glados"`.
+ * Lets BFF handlers call this unconditionally without needing to know
+ * which providers require a pre-fetched token.
+ */
+export async function getGladosTokenIfNeeded(
+  req: VercelRequest,
+  res: VercelResponse,
+  provider: string,
+): Promise<string | undefined> {
+  if (provider !== 'glados') return undefined;
+  return getGladosToken(req, res);
+}

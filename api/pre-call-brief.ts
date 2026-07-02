@@ -4,7 +4,7 @@ import { withAuth } from './_with-auth.js';
 import { generatePreCallBrief } from "../src/lib/server/pre-call-brief-adapter.js";
 import { mapApiError } from "../src/lib/server/api-error.js";
 import { createLogger } from "../src/lib/server/logger.js";
-import { getGladosToken } from "../src/lib/server/glados-auth.js";
+import { getGladosTokenIfNeeded } from "../src/lib/server/glados-auth.js";
 import { PRE_CALL_BRIEF_PROVIDER } from "../src/lib/constants.js";
 
 // Single structured LLM call (no web search) — default route timeout is enough.
@@ -55,7 +55,7 @@ export default withAuth(async (req, res, _session) => {
 
   const t0 = Date.now();
   try {
-    const gladosToken = await getGladosToken(req, res);
+    const gladosToken = await getGladosTokenIfNeeded(req, res, PRE_CALL_BRIEF_PROVIDER);
     const result = await generatePreCallBrief(parsed.data, gladosToken);
     log
       .event("pre-call-brief.request")
