@@ -31,6 +31,8 @@ export const NOTION_WEBHOOK_TOKEN = process.env.NOTION_WEBHOOK_TOKEN;
 export const JANUS_URL = process.env.JANUS_URL;
 export const HUMAND_CLIENT_ID = process.env.HUMAND_CLIENT_ID;
 export const HUMAND_CLIENT_SECRET = process.env.HUMAND_CLIENT_SECRET;
+export const APP_CALLBACK_URL = process.env.APP_CALLBACK_URL;
+export const HUMAND_AUDIENCE = process.env.HUMAND_AUDIENCE;
 
 // --- CRM (pre-existing seam) ---
 export const CRM_PROVIDER = process.env.CRM_PROVIDER;

@@ -4,12 +4,13 @@ import {
   JANUS_URL,
   HUMAND_CLIENT_ID,
   HUMAND_CLIENT_SECRET,
+  NODE_ENV,
 } from './env.js';
 
 const COOKIE_GLADOS  = 'hu_glados_token';
 const COOKIE_REFRESH = 'hu_refresh_token';
-const GLADOS_COOKIE_OPTS  = `HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/api`;
-const REFRESH_COOKIE_OPTS = `HttpOnly; ${process.env.NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/`;
+const GLADOS_COOKIE_OPTS  = `HttpOnly; ${NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/api`;
+const REFRESH_COOKIE_OPTS = `HttpOnly; ${NODE_ENV === 'production' ? 'Secure; ' : ''}SameSite=Lax; Path=/`;
 
 function parseCookies(req: VercelRequest): Record<string, string> {
   const raw = (req.headers.cookie as string | undefined) ?? '';
