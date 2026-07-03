@@ -61,7 +61,7 @@ const es = {
   "landing.contactFallback": "Contacto",
   "landing.noContact": "Sin contacto",
   "landing.dealUnnamed": "Deal sin nombre",
-  "landing.noDeals": "Sin deals asociados — continuar sin deal",
+  "landing.noDeals": "Sin deals asociados — cargá el deal en HubSpot antes de continuar",
   "landing.pickDeal": "Elegí un deal",
 
   // ── deal header + analysis panel + copilot ────────────────────────────────
@@ -503,7 +503,7 @@ const en: Record<MessageKey, string> = {
   "landing.contactFallback": "Contact",
   "landing.noContact": "No contact",
   "landing.dealUnnamed": "Unnamed deal",
-  "landing.noDeals": "No associated deals — continue without a deal",
+  "landing.noDeals": "No associated deals — add the deal in HubSpot before continuing",
   "landing.pickDeal": "Pick a deal",
 
   // ── deal header + analysis panel + copilot ────────────────────────────────

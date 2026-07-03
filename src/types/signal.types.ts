@@ -33,6 +33,9 @@ export interface SignalItem {
 export interface SignalsRequest {
   company: string;
   domain: string;
+  /** HubSpot deal id, when known — lets the BFF resolve the stored `deal_analysis`
+   *  row the same way `/api/deals/search` does, instead of by company name alone. */
+  hubspotDealId?: string | null;
   language?: Language;
 }
 

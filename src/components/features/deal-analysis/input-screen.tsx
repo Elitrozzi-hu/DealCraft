@@ -86,8 +86,8 @@ const CandidateCard = memo(function CandidateCard({
     </>
   );
 
-  if (!multiple) {
-    const deal = single ? c.deals[0] : undefined;
+  if (single) {
+    const deal = c.deals[0];
     return (
       <button
         type="button"
@@ -95,21 +95,28 @@ const CandidateCard = memo(function CandidateCard({
         className="flex flex-col gap-2 rounded-2xl border border-line bg-panel p-3.5 text-left transition-all hover:border-violet/50 hover:shadow-[0_4px_16px_rgba(44,90,246,0.10)]"
       >
         {context}
-        {single ? (
-          <div className="rounded-xl border border-line bg-surface px-2.5 py-2 text-[12px]">
-            <div className="font-semibold">
-              {c.deals[0].name ?? t("landing.dealUnnamed")}
-            </div>
-            <div className="mt-0.5 text-cold">
-              {(c.deals[0].stageLabel ?? "—") +
-                " · " +
-                formatAmount(c.deals[0].amount, lang)}
-            </div>
+        <div className="rounded-xl border border-line bg-surface px-2.5 py-2 text-[12px]">
+          <div className="font-semibold">
+            {c.deals[0].name ?? t("landing.dealUnnamed")}
           </div>
-        ) : (
-          <div className="text-[11px] text-cold">{t("landing.noDeals")}</div>
-        )}
+          <div className="mt-0.5 text-cold">
+            {(c.deals[0].stageLabel ?? "—") +
+              " · " +
+              formatAmount(c.deals[0].amount, lang)}
+          </div>
+        </div>
       </button>
+    );
+  }
+
+  if (!multiple) {
+    // No associated HubSpot deal — DealCraft only analyzes an actual deal, so
+    // this contact is shown for context but can't be picked.
+    return (
+      <div className="flex cursor-not-allowed flex-col gap-2 rounded-2xl border border-line bg-panel p-3.5 text-left opacity-60">
+        {context}
+        <div className="text-[11px] text-cold">{t("landing.noDeals")}</div>
+      </div>
     );
   }
 

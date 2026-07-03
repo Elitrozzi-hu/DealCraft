@@ -16,16 +16,7 @@ import {
   type NormalizedProvenance,
 } from "../result-schema.js";
 
-// Classidy (Cassidy): a synchronous third-party enrichment workflow. One request
-// in, the enriched result in the same response body — no job store, status
-// endpoint, or callbacks. This file is the ONLY place that encodes the Classidy
-// contract: the webhook request body, Cassidy's raw response shape, and the
-// normalization into the shared `NormalizedEnrichment` shape (see
-// `lib/enrichment/result-schema.ts`, which mirrors `company-enrichment-schema.json`).
 
-// --- Webhook request body --------------------------------------------------
-// Cassidy expects exactly these four fields (NOT our internal `EnrichmentInput`
-// field names). Mapping our input → this body is the single request seam.
 interface ClassidyRequestBody {
   jobTitle: string | null;
   contactEmail: string | null;
@@ -245,6 +236,7 @@ export const classidyProvider: EnrichmentProvider = {
       provider: "classidy",
       data,
       raw,
+      usage: [],
     };
   },
 };

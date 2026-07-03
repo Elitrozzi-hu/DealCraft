@@ -52,7 +52,7 @@ function toTech(data: NormalizedEnrichment): TechItem[] {
 }
 
 
-function toIndustry(deal: LeadDeal | undefined): ProvenancedValue {
+export function toIndustry(deal: LeadDeal | undefined): ProvenancedValue {
   return deal?.industry
     ? {
         value: deal.industry,
@@ -100,6 +100,7 @@ export function mapEnrichmentToDeal(
       techProv: data.techStack.prov,
     },
     hubspot: {
+      dealId: ctx.deal?.id ?? null,
       dealStage: ctx.deal?.stageLabel ?? "",
       amount: ctx.deal?.amount ?? null,
       lastActivity: "",
@@ -115,5 +116,7 @@ export function mapEnrichmentToDeal(
     deal,
     stakeholders: toStakeholders(data),
     successCases: [],
+    signals: null,
+    preCallBrief: null,
   };
 }

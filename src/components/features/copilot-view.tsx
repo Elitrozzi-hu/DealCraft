@@ -4,9 +4,11 @@ import type {
   DealMeta,
   DeckRequest,
   Language,
+  PreCallBrief,
   PublishedSuccessCase,
   MaterialsRequest,
   Segment,
+  SignalItem,
   StageKey,
   Stakeholder,
 } from "@/types";
@@ -81,6 +83,8 @@ export interface CopilotViewProps {
   activeMeta: ActiveMeta | null;
   website: string;
   successCases: PublishedSuccessCase[];
+  initialSignals: SignalItem[] | null;
+  initialBrief: PreCallBrief | null;
   /** Language the analysis content was generated in (drives the stale-language note). */
   contentLanguage: Language;
   /** Back to the input screen (triggered by the DealCraft wordmark). */
@@ -96,6 +100,8 @@ export function CopilotView({
   activeMeta,
   website,
   successCases,
+  initialSignals,
+  initialBrief,
   contentLanguage,
   onBack,
 }: CopilotViewProps) {
@@ -212,6 +218,8 @@ export function CopilotView({
               onUpdateStakeholder={ds.updateStakeholder}
               onRemoveStakeholder={ds.removeStakeholder}
               successCases={successCases}
+              initialSignals={initialSignals}
+              initialBrief={initialBrief}
             />
           </div>
 

@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { generate } from "../../llm/generate.js";
 import { LUSHA_API_KEY } from "../../server/env.js";
 import { createLogger } from "../../server/logger.js";
 import {
@@ -11,10 +10,7 @@ import {
 } from "../result-schema.js";
 import type { EnrichmentInput, EnrichmentProvider } from "../types.js";
 
-// This file is the ONLY place that encodes the Lusha vendor contract: endpoint
-// URLs, authentication, request/response shapes, credit flow, and the mapping
-// into the shared `NormalizedEnrichment` shape. Nothing outside this file knows
-// about the Lusha API.
+
 
 const log = createLogger("lusha");
 
@@ -27,13 +23,6 @@ const API_PROV: NormalizedProvenance = {
   sourceType: "api",
   confidence: 0.9,
   status: "validated",
-};
-
-const LLM_PROV: NormalizedProvenance = {
-  source: "lusha/llm",
-  sourceType: "inferido",
-  confidence: 0.5,
-  status: "inferred",
 };
 
 // ─── Cost tracking ────────────────────────────────────────────────────────────
@@ -50,9 +39,6 @@ interface LushaCost {
     emailReveals: number;
     total: number;
   };
-  llmTokens: { input: number; output: number };
-  /** USD cost of the LLM call used to generate painPoints (null if not reported). */
-  llmCostUsd: number | null;
   wallClockMs: number;
 }
 
@@ -189,11 +175,6 @@ const contactSearchEnrichResponseSchema = z.object({
   requestId: z.string().nullish(),
   results: z.array(contactResultSchema).nullish(),
   billing: billingSchema.nullish(),
-});
-
-// LLM pain points schema
-const painPointsSchema = z.object({
-  painPoints: z.array(z.string()),
 });
 
 // ─── Inferred types ───────────────────────────────────────────────────────────
@@ -342,75 +323,12 @@ async function findContacts(
   return { ...r, method: "decision-makers" };
 }
 
-// ─── Step 4: Generate pain points via LLM ────────────────────────────────────
-
-function extractIntentTopics(intent: unknown): string {
-  if (!intent) return "";
-  if (typeof intent === "string") return intent;
-  if (Array.isArray(intent)) {
-    return intent.filter((t) => typeof t === "string").join(", ");
-  }
-  if (typeof intent === "object" && intent !== null) {
-    const obj = intent as Record<string, unknown>;
-    const topics = obj.topics ?? obj.items;
-    if (Array.isArray(topics)) {
-      return topics.filter((t) => typeof t === "string").join(", ");
-    }
-  }
-  return "";
-}
-
-async function generatePainPoints(
-  description: string | null | undefined,
-  intent: unknown,
-): Promise<{ labels: string[]; tokens: { input: number; output: number }; llmCostUsd: number | null }> {
-  const intentStr = extractIntentTopics(intent);
-
-  const parts: string[] = [];
-  if (description) parts.push(`Company description: ${description}`);
-  if (intentStr) parts.push(`Purchase intent signals: ${intentStr}`);
-
-  const system =
-    "You are a B2B sales analyst specializing in HR-tech and workforce software. " +
-    "Given a company description and purchase intent signals, list 3-5 concise pain " +
-    "points that an HR/workforce platform like Humand could address. " +
-    "Each pain point must be a single actionable sentence in English.";
-
-  const prompt = parts.length > 0 ? parts.join("\n\n") : "Generate generic HR pain points.";
-
-  let tokens = { input: 0, output: 0 };
-  let llmCostUsd: number | null = null;
-  try {
-    const result = await generate({
-      schema: painPointsSchema,
-      system,
-      prompt,
-      onUsage: (u) => {
-        tokens = { input: u.inputTokens ?? 0, output: u.outputTokens ?? 0 };
-        llmCostUsd = u.costUsd ?? null;
-      },
-    });
-    return { labels: result.painPoints, tokens, llmCostUsd };
-  } catch (err) {
-    // Model failed to produce structured output (e.g. no description/intent data).
-    // Return empty rather than crashing the whole enrichment.
-    log.warn("Lusha pain points generation failed, returning empty", {
-      error: err instanceof Error ? err.message : String(err),
-    });
-    return { labels: [], tokens, llmCostUsd };
-  }
-}
-
 // ─── Normalize ────────────────────────────────────────────────────────────────
 
 // Email confidence rank (A+ is best). Used to pick the highest-confidence email.
 const CONFIDENCE_RANK: Record<string, number> = { "A+": 5, A: 4, B: 3, C: 2, D: 1 };
 
-function normalize(
-  company: LushaCompany,
-  contacts: LushaContact[],
-  painPointLabels: string[],
-): NormalizedEnrichment {
+function normalize(company: LushaCompany, contacts: LushaContact[]): NormalizedEnrichment {
   const summary = company.description
     ? { value: company.description, prov: API_PROV }
     : { value: "", prov: coldProv("Lusha") };
@@ -475,8 +393,6 @@ function normalize(
     };
   });
 
-  const painPoints = painPointLabels.map((label) => ({ label, prov: LLM_PROV }));
-
   return enrichmentResultSchema.parse({
     summary,
     region,
@@ -484,7 +400,6 @@ function normalize(
     headcount,
     techStack,
     stakeholders,
-    painPoints,
   });
 }
 
@@ -528,19 +443,8 @@ export const lushaProvider: EnrichmentProvider = {
       creditsCharged: contactCredits,
     });
 
-    // 4. Generate pain points via LLM
-    const { labels: painPointLabels, tokens: llmTokens, llmCostUsd } = await generatePainPoints(
-      company.description,
-      company.intent,
-    );
-    log.debug("Lusha pain points generated", {
-      count: painPointLabels.length,
-      inputTokens: llmTokens.input,
-      outputTokens: llmTokens.output,
-    });
-
-    // 5. Normalize
-    const normalized = normalize(company, contacts, painPointLabels);
+    // 4. Normalize
+    const normalized = normalize(company, contacts);
 
     const wallClockMs = Date.now() - start;
     const totalCredits = searchCredits + enrichCredits + contactCredits;
@@ -552,15 +456,12 @@ export const lushaProvider: EnrichmentProvider = {
         emailReveals,
         total: totalCredits,
       },
-      llmTokens,
-      llmCostUsd,
       wallClockMs,
     };
 
     log.info("Lusha enrichment complete", {
       domain,
       totalCredits,
-      llmCostUsd,
       wallClockMs,
     });
 
@@ -569,6 +470,7 @@ export const lushaProvider: EnrichmentProvider = {
       data: normalized,
       raw: { search: searchRaw, enrich: enrichRaw, contacts: contactRaw },
       meta: { cost },
+      usage: [],
     };
   },
 };

@@ -6,6 +6,8 @@ import type { StageKey } from "./stage.types";
 import type { Stakeholder } from "./stakeholder.types";
 import type { LeadDeal } from "./lead.types";
 import type { PublishedSuccessCase } from "./success-case.types";
+import type { SignalsResult } from "./signal.types";
+import type { PreCallBrief } from "./pre-call-brief.types";
 
 export interface EntityCandidate {
   name: string;
@@ -47,6 +49,7 @@ export interface Firmographics {
 }
 
 export interface HubspotSnapshot {
+  dealId: string | null;
   dealStage: string;
   amount: number | null;
   lastActivity: string;
@@ -91,6 +94,7 @@ export interface DealSearchRequest {
   enrichmentProvider?: string;
   benchmark?: boolean;
   language?: Language;
+  refresh?: boolean;
 }
 
 export interface DealSearchResult {
@@ -99,4 +103,6 @@ export interface DealSearchResult {
   deal: Deal;
   stakeholders: Stakeholder[];
   successCases: PublishedSuccessCase[];
+  signals: SignalsResult | null;
+  preCallBrief: PreCallBrief | null;
 }

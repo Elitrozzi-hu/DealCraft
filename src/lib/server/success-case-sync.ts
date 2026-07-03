@@ -79,7 +79,7 @@ export async function syncSuccessCaseFromNotion(
     ...validated,
     synced_at: new Date().toISOString(),
   };
-  upsertSuccessCase(record);
+  await upsertSuccessCase(record);
 
   return {
     slug: record.slug,

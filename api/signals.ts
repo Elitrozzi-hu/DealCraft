@@ -13,6 +13,7 @@ const log = createLogger("signals/route");
 const bodySchema = z.object({
   company: z.string().trim().min(1, "`company` is required"),
   domain: z.string().trim().optional().default(""),
+  hubspotDealId: z.string().trim().min(1).nullish(),
   language: z.enum(["es", "en"]).optional().default("es"),
 });
 
@@ -36,6 +37,7 @@ export default withAuth(async (req, res, _session) => {
       parsed.data.company,
       parsed.data.domain,
       parsed.data.language,
+      parsed.data.hubspotDealId ?? null,
     );
     log
       .event("signals.request")

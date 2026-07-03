@@ -4,8 +4,10 @@ import type {
   DealSearchRequest,
   DealSearchResult,
   Language,
+  PreCallBrief,
   PublishedSuccessCase,
   RecentDeal,
+  SignalItem,
   StageKey,
   Stakeholder,
 } from "@/types";
@@ -32,6 +34,8 @@ coldStart: boolean;
   activeMeta: ActiveMeta | null;
   website: string;
   successCases: PublishedSuccessCase[];
+  initialSignals: SignalItem[] | null;
+  initialBrief: PreCallBrief | null;
   language: Language;
 }
 
@@ -85,6 +89,8 @@ export function DealCraftApp() {
       activeMeta: null,
       website,
       successCases: result.successCases ?? [],
+      initialSignals: result.signals?.signals ?? null,
+      initialBrief: result.preCallBrief,
       language,
     });
     setSessionKey((k) => k + 1);
@@ -102,6 +108,8 @@ export function DealCraftApp() {
       activeMeta: historyToActiveMeta(h),
       website: historyToActiveMeta(h).website,
       successCases: [],
+      initialSignals: null,
+      initialBrief: null,
       // History replays static fixtures (not a fresh generation), so pin to the
       // current app language to avoid a dead-end stale-language note.
       language: lang,
@@ -178,6 +186,8 @@ export function DealCraftApp() {
       activeMeta={session.activeMeta}
       website={session.website}
       successCases={session.successCases}
+      initialSignals={session.initialSignals}
+      initialBrief={session.initialBrief}
       contentLanguage={session.language}
       onBack={onNewSearch}
     />

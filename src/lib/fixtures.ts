@@ -94,6 +94,7 @@ export const MOCK_DEAL: Deal = {
     },
   },
   hubspot: {
+    dealId: "hs-demo-1",
     dealStage: "Champion identified",
     amount: 28800,
     lastActivity: "2026-06-17 · call de discovery (37 min)",

@@ -34,6 +34,7 @@ Built as a **Vite + React Router SPA** with **Vercel serverless functions**
 | AI        | Vercel AI SDK (`ai` v6) + `@openrouter/ai-sdk-provider`, `zod` v4   |
 | Data      | `@tanstack/react-query` (provider mounted; hooks still use `fetch`) |
 | CRM       | `@hubspot/api-client` (runs only inside `api/*` functions)          |
+| Persistence | Supabase Postgres (`@supabase/supabase-js`, server-only)          |
 | PPTX      | `jszip` (token-fill of a `.pptx` template)                          |
 | Tests     | **Vitest 4** unit suite (`tests/`) over the highest-risk pure logic |
 
@@ -94,8 +95,11 @@ bun run test:watch # Vitest in watch mode
 A **Vitest 4** unit suite lives in `tests/`, mirroring `src/` (e.g.
 `tests/lib/server/enrichment-to-deal.test.ts`). It deliberately targets only the
 highest-risk **pure logic** — enrichment normalization (`classidy`,
-`llm-websearch`) and the `enrichment-to-deal` adapter — with no LLM/CRM/network
-calls and no component rendering.
+`llm-websearch`), the `enrichment-to-deal` adapter, the persistence
+registry/mock provider, `success-cases-reader`'s industry matching, and
+`deals-adapter`'s cold/reopen/refresh branches — with no LLM/CRM/DB/network
+calls and no component rendering. DB-touching behavior is verified against the
+`mock` persistence provider, never a real Supabase project.
 
 ```bash
 bun run test        # run the suite once (vitest run)
@@ -131,10 +135,14 @@ var to switch implementations.
 | `CRM_PROVIDER`                    | `hubspot` \| `mock`.                                                     |
 | `HUBSPOT_ACCESS_TOKEN`            | HubSpot token (server-side). Required when `CRM_PROVIDER=hubspot`.       |
 | `NOTION_WEBHOOK_TOKEN`            | Shared secret expected in the `token` header of the Notion webhook.     |
+| `PERSISTENCE_PROVIDER`            | `supabase` (default) \| `mock`.                                          |
+| `SUPABASE_URL`                    | Supabase project URL. Required when `PERSISTENCE_PROVIDER=supabase`.    |
+| `SUPABASE_SERVICE_ROLE_KEY`       | Supabase `service_role` key (server-only, bypasses RLS). Never expose to the client. |
 | `LOG_LEVEL`                       | `debug` \| `info` \| `warn` \| `error` \| `silent`. Dev default: `debug`.|
 | `LOG_FORMAT`                      | `pretty` (dev) \| `json` (prod).                                         |
 
-> Set every provider to its `mock` value to run the whole flow with no external
+> Set every provider to its `mock` value (including `PERSISTENCE_PROVIDER=mock`,
+> an in-memory store — no DB needed) to run the whole flow with no external
 > credentials. (Note: there is no `mock` LLM provider — chat/materials/signals/
 > pre-call-brief need a real `OPENROUTER_API_KEY`.)
 
@@ -162,6 +170,10 @@ src/
                         + NormalizedEnrichment zod contract + provenance helpers
     crm/                getCrmProvider() registry (hubspot, mock); HubSpot deal lookup
     ppt/                {{token}}-fill pipeline that builds the .pptx
+    persistence/        getPersistenceProvider() registry (supabase, mock); types.ts =
+                        DB-agnostic PersistenceProvider interface; company-key.ts =
+                        shared company_key normalization; providers/supabase.ts +
+                        providers/supabase.database.types.ts (generated)
     server/             server-side adapters; env.ts (only process.env reader), logger.ts
     api-client.ts       client → BFF calls (plain fetch)
   types/index.ts        barrel over all *.types.ts — always import via @/types
@@ -172,7 +184,11 @@ api/                    Vercel serverless functions (@vercel/node, (req,res)):
                         chat, materials, generate-ppt, deals/search, leads/search,
                         signals, pre-call-brief, notion-webhook/success-cases
 vercel.json             framework=vite, outputDirectory=dist, per-fn includeFiles
-deck-assets/, data/     runtime assets read via process.cwd() (stay at project root)
+supabase/migrations/    deal, deal_analysis, success_case, llm_call + RPC functions
+                        (applied via the Supabase MCP; see CLAUDE.md)
+deck-assets/, data/     runtime assets read via process.cwd() (stay at project root);
+                        data/success-cases.json is now only a seed source, not read
+                        at request time — see success-cases-reader.ts
 ```
 
 ### Key conventions
@@ -180,7 +196,7 @@ deck-assets/, data/     runtime assets read via process.cwd() (stay at project r
   resolve `@/lib/...` via the same tsconfig path.
 - **No `import "server-only"`** — it would crash the Vercel functions. The
   client/server boundary is by convention: only `api/*` imports
-  `@/lib/{server,llm,enrichment,crm,ppt}`; the frontend imports only
+  `@/lib/{server,llm,enrichment,crm,ppt,persistence}`; the frontend imports only
   `@/lib/api-client`, `@/lib/constants`, `@/lib/fixtures`, `@/types`. Unit tests
   under `tests/` are exempt (Node-only, never bundled).
 - **Add or swap a provider = one file + one registry line.** Unknown provider → 400.
@@ -204,11 +220,18 @@ For the full architecture and rules, read `CLAUDE.md`.
 - **Long-running functions** (`export const config = { maxDuration }`): `deals/search`
   & `notion-webhook` = 300 (Cassidy can take minutes); `signals` = 120. 300s needs a
   Vercel Pro/Enterprise plan.
-- **Runtime assets** (`deck-assets/templates/*.pptx`, `data/success-cases.json`) stay
-  at the project root and are bundled for deploy via `vercel.json` `includeFiles`.
-  Note: `deck-assets/` is gitignored (won't reach a git-based deploy), and the Notion
-  webhook's file write won't persist on Vercel's read-only filesystem.
+- **Runtime assets**: `deck-assets/templates/*.pptx` stays at the project root and is
+  bundled for deploy via `vercel.json` `includeFiles` (still gitignored — won't reach
+  a git-based deploy). `data/success-cases.json` is now only a **one-time seed
+  source** — reads/writes go through `getPersistenceProvider()`, not the filesystem,
+  so it's no longer bundled either.
 - `hubspot-deals.ts` filters BDR-pipeline deals.
+- **Persistence**: `POST /api/deals/search` skips re-running enrichment for a company
+  it's already analyzed (a "reopen") unless the request sets `refresh: true`. RLS is
+  enabled on all 4 Supabase tables with **zero policies** — only the BFF's
+  `service_role` key can read/write; the frontend never holds a Supabase key.
+  Migrations are applied via the Supabase MCP (`apply_migration`), not the CLI — see
+  `CLAUDE.md` for why and for the full persistence-layer breakdown.
 
 ---
 

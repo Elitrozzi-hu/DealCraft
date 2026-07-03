@@ -14,6 +14,18 @@ export interface GenerationUsage {
   citations?: number;
   citationUrls?: string[];
 }
+export type LlmTask = "company-research" | "company-signals" | "pre-call-brief" | "chat";
+
+export interface LlmUsageEntry {
+  callId: string;
+  task: LlmTask;
+  provider: string;
+  model: string;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  totalTokens: number | null;
+  costUsd: number | null;
+}
 
 export interface GenerationResponse {
   object?: unknown;
