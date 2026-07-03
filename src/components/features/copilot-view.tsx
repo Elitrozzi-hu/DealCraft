@@ -19,8 +19,48 @@ import {
   AnalysisPanel,
   DealHeader,
 } from "@/components/features/deal-analysis";
+import { DiscoveryPanel } from "@/components/features/discovery";
 import { MaterialsPanel } from "@/components/features/materials";
 import { useT } from "@/i18n";
+
+function MaterialsGlyph() {
+  return (
+    <svg
+      width={16}
+      height={16}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className="flex-shrink-0"
+    >
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+      <path d="M8 21h8M12 17v4" />
+    </svg>
+  );
+}
+
+function DiscoveryGlyph() {
+  return (
+    <svg
+      width={16}
+      height={16}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className="flex-shrink-0"
+    >
+      <path d="M21 11.5a8.4 8.4 0 0 1-11.8 7.7L3 21l1.9-5.7A8.4 8.4 0 1 1 21 11.5z" />
+    </svg>
+  );
+}
 
 /** Firmographics overridden when a deal is opened from history. */
 export interface ActiveMeta {
@@ -61,6 +101,7 @@ export function CopilotView({
 }: CopilotViewProps) {
   const narrow = useIsNarrow();
   const t = useT();
+  const [rightTab, setRightTab] = useState<"materials" | "discovery">("materials");
   const headcount = activeMeta ? activeMeta.headcount : deal.firmographics.headcount;
   const ds = useDealState({ stakeholders, stage });
   const materials = useMaterials();
@@ -176,24 +217,59 @@ export function CopilotView({
 
           <div className="grid content-start gap-4">
             <div>
-              <div className="text-[17px] font-extrabold tracking-tight">
-                {t("copilot.materialsTitle")}
+              <div className="mb-3">
+                <div className="text-[17px] font-extrabold tracking-tight">
+                  {t("copilot.resourcesTitle")}
+                </div>
+                <div className="text-[13px] text-cold">
+                  {t("copilot.resourcesSub")}
+                </div>
               </div>
-              <div className="text-[13px] text-cold">
-                {t("copilot.materialsSub")}
+              <div
+                role="tablist"
+                className="inline-flex w-fit gap-1 rounded-2xl bg-surface p-1.5"
+              >
+                {(["materials", "discovery"] as const).map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    role="tab"
+                    aria-selected={rightTab === key}
+                    onClick={() => setRightTab(key)}
+                    className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/50 ${
+                      rightTab === key
+                        ? "bg-violet text-white shadow-[0_2px_8px_rgba(44,90,246,0.25)]"
+                        : "text-cold hover:bg-cold-soft hover:text-ink"
+                    }`}
+                  >
+                    {key === "materials" ? <MaterialsGlyph /> : <DiscoveryGlyph />}
+                    {key === "materials"
+                      ? t("copilot.materialsTitle")
+                      : t("discovery.header.title")}
+                  </button>
+                ))}
               </div>
             </div>
-            <Card pad="md">
-              <MaterialsPanel
-                materials={materials.materials}
-                status={materials.status}
-                error={materials.error}
-                includePricing={includePricing}
-                deckConfig={deckConfig}
-                onDeckConfigChange={setDeckConfig}
-                onRetry={retryMaterials}
-              />
-            </Card>
+
+            {rightTab === "materials" && (
+              <Card
+                pad="md"
+                title={t("copilot.materialsTitle")}
+                sub={t("copilot.materialsSub")}
+              >
+                <MaterialsPanel
+                  materials={materials.materials}
+                  status={materials.status}
+                  error={materials.error}
+                  includePricing={includePricing}
+                  deckConfig={deckConfig}
+                  onDeckConfigChange={setDeckConfig}
+                  onRetry={retryMaterials}
+                />
+              </Card>
+            )}
+
+            {rightTab === "discovery" && <DiscoveryPanel />}
           </div>
         </div>
       </div>
