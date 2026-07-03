@@ -38,6 +38,9 @@ export interface PreCallStakeholder {
 /** BFF request contract for `POST /api/pre-call-brief`. */
 export interface PreCallBriefRequest {
   company: string;
+  /** HubSpot deal id, when known — lets the BFF resolve the stored `deal_analysis`
+   *  row the same way `/api/deals/search` does, instead of by company name alone. */
+  hubspotDealId?: string | null;
   industry: string;
   region: string;
   headcount: string;

@@ -1,7 +1,10 @@
+import { randomUUID } from "node:crypto";
+
 import { z } from "zod";
 
 import { generate, type GenerationUsage } from "../../llm/generate.js";
 import type { LlmProvider } from "../../llm/registry.js";
+import type { LlmUsageEntry } from "../../llm/types.js";
 import { ENRICHMENT_LLM_PROVIDER } from "../../server/env.js";
 import {
   llmResearchOutputSchema,
@@ -210,6 +213,8 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
     if (options.searchPrompt) plugin.search_prompt = options.searchPrompt;
 
     const query = options.query ?? buildQuery(input);
+    const llmProvider = (ENRICHMENT_LLM_PROVIDER ?? "openrouter") as LlmProvider;
+    const callId = randomUUID();
 
     log.info("enrich started", { company: name, domain });
     const t0 = Date.now();
@@ -219,7 +224,7 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
     try {
       extracted = await generate({
         // Validated at runtime by the LLM registry (unknown key → throws).
-        provider: (ENRICHMENT_LLM_PROVIDER ?? "openrouter") as LlmProvider,
+        provider: llmProvider,
         schema: llmResearchOutputSchema,
         system: renderResearchPrompt(name, domain, language),
         prompt: query,
@@ -265,6 +270,21 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
       log.debug("citations", { urls: usage.citationUrls.slice(0, 5).join(", ") });
     }
 
+    const usageEntries: LlmUsageEntry[] = usage
+      ? [
+          {
+            callId,
+            task: "company-research",
+            provider: llmProvider,
+            model: usage.model,
+            inputTokens: usage.inputTokens ?? null,
+            outputTokens: usage.outputTokens ?? null,
+            totalTokens: usage.totalTokens ?? null,
+            costUsd: usage.costUsd ?? null,
+          },
+        ]
+      : [];
+
     return {
       provider: "llm-websearch",
       data: enrichmentResultSchema.parse(data),
@@ -275,6 +295,7 @@ export const llmWebSearchProvider: EnrichmentProvider<WebSearchOptions> = {
         outputTokens: usage?.outputTokens ?? null,
         durationMs: Date.now() - t0,
       },
+      usage: usageEntries,
     };
   },
 };

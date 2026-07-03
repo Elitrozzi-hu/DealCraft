@@ -4,12 +4,6 @@
   "functions": {
     "api/generate-ppt.ts": {
       "includeFiles": "deck-assets/templates/**"
-    },
-    "api/deals/search.ts": {
-      "includeFiles": "data/success-cases.json"
-    },
-    "api/notion-webhook/success-cases.ts": {
-      "includeFiles": "data/success-cases.json"
     }
   },
   "rewrites": [

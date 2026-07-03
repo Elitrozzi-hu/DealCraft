@@ -4,10 +4,7 @@ import type {
   EnrichmentResult,
 } from "../types.js";
 
-// Deterministic, offline enrichment provider for smoke-testing the deals flow
-// without spending vendor calls. Returns a fixed payload in the Classidy
-// structured-output shape (see `company-enrichment-schema.json`, provenance
-// without `timestamp`) so it flows through the same mapper as the real provider.
+
 const prov = (status: "validated" | "inferred" | "cold") => ({
   source: "Mock",
   sourceType: "mock",
@@ -54,6 +51,7 @@ export const mockEnrichmentProvider: EnrichmentProvider = {
         ],
       },
       raw: { mock: true, input },
+      usage: [],
     };
   },
 };

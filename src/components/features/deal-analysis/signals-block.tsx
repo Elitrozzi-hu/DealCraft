@@ -15,6 +15,7 @@ type Phase =
 export interface SignalsBlockProps {
   company: string;
   domain: string;
+  hubspotDealId: string | null;
   onCountChange: (count: number | null) => void;
 }
 
@@ -140,7 +141,7 @@ function SignalCard({ signal }: { signal: SignalItem }) {
 
 // --- Main component ---
 
-export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockProps) {
+export function SignalsBlock({ company, domain, hubspotDealId, onCountChange }: SignalsBlockProps) {
   const t = useT();
   const { lang } = useLanguage();
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
@@ -176,13 +177,13 @@ export function SignalsBlock({ company, domain, onCountChange }: SignalsBlockPro
     setPhase({ kind: "loading" });
     setStepIdx(0);
     try {
-      const result = await searchSignals({ company, domain, language: lang });
+      const result = await searchSignals({ company, domain, hubspotDealId, language: lang });
       setPhase({ kind: "done", signals: result.signals, lang });
     } catch (err) {
       const message = err instanceof Error ? err.message : t("common.unknownError");
       setPhase({ kind: "error", message });
     }
-  }, [company, domain, lang, t]);
+  }, [company, domain, hubspotDealId, lang, t]);
 
   // --- Idle ---
   if (phase.kind === "idle") {

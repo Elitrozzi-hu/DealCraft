@@ -31,6 +31,7 @@ const comparableCaseSchema = z.object({
 
 const bodySchema = z.object({
   company: z.string().trim().min(1, "`company` is required"),
+  hubspotDealId: z.string().trim().min(1).nullish(),
   industry: z.string().trim().optional().default(""),
   region: z.string().trim().optional().default(""),
   headcount: z.string().trim().optional().default(""),
@@ -56,7 +57,10 @@ export default withAuth(async (req, res, _session) => {
   const t0 = Date.now();
   try {
     const gladosToken = await getGladosTokenIfNeeded(req, res, PRE_CALL_BRIEF_PROVIDER);
-    const result = await generatePreCallBrief(parsed.data, gladosToken);
+    const result = await generatePreCallBrief(
+      { ...parsed.data, hubspotDealId: parsed.data.hubspotDealId ?? null },
+      gladosToken,
+    );
     log
       .event("pre-call-brief.request")
       .set("provider", PRE_CALL_BRIEF_PROVIDER)

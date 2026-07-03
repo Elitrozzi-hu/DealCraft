@@ -39,6 +39,12 @@ export const CRM_PROVIDER = process.env.CRM_PROVIDER;
 /** HubSpot access token (server-only); passed directly as the SDK's `accessToken` bearer. */
 export const HUBSPOT_ACCESS_TOKEN = process.env.HUBSPOT_ACCESS_TOKEN;
 
+// --- Persistence (Supabase) ---
+export const SUPABASE_URL = process.env.SUPABASE_URL;
+/** service_role key (server-only) — bypasses RLS; never exposed to the client. */
+export const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+export const PERSISTENCE_PROVIDER = process.env.PERSISTENCE_PROVIDER;
+
 // --- Logging ---
 /** Minimum level the logger emits: `debug | info | warn | error | silent`.
  *  `silent` turns logging off. Default (resolved in `logger.ts`): `info` in

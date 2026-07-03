@@ -2,6 +2,7 @@
 
 import type { Language } from "../../types/index.js";
 
+import type { LlmUsageEntry } from "../llm/types.js";
 import type { NormalizedEnrichment } from "./result-schema.js";
 
 
@@ -19,6 +20,7 @@ export interface EnrichmentResult {
   data: NormalizedEnrichment;
   raw?: unknown;
   meta?: Record<string, unknown>;
+  usage: LlmUsageEntry[];
 }
 
 export interface EnrichmentProvider<Options = unknown> {

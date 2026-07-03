@@ -182,6 +182,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   const briefRequest = useMemo<PreCallBriefRequest>(
     () => ({
       company: meta.name,
+      hubspotDealId: deal.hubspot.dealId,
       industry: meta.industry,
       region: meta.region,
       headcount: meta.headcount != null ? String(meta.headcount) : "",
@@ -203,7 +204,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         };
       }),
     }),
-    [meta, stakeholders, successCases, lang],
+    [meta, deal.hubspot.dealId, stakeholders, successCases, lang],
   );
 
   const subTabs: [SubTab, string][] = [
@@ -394,6 +395,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
           <SignalsBlock
             company={deal.entity.resolved}
             domain={meta.website}
+            hubspotDealId={deal.hubspot.dealId}
             onCountChange={setSignalCount}
           />
         </Section>

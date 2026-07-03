@@ -47,6 +47,7 @@ export interface Firmographics {
 }
 
 export interface HubspotSnapshot {
+  dealId: string | null;
   dealStage: string;
   amount: number | null;
   lastActivity: string;
@@ -91,6 +92,7 @@ export interface DealSearchRequest {
   enrichmentProvider?: string;
   benchmark?: boolean;
   language?: Language;
+  refresh?: boolean;
 }
 
 export interface DealSearchResult {

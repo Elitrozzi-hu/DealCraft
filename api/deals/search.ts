@@ -3,7 +3,7 @@ import { withAuth } from '../_with-auth.js';
 
 import type { LeadDeal } from "../../src/types/index.js";
 import { mapApiError, type ApiError } from "../../src/lib/server/api-error.js";
-import { enrichDeal } from "../../src/lib/server/deals-adapter.js";
+import { enrichDeal, NoAssociatedDealError } from "../../src/lib/server/deals-adapter.js";
 import { createLogger } from "../../src/lib/server/logger.js";
 
 // Cassidy's synchronous workflow can take several minutes; allow the function to
@@ -25,6 +25,7 @@ const bodySchema = z.object({
   enrichmentProvider: z.string().optional(),
   benchmark: z.boolean().optional(),
   language: z.enum(["es", "en"]).optional().default("es"),
+  refresh: z.boolean().optional().default(false),
 });
 
 export default withAuth(async (req, res, _session) => {
@@ -68,6 +69,9 @@ export default withAuth(async (req, res, _session) => {
 });
 
 function enrichRules(err: unknown): ApiError | undefined {
+  if (err instanceof NoAssociatedDealError) {
+    return { status: 400, error: err.message };
+  }
   if (err instanceof Error) {
     if (err.message.includes("CLASSIDY_WEBHOOK_URL is not set")) {
       return { status: 502, error: "Enrichment provider is not configured." };
