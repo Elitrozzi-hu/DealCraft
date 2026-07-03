@@ -186,7 +186,6 @@ api/                    Vercel serverless functions (@vercel/node, (req,res)):
 vercel.json             framework=vite, outputDirectory=dist, per-fn includeFiles
 supabase/migrations/    deal, deal_analysis, success_case, llm_call + RPC functions
                         (applied via the Supabase MCP; see CLAUDE.md)
-scripts/                seed-success-cases.ts — one-time seed, `bun run seed:success-cases`
 deck-assets/, data/     runtime assets read via process.cwd() (stay at project root);
                         data/success-cases.json is now only a seed source, not read
                         at request time — see success-cases-reader.ts
@@ -224,8 +223,8 @@ For the full architecture and rules, read `CLAUDE.md`.
 - **Runtime assets**: `deck-assets/templates/*.pptx` stays at the project root and is
   bundled for deploy via `vercel.json` `includeFiles` (still gitignored — won't reach
   a git-based deploy). `data/success-cases.json` is now only a **one-time seed
-  source** (`bun run seed:success-cases`) — reads/writes go through
-  `getPersistenceProvider()`, not the filesystem, so it's no longer bundled either.
+  source** — reads/writes go through `getPersistenceProvider()`, not the filesystem,
+  so it's no longer bundled either.
 - `hubspot-deals.ts` filters BDR-pipeline deals.
 - **Persistence**: `POST /api/deals/search` skips re-running enrichment for a company
   it's already analyzed (a "reopen") unless the request sets `refresh: true`. RLS is

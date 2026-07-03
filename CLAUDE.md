@@ -11,7 +11,6 @@ TypeScript 5 (strict, no `any`), Vite 8 + React 19.2 + React Router v6, Tailwind
 - `bun run dev:full` (`vercel dev`) → full stack, http://localhost:3000
 - `bun dev` (`vite`) → frontend only, http://localhost:5173 (no `/api/*`)
 - `bun run build` / `bun run lint` / `bunx tsc --noEmit` / `bun run test`
-- `bun run seed:success-cases` — one-time idempotent seed, never called from `api/*`
 - Before saying "done": run lint + tsc + test, show output.
 - CI (`.github/workflows/test.yml`) runs lint+tsc+test on PRs to `main`.
 
