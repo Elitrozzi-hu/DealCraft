@@ -19,7 +19,7 @@ import { useLanguage, useT } from "@/i18n";
 
 // --- Types ---
 
-type Phase =
+export type BriefPhase =
   | { kind: "idle" }
   | { kind: "loading" }
   | { kind: "error"; message: string }
@@ -27,7 +27,25 @@ type Phase =
 
 export interface PreCallBriefBlockProps {
   request: PreCallBriefRequest;
+  /** Owned by the parent (`AnalysisPanel`) rather than local state, so a
+   *  freshly generated brief survives switching sub-tabs away and back —
+   *  this component would otherwise unmount and lose it. */
+  phase: BriefPhase;
+  onPhaseChange: (phase: BriefPhase) => void;
   onCountChange: (count: number | null) => void;
+}
+
+/** Initial phase for a freshly mounted panel — hydrates from a stored
+ *  analysis's brief instead of always starting idle and losing previously
+ *  generated content. `contentLanguage` is the stored analysis's generation
+ *  language, used for the hydrated phase's stale-language check. */
+export function initialBriefPhase(
+  initialBrief: PreCallBrief | null,
+  contentLanguage: Language,
+): BriefPhase {
+  return initialBrief
+    ? { kind: "done", brief: initialBrief, lang: contentLanguage }
+    : { kind: "idle" };
 }
 
 // --- Constants ---
@@ -160,11 +178,12 @@ function HypothesisCard({
 
 export function PreCallBriefBlock({
   request,
+  phase,
+  onPhaseChange,
   onCountChange,
 }: PreCallBriefBlockProps) {
   const t = useT();
   const { lang } = useLanguage();
-  const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const [stepIdx, setStepIdx] = useState(0);
   const buildSteps = useMemo(() => [
     t("brief.build.profile"),
@@ -192,7 +211,7 @@ export function PreCallBriefBlock({
   }, [phase, onCountChange]);
 
   const handleBuild = useCallback(async () => {
-    setPhase({ kind: "loading" });
+    onPhaseChange({ kind: "loading" });
     setStepIdx(0);
     try {
       const briefLang = request.language ?? lang;
@@ -200,12 +219,12 @@ export function PreCallBriefBlock({
         ...request,
         language: briefLang,
       });
-      setPhase({ kind: "done", brief, lang: briefLang });
+      onPhaseChange({ kind: "done", brief, lang: briefLang });
     } catch (err) {
       const message = err instanceof Error ? err.message : t("common.unknownError");
-      setPhase({ kind: "error", message });
+      onPhaseChange({ kind: "error", message });
     }
-  }, [request, lang, t]);
+  }, [request, lang, t, onPhaseChange]);
 
   // --- Idle ---
   if (phase.kind === "idle") {

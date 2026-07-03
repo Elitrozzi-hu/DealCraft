@@ -3,8 +3,10 @@ import type {
   Deal,
   DealMeta,
   Language,
+  PreCallBrief,
   PublishedSuccessCase,
   Provenance,
+  SignalItem,
   Stakeholder,
   StakeholderDraft,
   TechKind,
@@ -19,8 +21,8 @@ import {
 } from "@/components/ui";
 import { useLanguage, useT, type MessageKey } from "@/i18n";
 import { CompsBlock } from "./comps-block";
-import { PreCallBriefBlock } from "./pre-call-brief-block";
-import { SignalsBlock } from "./signals-block";
+import { initialBriefPhase, PreCallBriefBlock, type BriefPhase } from "./pre-call-brief-block";
+import { initialSignalsPhase, SignalsBlock, type SignalsPhase } from "./signals-block";
 import { StakeholdersBlock } from "./stakeholders-block";
 import type { PreCallBriefRequest } from "@/types";
 
@@ -37,6 +39,8 @@ export interface AnalysisPanelProps {
   onUpdateStakeholder: (id: string, patch: Partial<StakeholderDraft>) => void;
   onRemoveStakeholder: (id: string) => void;
   successCases: PublishedSuccessCase[];
+  initialSignals: SignalItem[] | null;
+  initialBrief: PreCallBrief | null;
 }
 
 type SubTab = "empresa" | "intel" | "signals" | "brief";
@@ -171,6 +175,8 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
     onUpdateStakeholder,
     onRemoveStakeholder,
     successCases,
+    initialSignals,
+    initialBrief,
   } = props;
 
   const t = useT();
@@ -179,6 +185,16 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   const [sub, setSub] = useState<SubTab>("empresa");
   const [signalCount, setSignalCount] = useState<number | null>(null);
   const [briefCount, setBriefCount] = useState<number | null>(null);
+  // Owned here (not inside SignalsBlock/PreCallBriefBlock) so switching
+  // sub-tabs away and back doesn't lose a freshly generated result — those
+  // blocks only render while their sub-tab is active, so local state would
+  // be discarded on unmount.
+  const [signalsPhase, setSignalsPhase] = useState<SignalsPhase>(() =>
+    initialSignalsPhase(initialSignals, contentLanguage),
+  );
+  const [briefPhase, setBriefPhase] = useState<BriefPhase>(() =>
+    initialBriefPhase(initialBrief, contentLanguage),
+  );
   const briefRequest = useMemo<PreCallBriefRequest>(
     () => ({
       company: meta.name,
@@ -396,6 +412,8 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             company={deal.entity.resolved}
             domain={meta.website}
             hubspotDealId={deal.hubspot.dealId}
+            phase={signalsPhase}
+            onPhaseChange={setSignalsPhase}
             onCountChange={setSignalCount}
           />
         </Section>
@@ -405,6 +423,8 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
         <Section title={t("panel.tab.brief")}>
           <PreCallBriefBlock
             request={briefRequest}
+            phase={briefPhase}
+            onPhaseChange={setBriefPhase}
             onCountChange={setBriefCount}
           />
         </Section>

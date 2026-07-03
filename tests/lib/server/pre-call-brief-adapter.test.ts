@@ -15,7 +15,15 @@ async function loadAdapter() {
 }
 
 function buildResult(resolvedName: string): DealSearchResult {
-  return { resolvedName, coldStart: true, deal: MOCK_DEAL, stakeholders: [], successCases: [] };
+  return {
+    resolvedName,
+    coldStart: true,
+    deal: MOCK_DEAL,
+    stakeholders: [],
+    successCases: [],
+    signals: null,
+    preCallBrief: null,
+  };
 }
 
 describe("pre-call-brief-adapter — resolveLatestAnalysis", () => {

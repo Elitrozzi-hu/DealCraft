@@ -4,7 +4,7 @@ import { lifecycleStageToStageKey } from "../constants.js";
 import { getEnrichmentProvider } from "../enrichment/registry.js";
 import { computeCompanyKey } from "../persistence/company-key.js";
 import { getPersistenceProvider } from "../persistence/registry.js";
-import type { DealRecord, SyncDealInput } from "../persistence/types.js";
+import type { DealAnalysisRecord, DealRecord, SyncDealInput } from "../persistence/types.js";
 import { mapEnrichmentToDeal, toIndustry } from "./enrichment-to-deal.js";
 import { createLogger } from "./logger.js";
 import { getSuccessCasesByIndustry } from "./success-cases-reader.js";
@@ -33,13 +33,16 @@ function buildSyncInput(req: DealSearchRequest, resolvedName: string): SyncDealI
 
 
 function overlayHubspotFields(
-  stored: DealSearchResult,
+  analysis: DealAnalysisRecord,
   req: DealSearchRequest,
   dealRow: DealRecord,
 ): DealSearchResult {
+  const stored = analysis.result;
   const deal: LeadDeal | undefined = req.deal;
   return {
     ...stored,
+    signals: analysis.signals,
+    preCallBrief: analysis.preCallBrief,
     deal: {
       ...stored.deal,
       stage: lifecycleStageToStageKey(req.lifecycleStage),
@@ -88,7 +91,7 @@ export async function enrichDeal(
 
   if (existingDeal && existingAnalysis && !req.refresh) {
     const dealRow = await persistence.syncDealFromHubspot(buildSyncInput(req, resolvedName));
-    const result = overlayHubspotFields(existingAnalysis.result, req, dealRow);
+    const result = overlayHubspotFields(existingAnalysis, req, dealRow);
     return { provider: "stored", result, meta: undefined };
   }
 

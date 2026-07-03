@@ -116,5 +116,7 @@ export function mapEnrichmentToDeal(
     deal,
     stakeholders: toStakeholders(data),
     successCases: [],
+    signals: null,
+    preCallBrief: null,
   };
 }
