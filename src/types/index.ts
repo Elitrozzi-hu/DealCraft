@@ -17,3 +17,4 @@ export * from "./common.types.js";
 export * from "./signal.types.js";
 export * from "./pre-call-brief.types.js";
 export * from "./language.types.js";
+export * from "./discovery.types.js";

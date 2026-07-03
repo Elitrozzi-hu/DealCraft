@@ -11,12 +11,11 @@ import type {
 } from "@/types";
 import {
   Card,
-  EmptyState,
   LinkButton,
   ProvenanceBadge,
-  ProvenanceLegend,
   SourceLinkButton,
   StaleLanguageNote,
+  StatusDot,
 } from "@/components/ui";
 import { useLanguage, useT, type MessageKey } from "@/i18n";
 import { CompsBlock } from "./comps-block";
@@ -57,26 +56,30 @@ const TECHKIND_LABEL_KEY: Record<TechKind, MessageKey> = {
   coexistir: "panel.techKind.coexistir",
 };
 
-// Section glyph for the empty tech-stack state — stacked layers.
-function StackGlyph() {
-  return (
-    <svg
-      width={18}
-      height={18}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12 2 2 7l10 5 10-5-10-5Z" />
-      <path d="M2 12l10 5 10-5M2 17l10 5 10-5" />
+const SUBTAB_ICONS: Record<SubTab, ReactNode> = {
+  empresa: (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="flex-shrink-0">
+      <rect x="3" y="7" width="18" height="13" rx="1.5" />
+      <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
     </svg>
-  );
-}
-
+  ),
+  intel: (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="flex-shrink-0">
+      <path d="M12 17.3l-6.2 3.3 1.2-6.9L2 9.2l7-.9L12 2l3 6.3 7 .9-5 4.5 1.2 6.9z" />
+    </svg>
+  ),
+  signals: (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="flex-shrink-0">
+      <path d="M4 11a8 8 0 0 1 16 0M7 11a5 5 0 0 1 10 0M12 11v9" />
+    </svg>
+  ),
+  brief: (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="flex-shrink-0">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 3" />
+    </svg>
+  ),
+};
 
 function Section({
   title,
@@ -122,6 +125,7 @@ function KMetric({
       className={`min-w-0 rounded-xl border p-2.5 ${highlight ? "border-violet/30 bg-violet-soft" : "border-line bg-panel"}`}
     >
       <div className={`flex items-center gap-1 ${kLabelCls} ${highlight ? "text-violet" : ""}`}>
+        {prov && <StatusDot status={prov.status} size={6} />}
         {label}
         {tooltip && (
           <span tabIndex={0} role="note" className="group/tip relative cursor-help rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-violet/50" aria-label={tooltip}>
@@ -203,7 +207,7 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
   );
 
   const subTabs: [SubTab, string][] = [
-    ["empresa", `${t("panel.tab.company")} · ${stakeholders.length}`],
+    ["empresa", t("panel.tab.company")],
     [
       "intel",
       successCases.length > 0
@@ -269,14 +273,14 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
             role="tab"
             aria-selected={sub === k}
             onClick={() => setSub(k)}
-            className={`flex-1 rounded-lg px-1.5 py-2.5 text-[12.5px] font-bold transition-colors ${sub === k ? "bg-violet text-white shadow-sm" : "text-cold hover:bg-cold-soft hover:text-ink"}`}
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg px-1.5 py-2.5 text-[12.5px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/50 ${sub === k ? "bg-violet text-white shadow-sm" : "text-cold hover:bg-cold-soft hover:text-ink"}`}
           >
+            {SUBTAB_ICONS[k]}
             {l}
           </button>
         ))}
       </div>
       <div className="-mt-1.5 text-xs text-cold">{subSub}</div>
-      <ProvenanceLegend className="rounded-xl border border-line bg-panel px-3 py-2" />
 
       {sub === "empresa" && (
         <>
@@ -333,41 +337,37 @@ export function AnalysisPanel(props: AnalysisPanelProps) {
                 </div>
               )}
             </div>
-            <div className={`${kLabelCls} mb-2 mt-4`}>
-              {t("panel.techStack", { count: f.tech.length })}
-            </div>
-            {f.tech.length === 0 ? (
-              <EmptyState
-                icon={<StackGlyph />}
-                title={t("panel.techEmpty.title")}
-                hint={t("panel.techEmpty.hint")}
-              />
-            ) : (
-              <div className="flex flex-wrap gap-[7px]">
-                {f.tech.map((tech) => {
-                  const chipCls = `inline-flex items-center gap-1 rounded-md border border-line border-l-[3px] bg-panel px-2.5 py-1 text-xs font-semibold text-ink ${techBorderLeft[tech.kind]}`;
-                  const url =
-                    tech.prov?.status !== "inferred" ? tech.prov?.url : undefined;
-                  return (
-                    <span key={tech.t} className="inline-flex items-center gap-1">
-                      <span
-                        title={t(TECHKIND_LABEL_KEY[tech.kind])}
-                        className={chipCls}
-                      >
-                        {tech.t}
+            {f.tech.length > 0 && (
+              <>
+                <div className={`${kLabelCls} mb-2 mt-4`}>
+                  {t("panel.techStack", { count: f.tech.length })}
+                </div>
+                <div className="flex flex-wrap gap-[7px]">
+                  {f.tech.map((tech) => {
+                    const chipCls = `inline-flex items-center gap-1 rounded-md border border-line border-l-[3px] bg-panel px-2.5 py-1 text-xs font-semibold text-ink ${techBorderLeft[tech.kind]}`;
+                    const url =
+                      tech.prov?.status !== "inferred" ? tech.prov?.url : undefined;
+                    return (
+                      <span key={tech.t} className="inline-flex items-center gap-1">
+                        <span
+                          title={t(TECHKIND_LABEL_KEY[tech.kind])}
+                          className={chipCls}
+                        >
+                          {tech.t}
+                        </span>
+                        {url && (
+                          <SourceLinkButton
+                            href={url}
+                            title={`${t(TECHKIND_LABEL_KEY[tech.kind])} · ${
+                              tech.prov?.source ?? t("panel.sourceFallback")
+                            }`}
+                          />
+                        )}
                       </span>
-                      {url && (
-                        <SourceLinkButton
-                          href={url}
-                          title={`${t(TECHKIND_LABEL_KEY[tech.kind])} · ${
-                            tech.prov?.source ?? t("panel.sourceFallback")
-                          }`}
-                        />
-                      )}
-                    </span>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              </>
             )}
           </Section>
 

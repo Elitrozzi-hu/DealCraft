@@ -97,9 +97,6 @@ const es = {
   "panel.metric.headcountConflict": "Headcount · conflicto",
   "panel.metric.resolveHeadcount": "resolver → 485",
   "panel.techStack": "Tech stack ({count})",
-  "panel.techEmpty.title": "Sin tecnología detectada",
-  "panel.techEmpty.hint":
-    "No encontramos herramientas de RR.HH., nómina o comunicación interna con evidencia de uso. Aparecerán acá al detectarse.",
   "panel.techKind.desplazar": "desplazar",
   "panel.techKind.integrar": "integrar",
   "panel.techKind.coexistir": "coexistir",
@@ -107,6 +104,8 @@ const es = {
   "panel.openSourceWith": "Abrir fuente · {source}",
   "copilot.analysisTitle": "Análisis del deal",
   "copilot.analysisSub": "Contexto, stakeholders y señales del mercado.",
+  "copilot.resourcesTitle": "Recursos para la llamada",
+  "copilot.resourcesSub": "Materiales de venta y guía de discovery.",
   "copilot.materialsTitle": "Materiales de venta",
   "copilot.materialsSub":
     "Personalizados para este deal. Revisá y descargá antes de la reunión.",
@@ -258,6 +257,189 @@ const es = {
   "taxonomy.reconocimiento": "Reconocimiento",
   "taxonomy.seguridad": "Seguridad / Compliance",
   "taxonomy.beneficios": "Beneficios",
+
+  // ── discovery tab ───────────────────────────────────────────────────────
+  "discovery.header.title": "Discovery",
+  "discovery.header.badge": "15 min",
+  "discovery.header.sub": "Preguntas y objeciones para esta etapa.",
+  "discovery.subtab.trigger": "Trigger questions",
+  "discovery.subtab.byRole": "Por rol",
+  "discovery.subtab.objections": "Objeciones",
+  "discovery.pill.context": "Contexto",
+  "discovery.pill.painPriority": "Dolor y prioridad",
+  "discovery.objections.verTodas": "Ver todas",
+  "discovery.objections.starredBadge": "⭐ Frecuente",
+  "discovery.objections.whatItMeansLabel": "Qué significa",
+  "discovery.objections.respondWithLabel": "Respondé con",
+
+  "discovery.trigger.discovery":
+    "¿Cómo comunican hoy los cambios importantes — políticas, beneficios, novedades — a todos los empleados?",
+  "discovery.trigger.hr":
+    "¿Qué procesos de HR siguen siendo manuales o por email? Vacaciones, onboarding, solicitudes...",
+  "discovery.trigger.tech":
+    "¿Qué herramientas tienen hoy para la gestión de personas? ¿Solo el sistema de nómina o algo más?",
+  "discovery.trigger.pain":
+    "Si pudieras resolver un solo problema del equipo de HR este año, ¿cuál elegiría?",
+  "discovery.trigger.decision":
+    "¿Quién más debería estar en esta conversación? ¿El CEO / COO también participa en este tipo de decisiones?",
+
+  "discovery.role.all": "Todos",
+  "discovery.role.hrLeader.label": "HR Leader",
+  "discovery.role.opsLeader.label": "Ops Leader",
+  "discovery.role.itLeader.label": "IT Leader",
+  "discovery.role.cSuite.label": "C-Suite / Exec",
+
+  "discovery.role.hrLeader.q1":
+    "¿Qué canales usan hoy para que las políticas y novedades de HR lleguen a todo el personal?",
+  "discovery.role.hrLeader.q2":
+    "¿Cuáles de los procesos de tu equipo — vacaciones, onboarding, solicitudes — todavía dependen de planillas o email?",
+  "discovery.role.hrLeader.q3":
+    "¿Cuántas horas por semana dedica el equipo de HR a consultas repetitivas de empleados?",
+  "discovery.role.opsLeader.q1":
+    "¿Cómo garantizan que un mensaje operativo importante llegó a todos — especialmente fuera de la oficina?",
+  "discovery.role.opsLeader.q2":
+    "¿Qué herramientas usan los managers para coordinar sus equipos?",
+  "discovery.role.opsLeader.q3":
+    "¿Dónde está el mayor cuello de botella operativo relacionado con la gestión de personas?",
+  "discovery.role.itLeader.q1": "¿Qué sistemas de HR o nómina tienen actualmente?",
+  "discovery.role.itLeader.q2":
+    "¿Cuáles son los requerimientos de integración y seguridad para herramientas de employee experience?",
+  "discovery.role.itLeader.q3":
+    "¿Los empleados tienen acceso a email corporativo o usan dispositivos personales?",
+  "discovery.role.cSuite.q1":
+    "¿Cuál es el mayor desafío de personas que quieren resolver este año?",
+  "discovery.role.cSuite.q2":
+    "Si pudieran resolver un solo problema de HR este año, ¿cuál sería?",
+  "discovery.role.cSuite.q3":
+    "¿Cuál es el impacto de la rotación actual en el negocio — tienen estimado el costo?",
+
+  "discovery.objections.sinPresupuesto.quote": "No tenemos presupuesto este año",
+  "discovery.objections.sinPresupuesto.whatItMeans":
+    "No ven ROI inmediato. Prioridades internas compitiendo. Falta de urgencia percibida.",
+  "discovery.objections.sinPresupuesto.response1":
+    "¿Hoy cuánto tiempo o dinero se les va en procesos manuales?",
+  "discovery.objections.sinPresupuesto.response2":
+    "¿Esto es falta de presupuesto o falta de prioridad?",
+  "discovery.objections.sinPresupuesto.closing":
+    "¿Te sirve si armamos juntos un cálculo rápido del costo actual de estos procesos manuales?",
+
+  "discovery.objections.corporativoDecide.quote": "Eso lo decide el corporativo",
+  "discovery.objections.corporativoDecide.whatItMeans":
+    "Centralización regional o global. Falta de champion local.",
+  "discovery.objections.corporativoDecide.response1":
+    "¿Qué criterios suele pedir corporativo para aprobar herramientas?",
+  "discovery.objections.corporativoDecide.closing":
+    "¿Hay alguien de tu equipo que pueda hacer de sponsor interno para llevar esto a corporativo?",
+
+  "discovery.objections.yaTienenHR.quote": "Ya tenemos una herramienta de RRHH",
+  "discovery.objections.yaTienenHR.whatItMeans":
+    "Solapamiento parcial percibido. Resistencia al cambio.",
+  "discovery.objections.yaTienenHR.response1":
+    "¿Qué siguen resolviendo con Excel o WhatsApp?",
+  "discovery.objections.yaTienenHR.closing":
+    "¿Te interesaría ver cómo Humand se integra con lo que ya tienen, sin migrar todo de una?",
+
+  "discovery.objections.noUsanCelular.quote":
+    "Nuestros colaboradores no pueden usar el celular",
+  "discovery.objections.noUsanCelular.whatItMeans":
+    "Personal operativo en planta, tienda o campo con restricciones de dispositivos móviles.",
+  "discovery.objections.noUsanCelular.response1":
+    "¿Hoy cómo comunican avisos o políticas a este personal?",
+  "discovery.objections.noUsanCelular.response2":
+    "¿Qué pasa cuando alguien dice que no se enteró de un cambio importante?",
+  "discovery.objections.noUsanCelular.closing":
+    "¿Qué otros canales tienen disponibles hoy en planta — kioscos, tablets, pantallas — para llegar a ese personal?",
+
+  "discovery.objections.whatsappAlcanza.quote": "Con WhatsApp nos funciona",
+  "discovery.objections.whatsappAlcanza.whatItMeans":
+    "Informalidad, falta de visibilidad y trazabilidad interna.",
+  "discovery.objections.whatsappAlcanza.response1":
+    "¿Qué pasa cuando alguien dice que no vio el mensaje?",
+  "discovery.objections.whatsappAlcanza.response2":
+    "¿Cómo auditan comunicación interna hoy?",
+  "discovery.objections.whatsappAlcanza.closing":
+    "¿Te gustaría empezar con un piloto acotado para comparar la trazabilidad contra lo que tienen hoy con WhatsApp?",
+
+  "discovery.objections.cambiarSistemasComplejo.quote": "Cambiar sistemas es muy complejo",
+  "discovery.objections.cambiarSistemasComplejo.whatItMeans":
+    "RRHH saturado. Miedo a implementación fallida.",
+  "discovery.objections.cambiarSistemasComplejo.response1":
+    "¿Qué proceso les quita más tiempo hoy?",
+  "discovery.objections.cambiarSistemasComplejo.response2":
+    "¿Qué pasaría si solo automatizan uno?",
+  "discovery.objections.cambiarSistemasComplejo.closing":
+    "¿Qué proceso te gustaría automatizar primero para ver un resultado rápido?",
+
+  "discovery.objections.sinTiempoImplementar.quote": "No tenemos tiempo para implementar",
+  "discovery.objections.sinTiempoImplementar.whatItMeans":
+    "Equipo pequeño, operación reactiva constante.",
+  "discovery.objections.sinTiempoImplementar.response1":
+    "¿Qué tarea repetitiva harían desaparecer mañana?",
+  "discovery.objections.sinTiempoImplementar.closing":
+    "¿Qué tarea repetitiva te gustaría que desaparezca desde el primer mes?",
+
+  "discovery.objections.noPuedenMoverNomina.quote": "La nómina no la podemos mover",
+  "discovery.objections.noPuedenMoverNomina.whatItMeans":
+    "Riesgo legal percibido. Dependencia de proveedor local.",
+  "discovery.objections.noPuedenMoverNomina.response1":
+    "Perfecto, Humand no reemplaza nómina — se integra con tu sistema actual.",
+  "discovery.objections.noPuedenMoverNomina.closing":
+    "¿Qué sistema de nómina usan hoy, para confirmar cómo se integraría?",
+
+  "discovery.objections.seVeGrande.quote": "Humand se ve muy grande para nosotros",
+  "discovery.objections.seVeGrande.whatItMeans":
+    "Miedo a pagar de más. Baja madurez digital interna.",
+  "discovery.objections.seVeGrande.response1": "¿Qué proceso te duele más hoy?",
+  "discovery.objections.seVeGrande.response2": "¿Y si empiezan solo con ese?",
+  "discovery.objections.seVeGrande.closing":
+    "¿Con qué módulo te gustaría empezar si arrancáramos por lo más chico?",
+
+  "discovery.objections.yaTienenSAP.quote": "Tenemos SAP implementado",
+  "discovery.objections.yaTienenSAP.whatItMeans":
+    "SAP cubre corporativo. Planta y frontline quedan sin cobertura real.",
+  "discovery.objections.yaTienenSAP.response1":
+    "SAP gestiona datos. ¿Cómo le comunicás cambios a los operarios de planta?",
+  "discovery.objections.yaTienenSAP.closing":
+    "¿Cómo le comunican hoy los cambios a los operarios que no tienen acceso a SAP?",
+
+  "discovery.objections.seguridadDatos.quote":
+    "¿Cómo garantizan la seguridad de nuestros datos?",
+  "discovery.objections.seguridadDatos.whatItMeans":
+    "Preocupación de IT/legal por compliance y exposición de datos sensibles de RRHH; a veces es un requisito formal de aprobación antes de evaluar cualquier herramienta nueva.",
+  "discovery.objections.seguridadDatos.response1":
+    "Contamos con cifrado en tránsito y en reposo, controles de acceso y certificaciones vigentes — ¿qué requisitos les pide hoy su equipo de IT o seguridad?",
+  "discovery.objections.seguridadDatos.response2":
+    "¿Ya evaluaron la seguridad de otro proveedor de HR tech? ¿Qué les pidieron en ese proceso?",
+  "discovery.objections.seguridadDatos.closing":
+    "¿Quién de su equipo de IT o seguridad debería sumarse a la conversación para resolver esto en paralelo?",
+
+  "discovery.objections.slaSoporte.quote": "¿Qué SLA de soporte tienen?",
+  "discovery.objections.slaSoporte.whatItMeans":
+    "Temor a quedar sin resolución rápida ante un incidente operativo — más crítico si tienen personal frontline que depende de la plataforma para comunicación diaria.",
+  "discovery.objections.slaSoporte.response1":
+    "Tenemos SLAs diferenciados por criticidad, con tiempos de respuesta garantizados. ¿Hoy, con su proveedor actual, cuánto tardan en resolver un incidente urgente?",
+  "discovery.objections.slaSoporte.closing":
+    "¿Qué pasó la última vez que tuvieron un problema urgente con una herramienta similar?",
+
+  "discovery.objections.guiaImplementacion.quote":
+    "¿Cómo es el proceso de implementación? Necesitamos que nos guíen paso a paso.",
+  "discovery.objections.guiaImplementacion.whatItMeans":
+    "Falta de confianza en la capacidad interna de ejecutar el cambio, o una mala experiencia previa con una implementación sin acompañamiento.",
+  "discovery.objections.guiaImplementacion.response1":
+    "La implementación es guiada por nuestro equipo de Customer Success desde el día uno, con quick wins desde el primer mes.",
+  "discovery.objections.guiaImplementacion.response2":
+    "¿Qué fue lo que más les costó en la última implementación de una herramienta nueva?",
+  "discovery.objections.guiaImplementacion.closing":
+    "¿Quién sería el owner interno del proyecto durante la implementación?",
+
+  "discovery.objections.integracionesAPI.quote":
+    "Necesitamos que se integre con nuestros sistemas actuales vía API.",
+  "discovery.objections.integracionesAPI.whatItMeans":
+    "Requisito técnico de IT para evitar silos de datos o doble carga manual entre sistemas (HRIS, nómina, mensajería).",
+  "discovery.objections.integracionesAPI.response1":
+    "Contamos con APIs documentadas para integrar con HRIS, nómina y otros sistemas. ¿Con qué sistemas necesitarían integrar hoy?",
+  "discovery.objections.integracionesAPI.closing":
+    "¿Su equipo de IT ya tiene mapeados los sistemas con los que esto debería conectarse?",
 } as const;
 
 export type MessageKey = keyof typeof es;
@@ -357,9 +539,6 @@ const en: Record<MessageKey, string> = {
   "panel.metric.headcountConflict": "Headcount · conflict",
   "panel.metric.resolveHeadcount": "resolve → 485",
   "panel.techStack": "Tech stack ({count})",
-  "panel.techEmpty.title": "No technology detected",
-  "panel.techEmpty.hint":
-    "We found no HR, payroll, or internal-comms tools with evidence of use. They'll appear here once detected.",
   "panel.techKind.desplazar": "displace",
   "panel.techKind.integrar": "integrate",
   "panel.techKind.coexistir": "coexist",
@@ -367,6 +546,8 @@ const en: Record<MessageKey, string> = {
   "panel.openSourceWith": "Open source · {source}",
   "copilot.analysisTitle": "Deal analysis",
   "copilot.analysisSub": "Context, stakeholders, and market signals.",
+  "copilot.resourcesTitle": "Resources for the call",
+  "copilot.resourcesSub": "Sales materials and discovery guide.",
   "copilot.materialsTitle": "Sales materials",
   "copilot.materialsSub":
     "Tailored to this deal. Review and download before the meeting.",
@@ -518,6 +699,188 @@ const en: Record<MessageKey, string> = {
   "taxonomy.reconocimiento": "Recognition",
   "taxonomy.seguridad": "Safety / Compliance",
   "taxonomy.beneficios": "Benefits",
+
+  // ── discovery tab ───────────────────────────────────────────────────────
+  "discovery.header.title": "Discovery",
+  "discovery.header.badge": "15 min",
+  "discovery.header.sub": "Questions and objections for this stage.",
+  "discovery.subtab.trigger": "Trigger questions",
+  "discovery.subtab.byRole": "By role",
+  "discovery.subtab.objections": "Objections",
+  "discovery.pill.context": "Context",
+  "discovery.pill.painPriority": "Pain & priority",
+  "discovery.objections.verTodas": "See all",
+  "discovery.objections.starredBadge": "⭐ Frequent",
+  "discovery.objections.whatItMeansLabel": "What it means",
+  "discovery.objections.respondWithLabel": "Respond with",
+
+  "discovery.trigger.discovery":
+    "How do you communicate important changes today — policies, benefits, news — to all employees?",
+  "discovery.trigger.hr":
+    "Which HR processes are still manual or handled over email? Vacation requests, onboarding, other requests...",
+  "discovery.trigger.tech":
+    "What tools do you currently use for people management? Just the payroll system, or something more?",
+  "discovery.trigger.pain":
+    "If you could solve just one problem for your HR team this year, which would you pick?",
+  "discovery.trigger.decision":
+    "Who else should be part of this conversation? Does the CEO / COO also weigh in on this kind of decision?",
+
+  "discovery.role.all": "All",
+  "discovery.role.hrLeader.label": "HR Leader",
+  "discovery.role.opsLeader.label": "Ops Leader",
+  "discovery.role.itLeader.label": "IT Leader",
+  "discovery.role.cSuite.label": "C-Suite / Exec",
+
+  "discovery.role.hrLeader.q1":
+    "What channels do you use today to get HR policies and updates to everyone?",
+  "discovery.role.hrLeader.q2":
+    "Which of your team's processes — vacation, onboarding, requests — still run on spreadsheets or email?",
+  "discovery.role.hrLeader.q3":
+    "How many hours a week does your HR team spend on repetitive employee questions?",
+  "discovery.role.opsLeader.q1":
+    "How do you make sure an important operational message reaches everyone — especially those outside the office?",
+  "discovery.role.opsLeader.q2":
+    "What tools do your managers use to coordinate their teams?",
+  "discovery.role.opsLeader.q3":
+    "Where's the biggest operational bottleneck related to people management?",
+  "discovery.role.itLeader.q1": "What HR or payroll systems do you currently have?",
+  "discovery.role.itLeader.q2":
+    "What are your integration and security requirements for employee experience tools?",
+  "discovery.role.itLeader.q3":
+    "Do employees have corporate email access, or do they use personal devices?",
+  "discovery.role.cSuite.q1":
+    "What's the biggest people challenge you want to solve this year?",
+  "discovery.role.cSuite.q2":
+    "If you could solve just one HR problem this year, what would it be?",
+  "discovery.role.cSuite.q3":
+    "What's the business impact of your current turnover — do you have a cost estimate?",
+
+  "discovery.objections.sinPresupuesto.quote": "We don't have budget this year",
+  "discovery.objections.sinPresupuesto.whatItMeans":
+    "They don't see immediate ROI. Competing internal priorities. Perceived lack of urgency.",
+  "discovery.objections.sinPresupuesto.response1":
+    "How much time or money do you currently lose to manual processes?",
+  "discovery.objections.sinPresupuesto.response2":
+    "Is this a budget problem, or a priority problem?",
+  "discovery.objections.sinPresupuesto.closing":
+    "Would it help if we put together a quick estimate of what these manual processes cost you today?",
+
+  "discovery.objections.corporativoDecide.quote": "That's a decision made at corporate",
+  "discovery.objections.corporativoDecide.whatItMeans":
+    "Regional or global centralization. No local champion.",
+  "discovery.objections.corporativoDecide.response1":
+    "What criteria does corporate usually require to approve new tools?",
+  "discovery.objections.corporativoDecide.closing":
+    "Is there someone on your team who could sponsor this internally and take it to corporate?",
+
+  "discovery.objections.yaTienenHR.quote": "We already have an HR tool",
+  "discovery.objections.yaTienenHR.whatItMeans":
+    "Perceived partial overlap. Resistance to change.",
+  "discovery.objections.yaTienenHR.response1":
+    "What are you still handling with Excel or WhatsApp?",
+  "discovery.objections.yaTienenHR.closing":
+    "Would you like to see how Humand integrates with what you already have, without migrating everything at once?",
+
+  "discovery.objections.noUsanCelular.quote": "Our employees can't use their phones",
+  "discovery.objections.noUsanCelular.whatItMeans":
+    "Frontline staff in plants, stores, or the field with mobile device restrictions.",
+  "discovery.objections.noUsanCelular.response1":
+    "How do you communicate notices or policies to this staff today?",
+  "discovery.objections.noUsanCelular.response2":
+    "What happens when someone says they never heard about an important change?",
+  "discovery.objections.noUsanCelular.closing":
+    "What other channels do you have on-site today — kiosks, tablets, screens — to reach that staff?",
+
+  "discovery.objections.whatsappAlcanza.quote": "WhatsApp works fine for us",
+  "discovery.objections.whatsappAlcanza.whatItMeans":
+    "Informality, lack of visibility and internal traceability.",
+  "discovery.objections.whatsappAlcanza.response1":
+    "What happens when someone says they never saw the message?",
+  "discovery.objections.whatsappAlcanza.response2":
+    "How do you audit internal communication today?",
+  "discovery.objections.whatsappAlcanza.closing":
+    "Would you like to start with a small pilot to compare traceability against what you have today with WhatsApp?",
+
+  "discovery.objections.cambiarSistemasComplejo.quote": "Switching systems is too complex",
+  "discovery.objections.cambiarSistemasComplejo.whatItMeans":
+    "An overloaded HR team. Fear of a failed rollout.",
+  "discovery.objections.cambiarSistemasComplejo.response1":
+    "Which process takes up the most of your time today?",
+  "discovery.objections.cambiarSistemasComplejo.response2":
+    "What if you only automated that one?",
+  "discovery.objections.cambiarSistemasComplejo.closing":
+    "Which process would you want to automate first to see a quick win?",
+
+  "discovery.objections.sinTiempoImplementar.quote": "We don't have time to implement anything",
+  "discovery.objections.sinTiempoImplementar.whatItMeans":
+    "Small team, constantly reactive operations.",
+  "discovery.objections.sinTiempoImplementar.response1":
+    "What repetitive task would you make disappear tomorrow if you could?",
+  "discovery.objections.sinTiempoImplementar.closing":
+    "What repetitive task would you want gone from month one?",
+
+  "discovery.objections.noPuedenMoverNomina.quote": "We can't touch payroll",
+  "discovery.objections.noPuedenMoverNomina.whatItMeans":
+    "Perceived legal risk. Dependence on a local provider.",
+  "discovery.objections.noPuedenMoverNomina.response1":
+    "That's fine — Humand doesn't replace payroll, it integrates with your current system.",
+  "discovery.objections.noPuedenMoverNomina.closing":
+    "What payroll system do you use today, so we can confirm how it would integrate?",
+
+  "discovery.objections.seVeGrande.quote": "Humand looks too big for us",
+  "discovery.objections.seVeGrande.whatItMeans":
+    "Fear of overpaying. Low internal digital maturity.",
+  "discovery.objections.seVeGrande.response1": "Which process is the most painful for you today?",
+  "discovery.objections.seVeGrande.response2": "What if you started with just that one?",
+  "discovery.objections.seVeGrande.closing":
+    "Which module would you want to start with if we kept it small?",
+
+  "discovery.objections.yaTienenSAP.quote": "We already have SAP in place",
+  "discovery.objections.yaTienenSAP.whatItMeans":
+    "SAP covers the corporate side. Plant and frontline staff are left without real coverage.",
+  "discovery.objections.yaTienenSAP.response1":
+    "SAP manages data. How do you communicate changes to plant workers?",
+  "discovery.objections.yaTienenSAP.closing":
+    "How do you communicate changes today to the workers who don't have SAP access?",
+
+  "discovery.objections.seguridadDatos.quote":
+    "How do you guarantee the security of our data?",
+  "discovery.objections.seguridadDatos.whatItMeans":
+    "IT/legal concern about compliance and exposure of sensitive HR data; sometimes a formal approval requirement before evaluating any new tool.",
+  "discovery.objections.seguridadDatos.response1":
+    "We have encryption in transit and at rest, access controls, and current certifications — what requirements does your IT or security team ask for today?",
+  "discovery.objections.seguridadDatos.response2":
+    "Have you evaluated the security of another HR tech vendor? What did they ask you for in that process?",
+  "discovery.objections.seguridadDatos.closing":
+    "Who from your IT or security team should join the conversation to work through this in parallel?",
+
+  "discovery.objections.slaSoporte.quote": "What support SLA do you offer?",
+  "discovery.objections.slaSoporte.whatItMeans":
+    "Fear of being left without a fast resolution during an operational incident — more critical if they have frontline staff who depend on the platform for daily communication.",
+  "discovery.objections.slaSoporte.response1":
+    "We have SLAs tiered by severity, with guaranteed response times. Today, with your current provider, how long does it take to resolve an urgent incident?",
+  "discovery.objections.slaSoporte.closing":
+    "What happened the last time you had an urgent issue with a similar tool?",
+
+  "discovery.objections.guiaImplementacion.quote":
+    "What does the implementation process look like? We need to be guided step by step.",
+  "discovery.objections.guiaImplementacion.whatItMeans":
+    "Lack of confidence in their internal ability to execute the change, or a bad past experience with an unsupported rollout.",
+  "discovery.objections.guiaImplementacion.response1":
+    "Implementation is guided by our Customer Success team from day one, with quick wins from the first month.",
+  "discovery.objections.guiaImplementacion.response2":
+    "What was the hardest part of your last new-tool implementation?",
+  "discovery.objections.guiaImplementacion.closing":
+    "Who would be the internal project owner during implementation?",
+
+  "discovery.objections.integracionesAPI.quote":
+    "We need it to integrate with our current systems via API.",
+  "discovery.objections.integracionesAPI.whatItMeans":
+    "A technical IT requirement to avoid data silos or duplicate manual entry across systems (HRIS, payroll, messaging).",
+  "discovery.objections.integracionesAPI.response1":
+    "We have documented APIs to integrate with HRIS, payroll, and other systems. Which systems would you need to integrate with today?",
+  "discovery.objections.integracionesAPI.closing":
+    "Has your IT team already mapped out which systems this should connect to?",
 };
 
 export const messages: Record<Language, Record<MessageKey, string>> = { es, en };
