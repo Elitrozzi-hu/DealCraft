@@ -168,43 +168,24 @@ export const supabasePersistenceProvider: PersistenceProvider = {
   },
 
   async syncDealFromHubspot(input: SyncDealInput) {
-    const existing = await this.findDeal(
-      input.hubspotDealId
-        ? { hubspotDealId: input.hubspotDealId }
-        : { companyKey: input.companyKey },
-    );
-
-    const syncColumns = {
-      hubspot_deal_id: input.hubspotDealId,
-      resolved_name: input.resolvedName,
-      domain: input.domain,
-      region: input.region,
-      stage: input.stage,
-      amount: input.amount,
-      segment: input.segment,
-      industry: input.industry,
-      last_activity: input.lastActivity,
-      integraciones: input.integraciones,
-      integration_modules: input.integrationModules,
-      modulos_de_interes: input.modulosDeInteres,
-      pain_detected: input.painDetected,
-      last_searched_at: new Date().toISOString(),
-    };
-
-    if (existing) {
-      const { data, error } = await db()
-        .from("deal")
-        .update(syncColumns)
-        .eq("id", existing.id)
-        .select()
-        .single();
-      if (error) throw mapError(error);
-      return mapDeal(data);
-    }
-
-    const { data, error } = await db().from("deal").insert(syncColumns).select().single();
+    const { data, error } = await db().rpc("sync_deal_from_hubspot", {
+      p_hubspot_deal_id: input.hubspotDealId,
+      p_resolved_name: input.resolvedName,
+      p_domain: input.domain,
+      p_region: input.region,
+      p_stage: input.stage,
+      p_amount: input.amount,
+      p_segment: input.segment,
+      p_industry: input.industry,
+      p_last_activity: input.lastActivity,
+      p_integraciones: input.integraciones,
+      p_integration_modules: input.integrationModules,
+      p_modulos_de_interes: input.modulosDeInteres,
+      p_pain_detected: input.painDetected,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
     if (error) throw mapError(error);
-    return mapDeal(data);
+    return mapDeal(data as DealRow);
   },
 
   async updateSignals(dealAnalysisId: string, signals: SignalsResult, schemaVersion: number) {

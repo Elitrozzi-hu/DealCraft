@@ -273,6 +273,49 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      sync_deal_from_hubspot: {
+        Args: {
+          p_amount: number
+          p_domain: string
+          p_hubspot_deal_id: string
+          p_industry: string
+          p_integraciones: string
+          p_integration_modules: string
+          p_last_activity: string
+          p_modulos_de_interes: string
+          p_pain_detected: string
+          p_region: string
+          p_resolved_name: string
+          p_segment: string
+          p_stage: string
+        }
+        Returns: {
+          amount: number | null
+          company_key: string | null
+          created_at: string
+          domain: string | null
+          hubspot_deal_id: string | null
+          id: string
+          industry: string | null
+          integraciones: string | null
+          integration_modules: string | null
+          last_activity: string | null
+          last_searched_at: string | null
+          modulos_de_interes: string | null
+          pain_detected: string | null
+          region: string | null
+          resolved_name: string
+          segment: string | null
+          stage: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "deal"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       update_deal_analysis_pre_call_brief: {
         Args: { p_brief: Json; p_id: string; p_schema_version: number }
         Returns: number
@@ -283,7 +326,11 @@ export type Database = {
       }
     }
     Enums: {
-      llm_task: "company-research" | "company-signals" | "pre-call-brief" | "chat"
+      llm_task:
+        | "company-research"
+        | "company-signals"
+        | "pre-call-brief"
+        | "chat"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -411,7 +458,12 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      llm_task: ["company-research", "company-signals", "pre-call-brief", "chat"],
+      llm_task: [
+        "company-research",
+        "company-signals",
+        "pre-call-brief",
+        "chat",
+      ],
     },
   },
 } as const
