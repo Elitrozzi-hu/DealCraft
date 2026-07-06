@@ -3,14 +3,14 @@ import { z } from "zod";
 import { TECH_KINDS } from "../../types/index.js";
 
 // The normalized, provider-agnostic enrichment shape. EVERY enrichment provider
-// (classidy, llm-websearch, mock) normalizes its vendor response into this one
+// (cassidy, llm-websearch, mock) normalizes its vendor response into this one
 // shape, and the deal mapper (`lib/server/enrichment-to-deal.ts`) consumes only
 // this. It mirrors `company-enrichment-schema.json`. Provenance carries
 // `source · sourceType · confidence · status` (NO timestamp). Optional
 // firmographics (`workforcePercentage`, `headcount`) are nullish so partial
 // enrichment still validates.
 //
-// This shape used to live inside `providers/classidy.ts`; it was hoisted here so
+// This shape used to live inside `providers/cassidy.ts`; it was hoisted here so
 // it isn't owned by one concrete provider — the contract is shared.
 
 export const provenanceSchema = z.object({

@@ -4,7 +4,7 @@ import { LOG_LEVEL, LOG_FORMAT, NODE_ENV } from "./env.js";
 // emit ONE event per request enriched through its lifecycle, not scattered lines).
 // This is the ONLY module that calls `console.*` directly — every other server
 // module logs through `createLogger(scope)`. Server-only: it reads the env seam
-// and Classidy debug payloads carry contact PII, so it must never reach a client
+// and Cassidy debug payloads carry contact PII, so it must never reach a client
 // bundle. Threshold + format are resolved ONCE at module load (no per-call env
 // reads); changing a level needs a process restart.
 

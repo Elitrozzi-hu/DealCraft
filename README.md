@@ -94,7 +94,7 @@ bun run test:watch # Vitest in watch mode
 
 A **Vitest 4** unit suite lives in `tests/`, mirroring `src/` (e.g.
 `tests/lib/server/enrichment-to-deal.test.ts`). It deliberately targets only the
-highest-risk **pure logic** — enrichment normalization (`classidy`,
+highest-risk **pure logic** — enrichment normalization (`cassidy`,
 `llm-websearch`), the `enrichment-to-deal` adapter, the persistence
 registry/mock provider, `success-cases-reader`'s industry matching, and
 `deals-adapter`'s cold/reopen/refresh branches — with no LLM/CRM/DB/network
@@ -127,11 +127,13 @@ var to switch implementations.
 | `OPENROUTER_API_KEY`              | OpenRouter API key (LLM calls). **Required** for real LLM output.       |
 | `OPENROUTER_MODEL`                | Default model id, e.g. `google/gemini-2.5-flash`.                       |
 | `LLM_PROVIDER`                    | Active LLM provider: `openrouter` \| `glados`.                          |
-| `ENRICHMENT_PROVIDER`             | `llm-websearch` \| `classidy` \| `lusha` \| `mock`.                     |
+| `ENRICHMENT_PROVIDER`             | `llm-websearch` \| `cassidy` \| `lusha` \| `mock`.                     |
 | `ENRICHMENT_LLM_PROVIDER`         | LLM used by the `llm-websearch` enrichment (defaults to `openrouter`).  |
-| `CLASSIDY_WEBHOOK_URL` / `CLASSIDY_API_KEY` | Cassidy enrichment workflow webhook + key.                   |
+| `CASSIDY_WEBHOOK_URL` / `CASSIDY_API_KEY` | Cassidy enrichment workflow webhook + key.                   |
 | `CASSIDY_SUCCESS_CASE_WEBHOOK_URL`| Cassidy success-case scraper (Notion → success-cases sync). No key.     |
 | `LUSHA_API_KEY`                   | Lusha enrichment key.                                                    |
+| `SIGNALS_PROVIDER`                | `cassidy` (default).                                                    |
+| `CASSIDY_SIGNALS_WEBHOOK_URL`     | Cassidy signals workflow webhook (uses `CASSIDY_API_KEY`).              |
 | `CRM_PROVIDER`                    | `hubspot` \| `mock`.                                                     |
 | `HUBSPOT_ACCESS_TOKEN`            | HubSpot token (server-side). Required when `CRM_PROVIDER=hubspot`.       |
 | `NOTION_WEBHOOK_TOKEN`            | Shared secret expected in the `token` header of the Notion webhook.     |
@@ -143,8 +145,9 @@ var to switch implementations.
 
 > Set every provider to its `mock` value (including `PERSISTENCE_PROVIDER=mock`,
 > an in-memory store — no DB needed) to run the whole flow with no external
-> credentials. (Note: there is no `mock` LLM provider — chat/materials/signals/
-> pre-call-brief need a real `OPENROUTER_API_KEY`.)
+> credentials. (Note: there is no `mock` LLM provider — chat/materials/
+> pre-call-brief need a real `OPENROUTER_API_KEY`; signals runs through
+> Cassidy by default and doesn't.)
 
 ---
 
@@ -166,8 +169,9 @@ src/
                         (openrouter, glados) + types.ts (shared contracts).
                         Named LLM tasks live in generations/<task>/
                         (prompt.ts + structured-output.ts)
-    enrichment/         provider registry (llm-websearch, classidy, lusha, mock)
+    enrichment/         provider registry (llm-websearch, cassidy, lusha, mock)
                         + NormalizedEnrichment zod contract + provenance helpers
+    signals/            getSignalsProvider() registry (llm-websearch, cassidy)
     crm/                getCrmProvider() registry (hubspot, mock); HubSpot deal lookup
     ppt/                {{token}}-fill pipeline that builds the .pptx
     persistence/        getPersistenceProvider() registry (supabase, mock); types.ts =
@@ -196,7 +200,7 @@ deck-assets/, data/     runtime assets read via process.cwd() (stay at project r
   resolve `@/lib/...` via the same tsconfig path.
 - **No `import "server-only"`** — it would crash the Vercel functions. The
   client/server boundary is by convention: only `api/*` imports
-  `@/lib/{server,llm,enrichment,crm,ppt,persistence}`; the frontend imports only
+  `@/lib/{server,llm,enrichment,signals,crm,ppt,persistence}`; the frontend imports only
   `@/lib/api-client`, `@/lib/constants`, `@/lib/fixtures`, `@/types`. Unit tests
   under `tests/` are exempt (Node-only, never bundled).
 - **Add or swap a provider = one file + one registry line.** Unknown provider → 400.

@@ -23,11 +23,20 @@ const envelopeSchema = z
   })
   .nullish();
 
-/** Strip a leading/trailing ```json … ``` (or plain ```) code fence. */
+
+/** Strip a leading/trailing ```json … ``` (or plain ```) code fence, and drop
+ *  any stray prose Cassidy sometimes prepends before the JSON payload (e.g. a
+ *  "CUTOFF: 2026-01-06" line) by cutting to the first top-level `{` or `[`,
+ *  whichever comes first. Left alone if the body already starts with valid
+ *  JSON, so `[{"a":1},{"b":2}]` isn't misread as starting at the first
+ *  object's `{`. */
 function stripCodeFence(s: string): string {
   const trimmed = s.trim();
   const fenced = trimmed.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```$/);
-  return fenced ? fenced[1] : trimmed;
+  const body = fenced ? fenced[1].trim() : trimmed;
+  if (body.startsWith("{") || body.startsWith("[")) return body;
+  const starts = [body.indexOf("{"), body.indexOf("[")].filter((i) => i >= 0);
+  return starts.length ? body.slice(Math.min(...starts)) : body;
 }
 
 /** Unwrap Cassidy's workflow envelope to the bare data object. */
