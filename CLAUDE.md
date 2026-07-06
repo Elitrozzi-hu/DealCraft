@@ -5,7 +5,7 @@
 AI sales copilot for Humand: resolve a lead/company, enrich + analyze the deal (pains → solution graph → modules, stakeholders, dealscore with provenance), generate `.pptx` decks. Vite + React Router SPA with Vercel serverless functions (`api/*`) as a BFF in front of swappable LLM, enrichment, and CRM providers.
 
 ## Stack
-TypeScript 5 (strict, no `any`), Vite 8 + React 19.2 + React Router v6, Tailwind v4. `bun` runtime/pkg manager. Vercel functions (`api/*.ts`, `@vercel/node`), local dev via `vercel dev`. AI SDK (`ai` v6 + `@openrouter/ai-sdk-provider`), `zod` v4, `jszip` (.pptx), `@tanstack/react-query`. CRM: `@hubspot/api-client` (server-only). Persistence: Supabase Postgres (`@supabase/supabase-js`, service_role, server-only) — tables `deal`, `deal_analysis`, `success_case`, `llm_call`; migrations in `supabase/migrations/` applied via Supabase MCP. Tests: Vitest under `tests/` (mirrors `src/`), pure-logic only.
+TypeScript 5 (strict, no `any`), Vite 8 + React 19.2 + React Router v6, Tailwind v4. `bun` runtime/pkg manager. Vercel functions (`api/*.ts`, `@vercel/node`), local dev via `vercel dev`. AI SDK (`ai` v6 + `@openrouter/ai-sdk-provider`), `zod` v4, `jszip` (.pptx), `@tanstack/react-query`. `recharts` v2 (admin dashboard only, `React.lazy`-loaded to keep the main bundle lean). CRM: `@hubspot/api-client` (server-only). Persistence: Supabase Postgres (`@supabase/supabase-js`, service_role, server-only) — tables `deal`, `deal_analysis`, `success_case`, `llm_call`, `admin_user` (admin-gating); migrations in `supabase/migrations/` applied via Supabase MCP. Tests: Vitest under `tests/` (mirrors `src/`), pure-logic only.
 
 ## Commands
 - `bun run dev:full` (`vercel dev`) → full stack, http://localhost:3000

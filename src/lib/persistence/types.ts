@@ -67,6 +67,7 @@ export interface DealAnalysisRecord {
   generatedAt: string;
   createdAt: string;
   updatedAt: string;
+  createdByEmail: string | null;
 }
 
 export interface RefreshAnalysisInput {
@@ -74,6 +75,38 @@ export interface RefreshAnalysisInput {
   result: DealSearchResult;
   coldStart: boolean;
   generatedAt: string;
+  /** Actor who triggered this cold-start/refresh — stamped on the new row so
+   *  "deals analyzed per user" is computable. Nullable for back-compat. */
+  createdByEmail?: string | null;
+}
+
+export type AdminMetricsTrendBucket = "day" | "week" | "month";
+
+export interface AdminMetricsBucketPoint {
+  bucket: string;
+  count: number;
+}
+
+/** Shape returned by the `get_admin_metrics` RPC (camelCase JSONB keys).
+ *  All aggregations are all-time snapshots EXCEPT `analysesOverTime`, which
+ *  honors the `trendSince`/`trendBucket` params. */
+export interface AdminMetrics {
+  totalDealsAnalyzed: number;
+  totalCost: number;
+  costPerDeal: {
+    avg: number;
+    min: number;
+    max: number;
+    topDeals: { dealId: string; name: string | null; cost: number }[];
+  };
+  costPerProvider: { provider: string; cost: number; calls: number }[];
+  costByTask: { task: string; cost: number; calls: number }[];
+  topModels: { model: string; cost: number; calls: number }[];
+  dealsByUser: { user: string; deals: number }[];
+  dealsByStage: { stage: string; deals: number }[];
+  dealsByRegion: { region: string; deals: number }[];
+  dealsByIndustry: { industry: string; deals: number }[];
+  analysesOverTime: AdminMetricsBucketPoint[];
 }
 
 /** DB-agnostic persistence contract. One implementation per backing store,
@@ -115,4 +148,13 @@ export interface PersistenceProvider {
   upsertSuccessCase(record: PublishedSuccessCase): Promise<void>;
 
   insertLlmCall(input: LlmCallInput): Promise<void>;
+
+  /** Admin-gate: true when `email` has a row in `admin_user`. */
+  isAdminEmail(email: string): Promise<boolean>;
+
+  /** Read-only aggregated dashboard metrics. */
+  getAdminMetrics(opts: {
+    trendSince: Date | null;
+    trendBucket: AdminMetricsTrendBucket;
+  }): Promise<AdminMetrics>;
 }

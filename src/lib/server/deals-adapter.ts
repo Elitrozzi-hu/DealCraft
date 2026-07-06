@@ -75,6 +75,7 @@ export class NoAssociatedDealError extends Error {
 
 export async function enrichDeal(
   req: DealSearchRequest,
+  opts?: { actorEmail?: string | null },
 ): Promise<{ provider: string; result: DealSearchResult; meta?: Record<string, unknown> }> {
   if (!req.deal?.id) {
     throw new NoAssociatedDealError();
@@ -83,6 +84,10 @@ export async function enrichDeal(
   const persistence = getPersistenceProvider();
   const resolvedName = req.companyName ?? req.name;
   const hubspotDealId = req.deal.id;
+  const actorEmail = opts?.actorEmail;
+  if (!actorEmail) {
+    log.warn("enrichDeal called without actorEmail; analysis will have null attribution");
+  }
 
   const existingDeal = await persistence.findDeal({ hubspotDealId });
   const existingAnalysis = existingDeal
@@ -120,6 +125,7 @@ export async function enrichDeal(
     result,
     coldStart: !existingDeal,
     generatedAt: new Date().toISOString(),
+    createdByEmail: actorEmail ?? null,
   });
 
 
