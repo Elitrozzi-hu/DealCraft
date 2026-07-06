@@ -10,7 +10,8 @@ async function loadAdapter() {
   vi.stubEnv("PERSISTENCE_PROVIDER", "mock");
   const adapter = await import("@/lib/server/deals-adapter");
   const mockEnrichment = await import("@/lib/enrichment/providers/mock");
-  return { adapter, mockEnrichment };
+  const mockPersistence = await import("@/lib/persistence/providers/mock");
+  return { adapter, mockEnrichment, mockPersistence };
 }
 
 function leadDeal(id: string): LeadDeal {
@@ -76,6 +77,36 @@ describe("enrichDeal — first-time / reopen / refresh", () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(result.resolvedName).toBe("Acme First");
+  });
+
+  it("first time: stamps createdByEmail on the new analysis when actorEmail is passed", async () => {
+    const { adapter, mockPersistence } = await loadAdapter();
+    const spy = vi.spyOn(mockPersistence.mockPersistenceProvider, "refreshAnalysis");
+
+    const req: DealSearchRequest = {
+      name: "Acme Attribution",
+      deal: leadDeal("hs-attr"),
+      enrichmentProvider: "mock",
+    };
+    await adapter.enrichDeal(req, { actorEmail: "ae@humand.co" });
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy.mock.calls[0][0].createdByEmail).toBe("ae@humand.co");
+  });
+
+  it("first time: leaves createdByEmail null when actorEmail is omitted", async () => {
+    const { adapter, mockPersistence } = await loadAdapter();
+    const spy = vi.spyOn(mockPersistence.mockPersistenceProvider, "refreshAnalysis");
+
+    const req: DealSearchRequest = {
+      name: "Acme No Actor",
+      deal: leadDeal("hs-no-actor"),
+      enrichmentProvider: "mock",
+    };
+    await adapter.enrichDeal(req);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy.mock.calls[0][0].createdByEmail).toBeNull();
   });
 
   it("reopen: stored analysis exists and refresh is falsy → skips enrichment entirely", async () => {

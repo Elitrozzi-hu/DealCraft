@@ -8,6 +8,7 @@
   },
   "rewrites": [
     { "source": "/login", "destination": "/index.html" },
-    { "source": "/error", "destination": "/index.html" }
+    { "source": "/error", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" }
   ]
 }

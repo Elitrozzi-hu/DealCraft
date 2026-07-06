@@ -12,6 +12,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_user: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
       deal: {
         Row: {
           amount: number | null
@@ -79,6 +94,7 @@ export type Database = {
         Row: {
           cold_start: boolean
           created_at: string
+          created_by_email: string | null
           deal_id: string
           generated_at: string
           id: string
@@ -96,6 +112,7 @@ export type Database = {
         Insert: {
           cold_start: boolean
           created_at?: string
+          created_by_email?: string | null
           deal_id: string
           generated_at: string
           id?: string
@@ -113,6 +130,7 @@ export type Database = {
         Update: {
           cold_start?: boolean
           created_at?: string
+          created_by_email?: string | null
           deal_id?: string
           generated_at?: string
           id?: string
@@ -226,9 +244,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_admin_metrics: {
+        Args: {
+          p_trend_bucket: string
+          p_trend_since: string | null
+        }
+        Returns: Json
+      }
       refresh_deal_analysis: {
         Args: {
           p_cold_start: boolean
+          p_created_by_email: string | null
           p_deal_id: string
           p_generated_at: string
           p_result: Json
@@ -236,6 +262,7 @@ export type Database = {
         Returns: {
           cold_start: boolean
           created_at: string
+          created_by_email: string | null
           deal_id: string
           generated_at: string
           id: string

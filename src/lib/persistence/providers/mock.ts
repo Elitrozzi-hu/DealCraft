@@ -2,6 +2,8 @@ import { randomUUID } from "node:crypto";
 
 import type { PublishedSuccessCase, PreCallBrief, SignalsResult } from "../../../types/index.js";
 import type {
+  AdminMetrics,
+  AdminMetricsTrendBucket,
   DealAnalysisRecord,
   DealRecord,
   LlmCallInput,
@@ -63,6 +65,7 @@ export const mockPersistenceProvider: PersistenceProvider = {
       generatedAt: input.generatedAt,
       createdAt: now(),
       updatedAt: now(),
+      createdByEmail: input.createdByEmail ?? null,
     };
     analyses.set(record.id, record);
     return record;
@@ -163,5 +166,28 @@ export const mockPersistenceProvider: PersistenceProvider = {
   async insertLlmCall(input: LlmCallInput) {
     if (llmCalls.has(input.callId)) return;
     llmCalls.set(input.callId, input);
+  },
+
+  async isAdminEmail(email: string) {
+    return email === "santiago.penenory@humand.co";
+  },
+
+  async getAdminMetrics(_opts: {
+    trendSince: Date | null;
+    trendBucket: AdminMetricsTrendBucket;
+  }): Promise<AdminMetrics> {
+    return {
+      totalDealsAnalyzed: 0,
+      totalCost: 0,
+      costPerDeal: { avg: 0, min: 0, max: 0, topDeals: [] },
+      costPerProvider: [],
+      costByTask: [],
+      topModels: [],
+      dealsByUser: [],
+      dealsByStage: [],
+      dealsByRegion: [],
+      dealsByIndustry: [],
+      analysesOverTime: [],
+    };
   },
 };

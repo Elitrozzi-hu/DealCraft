@@ -1,4 +1,5 @@
 import { memo, useCallback, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import type {
   DealSearchRequest,
   Language,
@@ -271,6 +272,14 @@ export function InputScreen({
           <Wordmark big />
           <div className="flex items-center gap-3">
             <LanguageToggle />
+            {user?.isAdmin && (
+              <Link
+                to="/admin"
+                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-3 py-1.5 text-[12px] font-medium text-cold transition-colors hover:border-violet/40 hover:text-violet focus:outline-none focus-visible:ring-2 focus-visible:ring-violet/40"
+              >
+                Admin
+              </Link>
+            )}
             {onLogout && (
               <>
                 <div className="h-4 w-px bg-line" />
