@@ -34,7 +34,7 @@ export default withAuth(async (req, res, session) => {
     return;
   }
 
-  if (!(await assertAdmin(session.user.email))) {
+  if (!(await assertAdmin(session.user.email ?? session.user.sub))) {
     res.status(403).json({ error: 'Forbidden' });
     return;
   }

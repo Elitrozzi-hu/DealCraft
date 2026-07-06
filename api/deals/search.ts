@@ -50,7 +50,7 @@ export default withAuth(async (req, res, session) => {
   const t0 = Date.now();
   try {
     const { provider, result, meta } = await enrichDeal(reqData, {
-      actorEmail: session.user.email,
+      actorEmail: session.user.email ?? session.user.sub,
     });
     ev.set("provider", provider)
       .set("status", 200)

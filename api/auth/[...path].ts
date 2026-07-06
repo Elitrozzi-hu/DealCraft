@@ -109,7 +109,7 @@ async function handleMe(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Set-Cookie', session.renewedCookies);
   }
 
-  const isAdmin = await assertAdmin(session.user.email);
+  const isAdmin = await assertAdmin(session.user.email ?? session.user.sub);
   return res.status(200).json({ ...session.user, isAdmin });
 }
 

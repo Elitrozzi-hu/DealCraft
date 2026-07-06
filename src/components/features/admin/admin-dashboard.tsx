@@ -255,49 +255,6 @@ export function AdminDashboardPage() {
                 )}
               </Card>
             </div>
-
-            {/* Breakdowns by deal attributes */}
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-              <Card title="Deals by stage">
-                {data.dealsByStage.length === 0 ? (
-                  <EmptyState title="No data" />
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {data.dealsByStage.map((s) => (
-                      <Chip key={s.stage} tone="cold">
-                        {s.stage}: {s.deals}
-                      </Chip>
-                    ))}
-                  </div>
-                )}
-              </Card>
-              <Card title="Deals by region">
-                {data.dealsByRegion.length === 0 ? (
-                  <EmptyState title="No data" />
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {data.dealsByRegion.map((r) => (
-                      <Chip key={r.region} tone="cold">
-                        {r.region}: {r.deals}
-                      </Chip>
-                    ))}
-                  </div>
-                )}
-              </Card>
-              <Card title="Deals by industry">
-                {data.dealsByIndustry.length === 0 ? (
-                  <EmptyState title="No data" />
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {data.dealsByIndustry.map((ind) => (
-                      <Chip key={ind.industry} tone="cold">
-                        {ind.industry}: {ind.deals}
-                      </Chip>
-                    ))}
-                  </div>
-                )}
-              </Card>
-            </div>
           </div>
         )}
       </div>
