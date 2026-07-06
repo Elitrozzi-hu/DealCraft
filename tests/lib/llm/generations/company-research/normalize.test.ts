@@ -1,0 +1,125 @@
+import { describe, expect, it } from "vitest";
+
+import {
+  asSourceUrl,
+  fromLlmProv,
+  normalize,
+  stakeholderProv,
+} from "@/lib/llm/generations/company-research/normalize";
+import type { LlmProvenance, LlmResearchOutput } from "@/lib/llm/generations/company-research/structured-output";
+
+const prov = (over: Partial<LlmProvenance> = {}): LlmProvenance => ({
+  source: null,
+  sourceUrl: null,
+  confidence: 0.5,
+  status: "inferred",
+  ...over,
+});
+
+describe("company-research normalize asSourceUrl", () => {
+  it("accepts http(s) and strips the www. label", () => {
+    expect(asSourceUrl("https://www.acme.com/about")).toEqual({
+      href: "https://www.acme.com/about",
+      label: "acme.com",
+    });
+    expect(asSourceUrl("http://acme.io/x")?.label).toBe("acme.io");
+  });
+
+  it("rejects non-http(s) protocols, malformed urls and null", () => {
+    expect(asSourceUrl("ftp://acme.com")).toBeNull();
+    expect(asSourceUrl("not a url")).toBeNull();
+    expect(asSourceUrl(null)).toBeNull();
+  });
+});
+
+describe("company-research normalize stakeholderProv", () => {
+  it("maps each status to its computed confidence", () => {
+    expect(stakeholderProv(null, "validated", "Web research").confidence).toBe(0.9);
+    expect(stakeholderProv(null, "inferred", "Web research").confidence).toBe(0.5);
+    expect(stakeholderProv(null, "cold", "Web research").confidence).toBe(0.2);
+  });
+
+  it("surfaces a link + hostname label only for a validated real url", () => {
+    const p = stakeholderProv("https://linkedin.com/in/x", "validated", "Web research");
+    expect(p.url).toBe("https://linkedin.com/in/x");
+    expect(p.source).toBe("linkedin.com");
+  });
+
+  it("never surfaces a link for non-validated status, and falls back to defaultSource", () => {
+    const p = stakeholderProv("https://linkedin.com/in/x", "inferred", "Cassidy");
+    expect(p.url).toBeUndefined();
+    expect(p.source).toBe("Cassidy");
+  });
+});
+
+describe("company-research normalize fromLlmProv", () => {
+  it("clamps confidence into [0,1]", () => {
+    expect(fromLlmProv(prov({ confidence: 1.5 }), "Web research").confidence).toBe(1);
+    expect(fromLlmProv(prov({ confidence: -0.5 }), "Web research").confidence).toBe(0);
+  });
+
+  it("prefers sourceUrl over source for the link (validated only)", () => {
+    const p = fromLlmProv(
+      prov({
+        source: "https://a.com/x",
+        sourceUrl: "https://b.com/page",
+        status: "validated",
+      }),
+      "Web research",
+    );
+    expect(p.url).toBe("https://b.com/page");
+  });
+
+  it("shows a tidy hostname when source itself is a url", () => {
+    expect(fromLlmProv(prov({ source: "https://www.foo.com/p" }), "Web research").source).toBe(
+      "foo.com",
+    );
+  });
+
+  it("never surfaces a link for an inferred field", () => {
+    const p = fromLlmProv(prov({ sourceUrl: "https://b.com/page", status: "inferred" }), "Web research");
+    expect(p.url).toBeUndefined();
+  });
+
+  it("falls back to the given defaultSource when no source/label is available", () => {
+    expect(fromLlmProv(prov(), "Cassidy").source).toBe("Cassidy");
+  });
+});
+
+describe("company-research normalize", () => {
+  const base: LlmResearchOutput = {
+    summary: { value: "", provenance: prov() },
+    region: { value: "LATAM", provenance: prov({ status: "validated" }) },
+    headcount: { value: 200.6, provenance: prov() },
+    workforcePercentage: { value: 150, provenance: prov() },
+    techStack: [],
+    stakeholders: [
+      { name: "Jane", title: "CHRO", decisionRole: "Decision Maker", email: null, sourceUrl: null, status: "inferred" },
+      { name: null, title: "CFO", decisionRole: null, email: null, sourceUrl: null, status: "inferred" },
+      { name: null, title: null, decisionRole: null, email: null, sourceUrl: null, status: "cold" },
+    ],
+  };
+
+  it("replaces an empty summary with the '—' cold placeholder", () => {
+    const out = normalize(base, "Web research");
+    expect(out.summary.value).toBe("—");
+    expect(out.summary.prov.status).toBe("cold");
+  });
+
+  it("clamps workforce to [0,100] and rounds headcount", () => {
+    const out = normalize(base, "Web research");
+    expect(out.workforcePercentage?.value).toBe(100);
+    expect(out.headcount?.value).toBe(201);
+  });
+
+  it("keeps stakeholders with any identifying field, drops the fully-empty one", () => {
+    const out = normalize(base, "Web research");
+    expect(out.stakeholders).toHaveLength(2);
+    expect(out.stakeholders.map((s) => s.title)).toEqual(["CHRO", "CFO"]);
+  });
+
+  it("uses the given defaultSource for cold fields", () => {
+    const out = normalize(base, "Cassidy");
+    expect(out.summary.prov.source).toBe("Cassidy");
+  });
+});

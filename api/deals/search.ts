@@ -75,10 +75,10 @@ function enrichRules(err: unknown): ApiError | undefined {
     return { status: 400, error: err.message };
   }
   if (err instanceof Error) {
-    if (err.message.includes("CLASSIDY_WEBHOOK_URL is not set")) {
+    if (err.message.includes("CASSIDY_WEBHOOK_URL is not set")) {
       return { status: 502, error: "Enrichment provider is not configured." };
     }
-    if (err.message.startsWith("Classidy workflow failed")) {
+    if (err.message.startsWith("Cassidy workflow failed")) {
       return { status: 502, error: err.message };
     }
   }

@@ -20,8 +20,8 @@ export const ENRICHMENT_PROVIDER = process.env.ENRICHMENT_PROVIDER;
 /** LLM provider (registry key) used by the `llm-websearch` enrichment, kept
  *  separate from the chat `LLM_PROVIDER`. Defaults to `openrouter`. */
 export const ENRICHMENT_LLM_PROVIDER = process.env.ENRICHMENT_LLM_PROVIDER;
-export const CLASSIDY_WEBHOOK_URL = process.env.CLASSIDY_WEBHOOK_URL;
-export const CLASSIDY_API_KEY = process.env.CLASSIDY_API_KEY;
+export const CASSIDY_WEBHOOK_URL = process.env.CASSIDY_WEBHOOK_URL;
+export const CASSIDY_API_KEY = process.env.CASSIDY_API_KEY;
 export const LUSHA_API_KEY = process.env.LUSHA_API_KEY;
 export const CASSIDY_SUCCESS_CASE_WEBHOOK_URL = process.env.CASSIDY_SUCCESS_CASE_WEBHOOK_URL;
 /** Shared secret expected in the `token` header of inbound Notion webhooks. */

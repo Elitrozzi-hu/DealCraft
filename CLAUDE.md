@@ -17,7 +17,7 @@ TypeScript 5 (strict, no `any`), Vite 8 + React 19.2 + React Router v6, Tailwind
 ## Architecture
 - `api/*.ts` — thin BFF handlers: parse → call one `src/lib/` fn → map errors.
 - `src/lib/llm/` — `generate()` dispatcher + `registry.ts` + `providers/` (openrouter, glados). `generations/<task>/` = `prompt.ts` + `structured-output.ts` per LLM task.
-- `src/lib/enrichment/` — provider registry (`llm-websearch`, `classidy`, `lusha`, `mock`); `result-schema.ts` = `NormalizedEnrichment` zod contract + provenance.
+- `src/lib/enrichment/` — provider registry (`llm-websearch`, `cassidy`, `lusha`, `mock`); `result-schema.ts` = `NormalizedEnrichment` zod contract + provenance.
 - `src/lib/crm/` — `getCrmProvider()` (`hubspot`, `mock`); HubSpot deal-lookup + auth. Server-only.
 - `src/lib/ppt/` — `{{token}}`-fill pipeline (validate/tokens/templates/fill/xml/logo) → `generate.ts`/`index.ts`.
 - `src/lib/persistence/` — `getPersistenceProvider()` (`supabase`, `mock`); DB-agnostic `PersistenceProvider` interface in `types.ts`. `company-key.ts` = single source of truth for `company_key` normalization. Multi-step writes go through Postgres RPC functions (no transactions in supabase-js).
