@@ -5,20 +5,27 @@ import { createLogger } from "./logger.js";
 import type { Language, SignalsResult } from "../../types/index.js";
 
 const log = createLogger("signals");
+export interface FetchSignalsResult {
+  result: SignalsResult;
+  provider: string;
+}
+
 export async function fetchSignals(
   company: string,
   domain: string,
   language: Language = "es",
   hubspotDealId: string | null = null,
-): Promise<SignalsResult> {
-  log.info("signals started", { company, domain });
+): Promise<FetchSignalsResult> {
+  const provider = getSignalsProvider();
+  log.info("signals started", { company, domain, provider: provider.name });
   const t0 = Date.now();
 
-  const { data: result, usage } = await getSignalsProvider().fetch({ company, domain, language });
+  const { data: result, usage } = await provider.fetch({ company, domain, language });
 
   log.info("signals complete", {
     durationMs: Date.now() - t0,
     count: result.signals.length,
+    provider: provider.name,
   });
 
   const target = await resolveLatestAnalysis(company, hubspotDealId);
@@ -51,7 +58,7 @@ export async function fetchSignals(
     }
   }
 
-  return result;
+  return { result, provider: provider.name };
 }
 
 export async function resolveLatestAnalysis(
