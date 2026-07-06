@@ -3,6 +3,8 @@ import { createClient, type PostgrestError } from "@supabase/supabase-js";
 import type { PublishedSuccessCase, PreCallBrief, SignalsResult } from "../../../types/index.js";
 import { SUPABASE_SERVICE_ROLE_KEY, SUPABASE_URL } from "../../server/env.js";
 import type {
+  AdminMetrics,
+  AdminMetricsTrendBucket,
   DealAnalysisRecord,
   DealRecord,
   LlmCallInput,
@@ -78,6 +80,7 @@ function mapAnalysis(row: DealAnalysisRow): DealAnalysisRecord {
     generatedAt: row.generated_at,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    createdByEmail: row.created_by_email,
   };
 }
 
@@ -162,6 +165,7 @@ export const supabasePersistenceProvider: PersistenceProvider = {
       p_result: input.result as any,
       p_cold_start: input.coldStart,
       p_generated_at: input.generatedAt,
+      p_created_by_email: input.createdByEmail ?? null,
     });
     if (error) throw mapError(error);
     return mapAnalysis(data as DealAnalysisRow);
@@ -259,5 +263,27 @@ export const supabasePersistenceProvider: PersistenceProvider = {
         { onConflict: "call_id", ignoreDuplicates: true },
       );
     if (error) throw mapError(error);
+  },
+
+  async isAdminEmail(email: string) {
+    const { data, error } = await db()
+      .from("admin_user")
+      .select("email")
+      .eq("email", email)
+      .maybeSingle();
+    if (error) throw mapError(error);
+    return !!data;
+  },
+
+  async getAdminMetrics(opts: {
+    trendSince: Date | null;
+    trendBucket: AdminMetricsTrendBucket;
+  }) {
+    const { data, error } = await db().rpc("get_admin_metrics", {
+      p_trend_since: opts.trendSince?.toISOString() ?? null,
+      p_trend_bucket: opts.trendBucket,
+    });
+    if (error) throw mapError(error);
+    return data as unknown as AdminMetrics;
   },
 };

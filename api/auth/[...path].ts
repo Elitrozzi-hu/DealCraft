@@ -1,5 +1,6 @@
 import { type VercelRequest, type VercelResponse } from '@vercel/node';
 
+import { assertAdmin } from '../../src/lib/server/admin.js';
 import {
   buildClearCookies,
   buildClearPKCECookie,
@@ -108,7 +109,8 @@ async function handleMe(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Set-Cookie', session.renewedCookies);
   }
 
-  return res.status(200).json(session.user);
+  const isAdmin = await assertAdmin(session.user.email);
+  return res.status(200).json({ ...session.user, isAdmin });
 }
 
 // ── POST /api/auth/refresh ────────────────────────────────────────────────────

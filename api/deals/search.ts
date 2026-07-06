@@ -28,7 +28,7 @@ const bodySchema = z.object({
   refresh: z.boolean().optional().default(false),
 });
 
-export default withAuth(async (req, res, _session) => {
+export default withAuth(async (req, res, session) => {
   if (req.method !== "POST") {
     res.status(405).json({ error: "Method Not Allowed" });
     return;
@@ -49,7 +49,9 @@ export default withAuth(async (req, res, _session) => {
     .set("provider", reqData.enrichmentProvider ?? "default");
   const t0 = Date.now();
   try {
-    const { provider, result, meta } = await enrichDeal(reqData);
+    const { provider, result, meta } = await enrichDeal(reqData, {
+      actorEmail: session.user.email,
+    });
     ev.set("provider", provider)
       .set("status", 200)
       .set("durationMs", Date.now() - t0)
