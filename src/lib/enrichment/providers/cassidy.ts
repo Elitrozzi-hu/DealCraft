@@ -72,7 +72,7 @@ const rawStakeholderSchema = z.object({
   "Decision Role": z.string().nullish(),
 });
 
-const cassidyRawSchema = z
+export const cassidyRawSchema = z
   .object({
     Summary: rawValueFieldSchema,
     Region: rawValueFieldSchema,
@@ -87,11 +87,12 @@ const cassidyRawSchema = z
 
 type CassidyRaw = z.infer<typeof cassidyRawSchema>;
 
-/** Cassidy sometimes joins multiple citation URLs with commas; keep the first
- *  usable http(s) one. */
+/** Cassidy sometimes joins multiple citation URLs with ", "; keep the first
+ *  usable http(s) one. Only splits before another URL, so a single URL whose
+ *  query string contains a comma (e.g. "?q=a,b") isn't truncated. */
 function firstUrl(s: string | null | undefined): string | null {
   if (!s) return null;
-  const first = s.split(",")[0]?.trim();
+  const first = s.split(/,\s*(?=https?:\/\/)/i)[0]?.trim();
   return first && /^https?:\/\//i.test(first) ? first : null;
 }
 
@@ -140,8 +141,9 @@ function toTechItems(arr: unknown[] | null | undefined): LlmResearchOutput["tech
 }
 
 /** Translate Cassidy's raw response into the `LlmResearchOutput` contract so it
- *  can flow through the same `normalize()` as the LLM path. */
-function toResearchOutput(raw: CassidyRaw): LlmResearchOutput {
+ *  can flow through the same `normalize()` as the LLM path. Exported for tests
+ *  exercising the raw-Title-Case-to-canonical mapping directly. */
+export function toResearchOutput(raw: CassidyRaw): LlmResearchOutput {
   const workforce = raw["Workforce % Deskless / Frontline"];
   const workforceValue = workforce?.["Value (0–100)"];
   const headcountValue = raw.Headcount?.Value;

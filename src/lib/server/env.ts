@@ -24,6 +24,10 @@ export const CASSIDY_WEBHOOK_URL = process.env.CASSIDY_WEBHOOK_URL;
 export const CASSIDY_API_KEY = process.env.CASSIDY_API_KEY;
 export const LUSHA_API_KEY = process.env.LUSHA_API_KEY;
 export const CASSIDY_SUCCESS_CASE_WEBHOOK_URL = process.env.CASSIDY_SUCCESS_CASE_WEBHOOK_URL;
+
+// --- Signals ---
+export const SIGNALS_PROVIDER = process.env.SIGNALS_PROVIDER;
+export const CASSIDY_SIGNALS_WEBHOOK_URL = process.env.CASSIDY_SIGNALS_WEBHOOK_URL;
 /** Shared secret expected in the `token` header of inbound Notion webhooks. */
 export const NOTION_WEBHOOK_TOKEN = process.env.NOTION_WEBHOOK_TOKEN;
 

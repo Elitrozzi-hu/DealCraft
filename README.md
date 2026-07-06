@@ -132,6 +132,8 @@ var to switch implementations.
 | `CASSIDY_WEBHOOK_URL` / `CASSIDY_API_KEY` | Cassidy enrichment workflow webhook + key.                   |
 | `CASSIDY_SUCCESS_CASE_WEBHOOK_URL`| Cassidy success-case scraper (Notion → success-cases sync). No key.     |
 | `LUSHA_API_KEY`                   | Lusha enrichment key.                                                    |
+| `SIGNALS_PROVIDER`                | `cassidy` (default).                                                    |
+| `CASSIDY_SIGNALS_WEBHOOK_URL`     | Cassidy signals workflow webhook (uses `CASSIDY_API_KEY`).              |
 | `CRM_PROVIDER`                    | `hubspot` \| `mock`.                                                     |
 | `HUBSPOT_ACCESS_TOKEN`            | HubSpot token (server-side). Required when `CRM_PROVIDER=hubspot`.       |
 | `NOTION_WEBHOOK_TOKEN`            | Shared secret expected in the `token` header of the Notion webhook.     |
@@ -143,8 +145,9 @@ var to switch implementations.
 
 > Set every provider to its `mock` value (including `PERSISTENCE_PROVIDER=mock`,
 > an in-memory store — no DB needed) to run the whole flow with no external
-> credentials. (Note: there is no `mock` LLM provider — chat/materials/signals/
-> pre-call-brief need a real `OPENROUTER_API_KEY`.)
+> credentials. (Note: there is no `mock` LLM provider — chat/materials/
+> pre-call-brief need a real `OPENROUTER_API_KEY`; signals runs through
+> Cassidy by default and doesn't.)
 
 ---
 
@@ -168,6 +171,7 @@ src/
                         (prompt.ts + structured-output.ts)
     enrichment/         provider registry (llm-websearch, cassidy, lusha, mock)
                         + NormalizedEnrichment zod contract + provenance helpers
+    signals/            getSignalsProvider() registry (llm-websearch, cassidy)
     crm/                getCrmProvider() registry (hubspot, mock); HubSpot deal lookup
     ppt/                {{token}}-fill pipeline that builds the .pptx
     persistence/        getPersistenceProvider() registry (supabase, mock); types.ts =
@@ -196,7 +200,7 @@ deck-assets/, data/     runtime assets read via process.cwd() (stay at project r
   resolve `@/lib/...` via the same tsconfig path.
 - **No `import "server-only"`** — it would crash the Vercel functions. The
   client/server boundary is by convention: only `api/*` imports
-  `@/lib/{server,llm,enrichment,crm,ppt,persistence}`; the frontend imports only
+  `@/lib/{server,llm,enrichment,signals,crm,ppt,persistence}`; the frontend imports only
   `@/lib/api-client`, `@/lib/constants`, `@/lib/fixtures`, `@/types`. Unit tests
   under `tests/` are exempt (Node-only, never bundled).
 - **Add or swap a provider = one file + one registry line.** Unknown provider → 400.

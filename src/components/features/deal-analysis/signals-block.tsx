@@ -149,10 +149,12 @@ function SignalCard({ signal }: { signal: SignalItem }) {
         {signal.summary}
       </p>
 
-      <LinkAnchor href={signal.source_url} target="_blank" rel="noopener noreferrer" tone="cold">
-        {getHostname(signal.source_url)}
-        <SourceLinkIcon className="shrink-0" />
-      </LinkAnchor>
+      {signal.source_url && (
+        <LinkAnchor href={signal.source_url} target="_blank" rel="noopener noreferrer" tone="cold">
+          {getHostname(signal.source_url)}
+          <SourceLinkIcon className="shrink-0" />
+        </LinkAnchor>
+      )}
     </div>
   );
 }
@@ -292,11 +294,8 @@ export function SignalsBlock({
   return (
     <div>
       <StaleLanguageNote contentLang={phase.lang} className="mb-2" />
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-2 flex items-center">
         <span className="text-[11.5px] text-cold">{t("signals.realtime")}</span>
-        <span className="rounded-md border border-cold/20 bg-cold-soft px-2 py-px text-[10px] font-semibold text-cold">
-          llm-websearch
-        </span>
       </div>
       <div className="flex flex-col gap-2">
         {sorted.map((signal) => (
