@@ -32,18 +32,23 @@ export default withAuth(async (req, res, _session) => {
   }
 
   const t0 = Date.now();
+  const ev = log
+    .event("signals.request")
+    .set("company", parsed.data.company)
+    // Overwritten with the resolved provider on success.
+    .set("provider", "default");
   try {
-    const result = await fetchSignals(
+    const { result, provider } = await fetchSignals(
       parsed.data.company,
       parsed.data.domain,
       parsed.data.language,
       parsed.data.hubspotDealId ?? null,
     );
-    log
-      .event("signals.request")
+    ev
       .set("status", 200)
       .set("durationMs", Date.now() - t0)
       .set("count", result.signals.length)
+      .set("provider", provider)
       .emit();
     res.status(200).json(result);
   } catch (err) {
@@ -51,10 +56,7 @@ export default withAuth(async (req, res, _session) => {
       upstreamLabel: "Signals",
       fallback: "Signals research failed",
     });
-    const ev = log
-      .event("signals.request")
-      .set("status", status)
-      .set("durationMs", Date.now() - t0);
+    ev.set("status", status).set("durationMs", Date.now() - t0);
     if (status >= 500) ev.setError(err);
     ev.emit(status >= 500 ? "error" : "info");
     res.status(status).json({ error });
