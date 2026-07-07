@@ -11,11 +11,7 @@ import type {
   StageKey,
   Stakeholder,
 } from "@/types";
-import {
-  MOCK_DEAL,
-  MOCK_INITIAL_QUERY,
-  MOCK_STAKEHOLDERS,
-} from "@/lib/fixtures";
+import { MOCK_DEAL, MOCK_STAKEHOLDERS } from "@/lib/fixtures";
 import { Button, Card, Wordmark } from "@/components/ui";
 import { useAuth } from "@/contexts/Auth";
 import { useDealSearch } from "@/hooks/use-deal-search";
@@ -57,7 +53,7 @@ export function DealCraftApp() {
     window.location.href = '/login';
   };
   const [view, setView] = useState<View>("input");
-  const [query, setQuery] = useState<DealSearchRequest>(MOCK_INITIAL_QUERY);
+  const [query, setQuery] = useState<DealSearchRequest>({ name: "" });
   const [session, setSession] = useState<CopilotSession | null>(null);
   const [sessionKey, setSessionKey] = useState(0);
   const search = useDealSearch();
